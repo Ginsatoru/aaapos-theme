@@ -85,29 +85,29 @@ function mr_enqueue_styles()
     );
 
     // WooCommerce styles (conditional)
-    if (class_exists("WooCommerce")) {
-        wp_enqueue_style(
-            "mr-woocommerce",
-            MR_THEME_URI . "/assets/css/woocommerce.css",
-            ["mr-responsive"],
-            MR_THEME_VERSION,
-        );
-        
-        // Shop 71% Width Layout - Auto applies to all shop pages
-        if (
-            (function_exists("is_shop") && is_shop()) ||
-            (function_exists("is_product_category") && is_product_category()) ||
-            (function_exists("is_product_tag") && is_product_tag()) ||
-            (function_exists("is_product_taxonomy") && is_product_taxonomy())
-        ) {
-            wp_enqueue_style(
-                "mr-shop-custom-width",
-                MR_THEME_URI . "/assets/css/components/shop-custom.css",
-                ["mr-woocommerce"],
-                MR_THEME_VERSION,
-            );
-        }
-    }
+    // if (class_exists("WooCommerce")) {
+    //     wp_enqueue_style(
+    //         "mr-woocommerce",
+    //         MR_THEME_URI . "/assets/css/woocommerce.css",
+    //         ["mr-responsive"],
+    //         MR_THEME_VERSION,
+    //     );
+
+    //     // Shop 71% Width Layout - Auto applies to all shop pages
+    //     if (
+    //         (function_exists("is_shop") && is_shop()) ||
+    //         (function_exists("is_product_category") && is_product_category()) ||
+    //         (function_exists("is_product_tag") && is_product_tag()) ||
+    //         (function_exists("is_product_taxonomy") && is_product_taxonomy())
+    //     ) {
+    //         wp_enqueue_style(
+    //             "mr-shop-custom-width",
+    //             MR_THEME_URI . "/assets/css/components/shop-custom.css",
+    //             ["mr-woocommerce"],
+    //             MR_THEME_VERSION,
+    //         );
+    //     }
+    // }
 
     // Main theme stylesheet (for theme metadata)
     wp_enqueue_style("mr-style", get_stylesheet_uri(), [], MR_THEME_VERSION);
