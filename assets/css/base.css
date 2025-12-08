@@ -535,3 +535,23 @@ em, i {
         display: none !important;
     }
 }
+/* ============================================
+   WOOCOMMERCE PRICE FIX - Remove underline from sale prices
+   ============================================ */
+
+ins,
+ins *,
+ins bdi,
+ins span {
+  text-decoration: none !important;
+}
+
+/* Specific override for WooCommerce price elements */
+.woocommerce .price ins,
+.woocommerce .price ins *,
+.woocommerce-page .price ins,
+.woocommerce-page .price ins * {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  border-bottom: none !important;
+}

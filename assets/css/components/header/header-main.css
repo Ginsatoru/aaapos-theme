@@ -85,6 +85,84 @@ body.scrolled .site-header {
   .header-inner {
     padding: 0 23px 0 49px;
   }
+  
+  /* Fix for menu alignment */
+  .main-navigation {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-menu > li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Clean hover effect for desktop menu items */
+  .nav-menu > li > a {
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: var(--space-2) var(--space-4);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: var(--color-nav-link);
+    font-weight: var(--font-semibold);
+    font-size: 0.95rem;
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+  }
+
+  /* The animated bar */
+  .nav-menu > li > a::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: 25px; /* Position at bottom of menu item */
+    left: var(--space-4);
+    right: var(--space-4);
+    height: 5px;
+    background-color: #A6A6A6;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+
+  /* Hover effect - lift up */
+  .nav-menu > li > a:hover {
+    transform: translateY(-3px);
+    color: var(--color-nav-hover);
+  }
+
+  .nav-menu > li > a:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* Current page state */
+  .nav-menu > li.current-menu-item > a::before,
+  .nav-menu > li.current_page_item > a::before {
+    transform: scaleY(1);
+    background-color: var(--color-nav-active);
+  }
+
+  .nav-menu .current-menu-item > a,
+  .nav-menu .current_page_item > a {
+    color: var(--color-nav-active);
+  }
+
+  /* Remove old underline effect */
+  .nav-menu > li > a::after {
+    display: none;
+  }
+  
+  /* Make sure header actions stay aligned */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
 }
 
 /* ==========================================================================
@@ -135,8 +213,15 @@ body.menu-open {
     border-bottom-width: 2px;
   }
 
-  .nav-menu > li > a::after {
-    height: 4px;
+  .nav-menu > li > a:hover {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    transform: none;
+  }
+  
+  .nav-menu > li > a::before {
+    height: 3px;
+    background-color: currentColor;
   }
 }
 
@@ -153,7 +238,15 @@ body.menu-open {
     transition: none;
   }
 
-  .nav-menu > li > a::after {
+  .nav-menu > li > a {
+    transition: none;
+  }
+
+  .nav-menu > li > a:hover {
+    transform: none;
+  }
+
+  .nav-menu > li > a::before {
     transition: none;
   }
 }
