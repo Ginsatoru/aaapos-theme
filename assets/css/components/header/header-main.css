@@ -38,6 +38,10 @@
 @media (min-width: 768px) {
   .site-header {
     height: 90px;
+  }
+  
+  /* Only add top spacing when topbar is active */
+  body.has-topbar .site-header {
     top: 45px;
   }
 }
@@ -123,7 +127,7 @@ body.scrolled .site-header {
     bottom: 25px; /* Position at bottom of menu item */
     left: var(--space-4);
     right: var(--space-4);
-    height: 5px;
+    height: 3px;
     background-color: #A6A6A6;
     transform: scaleY(0);
     transform-origin: bottom;
