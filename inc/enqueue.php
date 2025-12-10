@@ -84,31 +84,6 @@ function mr_enqueue_styles()
         MR_THEME_VERSION,
     );
 
-    // WooCommerce styles (conditional)
-    // if (class_exists("WooCommerce")) {
-    //     wp_enqueue_style(
-    //         "mr-woocommerce",
-    //         MR_THEME_URI . "/assets/css/woocommerce.css",
-    //         ["mr-responsive"],
-    //         MR_THEME_VERSION,
-    //     );
-
-    //     // Shop 71% Width Layout - Auto applies to all shop pages
-    //     if (
-    //         (function_exists("is_shop") && is_shop()) ||
-    //         (function_exists("is_product_category") && is_product_category()) ||
-    //         (function_exists("is_product_tag") && is_product_tag()) ||
-    //         (function_exists("is_product_taxonomy") && is_product_taxonomy())
-    //     ) {
-    //         wp_enqueue_style(
-    //             "mr-shop-custom-width",
-    //             MR_THEME_URI . "/assets/css/components/shop-custom.css",
-    //             ["mr-woocommerce"],
-    //             MR_THEME_VERSION,
-    //         );
-    //     }
-    // }
-
     // Main theme stylesheet (for theme metadata)
     wp_enqueue_style("mr-style", get_stylesheet_uri(), [], MR_THEME_VERSION);
 
@@ -229,6 +204,25 @@ function mr_enqueue_scripts()
             MR_THEME_VERSION,
             true,
         );
+
+        // SINGLE PRODUCT PAGE - Modern variation swatches
+        if (is_product()) {
+            wp_enqueue_script(
+                "mr-variation-swatches",
+                MR_THEME_URI . "/assets/js/variation-swatches.js",
+                ["jquery", "wc-add-to-cart-variation"],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            wp_enqueue_script(
+                "mr-quantity-selector",
+                MR_THEME_URI . "/assets/js/quantity-selector.js",
+                ["jquery"],
+                MR_THEME_VERSION,
+                true,
+            );
+        }
 
         // Localize for cart.js and woocommerce.js
         wp_localize_script("mr-cart", "mr_ajax", [
@@ -432,6 +426,8 @@ function mr_script_loader_tag($tag, $handle, $src)
         "mr-woocommerce",
         "mr-cart",
         "mr-header-scroll",
+        "mr-variation-swatches",
+        "mr-quantity-selector",
     ];
 
     if (in_array($handle, $async_scripts, true)) {

@@ -2,8 +2,7 @@
 /**
  * The template for displaying product content within loops
  * 
- * FULLY FIXED VERSION - Perfect structure for star ratings and pricing
- * Place this file in: /woocommerce/content-product.php
+ * FINAL FIX: Quick View button same width as Add to Cart
  * 
  * @package AAAPOS_Prime
  * @version 1.0.0
@@ -18,6 +17,11 @@ if (empty($product) || !$product->is_visible()) {
     return;
 }
 
+// Get customizer settings
+$show_rating = get_theme_mod('show_product_rating', true);
+$sale_badge_text = get_theme_mod('sale_badge_text', __('Sale', 'aaapos-prime'));
+$show_quick_view = get_theme_mod('show_quick_view', true);
+
 // Get rating data
 $average_rating = $product->get_average_rating();
 $rating_count = $product->get_rating_count();
@@ -30,9 +34,9 @@ $rating_count = $product->get_rating_count();
         <!-- Product Image -->
         <?php echo $product->get_image('woocommerce_thumbnail'); ?>
         
-        <!-- Sale Badge -->
+        <!-- Sale Badge with Custom Text -->
         <?php if ($product->is_on_sale()) : ?>
-            <span class="onsale"><?php esc_html_e('Sale!', 'aaapos-prime'); ?></span>
+            <span class="onsale"><?php echo esc_html($sale_badge_text); ?></span>
         <?php endif; ?>
         
     </a>
@@ -47,8 +51,8 @@ $rating_count = $product->get_rating_count();
             </a>
         </h2>
         
-        <!-- Star Rating Section -->
-        <?php if ($average_rating > 0) : ?>
+        <!-- Star Rating Section (Conditional based on Customizer) -->
+        <?php if ($show_rating && $average_rating > 0) : ?>
             <div class="product-rating">
                 <div class="rating-stars" aria-label="<?php echo esc_attr(sprintf(__('Rated %s out of 5', 'aaapos-prime'), number_format($average_rating, 2))); ?>">
                     <?php
@@ -83,7 +87,86 @@ $rating_count = $product->get_rating_count();
         
     </div>
     
+    <!-- Quick View Button (Conditional based on Customizer) -->
+    <?php if ($show_quick_view) : ?>
+        <button type="button" 
+                class="quick-view-button" 
+                data-product-id="<?php echo esc_attr($product->get_id()); ?>"
+                aria-label="<?php echo esc_attr(sprintf(__('Quick view %s', 'aaapos-prime'), $product->get_name())); ?>">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span><?php esc_html_e('Quick View', 'aaapos-prime'); ?></span>
+        </button>
+    <?php endif; ?>
+    
     <!-- Add to Cart Button -->
     <?php woocommerce_template_loop_add_to_cart(); ?>
     
 </li>
+
+<style>
+/* ============================================
+   QUICK VIEW BUTTON - MATCHES ADD TO CART WIDTH
+   Isolated to product cards only
+   ============================================ */
+.woocommerce ul.products li.product .quick-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem; /* Match Add to Cart padding */
+    color: #374151;
+    font-size: 1rem; /* Match Add to Cart font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%; /* Full width like Add to Cart */
+    margin-bottom: 0.5rem; /* Space above Add to Cart */
+    line-height: 1;
+}
+
+.woocommerce ul.products li.product .quick-view-button:hover {
+    color: var(--brand-color, #0ea5e9);
+    transform: translateY(-2px);
+}
+
+.woocommerce ul.products li.product .quick-view-button:active {
+    transform: translateY(0);
+}
+
+.woocommerce ul.products li.product .quick-view-button svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.woocommerce ul.products li.product .quick-view-button span {
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure Add to Cart button matches */
+.woocommerce ul.products li.product .button.add_to_cart_button {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+    .woocommerce ul.products li.product .quick-view-button {
+        font-size: 0.9375rem;
+        padding: 0.625rem 1.25rem;
+        gap: 0.375rem;
+    }
+    
+    .woocommerce ul.products li.product .quick-view-button svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+</style>

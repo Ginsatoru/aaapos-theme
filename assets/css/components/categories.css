@@ -200,7 +200,7 @@ section.product-categories .category-card__description {
 section.product-categories .category-card__count {
   font-family: var(--font-body) !important;
   font-size: var(--text-sm) !important;
-  color: var(--brand-color-light) !important; /* UPDATED: Was hardcoded accent */
+  color: var(--color-white) !important;;
   margin: 0 !important; /* Remove bottom margin */
   display: block !important;
 }

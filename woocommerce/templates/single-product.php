@@ -2,18 +2,15 @@
 /**
  * The Template for displaying all single products
  * 
- * This template uses a 71% centered container for a clean, focused layout
+ * Modern single product layout with 71% centered container
  * Fully supports variable products with enhanced variation selectors
  * 
  * @package AAAPOS_Prime
  * @version 1.0.0
- * 
- * Place this file in: /woocommerce/templates/single-product.php
- * OR in your theme root: /woocommerce/single-product.php
  */
 
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+    exit;
 }
 
 get_header('shop'); ?>
@@ -22,10 +19,7 @@ get_header('shop'); ?>
     
     <?php
     /**
-     * woocommerce_before_main_content hook.
-     *
-     * @hooked woocommerce_output_content_wrapper - 10 (removed - we use custom wrapper)
-     * @hooked woocommerce_breadcrumb - 20
+     * Breadcrumb
      */
     do_action('woocommerce_before_main_content');
     ?>
@@ -37,16 +31,11 @@ get_header('shop'); ?>
 
             <?php wc_get_template_part('content', 'single-product'); ?>
 
-        <?php endwhile; // end of the loop. ?>
+        <?php endwhile; ?>
         
     </div>
 
     <?php
-    /**
-     * woocommerce_after_main_content hook.
-     *
-     * @hooked woocommerce_output_content_wrapper_end - 10 (removed - we use custom wrapper)
-     */
     do_action('woocommerce_after_main_content');
     ?>
 
