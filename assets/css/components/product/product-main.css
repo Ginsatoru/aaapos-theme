@@ -1,0 +1,59 @@
+/**
+ * Single Product Page Styles - Master Import File
+ * 
+ * This file imports all product page components in the correct order.
+ * Modular structure for easy maintenance and debugging.
+ * 
+ * @package AAAPOS_Prime
+ * @version 1.0.0
+ * 
+ * File Structure:
+ * ├── product-layout.css           - Container, grid system, breadcrumb
+ * ├── product-gallery.css          - Images, thumbnails (FIXED stretching)
+ * ├── product-details.css          - Title, price, rating, variations
+ * ├── product-actions.css          - Quantity, add to cart, stock, meta
+ * └── product-tabs-related.css     - Tabs, related products
+ * 
+ * Location: assets/css/components/product/product-main.css
+ */
+
+/* ============================================
+   IMPORT PRODUCT COMPONENTS
+   Order matters - load foundation styles first
+   ============================================ */
+
+/* 1. Layout Foundation - Container & Grid */
+@import 'product-layout.css';
+
+/* 2. Product Gallery - Images & Thumbnails (FIXED) */
+@import 'product-gallery.css';
+
+/* 3. Product Details - Title, Price, Description, Variations */
+@import 'product-details.css';
+
+/* 4. Product Actions - Quantity, Cart, Stock, Meta */
+@import 'product-actions.css';
+
+/* 5. Secondary Sections - Tabs, Related Products */
+@import 'product-tabs-related.css';
+
+/**
+ * Usage:
+ * Enqueue this file in inc/enqueue.php:
+ * 
+ * if (is_product()) {
+ *     wp_enqueue_style(
+ *         'product-styles',
+ *         get_template_directory_uri() . '/assets/css/components/product/product-main.css',
+ *         array(),
+ *         filemtime(get_template_directory() . '/assets/css/components/product/product-main.css')
+ *     );
+ * }
+ * 
+ * Quick Reference:
+ * - Container width issues? → product-layout.css
+ * - Image stretching? → product-gallery.css
+ * - Price styling? → product-details.css
+ * - Add to cart button? → product-actions.css
+ * - Tabs not working? → product-tabs-related.css
+ */

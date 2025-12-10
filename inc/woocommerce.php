@@ -1,8 +1,12 @@
 <?php
 /**
- * WooCommerce Integration - COMPLETE NUCLEAR VERSION
+ * WooCommerce Integration - COMPLETE WITH SINGLE PRODUCT PAGE
  * 
- * Fully updated with forced CSS loading and maximum priority overrides
+ * Fully updated with:
+ * - Shop grid layout (71% width)
+ * - Single product page (71% width, modern design)
+ * - Variable product support
+ * - Enhanced quantity selectors
  */
 
 if (!defined('ABSPATH')) {
@@ -21,7 +25,7 @@ function aaapos_woocommerce_setup() {
 add_action('after_setup_theme', 'aaapos_woocommerce_setup');
 
 /**
- * Enqueue WooCommerce Styles - With Dedicated Shop Grid CSS
+ * Enqueue WooCommerce Styles - COMPLETE SYSTEM
  */
 function aaapos_woocommerce_nuclear_styles() {
     // Only on WooCommerce pages
@@ -38,8 +42,7 @@ function aaapos_woocommerce_nuclear_styles() {
         'all'
     );
     
-    // Shop-specific grid layout (71% width, optimized cards)
-    // This loads AFTER base styles for shop pages only
+    // Shop grid layout - for shop/archive pages only
     if (is_shop() || is_product_category() || is_product_tag()) {
         wp_enqueue_style(
             'aaapos-shop-grid', 
@@ -60,6 +63,15 @@ function aaapos_woocommerce_nuclear_styles() {
         );
     }
     
+    // Cart notifications CSS (toast notifications)
+    wp_enqueue_style(
+        'aaapos-cart-notifications',
+        get_template_directory_uri() . '/assets/css/cart-notifications.css',
+        array('aaapos-woocommerce-base'),
+        AAAPOS_VERSION,
+        'all'
+    );
+    
     // WooCommerce cart functionality
     wp_enqueue_script(
         'aaapos-woocommerce-js',
@@ -68,12 +80,31 @@ function aaapos_woocommerce_nuclear_styles() {
         AAAPOS_VERSION,
         true
     );
+    
+    // Cart notifications JS (handles toast notifications)
+    wp_enqueue_script(
+        'aaapos-cart-notifications-js',
+        get_template_directory_uri() . '/assets/js/cart-notifications.js',
+        array('jquery', 'aaapos-woocommerce-js'),
+        AAAPOS_VERSION,
+        true
+    );
+    
+    // Quantity selector enhancement (for single product page)
+    if (is_product()) {
+        wp_enqueue_script(
+            'aaapos-quantity-selector',
+            get_template_directory_uri() . '/assets/js/quantity-selector.js',
+            array('jquery'),
+            AAAPOS_VERSION,
+            true
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'aaapos_woocommerce_nuclear_styles', 999);
 
 /**
  * Add Critical Inline CSS - Loads IMMEDIATELY in HEAD
- * This ensures grid fixes apply before page renders
  */
 function aaapos_woocommerce_inline_critical_css() {
     if (!is_woocommerce() && !is_cart() && !is_checkout()) {
@@ -123,18 +154,16 @@ function aaapos_woocommerce_inline_critical_css() {
             clear: none !important;
         }
         
-        .woocommerce .container-wide,
-        .woocommerce-page .container-wide {
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            padding: 0 1.25rem !important;
+        /* Single Product - Critical fix for quantity */
+        .single-product .quantity {
+            display: inline-flex !important;
+            align-items: center !important;
         }
         
-        /* Remove any clearfix issues */
-        .woocommerce ul.products::before,
-        .woocommerce ul.products::after {
-            display: none !important;
-            content: none !important;
+        .single-product .quantity input.qty {
+            width: 70px !important;
+            text-align: center !important;
+            border: none !important;
         }
     </style>
     <?php
@@ -188,10 +217,10 @@ function aaapos_products_per_page() {
 add_filter('loop_shop_per_page', 'aaapos_products_per_page', 20);
 
 /**
- * Products Per Row - Force 3 Columns
+ * Products Per Row - Force 3 Columns on Desktop
  */
 function aaapos_products_per_row() {
-    return 3; // Always 3 columns on desktop
+    return 3;
 }
 add_filter('loop_shop_columns', 'aaapos_products_per_row');
 
@@ -209,7 +238,6 @@ add_filter('woocommerce_output_related_products_args', 'aaapos_related_products_
  * Custom Image Sizes for WooCommerce
  */
 function aaapos_woocommerce_image_sizes() {
-    // Override WooCommerce image sizes
     add_image_size('woocommerce_thumbnail', 400, 400, true);
     add_image_size('woocommerce_single', 800, 800, true);
     add_image_size('woocommerce_gallery_thumbnail', 150, 150, true);
@@ -260,6 +288,11 @@ function aaapos_woo_body_classes($classes) {
     if (is_shop() || is_product_category() || is_product_tag()) {
         $classes[] = 'aaapos-shop-page';
         $classes[] = 'woocommerce-shop';
+    }
+    
+    if (is_product()) {
+        $classes[] = 'single-product';
+        $classes[] = 'woocommerce-product-page';
     }
     
     if (is_account_page()) {
@@ -414,9 +447,3 @@ function aaapos_add_data_title_to_order_table() {
     <?php
 }
 add_action('woocommerce_account_orders_endpoint', 'aaapos_add_data_title_to_order_table');
-
-/**
- * Optional: Completely Disable WooCommerce Default Styles
- * Uncomment this if you want 100% control over all WooCommerce styling
- */
-// add_filter('woocommerce_enqueue_styles', '__return_empty_array');

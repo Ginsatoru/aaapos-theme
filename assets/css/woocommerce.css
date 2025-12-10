@@ -158,7 +158,7 @@
   margin-bottom: 2rem;
   padding: 1.25rem 1.75rem;
   background: var(--color-bg-secondary) !important;
-  border-radius: 16px;
+  border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
@@ -173,7 +173,7 @@
 .woocommerce-ordering select {
   padding: 0.625rem 2.5rem 0.625rem 1rem;
   border: 1px solid var(--color-border);
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: var(--text-sm);
   color: var(--color-text);
   background-color: var(--color-white);
@@ -274,7 +274,7 @@
   padding: 0 !important;
   float: none !important;
   background: var(--color-dark-white) !important;
-  border-radius: 16px !important;
+  border-radius:12px !important;
   overflow: hidden !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06) !important;
@@ -489,7 +489,7 @@
   background: var(--color-woo-add-to-cart-bg) !important;
   color: var(--color-woo-add-to-cart-text) !important;
   border: none !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   font-size: 0.9rem !important;
   font-weight: 600 !important;
   text-decoration: none !important;

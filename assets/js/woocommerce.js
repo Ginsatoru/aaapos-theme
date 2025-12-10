@@ -1,6 +1,6 @@
 /**
  * WooCommerce Enhanced Functionality
- * woocommerce.js
+ * woocommerce.js - PRODUCTION VERSION
  * 
  * @package Macedon_Ranges
  */
@@ -20,7 +20,6 @@
             this.initQuickView();
             this.initProductFilters();
             this.initQuantityButtons();
-            this.initProductGallery();
             this.initWishlist();
             this.initCompare();
             this.initAjaxAddToCart();
@@ -39,12 +38,10 @@
                 
                 if (!productId) return;
 
-                // Show loading state
                 const $btn = $(this);
                 const originalText = $btn.text();
                 $btn.text('Loading...').prop('disabled', true);
 
-                // AJAX request for product quick view
                 $.ajax({
                     url: mr_ajax.ajax_url,
                     type: 'POST',
@@ -55,17 +52,10 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            // Create and show modal
                             const modal = $('<div class="quick-view-modal">' + response.data.html + '</div>');
                             $('body').append(modal);
-                            
-                            // Trigger WooCommerce product gallery
                             modal.find('.woocommerce-product-gallery').wc_product_gallery();
-                            
-                            // Show modal with animation
                             setTimeout(() => modal.addClass('visible'), 10);
-                            
-                            // Close handlers
                             modal.on('click', '.quick-view-close, .quick-view-overlay', function() {
                                 modal.removeClass('visible');
                                 setTimeout(() => modal.remove(), 300);
@@ -91,7 +81,6 @@
             const $filters = $('.product-filters');
             if (!$filters.length) return;
 
-            // Price range filter
             const $priceSlider = $filters.find('.price-slider');
             if ($priceSlider.length && $.fn.slider) {
                 const min = parseInt($priceSlider.data('min')) || 0;
@@ -108,15 +97,11 @@
                 });
             }
 
-            // Filter submission
             $filters.on('submit', 'form', function(e) {
                 e.preventDefault();
                 const formData = $(this).serialize();
-                
-                // Show loading state
                 $('.products').addClass('loading');
                 
-                // AJAX filter request
                 $.ajax({
                     url: mr_ajax.ajax_url,
                     type: 'POST',
@@ -124,8 +109,6 @@
                     success: function(response) {
                         if (response.success) {
                             $('.products').html(response.data.html);
-                            
-                            // Update URL without reload
                             if (history.pushState) {
                                 history.pushState(null, null, '?' + formData);
                             }
@@ -137,7 +120,6 @@
                 });
             });
 
-            // Clear filters
             $filters.on('click', '.clear-filters', function(e) {
                 e.preventDefault();
                 $filters.find('form')[0].reset();
@@ -171,29 +153,6 @@
         }
 
         /**
-         * Enhanced Product Gallery
-         */
-        initProductGallery() {
-            const $gallery = $('.woocommerce-product-gallery');
-            if (!$gallery.length) return;
-
-            // Add zoom effect on hover (if not on mobile)
-            if (window.innerWidth > 768) {
-                $gallery.on('mouseenter', '.woocommerce-product-gallery__image', function() {
-                    $(this).addClass('zoom-active');
-                }).on('mouseleave', '.woocommerce-product-gallery__image', function() {
-                    $(this).removeClass('zoom-active');
-                });
-            }
-
-            // Thumbnail navigation
-            $gallery.on('click', '.flex-control-thumbs img', function() {
-                const index = $(this).parent().index();
-                $gallery.find('.flex-viewport img').eq(index).trigger('click');
-            });
-        }
-
-        /**
          * Wishlist Functionality
          */
         initWishlist() {
@@ -221,7 +180,6 @@
                                 window.MRAnimations.showNotification(response.data.message, 'success');
                             }
                             
-                            // Update wishlist count
                             $('.wishlist-count').text(response.data.count);
                         }
                     },
@@ -258,7 +216,6 @@
                                 window.MRAnimations.showNotification(response.data.message, 'success');
                             }
                             
-                            // Update compare count
                             $('.compare-count').text(response.data.count);
                         }
                     }
@@ -292,7 +249,6 @@
                                 window.MRAnimations.showNotification(response.error_message, 'error');
                             }
                         } else {
-                            // Update cart fragments
                             $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
                             
                             if (window.MRAnimations) {
@@ -311,23 +267,15 @@
          * Cart Drawer/Sidebar
          */
         initCartDrawer() {
-            // Open cart drawer
             $(document).on('click', '.cart-trigger', function(e) {
                 e.preventDefault();
                 $('.cart-drawer').addClass('open');
                 $('body').addClass('cart-drawer-open');
             });
 
-            // Close cart drawer
             $(document).on('click', '.cart-drawer__close, .cart-drawer__overlay', function() {
                 $('.cart-drawer').removeClass('open');
                 $('body').removeClass('cart-drawer-open');
-            });
-
-            // Update cart on fragment refresh
-            $(document.body).on('wc_fragments_refreshed', function() {
-                // Cart has been updated
-                console.log('Cart fragments refreshed');
             });
         }
 
@@ -344,13 +292,9 @@
                 const $this = $(this);
                 const target = $this.attr('href');
                 
-                // Update active states
                 $this.closest('li').addClass('active').siblings().removeClass('active');
-                
-                // Show target panel
                 $(target).show().addClass('active').siblings('.woocommerce-Tabs-panel').hide().removeClass('active');
                 
-                // Smooth scroll to tabs on mobile
                 if (window.innerWidth < 768) {
                     $('html, body').animate({
                         scrollTop: $tabs.offset().top - 100
@@ -370,10 +314,7 @@
                 const value = $swatch.data('value');
                 const $select = $swatch.closest('.variations').find('select');
                 
-                // Update select value
                 $select.val(value).trigger('change');
-                
-                // Update active state
                 $swatch.addClass('selected').siblings().removeClass('selected');
             });
         }

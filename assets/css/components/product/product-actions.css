@@ -1,0 +1,287 @@
+/* ============================================
+   PRODUCT ACTIONS
+   Quantity, Add to Cart, Stock, Product Meta
+   ============================================ */
+
+/* === CART WRAPPER === */
+.single-product .cart {
+  display: flex !important;
+  gap: 0.875rem !important;
+  align-items: center !important;
+  margin: 0 0 1.5rem 0 !important;
+  flex-wrap: wrap !important;
+}
+
+/* ============================================
+   QUANTITY SELECTOR
+   ============================================ */
+
+.single-product .quantity {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  border: 2px solid var(--color-border, #e5e7eb) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background: var(--color-white, #ffffff) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.2s ease !important;
+  height: 48px !important;
+}
+
+.single-product .quantity:hover {
+  border-color: var(--color-primary, #0ea5e9) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Minus Button */
+.single-product .quantity button.minus,
+.single-product .quantity .qty-btn.minus {
+  order: 1 !important;
+  width: 40px !important;
+  height: 46px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-right: 1px solid var(--color-border, #e5e7eb) !important;
+  background: var(--color-bg-secondary, #f9fafb) !important;
+  color: var(--color-text, #374151) !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Quantity Input */
+.single-product .quantity input.qty {
+  order: 2 !important;
+  width: 60px !important;
+  height: 46px !important;
+  padding: 0.5rem !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+  text-align: center !important;
+  appearance: textfield !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+  -moz-appearance: textfield !important;
+}
+
+.single-product .quantity input.qty::-webkit-inner-spin-button,
+.single-product .quantity input.qty::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+.single-product .quantity input.qty:focus {
+  outline: none !important;
+  background: rgba(14, 165, 233, 0.05) !important;
+}
+
+/* Plus Button */
+.single-product .quantity button.plus,
+.single-product .quantity .qty-btn.plus {
+  order: 3 !important;
+  width: 40px !important;
+  height: 46px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-left: 1px solid var(--color-border, #e5e7eb) !important;
+  background: var(--color-bg-secondary, #f9fafb) !important;
+  color: var(--color-text, #374151) !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Button Hover States */
+.single-product .quantity button.minus:hover,
+.single-product .quantity button.plus:hover,
+.single-product .quantity .qty-btn:hover {
+  background: var(--color-primary, #0ea5e9) !important;
+  color: var(--color-white, #ffffff) !important;
+}
+
+.single-product .quantity button.minus:active,
+.single-product .quantity button.plus:active,
+.single-product .quantity .qty-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* ============================================
+   ADD TO CART BUTTON
+   ============================================ */
+
+.single-product button.single_add_to_cart_button {
+  flex: 1 !important;
+  min-width: 180px !important;
+  height: 48px !important;
+  padding: 0 2rem !important;
+  background: var(--color-primary, #0ea5e9) !important;
+  color: var(--color-white, #ffffff) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-size: 0.9375rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  margin: 0 !important;
+  box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2) !important;
+}
+
+.single-product button.single_add_to_cart_button:hover {
+  background: var(--color-primary-hover, #0284c7) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(14, 165, 233, 0.25) !important;
+}
+
+.single-product button.single_add_to_cart_button:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2) !important;
+}
+
+.single-product button.single_add_to_cart_button:disabled {
+  background: var(--color-gray-400, #9ca3af) !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.single-product button.single_add_to_cart_button.loading {
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+
+.single-product button.single_add_to_cart_button.loading::after {
+  content: "" !important;
+  width: 14px !important;
+  height: 14px !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  border-top-color: var(--color-white, #ffffff) !important;
+  border-radius: 50% !important;
+  animation: spin 0.6s linear infinite !important;
+  margin-left: 0.5rem !important;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   STOCK STATUS
+   ============================================ */
+
+.single-product .stock {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4375rem !important;
+  padding: 0.4375rem 0.875rem !important;
+  border-radius: 9999px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  margin: 0 0 1rem 0 !important;
+}
+
+.single-product .stock.in-stock {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: var(--color-success, #10b981) !important;
+}
+
+.single-product .stock.out-of-stock {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--color-danger, #ef4444) !important;
+}
+
+.single-product .stock::before {
+  content: "" !important;
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: currentColor !important;
+}
+
+/* ============================================
+   PRODUCT META
+   ============================================ */
+
+.single-product .product_meta {
+  margin: 1.5rem 0 0 0 !important;
+  padding: 1.125rem !important;
+  background: var(--color-bg-secondary, #f9fafb) !important;
+  border-radius: 10px !important;
+  font-size: 0.875rem !important;
+  line-height: 1.7 !important;
+}
+
+.single-product .product_meta > span {
+  display: block !important;
+  margin-bottom: 0.4375rem !important;
+  color: var(--color-text, #374151) !important;
+}
+
+.single-product .product_meta > span:last-child {
+  margin-bottom: 0 !important;
+}
+
+.single-product .product_meta .sku_wrapper,
+.single-product .product_meta .posted_in,
+.single-product .product_meta .tagged_as {
+  display: flex !important;
+  gap: 0.4375rem !important;
+}
+
+.single-product .product_meta a {
+  color: var(--color-primary, #0ea5e9) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color 0.2s ease !important;
+}
+
+.single-product .product_meta a:hover {
+  color: var(--color-primary-hover, #0284c7) !important;
+  text-decoration: underline !important;
+}
+
+/* ============================================
+   RESPONSIVE - ACTIONS
+   ============================================ */
+
+@media (max-width: 991px) {
+  .single-product .cart {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .single-product .quantity {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .single-product button.single_add_to_cart_button {
+    width: 100% !important;
+    min-width: auto !important;
+  }
+}

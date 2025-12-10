@@ -1,0 +1,300 @@
+/* ============================================
+   WOOCOMMERCE CART NOTIFICATIONS - FIXED
+   Enhanced Toast Notifications for Add to Cart
+   EXCLUDES My Account Page
+   ============================================ */
+
+/* Base notification styling - EXCLUDES My Account pages */
+body:not(.woocommerce-account) .woocommerce-message,
+body:not(.woocommerce-account) .woocommerce-info,
+body:not(.woocommerce-account) .woocommerce-error {
+  position: fixed !important;
+  top: 100px !important;
+  right: 20px !important;
+  left: auto !important;
+  max-width: 420px !important;
+  width: auto !important;
+  min-width: 340px !important;
+  z-index: 999999 !important;
+  margin: 0 !important;
+  padding: 0.875rem 3rem 0.875rem 0.875rem !important;
+  background: var(--color-white, #ffffff) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.5 !important;
+  border-left: 4px solid var(--color-success, #10b981) !important;
+  overflow: visible !important;
+  outline: none !important;
+}
+
+/* Remove focus border on all states */
+body:not(.woocommerce-account) .woocommerce-message:focus,
+body:not(.woocommerce-account) .woocommerce-info:focus,
+body:not(.woocommerce-account) .woocommerce-error:focus,
+body:not(.woocommerce-account) .woocommerce-message:focus-visible,
+body:not(.woocommerce-account) .woocommerce-info:focus-visible,
+body:not(.woocommerce-account) .woocommerce-error:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border-left: 4px solid var(--color-success, #10b981) !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-info:focus,
+body:not(.woocommerce-account) .woocommerce-info:focus-visible {
+  border-left: 4px solid var(--color-info, #3b82f6) !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-error:focus,
+body:not(.woocommerce-account) .woocommerce-error:focus-visible {
+  border-left: 4px solid var(--color-danger, #ef4444) !important;
+}
+
+/* Success Message (Added to Cart) */
+body:not(.woocommerce-account) .woocommerce-message {
+  border-left-color: var(--color-success, #10b981) !important;
+}
+
+/* Info Message */
+body:not(.woocommerce-account) .woocommerce-info {
+  border-left-color: var(--color-info, #3b82f6) !important;
+}
+
+/* Error Message */
+body:not(.woocommerce-account) .woocommerce-error {
+  border-left-color: var(--color-danger, #ef4444) !important;
+}
+
+/* Icon Container - Better alignment */
+body:not(.woocommerce-account) .woocommerce-message::before,
+body:not(.woocommerce-account) .woocommerce-info::before,
+body:not(.woocommerce-account) .woocommerce-error::before {
+  content: "" !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  flex-shrink: 0 !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  display: block !important;
+  margin: 2px 0 0 0 !important;
+}
+
+/* Success Icon - Checkmark Circle */
+body:not(.woocommerce-account) .woocommerce-message::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22 4 12 14.01 9 11.01'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+/* Info Icon - Info Circle */
+body:not(.woocommerce-account) .woocommerce-info::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='16' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'%3E%3C/line%3E%3C/svg%3E") !important;
+}
+
+/* Error Icon - Alert Triangle */
+body:not(.woocommerce-account) .woocommerce-error::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'%3E%3C/path%3E%3Cline x1='12' y1='9' x2='12' y2='13'%3E%3C/line%3E%3Cline x1='12' y1='17' x2='12.01' y2='17'%3E%3C/line%3E%3C/svg%3E") !important;
+}
+
+/* Message Content - Better structure */
+body:not(.woocommerce-account) .woocommerce-message .message-content,
+body:not(.woocommerce-account) .woocommerce-info .message-content,
+body:not(.woocommerce-account) .woocommerce-error .message-content {
+  flex: 1 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  min-width: 0 !important;
+}
+
+/* Product name styling */
+body:not(.woocommerce-account) .woocommerce-message .message-content strong,
+body:not(.woocommerce-account) .woocommerce-info .message-content strong,
+body:not(.woocommerce-account) .woocommerce-error .message-content strong {
+  font-weight: 600 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+  display: block !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+
+/* Regular text in message */
+body:not(.woocommerce-account) .woocommerce-message .message-content,
+body:not(.woocommerce-account) .woocommerce-info .message-content,
+body:not(.woocommerce-account) .woocommerce-error .message-content {
+  font-size: 0.875rem !important;
+  color: var(--color-text-light, #6b7280) !important;
+}
+
+/* View Cart Button - Enhanced styling */
+body:not(.woocommerce-account) .woocommerce-message a.button,
+body:not(.woocommerce-account) .woocommerce-message .button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0.375rem 0 0 0 !important;
+  padding: 0.5rem 1.125rem !important;
+  background: var(--color-primary, #0ea5e9) !important;
+  color: var(--color-white, #ffffff) !important;
+  text-decoration: none !important;
+  border-radius: 8px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  min-height: 36px !important;
+  line-height: 1.2 !important;
+  outline: none !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-message a.button:hover,
+body:not(.woocommerce-account) .woocommerce-message .button:hover {
+  background: var(--color-primary-hover, #0284c7) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-message a.button:focus,
+body:not(.woocommerce-account) .woocommerce-message .button:focus,
+body:not(.woocommerce-account) .woocommerce-message a.button:focus-visible,
+body:not(.woocommerce-account) .woocommerce-message .button:focus-visible {
+  outline: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Close Button - Better positioning */
+body:not(.woocommerce-account) .woocommerce-message .close-notice,
+body:not(.woocommerce-account) .woocommerce-info .close-notice,
+body:not(.woocommerce-account) .woocommerce-error .close-notice {
+  position: absolute !important;
+  top: 0.875rem !important;
+  right: 0.875rem !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: var(--color-text-light, #6b7280) !important;
+  font-size: 1.5rem !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  outline: none !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-message .close-notice:hover,
+body:not(.woocommerce-account) .woocommerce-info .close-notice:hover,
+body:not(.woocommerce-account) .woocommerce-error .close-notice:hover {
+  background: var(--color-bg-secondary, #f3f4f6) !important;
+  color: var(--color-text-dark, #1f2937) !important;
+}
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100px) translateY(-10px);
+  }
+}
+
+/* Fade Out Animation */
+body:not(.woocommerce-account) .woocommerce-message.fade-out,
+body:not(.woocommerce-account) .woocommerce-info.fade-out,
+body:not(.woocommerce-account) .woocommerce-error.fade-out {
+  animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+/* Remove default list styling */
+body:not(.woocommerce-account) .woocommerce-message ul,
+body:not(.woocommerce-account) .woocommerce-error ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-message ul li,
+body:not(.woocommerce-account) .woocommerce-error ul li {
+  margin: 0 0 0.375rem 0 !important;
+  padding: 0 !important;
+}
+
+body:not(.woocommerce-account) .woocommerce-message ul li:last-child,
+body:not(.woocommerce-account) .woocommerce-error ul li:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  body:not(.woocommerce-account) .woocommerce-message,
+  body:not(.woocommerce-account) .woocommerce-info,
+  body:not(.woocommerce-account) .woocommerce-error {
+    top: 80px !important;
+    right: 12px !important;
+    left: 12px !important;
+    max-width: none !important;
+    min-width: auto !important;
+    padding: 0.875rem 2.5rem 0.875rem 0.875rem !important;
+  }
+
+  body:not(.woocommerce-account) .woocommerce-message a.button,
+  body:not(.woocommerce-account) .woocommerce-message .button {
+    width: 100% !important;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  body:not(.woocommerce-account) .woocommerce-message,
+  body:not(.woocommerce-account) .woocommerce-info,
+  body:not(.woocommerce-account) .woocommerce-error {
+    top: 70px !important;
+    font-size: 0.875rem !important;
+    padding: 0.75rem 2.25rem 0.75rem 0.75rem !important;
+  }
+
+  body:not(.woocommerce-account) .woocommerce-message::before,
+  body:not(.woocommerce-account) .woocommerce-info::before,
+  body:not(.woocommerce-account) .woocommerce-error::before {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+  }
+
+  body:not(.woocommerce-account) .woocommerce-message .close-notice,
+  body:not(.woocommerce-account) .woocommerce-info .close-notice,
+  body:not(.woocommerce-account) .woocommerce-error .close-notice {
+    width: 24px !important;
+    height: 24px !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
+  }
+}

@@ -1,0 +1,170 @@
+/* ============================================
+   PRODUCT LAYOUT
+   Container, Grid System, Breadcrumb
+   ============================================ */
+
+/* === CRITICAL: FORCE FULL-WIDTH MAIN CONTAINER === */
+.single-product #primary,
+.single-product .site-main,
+.single-product main {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* === PRODUCT PAGE WRAPPER === */
+.single-product .site-main,
+.single-product #main {
+  background: var(--color-white) !important;
+  padding: 1.5rem 0 3rem 0 !important;
+  min-height: 100vh;
+}
+
+/* === 71% CONTAINER - CENTERED === */
+.single-product div.product {
+  max-width: 71% !important;
+  width: 71% !important;
+  margin: 0 auto !important;
+  padding: 0 2rem !important;
+}
+
+@media (max-width: 1600px) {
+  .single-product div.product {
+    max-width: 80% !important;
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .single-product div.product {
+    max-width: 90% !important;
+    width: 90% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .single-product div.product {
+    max-width: 95% !important;
+    width: 95% !important;
+    padding: 0 1rem !important;
+  }
+}
+
+/* === BREADCRUMB - ALIGNED === */
+.single-product .woocommerce-breadcrumb {
+  max-width: 71% !important;
+  width: 71% !important;
+  margin: 0 auto 1rem auto !important;
+  padding: 0.625rem 2rem !important;
+  font-size: 0.8125rem !important;
+  color: var(--color-text-light, #6b7280);
+}
+
+.single-product .woocommerce-breadcrumb a {
+  color: var(--color-text-light, #6b7280);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.single-product .woocommerce-breadcrumb a:hover {
+  color: var(--color-primary, #0ea5e9);
+}
+
+@media (max-width: 1600px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 80% !important;
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 90% !important;
+    width: 90% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 95% !important;
+    width: 95% !important;
+    padding: 0.625rem 1rem !important;
+  }
+}
+
+/* ============================================
+   TWO COLUMN GRID LAYOUT
+   ============================================ */
+
+.single-product div.product {
+  display: grid !important;
+  grid-template-columns: 48% 48% !important;
+  gap: 4% !important;
+  align-items: start !important; /* KEY FIX: prevents stretching */
+  position: relative !important;
+}
+
+.single-product .woocommerce-product-gallery {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  order: 1 !important;
+  align-self: start !important; /* KEY FIX: prevents column stretching */
+}
+
+.single-product .summary.entry-summary {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  order: 2 !important;
+  align-self: start !important;
+}
+
+.single-product .woocommerce-tabs {
+  grid-column: 1 / -1 !important;
+  order: 3 !important;
+}
+
+.single-product .related.products,
+.single-product .upsells.products {
+  grid-column: 1 / -1 !important;
+  order: 4 !important;
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT
+   ============================================ */
+
+@media (max-width: 991px) {
+  .single-product div.product {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  .single-product .woocommerce-product-gallery {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+  
+  .single-product .summary.entry-summary {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  .single-product .site-main,
+  .single-product #main {
+    padding: 1.25rem 0 2.5rem 0 !important;
+  }
+}
+
+/* === UTILITY CLASSES === */
+.single-product .screen-reader-text {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

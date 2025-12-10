@@ -1,7 +1,7 @@
 <?php
 /**
  * Single post content template - Styled version
- * 
+ * content-single.php
  * @package Macedon_Ranges
  */
 
