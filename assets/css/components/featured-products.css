@@ -1,11 +1,11 @@
 /* ===================================================================
-   FEATURED PRODUCTS - MODERN DESIGN - ALWAYS CENTERED
-   Fixed: Products grid stays centered on all screen sizes
+   FEATURED PRODUCTS - MODERN DESIGN - COMPACT VERSION
+   Fixed: Reduced spacing, reviews below title, centered layout
    Colors controlled via: Customizer > Brand Color
    =================================================================== */
 
 .featured-products {
-  padding: 4rem 0 5rem;
+  padding: 2.5rem 0 3rem; /* Reduced from 4rem/5rem */
   background: var(--color-bg-secondary);
   position: relative;
   overflow: hidden;
@@ -13,7 +13,7 @@
 
 @media (min-width: 1024px) {
   .featured-products {
-    padding: 6rem 0 7rem;
+    padding: 3.5rem 0 4rem; /* Reduced from 6rem/7rem */
   }
 }
 
@@ -35,12 +35,12 @@
 /* Section Header - Centered with Badge */
 .featured-products .section-header {
   text-align: center;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2.5rem; /* Reduced from 3.5rem */
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem; /* Reduced from 1rem */
 }
 
 /* "BEST SELLERS" Badge */
@@ -60,7 +60,7 @@
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--color-text-dark);
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem; /* Reduced from 1rem */
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -87,7 +87,7 @@
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1.5rem;
-  margin: 3rem auto;
+  margin: 2rem auto; /* Reduced from 3rem */
   max-width: 100%;
   justify-items: center;
   justify-content: center;
@@ -150,7 +150,7 @@
   }
 }
 
-/* Product Card */
+/* Product Card - More Compact */
 .featured-products .product-card {
   background: var(--color-dark-white) !important;
   border-radius: 1rem;
@@ -161,7 +161,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 480px;
+  min-height: 420px; /* Reduced from 480px */
   width: 100%;
 }
 
@@ -176,14 +176,14 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Product Image */
+/* Product Image - Slightly Smaller */
 .featured-products .product-card .product-image {
   position: relative;
   overflow: hidden;
   background: var(--color-bg-secondary);
   width: 100%;
-  min-height: 260px;
-  max-height: 260px;
+  min-height: 220px; /* Reduced from 260px */
+  max-height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,8 +192,8 @@
 
 @media (max-width: 640px) {
   .featured-products .product-card .product-image {
-    min-height: 240px;
-    max-height: 240px;
+    min-height: 200px;
+    max-height: 200px;
   }
 }
 
@@ -234,20 +234,40 @@
   color: var(--color-white);
 }
 
-/* Product Info */
+/* Product Info - Reduced Padding */
 .featured-products .product-card .product-info {
-  padding: 1.25rem;
+  padding: 1rem; /* Reduced from 1.25rem */
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Rating */
+/* Title - Now comes first */
+.featured-products .product-card .product-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-dark);
+  margin-bottom: -15px !important; /* Reduced from 0.5rem */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+  order: 1; /* Title appears first */
+}
+
+.featured-products .product-card:hover .product-title {
+  color: var(--brand-color);
+}
+
+/* Rating - Now appears below title */
 .featured-products .product-rating {
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  margin-bottom: 0.625rem;
+  margin-bottom: 0.375rem; /* Reduced from 0.5rem */
+  order: 2; /* Rating appears second (below title) */
 }
 
 .featured-products .star-rating {
@@ -257,7 +277,7 @@
 
 .featured-products .star-rating .star {
   color: var(--color-woo-rating);
-  font-size: 0.9375rem;
+  font-size: 0.875rem; /* Slightly smaller */
 }
 
 .featured-products .star-rating .star.empty {
@@ -265,82 +285,66 @@
 }
 
 .featured-products .rating-count {
-  font-size: 0.8125rem;
+  font-size: 0.75rem; /* Reduced from 0.8125rem */
   color: var(--color-text-light);
   font-weight: 500;
 }
 
-/* Title */
-.featured-products .product-card .product-title {
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--color-text-dark);
-  margin: 0.5rem 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 2.8em;
-}
-
-.featured-products .product-card:hover .product-title {
-  color: var(--brand-color);
-}
-
-/* Description */
+/* Description - More compact */
 .featured-products .product-description {
-  font-size: 0.875rem;
+  font-size: 0.8125rem; /* Reduced from 0.875rem */
   color: var(--color-text-light);
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin: 0.375rem 0 0.875rem;
-  min-height: 2.6em;
+  margin: 0.25rem 0 0.75rem; /* Reduced margins */
+  min-height: 2.4em; /* Reduced from 2.6em */
+  order: 3; /* Description appears third */
 }
 
-/* Price */
+/* Price - Slightly smaller */
 .featured-products .product-card .product-price {
-  font-size: 1.5rem;
+  font-size: 1.375rem; /* Reduced from 1.5rem */
   font-weight: 700;
   color: var(--color-text-dark);
   margin-top: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem; /* Reduced from 1rem */
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
   flex-wrap: wrap;
+  order: 4; /* Price appears fourth */
 }
 
 .featured-products .product-price .unit {
-  font-size: 0.875rem;
+  font-size: 0.8125rem; /* Reduced from 0.875rem */
   font-weight: 400;
   color: var(--color-text-lighter);
 }
 
 .featured-products .product-price .original-price {
-  font-size: 0.9375rem;
+  font-size: 0.875rem; /* Reduced from 0.9375rem */
   font-weight: 400;
   color: var(--color-text-lighter);
   text-decoration: line-through;
 }
 
 .featured-products .product-price .sale-price {
-  font-size: 1.6rem;
+  font-size: 1.5rem; /* Reduced from 1.6rem */
   color: var(--brand-color);
 }
 
-/* Button */
+/* Button - Slightly more compact */
 .featured-products .add-to-cart-button {
   width: 100%;
   background: var(--brand-color);
   color: var(--color-white);
   border: none;
-  padding: 0.875rem 1.5rem;
+  padding: 0.75rem 1.25rem; /* Reduced from 0.875rem 1.5rem */
   border-radius: 0.625rem;
-  font-size: 1rem;
+  font-size: 0.9375rem; /* Reduced from 1rem */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -348,7 +352,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: 48px;
+  min-height: 44px; /* Reduced from 48px */
+  order: 5; /* Button appears last */
 }
 
 .featured-products .add-to-cart-button:hover {
@@ -357,14 +362,14 @@
 }
 
 .featured-products .add-to-cart-button svg {
-  width: 18px;
-  height: 18px;
+  width: 16px; /* Reduced from 18px */
+  height: 16px;
 }
 
 /* Footer */
 .featured-products .section-footer {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 2.5rem; /* Reduced from 3rem */
 }
 
 .featured-products .section-footer .btn {

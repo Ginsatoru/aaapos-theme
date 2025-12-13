@@ -63,7 +63,8 @@ $products = wc_get_products([
                     <!-- Product Card with Staggered Animation -->
                     <div class="product-card" 
                          data-animate="fade-up" 
-                         data-animate-delay="<?php echo esc_attr($delay); ?>">
+                         data-animate-delay="<?php echo esc_attr($delay); ?>"
+                         data-product-id="<?php echo esc_attr($product_id); ?>">
                         
                         <!-- Product Image -->
                         <div class="product-image">
@@ -193,6 +194,7 @@ $products = wc_get_products([
                                 <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" 
                                    class="add-to-cart-button add_to_cart_button ajax_add_to_cart"
                                    data-product_id="<?php echo esc_attr($product_id); ?>"
+                                   data-product_name="<?php echo esc_attr($product->get_name()); ?>"
                                    data-quantity="1"
                                    aria-label="<?php echo esc_attr(
                                        sprintf(__("Add %s to cart", "aaapos-prime"), $product->get_name()),
@@ -268,3 +270,10 @@ $products = wc_get_products([
         <?php endif; ?>
     </div>
 </section>
+
+<style>
+/* Hide "View cart" button in featured products section */
+.featured-products .product-card .added_to_cart.wc-forward {
+    display: none !important;
+}
+</style>

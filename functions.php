@@ -542,14 +542,14 @@ add_action("init", "aaapos_cleanup_head");
  */
 function aaapos_remove_jquery_migrate($scripts)
 {
-    if (!is_admin() && isset($scripts->registered['jquery'])) {
-        $script = $scripts->registered['jquery'];
+    if (!is_admin() && isset($scripts->registered["jquery"])) {
+        $script = $scripts->registered["jquery"];
         if ($script->deps) {
-            $script->deps = array_diff($script->deps, array('jquery-migrate'));
+            $script->deps = array_diff($script->deps, ["jquery-migrate"]);
         }
     }
 }
-add_action('wp_default_scripts', 'aaapos_remove_jquery_migrate');
+add_action("wp_default_scripts", "aaapos_remove_jquery_migrate");
 
 /**
  * Defer Non-Critical JavaScript
@@ -618,10 +618,60 @@ if (!function_exists("aaapos_debug")) {
 /**
  * Remove WordPress default Colors section
  */
-function aaapos_remove_default_colors_section($wp_customize) {
-    $wp_customize->remove_section('colors');
+function aaapos_remove_default_colors_section($wp_customize)
+{
+    $wp_customize->remove_section("colors");
 }
-add_action('customize_register', 'aaapos_remove_default_colors_section', 99);
+add_action("customize_register", "aaapos_remove_default_colors_section", 99);
+
+/* ==========================================================================
+   WOOCOMMERCE CATEGORY CUSTOMIZATION - FIXED
+   ========================================================================== */
+
+/**
+ * Remove default category count from title
+ * This prevents the (3) from appearing in the category name
+ */
+add_filter("woocommerce_subcategory_count_html", "__return_empty_string");
+
+/**
+ * Customize WooCommerce Category Display
+ * Adds description and product count BELOW the title
+ */
+function aaapos_custom_category_display()
+{
+    // Add custom content after the title
+    add_action(
+        "woocommerce_after_subcategory_title",
+        "aaapos_category_custom_content",
+        10,
+    );
+}
+add_action("init", "aaapos_custom_category_display");
+
+/**
+ * Add custom content to category cards
+ * Shows: Description (if exists) + Product count
+ */
+function aaapos_category_custom_content($category)
+{
+    $count = $category->count;
+    $description = $category->description;
+
+    // Description first (if exists)
+    if ($description) {
+        echo '<p class="category-description">' .
+            wp_kses_post(wp_trim_words($description, 20)) .
+            "</p>";
+    }
+
+    // Product count - Format: "1 Product" or "12 Products" (NO BRACKETS)
+    if ($count === 1) {
+        echo '<span class="count">1 Product</span>';
+    } else {
+        echo '<span class="count">' . esc_html($count) . " Products</span>";
+    }
+}
 
 /* ==========================================================================
    CONTACT FORM HANDLER
@@ -629,150 +679,196 @@ add_action('customize_register', 'aaapos_remove_default_colors_section', 99);
 
 /**
  * Handle Contact Form Submissions
- * 
+ *
  * Processes form data, validates, sends email, and redirects with status message.
  */
-function aaapos_handle_contact_form_submission() {
-    
+function aaapos_handle_contact_form_submission()
+{
     // Verify nonce for security
-    if (!isset($_POST['contact_nonce']) || !wp_verify_nonce($_POST['contact_nonce'], 'contact_form_submit')) {
+    if (
+        !isset($_POST["contact_nonce"]) ||
+        !wp_verify_nonce($_POST["contact_nonce"], "contact_form_submit")
+    ) {
         wp_die(
-            esc_html__('Security check failed. Please go back and try again.', 'aaapos-prime'),
-            esc_html__('Security Error', 'aaapos-prime'),
-            array('response' => 403, 'back_link' => true)
+            esc_html__(
+                "Security check failed. Please go back and try again.",
+                "aaapos-prime",
+            ),
+            esc_html__("Security Error", "aaapos-prime"),
+            ["response" => 403, "back_link" => true],
         );
     }
-    
+
     // Honeypot spam check (optional - add hidden field to form if using)
-    if (isset($_POST['website']) && !empty($_POST['website'])) {
-        wp_safe_redirect(add_query_arg('form_error', 'spam', wp_get_referer()));
-        exit;
+    if (isset($_POST["website"]) && !empty($_POST["website"])) {
+        wp_safe_redirect(add_query_arg("form_error", "spam", wp_get_referer()));
+        exit();
     }
-    
+
     // Sanitize and validate input fields
-    $name = isset($_POST['contact_name']) ? sanitize_text_field($_POST['contact_name']) : '';
-    $email = isset($_POST['contact_email']) ? sanitize_email($_POST['contact_email']) : '';
-    $phone = isset($_POST['contact_phone']) ? sanitize_text_field($_POST['contact_phone']) : '';
-    $subject = isset($_POST['contact_subject']) ? sanitize_text_field($_POST['contact_subject']) : '';
-    $message = isset($_POST['contact_message']) ? sanitize_textarea_field($_POST['contact_message']) : '';
-    
+    $name = isset($_POST["contact_name"])
+        ? sanitize_text_field($_POST["contact_name"])
+        : "";
+    $email = isset($_POST["contact_email"])
+        ? sanitize_email($_POST["contact_email"])
+        : "";
+    $phone = isset($_POST["contact_phone"])
+        ? sanitize_text_field($_POST["contact_phone"])
+        : "";
+    $subject = isset($_POST["contact_subject"])
+        ? sanitize_text_field($_POST["contact_subject"])
+        : "";
+    $message = isset($_POST["contact_message"])
+        ? sanitize_textarea_field($_POST["contact_message"])
+        : "";
+
     // Validation
-    $errors = array();
-    
+    $errors = [];
+
     if (empty($name)) {
-        $errors[] = esc_html__('Name is required', 'aaapos-prime');
+        $errors[] = esc_html__("Name is required", "aaapos-prime");
     }
-    
+
     if (empty($email)) {
-        $errors[] = esc_html__('Email is required', 'aaapos-prime');
+        $errors[] = esc_html__("Email is required", "aaapos-prime");
     } elseif (!is_email($email)) {
-        $errors[] = esc_html__('Please enter a valid email address', 'aaapos-prime');
+        $errors[] = esc_html__(
+            "Please enter a valid email address",
+            "aaapos-prime",
+        );
     }
-    
+
     if (empty($subject)) {
-        $errors[] = esc_html__('Subject is required', 'aaapos-prime');
+        $errors[] = esc_html__("Subject is required", "aaapos-prime");
     }
-    
+
     if (empty($message)) {
-        $errors[] = esc_html__('Message is required', 'aaapos-prime');
+        $errors[] = esc_html__("Message is required", "aaapos-prime");
     }
-    
+
     // If there are validation errors, redirect back with error
     if (!empty($errors)) {
-        $error_message = implode(', ', $errors);
-        wp_safe_redirect(add_query_arg('form_error', urlencode($error_message), wp_get_referer()));
-        exit;
+        $error_message = implode(", ", $errors);
+        wp_safe_redirect(
+            add_query_arg(
+                "form_error",
+                urlencode($error_message),
+                wp_get_referer(),
+            ),
+        );
+        exit();
     }
-    
+
     // Prepare email content
-    $to = get_theme_mod('contact_form_email', get_option('admin_email'));
-    $email_subject = sprintf(
-        '[%s] %s',
-        get_bloginfo('name'),
-        $subject
-    );
-    
+    $to = get_theme_mod("contact_form_email", get_option("admin_email"));
+    $email_subject = sprintf("[%s] %s", get_bloginfo("name"), $subject);
+
     // Build email message
     $email_message = sprintf(
         "New contact form submission from %s\n\n" .
-        "Name: %s\n" .
-        "Email: %s\n" .
-        "Phone: %s\n" .
-        "Subject: %s\n\n" .
-        "Message:\n%s\n\n" .
-        "---\n" .
-        "This email was sent from the contact form at %s",
-        get_bloginfo('name'),
+            "Name: %s\n" .
+            "Email: %s\n" .
+            "Phone: %s\n" .
+            "Subject: %s\n\n" .
+            "Message:\n%s\n\n" .
+            "---\n" .
+            "This email was sent from the contact form at %s",
+        get_bloginfo("name"),
         $name,
         $email,
-        !empty($phone) ? $phone : esc_html__('Not provided', 'aaapos-prime'),
+        !empty($phone) ? $phone : esc_html__("Not provided", "aaapos-prime"),
         $subject,
         $message,
-        home_url()
+        home_url(),
     );
-    
+
     // Email headers
-    $headers = array(
-        'Content-Type: text/plain; charset=UTF-8',
-        sprintf('From: %s <%s>', get_bloginfo('name'), get_option('admin_email')),
-        sprintf('Reply-To: %s <%s>', $name, $email)
-    );
-    
+    $headers = [
+        "Content-Type: text/plain; charset=UTF-8",
+        sprintf(
+            "From: %s <%s>",
+            get_bloginfo("name"),
+            get_option("admin_email"),
+        ),
+        sprintf("Reply-To: %s <%s>", $name, $email),
+    ];
+
     // Send the email
     $email_sent = wp_mail($to, $email_subject, $email_message, $headers);
-    
+
     // Redirect based on success/failure
     if ($email_sent) {
-        wp_safe_redirect(add_query_arg('form_success', '1', wp_get_referer()));
+        wp_safe_redirect(add_query_arg("form_success", "1", wp_get_referer()));
     } else {
-        wp_safe_redirect(add_query_arg('form_error', 'email_failed', wp_get_referer()));
+        wp_safe_redirect(
+            add_query_arg("form_error", "email_failed", wp_get_referer()),
+        );
     }
-    
-    exit;
+
+    exit();
 }
 
 // Hook for logged-in users
-add_action('admin_post_submit_contact_form', 'aaapos_handle_contact_form_submission');
+add_action(
+    "admin_post_submit_contact_form",
+    "aaapos_handle_contact_form_submission",
+);
 
 // Hook for non-logged-in users
-add_action('admin_post_nopriv_submit_contact_form', 'aaapos_handle_contact_form_submission');
+add_action(
+    "admin_post_nopriv_submit_contact_form",
+    "aaapos_handle_contact_form_submission",
+);
 
 /**
  * Display Success/Error Messages on Contact Page
- * 
+ *
  * Call this function at the top of your contact form to display feedback
  */
-function aaapos_display_contact_form_messages() {
-    
+function aaapos_display_contact_form_messages()
+{
     // Check for success message
-    if (isset($_GET['form_success']) && $_GET['form_success'] == '1') {
+    if (isset($_GET["form_success"]) && $_GET["form_success"] == "1") {
         echo '<div class="form-message success" role="alert">';
         echo '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
         echo '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>';
         echo '<polyline points="22 4 12 14.01 9 11.01"></polyline>';
-        echo '</svg>';
-        echo '<span>' . esc_html__('Thank you! Your message has been sent successfully. We\'ll get back to you soon.', 'aaapos-prime') . '</span>';
-        echo '</div>';
+        echo "</svg>";
+        echo "<span>" .
+            esc_html__(
+                'Thank you! Your message has been sent successfully. We\'ll get back to you soon.',
+                "aaapos-prime",
+            ) .
+            "</span>";
+        echo "</div>";
     }
-    
+
     // Check for error messages
-    if (isset($_GET['form_error'])) {
-        $error = sanitize_text_field($_GET['form_error']);
-        
-        $error_messages = array(
-            'email_failed' => esc_html__('Sorry, there was a problem sending your message. Please try again or contact us directly.', 'aaapos-prime'),
-            'spam' => esc_html__('Your submission was flagged as spam. Please try again.', 'aaapos-prime'),
-        );
-        
-        $error_text = isset($error_messages[$error]) ? $error_messages[$error] : urldecode($error);
-        
+    if (isset($_GET["form_error"])) {
+        $error = sanitize_text_field($_GET["form_error"]);
+
+        $error_messages = [
+            "email_failed" => esc_html__(
+                "Sorry, there was a problem sending your message. Please try again or contact us directly.",
+                "aaapos-prime",
+            ),
+            "spam" => esc_html__(
+                "Your submission was flagged as spam. Please try again.",
+                "aaapos-prime",
+            ),
+        ];
+
+        $error_text = isset($error_messages[$error])
+            ? $error_messages[$error]
+            : urldecode($error);
+
         echo '<div class="form-message error" role="alert">';
         echo '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
         echo '<circle cx="12" cy="12" r="10"></circle>';
         echo '<line x1="12" y1="8" x2="12" y2="12"></line>';
         echo '<line x1="12" y1="16" x2="12.01" y2="16"></line>';
-        echo '</svg>';
-        echo '<span>' . esc_html($error_text) . '</span>';
-        echo '</div>';
+        echo "</svg>";
+        echo "<span>" . esc_html($error_text) . "</span>";
+        echo "</div>";
     }
 }

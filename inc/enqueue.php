@@ -75,6 +75,13 @@ function mr_enqueue_styles()
         ["mr-components"],
         MR_THEME_VERSION,
     );
+    // Breadcrumb component styles (shop page customization) - ADD THIS
+    wp_enqueue_style(
+        "mr-breadcrumb-shop",
+        MR_THEME_URI . "/assets/css/components/breadcrumb-shop.css",
+        ["mr-components"],
+        MR_THEME_VERSION,
+    );
 
     // Responsive styles (load last)
     wp_enqueue_style(
@@ -82,6 +89,16 @@ function mr_enqueue_styles()
         MR_THEME_URI . "/assets/css/responsive.css",
         ["mr-animations"],
         MR_THEME_VERSION,
+    );
+
+    // Category cards styles - NUCLEAR PRIORITY
+    wp_enqueue_style(
+        "aaapos-categories",
+        get_template_directory_uri() .
+            "/assets/css/components/categories-shop.css",
+        ["aaapos-woocommerce-base"],
+        AAAPOS_VERSION . "." . time() . rand(1, 9999),
+        "all",
     );
 
     // Main theme stylesheet (for theme metadata)
