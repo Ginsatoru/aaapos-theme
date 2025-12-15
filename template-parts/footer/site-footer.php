@@ -1,6 +1,6 @@
 <?php
 /**
- * Site Footer Template with Scroll Animations
+ * Site Footer Template - Modernized with Image-based Payment Icons
  * 
  * @package aaapos-prime
  * @since 1.0.0
@@ -13,6 +13,7 @@ $show_logo = get_theme_mod('footer_show_logo', true);
 $show_social = get_theme_mod('footer_show_social', true);
 $show_back_to_top = get_theme_mod('footer_show_back_to_top', true);
 $show_footer_menu = get_theme_mod('footer_show_menu', true);
+$show_payment_icons = get_theme_mod('footer_show_payment_icons', true);
 $back_to_top_position = get_theme_mod('footer_back_to_top_position', 'right');
 $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
 ?>
@@ -194,30 +195,43 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
                     <?php aaapos_copyright_text(); ?>
                 </div>
                 
-                <!-- Footer Bottom Menu -->
-                <?php if ($show_footer_menu): ?>
-                    <nav class="footer-bottom-nav" aria-label="<?php esc_attr_e('Footer Menu', 'aaapos-prime'); ?>">
-                        <?php
-                        // Check if utility menu is set
-                        if (has_nav_menu('utility')) {
-                            wp_nav_menu(array(
-                                'theme_location' => 'utility',
-                                'menu_class' => 'footer-nav',
-                                'container' => false,
-                                'depth' => 1,
-                                'fallback_cb' => 'aaapos_footer_bottom_menu_fallback',
-                            ));
-                        } else {
-                            aaapos_footer_bottom_menu_fallback();
-                        }
-                        ?>
-                    </nav>
-                <?php endif; ?>
+                <!-- Footer Bottom Navigation & Payment Icons -->
+                <div class="footer-bottom-nav">
+                    <!-- Footer Bottom Menu -->
+                    <?php if ($show_footer_menu): ?>
+                        <nav class="footer-nav-wrapper" aria-label="<?php esc_attr_e('Footer Menu', 'aaapos-prime'); ?>">
+                            <?php
+                            // Check if utility menu is set
+                            if (has_nav_menu('utility')) {
+                                wp_nav_menu(array(
+                                    'theme_location' => 'utility',
+                                    'menu_class' => 'footer-nav',
+                                    'container' => false,
+                                    'depth' => 1,
+                                    'fallback_cb' => 'aaapos_footer_bottom_menu_fallback',
+                                ));
+                            } else {
+                                aaapos_footer_bottom_menu_fallback();
+                            }
+                            ?>
+                        </nav>
+                    <?php endif; ?>
+                    
+                    <!-- Payment Methods Icons -->
+                    <?php if ($show_payment_icons): ?>
+                        <div class="footer-payment-methods">
+                            <span class="payment-methods-label"><?php esc_html_e('We Accept', 'aaapos-prime'); ?></span>
+                            <div class="payment-icons">
+                                <?php aaapos_payment_method_icons(); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
     
-    <!-- Back to Top Button (No animation - it has its own visibility logic) -->
+    <!-- Back to Top Button -->
     <?php if ($show_back_to_top): ?>
         <button class="back-to-top back-to-top-<?php echo esc_attr($back_to_top_position); ?>" 
                 aria-label="<?php esc_attr_e('Back to top', 'aaapos-prime'); ?>"
@@ -232,9 +246,12 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
 
 <?php
 /**
- * Helper Functions (unchanged - keeping all your existing functions)
+ * Helper Functions
  */
 
+/**
+ * Display Social Media Icons
+ */
 function aaapos_social_media_icons($style = 'rounded') {
     $social_platforms = array(
         'facebook' => array('label' => __('Facebook', 'aaapos-prime'), 'icon' => 'M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z', 'type' => 'fill'),
@@ -249,7 +266,7 @@ function aaapos_social_media_icons($style = 'rounded') {
     
     $has_social_links = false;
     foreach ($social_platforms as $platform => $data) {
-        if (!empty(get_theme_mod('social_' . $platform))) {
+        if (!empty(get_theme_mod('footer_social_' . $platform))) {
             $has_social_links = true;
             break;
         }
@@ -259,7 +276,7 @@ function aaapos_social_media_icons($style = 'rounded') {
     
     echo '<div class="social-links social-style-' . esc_attr($style) . '">';
     foreach ($social_platforms as $platform => $data) {
-        $url = get_theme_mod('social_' . $platform, '');
+        $url = get_theme_mod('footer_social_' . $platform, '');
         if (!empty($url)) {
             $svg_attrs = ($data['type'] === 'stroke') ? 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"' : 'fill="currentColor" stroke="none"';
             $svg_content = '<path d="' . esc_attr($data['icon']) . '"/>';
@@ -273,6 +290,71 @@ function aaapos_social_media_icons($style = 'rounded') {
     echo '</div>';
 }
 
+/**
+ * Display Payment Method Icons - Image Based with Customizer Control
+ */
+function aaapos_payment_method_icons() {
+    $payment_methods = array(
+        'visa' => array(
+            'label' => __('Visa', 'aaapos-prime'),
+            'image' => 'payment-visa.png'
+        ),
+        'mastercard' => array(
+            'label' => __('Mastercard', 'aaapos-prime'),
+            'image' => 'payment-mastercard.png'
+        ),
+        'amex' => array(
+            'label' => __('American Express', 'aaapos-prime'),
+            'image' => 'payment-amex.png'
+        ),
+        'paypal' => array(
+            'label' => __('PayPal', 'aaapos-prime'),
+            'image' => 'payment-paypal.png'
+        ),
+        'discover' => array(
+            'label' => __('Discover', 'aaapos-prime'),
+            'image' => 'payment-discover.png'
+        ),
+    );
+    
+    // Get enabled payment methods from customizer (with default all enabled)
+    $enabled_methods = get_theme_mod('footer_payment_methods', array_keys($payment_methods));
+    
+    if (empty($enabled_methods)) {
+        $enabled_methods = array_keys($payment_methods);
+    }
+    
+    foreach ($enabled_methods as $method) {
+        if (isset($payment_methods[$method])) {
+            $data = $payment_methods[$method];
+            
+            // Check if user uploaded custom image via customizer
+            $custom_image_id = get_theme_mod('payment_icon_' . $method);
+            
+            if ($custom_image_id) {
+                // Use custom uploaded image
+                $image_url = wp_get_attachment_image_url($custom_image_id, 'full');
+            } else {
+                // Use default image from theme
+                $image_url = get_template_directory_uri() . '/assets/images/payments/' . $data['image'];
+            }
+            
+            if ($image_url) {
+                printf(
+                    '<div class="payment-icon payment-%s"><img src="%s" alt="%s" title="%s" loading="lazy"></div>',
+                    esc_attr($method),
+                    esc_url($image_url),
+                    esc_attr($data['label']),
+                    esc_attr($data['label'])
+                );
+            }
+        }
+    }
+}
+
+/**
+ * Display Copyright Text
+ */
 function aaapos_copyright_text() {
     $copyright = get_theme_mod('footer_copyright_text', sprintf(__('© %s {sitename}. All rights reserved.', 'aaapos-prime'), '{year}'));
     $copyright = str_replace('{year}', date('Y'), $copyright);
@@ -280,6 +362,9 @@ function aaapos_copyright_text() {
     echo '<p>' . wp_kses_post($copyright) . '</p>';
 }
 
+/**
+ * Footer Quick Links Fallback
+ */
 function aaapos_footer_quick_links_fallback() {
     echo '<ul class="footer-menu">';
     if (class_exists('WooCommerce')) echo '<li><a href="' . esc_url(get_permalink(wc_get_page_id('shop'))) . '">' . esc_html__('Shop', 'aaapos-prime') . '</a></li>';
@@ -289,10 +374,13 @@ function aaapos_footer_quick_links_fallback() {
     echo '</ul>';
 }
 
+/**
+ * Footer Bottom Menu Fallback
+ */
 function aaapos_footer_bottom_menu_fallback() {
-    echo '<div class="footer-nav">';
-    echo '<a href="' . esc_url(home_url('/privacy-policy')) . '">' . esc_html__('Privacy Policy', 'aaapos-prime') . '</a>';
-    echo '<a href="' . esc_url(home_url('/terms-of-service')) . '">' . esc_html__('Terms of Service', 'aaapos-prime') . '</a>';
-    echo '<a href="' . esc_url(home_url('/refund-policy')) . '">' . esc_html__('Refund Policy', 'aaapos-prime') . '</a>';
-    echo '</div>';
+    echo '<ul class="footer-nav">';
+    echo '<li><a href="' . esc_url(home_url('/privacy-policy')) . '">' . esc_html__('Privacy', 'aaapos-prime') . '</a></li>';
+    echo '<li><a href="' . esc_url(home_url('/terms-of-service')) . '">' . esc_html__('Terms', 'aaapos-prime') . '</a></li>';
+    echo '<li><a href="' . esc_url(home_url('/refund-policy')) . '">' . esc_html__('Refunds', 'aaapos-prime') . '</a></li>';
+    echo '</ul>';
 }

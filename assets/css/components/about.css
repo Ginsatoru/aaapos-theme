@@ -582,6 +582,7 @@
 }
 
 .btn-about--secondary:hover {
+    color: var(--color-white);
     transform: translateY(-2px);
 }
 

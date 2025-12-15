@@ -1,26 +1,26 @@
 /* ===================================================================
-   FOOTER - FINAL VERSION
-   No shadows, clean design, all icons working
+   FOOTER - MODERNIZED & CLEAN DESIGN
+   Image-based payment icons with customizer support
    Colors controlled via: Customizer > Brand Color
    =================================================================== */
 
 :root {
-  /* Footer Colors - Fixed dark theme */
-  --footer-bg: #131313;
-  --footer-text: #e5e7eb;
+  /* Footer Colors - Match your existing dark theme */
+  --footer-bg: #1a2332;
+  --footer-text: #cbd5e1;
   --footer-heading: #ffffff;
-  --footer-link: #e5e7eb;
-  --footer-link-hover: #ffffff;
-  --footer-bottom-bg: #1e2936;
-  --footer-border: #3a4b5c;
-  --footer-social-bg: #3a4b5c;
+  --footer-link: #cbd5e1;
+  --footer-link-hover: var(--brand-color);
+  --footer-bottom-bg: #141d2b;
+  --footer-border: #2d3748;
+  --footer-social-bg: #2d3748;
   --footer-social-icon: #ffffff;
   --footer-social-hover: var(--brand-color);
 
   /* Spacing */
-  --footer-padding: 5rem 0 4rem;
-  --footer-bottom-padding: 1.75rem 0;
-  --footer-widget-gap: 3.5rem;
+  --footer-padding: 4rem 0 3rem;
+  --footer-bottom-padding: 1.5rem 0;
+  --footer-widget-gap: 3rem;
 }
 
 /* ===================================================================
@@ -32,6 +32,7 @@
   color: var(--footer-text) !important;
   margin-top: 0;
   position: relative;
+  border-top: 1px solid var(--footer-border);
 }
 
 .footer-main {
@@ -131,16 +132,17 @@
   color: var(--footer-text) !important;
 }
 
-/* Widget Titles */
+/* Widget Titles - Modernized */
 .footer-widget .widget-title,
 .footer-widget h2,
 .footer-widget h3,
 .footer-widget h4 {
   color: #ffffff !important;
-  font-size: 1.125rem !important;
-  font-weight: 600 !important;
-  margin: 0 0 1.5rem !important;
-  letter-spacing: -0.01em;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 1.25rem !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   line-height: 1.3;
   opacity: 1 !important;
   visibility: visible !important;
@@ -148,7 +150,7 @@
 
 /* Widget Content */
 .footer-widget p {
-  color: #e5e7eb !important;
+  color: #cbd5e1 !important;
   line-height: 1.7;
   margin: 0 0 1rem;
   font-size: 0.9375rem;
@@ -163,17 +165,22 @@
 }
 
 .footer-logo {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   line-height: 1;
 }
 
 .footer-logo a {
   display: inline-block;
   line-height: 1;
+  transition: opacity 0.2s ease;
+}
+
+.footer-logo a:hover {
+  opacity: 0.85;
 }
 
 .footer-logo img {
-  max-width: 180px;
+  max-width: 160px;
   height: auto;
   display: block;
 }
@@ -203,7 +210,7 @@
 
 /* Footer Description */
 .footer-description {
-  color: #d1d5db !important;
+  color: #94a3b8 !important;
   line-height: 1.7;
   margin: 0 0 1.5rem;
   font-size: 0.9375rem;
@@ -224,7 +231,7 @@
 .footer-menu li,
 .footer-contact li,
 .footer-categories-list li {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.625rem;
 }
 
 .footer-menu li:last-child,
@@ -234,23 +241,41 @@
 }
 
 .footer-menu a {
-  color: #e5e7eb !important;
+  color: #cbd5e1 !important;
   text-decoration: none;
   font-size: 0.9375rem;
   transition: all 0.2s ease;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
 }
 
 .footer-menu a:hover,
 .footer-menu a:focus {
-  color: #ffffff !important;
+  color: var(--brand-color) !important;
   transform: translateX(4px);
+}
+
+.footer-menu a::before {
+  content: '';
+  width: 0;
+  height: 2px;
+  background: var(--brand-color);
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  transition: width 0.2s ease;
+}
+
+.footer-menu a:hover::before {
+  width: 100%;
 }
 
 /* Category Count */
 .category-count {
   opacity: 0.6;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   margin-left: 0.25rem;
 }
 
@@ -267,8 +292,13 @@
   align-items: flex-start;
   gap: 0.75rem;
   line-height: 1.6;
-  color: #e5e7eb !important;
+  color: #cbd5e1 !important;
   margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.contact-item:hover {
+  color: #ffffff !important;
 }
 
 .contact-item svg {
@@ -280,22 +310,22 @@
 }
 
 .contact-item span {
-  color: #e5e7eb !important;
+  color: #cbd5e1 !important;
 }
 
 .contact-item a {
-  color: #e5e7eb !important;
+  color: #cbd5e1 !important;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .contact-item a:hover,
 .contact-item a:focus {
-  color: #ffffff !important;
+  color: var(--brand-color) !important;
 }
 
 /* ===================================================================
-   SOCIAL MEDIA ICONS - NO SHADOWS
+   SOCIAL MEDIA ICONS - MODERNIZED
    =================================================================== */
 
 .footer-social-links {
@@ -310,14 +340,14 @@
 
 /* Base Social Link Styles */
 .social-link {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--footer-social-icon);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
@@ -326,7 +356,7 @@
   height: 20px;
   fill: currentColor;
   stroke: none;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
 /* Circle Style */
@@ -338,7 +368,7 @@
 .social-style-circle .social-link:hover,
 .social-style-circle .social-link:focus {
   background: var(--brand-color);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.05);
 }
 
 /* Rounded Square Style (Default) */
@@ -350,7 +380,7 @@
 .social-style-rounded .social-link:hover,
 .social-style-rounded .social-link:focus {
   background: var(--brand-color);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 /* Square Style */
@@ -362,7 +392,7 @@
 .social-style-square .social-link:hover,
 .social-style-square .social-link:focus {
   background: var(--brand-color);
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 /* Minimal Style (No Background) */
@@ -376,24 +406,11 @@
 .social-style-minimal .social-link:focus {
   border-color: var(--brand-color);
   color: var(--brand-color);
-  transform: scale(1.05);
+  background: rgba(var(--brand-color-rgb), 0.1);
 }
 
-/* Individual Platform Colors on Hover - OPTIONAL */
-/* Uncomment these if you want platform-specific colors instead of brand color */
-/*
-.social-link.social-facebook:hover { background: #1877f2 !important; }
-.social-link.social-twitter:hover { background: #1da1f2 !important; }
-.social-link.social-instagram:hover { background: #e4405f !important; }
-.social-link.social-youtube:hover { background: #ff0000 !important; }
-.social-link.social-linkedin:hover { background: #0a66c2 !important; }
-.social-link.social-pinterest:hover { background: #e60023 !important; }
-.social-link.social-tiktok:hover { background: #000000 !important; }
-.social-link.social-whatsapp:hover { background: #25d366 !important; }
-*/
-
 /* ===================================================================
-   FOOTER BOTTOM
+   FOOTER BOTTOM - MODERNIZED WITH IMAGE PAYMENT ICONS
    =================================================================== */
 
 .footer-bottom {
@@ -413,28 +430,32 @@
 /* Copyright */
 .footer-copyright {
   font-size: 0.875rem;
-  color: #9ca3af !important;
+  color: #94a3b8 !important;
 }
 
 .footer-copyright p {
   margin: 0 !important;
-  color: #9ca3af !important;
+  color: #94a3b8 !important;
 }
 
 .footer-copyright a {
-  color: #d1d5db !important;
+  color: #cbd5e1 !important;
   text-decoration: none;
   transition: color 0.2s ease;
+  font-weight: 500;
 }
 
 .footer-copyright a:hover,
 .footer-copyright a:focus {
-  color: #ffffff !important;
+  color: var(--brand-color) !important;
 }
 
-/* Footer Bottom Navigation */
+/* Footer Bottom Navigation & Payment Methods Container */
 .footer-bottom-nav {
   display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .footer-nav {
@@ -444,6 +465,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  align-items: center;
 }
 
 .footer-nav li {
@@ -451,19 +473,102 @@
 }
 
 .footer-nav a {
-  color: #9ca3af !important;
+  color: #94a3b8 !important;
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s ease;
+  font-weight: 500;
 }
 
 .footer-nav a:hover,
 .footer-nav a:focus {
-  color: #ffffff !important;
+  color: var(--brand-color) !important;
 }
 
 /* ===================================================================
-   BACK TO TOP BUTTON - Uses Brand Color
+   PAYMENT METHODS ICONS - IMAGE BASED
+   =================================================================== */
+
+.footer-payment-methods {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--footer-border);
+}
+
+.payment-methods-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.payment-icons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.payment-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.375rem;
+  padding: 0;
+  height: 36px;
+  min-width: 50px;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.payment-icon:hover {
+  border-color: var(--brand-color);
+  background: rgba(var(--brand-color-rgb), 0.1);
+  transform: translateY(-2px);
+}
+
+.payment-icon img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 0.375rem;
+  transition: all 0.25s ease;
+}
+
+.payment-icon:hover img {
+  transform: scale(1.05);
+}
+
+/* Individual payment card backgrounds (optional subtle tints) */
+.payment-icon.payment-visa:hover {
+  background: rgba(20, 52, 203, 0.08);
+}
+
+.payment-icon.payment-mastercard:hover {
+  background: rgba(235, 0, 27, 0.08);
+}
+
+.payment-icon.payment-amex:hover {
+  background: rgba(0, 111, 207, 0.08);
+}
+
+.payment-icon.payment-paypal:hover {
+  background: rgba(0, 69, 124, 0.08);
+}
+
+.payment-icon.payment-discover:hover {
+  background: rgba(255, 96, 0, 0.08);
+}
+
+/* ===================================================================
+   BACK TO TOP BUTTON
    =================================================================== */
 
 .back-to-top {
@@ -473,13 +578,13 @@
   color: #ffffff !important;
   border: none;
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -502,16 +607,16 @@
   transform: translateY(0);
 }
 
-/* Hover State - NO SHADOW */
+/* Hover State */
 .back-to-top:hover,
 .back-to-top:focus {
   background: var(--brand-color-hover) !important;
-  transform: translateY(-3px) scale(1.03);
+  transform: translateY(-4px) scale(1.05);
   outline: none;
 }
 
 .back-to-top:active {
-  transform: translateY(-1px) scale(1.01);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .back-to-top svg {
@@ -521,7 +626,7 @@
 }
 
 .back-to-top:hover svg {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 /* ===================================================================
@@ -531,6 +636,15 @@
 @media (max-width: 1023px) {
   .footer-widgets-grid {
     gap: 2.5rem;
+  }
+
+  .footer-payment-methods {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--footer-border);
+    padding-top: 1rem;
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
@@ -554,9 +668,39 @@
     gap: 1.5rem;
   }
 
+  .footer-bottom-nav {
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+  }
+
   .footer-nav {
     justify-content: center;
     gap: 1rem;
+  }
+
+  .footer-payment-methods {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+    border-top: 1px solid var(--footer-border);
+    padding-top: 1.25rem;
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .payment-icons {
+    justify-content: center;
+  }
+
+  .payment-icon {
+    height: 32px;
+    min-width: 45px;
+    padding: 0;
+  }
+
+  .payment-icon img {
+    border-radius: 0.375rem;
   }
 
   .back-to-top {
@@ -580,7 +724,7 @@
   }
 
   .footer-logo img {
-    max-width: 150px;
+    max-width: 140px;
   }
 
   .social-links {
@@ -588,13 +732,23 @@
   }
 
   .social-link {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
   }
 
   .social-link svg {
     width: 18px;
     height: 18px;
+  }
+
+  .payment-icon {
+    height: 28px;
+    min-width: 40px;
+    padding: 0;
+  }
+
+  .payment-icon img {
+    border-radius: 0.25rem;
   }
 }
 
@@ -605,8 +759,9 @@
 .footer-menu a:focus,
 .footer-nav a:focus,
 .social-link:focus,
-.back-to-top:focus {
-  outline: 2px solid #ffffff;
+.back-to-top:focus,
+.payment-icon:focus {
+  outline: 2px solid var(--brand-color);
   outline-offset: 2px;
 }
 
@@ -616,7 +771,8 @@
 
 @media print {
   .back-to-top,
-  .footer-social-links {
+  .footer-social-links,
+  .footer-payment-methods {
     display: none;
   }
 

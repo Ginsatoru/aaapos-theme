@@ -13,11 +13,11 @@
   min-height: 100vh;
 }
 
-/* === SLIGHTLY WIDER DESKTOP CONTAINER === */
+/* === EXTRA-LARGE DESKTOP CONTAINER (DECREASED BY 1%) === */
 .woocommerce .shop-page-wrapper .container-wide,
 .woocommerce-page .shop-page-wrapper .container-wide {
-  max-width: 80% !important;
-  width: 80% !important;
+  max-width: 72% !important;
+  width: 72% !important;
   margin: 0 auto !important;
   padding: 0 2rem !important;
 }
@@ -50,25 +50,11 @@
   }
 }
 
-/* === REDUCE TOP SPACING - SHOP PAGE ONLY === */
-.post-type-archive-product main#main.site-main,
-.tax-product_cat main#main.site-main,
-.tax-product_tag main#main.site-main {
-  padding-top: 0.5rem !important;
-}
-
-/* Keep normal padding for my-account and other WooCommerce pages */
-.woocommerce-account main#main.site-main,
-.woocommerce-cart main#main.site-main,
-.woocommerce-checkout main#main.site-main {
-  padding-top: 135px !important;
-}
-
 /* === BREADCRUMB - ALIGNED WITH CONTAINER === */
 .woocommerce-breadcrumb,
 .woocommerce .woocommerce-breadcrumb {
-  max-width: 80% !important;
-  width: 80% !important;
+  max-width: 72% !important;
+  width: 72% !important;
   margin: 0 auto 0.75rem auto !important;
   padding: 0.5rem 2rem !important;
   font-size: var(--text-sm);
@@ -111,6 +97,19 @@
     width: 95% !important;
     padding: 1rem !important;
   }
+}
+/* === REDUCE TOP SPACING - SHOP PAGE ONLY === */
+.post-type-archive-product main#main.site-main,
+.tax-product_cat main#main.site-main,
+.tax-product_tag main#main.site-main {
+  padding-top: 0.5rem !important;
+}
+
+/* Keep normal padding for my-account and other WooCommerce pages */
+.woocommerce-account main#main.site-main,
+.woocommerce-cart main#main.site-main,
+.woocommerce-checkout main#main.site-main {
+  padding-top: 135px !important;
 }
 
 /* === SHOP LAYOUT === */
