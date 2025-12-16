@@ -389,6 +389,33 @@ function aaapos_footer_customizer($wp_customize)
         "priority" => 147,
     ]);
 
+    // Individual Payment Card Toggles
+    $payment_cards = [
+        'visa' => __('Show Visa', 'aaapos-prime'),
+        'mastercard' => __('Show Mastercard', 'aaapos-prime'),
+        'amex' => __('Show American Express', 'aaapos-prime'),
+        'paypal' => __('Show PayPal', 'aaapos-prime'),
+        'discover' => __('Show Discover', 'aaapos-prime'),
+    ];
+
+    $priority = 148;
+    foreach ($payment_cards as $card => $label) {
+        $wp_customize->add_setting("payment_show_{$card}", [
+            "default" => true,
+            "sanitize_callback" => "wp_validate_boolean",
+            "transport" => "refresh",
+        ]);
+
+        $wp_customize->add_control("payment_show_{$card}", [
+            "label" => $label,
+            "section" => "aaapos_footer_settings",
+            "type" => "checkbox",
+            "priority" => $priority,
+        ]);
+
+        $priority++;
+    }
+
     // Visa Icon Upload
     $wp_customize->add_setting("payment_icon_visa", [
         "default" => "",
@@ -405,7 +432,7 @@ function aaapos_footer_customizer($wp_customize)
             ),
             "section" => "aaapos_footer_settings",
             "mime_type" => "image",
-            "priority" => 148,
+            "priority" => 153,
         ]),
     );
 
@@ -428,7 +455,7 @@ function aaapos_footer_customizer($wp_customize)
                 ),
                 "section" => "aaapos_footer_settings",
                 "mime_type" => "image",
-                "priority" => 149,
+                "priority" => 154,
             ],
         ),
     );
@@ -449,7 +476,7 @@ function aaapos_footer_customizer($wp_customize)
             ),
             "section" => "aaapos_footer_settings",
             "mime_type" => "image",
-            "priority" => 150,
+            "priority" => 155,
         ]),
     );
 
@@ -469,7 +496,7 @@ function aaapos_footer_customizer($wp_customize)
             ),
             "section" => "aaapos_footer_settings",
             "mime_type" => "image",
-            "priority" => 151,
+            "priority" => 156,
         ]),
     );
 
@@ -489,7 +516,7 @@ function aaapos_footer_customizer($wp_customize)
             ),
             "section" => "aaapos_footer_settings",
             "mime_type" => "image",
-            "priority" => 152,
+            "priority" => 157,
         ]),
     );
 

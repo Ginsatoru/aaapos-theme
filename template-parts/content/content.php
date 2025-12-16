@@ -15,7 +15,7 @@ $author_name = get_the_author();
 $post_date = get_the_date('F j, Y');
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class('blog-card'); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('blog-card'); ?>
     
     <!-- Post Thumbnail -->
     <?php if ($thumbnail_url) : ?>

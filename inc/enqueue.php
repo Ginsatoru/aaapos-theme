@@ -68,6 +68,22 @@ function mr_enqueue_styles()
         MR_THEME_VERSION,
     );
 
+    // Search results styles
+    wp_enqueue_style(
+        "mr-search-results",
+        MR_THEME_URI . "/assets/css/components/search-results.css",
+        ["mr-components"],
+        MR_THEME_VERSION,
+    );
+
+    // Search no results styles
+    wp_enqueue_style(
+        "mr-search-no-results",
+        MR_THEME_URI . "/assets/css/components/search-no-results.css",
+        ["mr-components"],
+        MR_THEME_VERSION,
+    );
+
     // Blog
     wp_enqueue_style(
         "mr-blog",
@@ -75,7 +91,8 @@ function mr_enqueue_styles()
         ["mr-components"],
         MR_THEME_VERSION,
     );
-    // Breadcrumb component styles (shop page customization) - ADD THIS
+    
+    // Breadcrumb component styles
     wp_enqueue_style(
         "mr-breadcrumb-shop",
         MR_THEME_URI . "/assets/css/components/breadcrumb-shop.css",
@@ -100,6 +117,25 @@ function mr_enqueue_styles()
         AAAPOS_VERSION . "." . time() . rand(1, 9999),
         "all",
     );
+
+    // WooCommerce specific styles
+    if (class_exists('WooCommerce')) {
+        // Quick View Modal styles
+        wp_enqueue_style(
+            "aaapos-quick-view",
+            MR_THEME_URI . "/assets/css/quick-view.css",
+            ["mr-components"],
+            MR_THEME_VERSION,
+        );
+
+        // Cart Notifications styles
+        wp_enqueue_style(
+            "aaapos-cart-notifications",
+            MR_THEME_URI . "/assets/css/cart-notifications.css",
+            ["mr-components"],
+            MR_THEME_VERSION,
+        );
+    }
 
     // Main theme stylesheet (for theme metadata)
     wp_enqueue_style("mr-style", get_stylesheet_uri(), [], MR_THEME_VERSION);
@@ -221,6 +257,38 @@ function mr_enqueue_scripts()
             MR_THEME_VERSION,
             true,
         );
+
+        // ============================================
+        // QUICK VIEW - Load on shop, archive, search pages
+        // ============================================
+        if (is_shop() || is_product_category() || is_product_tag() || is_search() || is_front_page()) {
+            wp_enqueue_script(
+                "aaapos-quick-view",
+                MR_THEME_URI . "/assets/js/quick-view.js",
+                ["jquery"],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            // Localize Quick View script
+            wp_localize_script("aaapos-quick-view", "aaaposQuickView", [
+                "ajax_url" => admin_url("admin-ajax.php"),
+                "nonce" => wp_create_nonce("woocommerce-cart"),
+            ]);
+        }
+
+        // ============================================
+        // CART NOTIFICATIONS - Load on all pages with products
+        // ============================================
+        if (is_shop() || is_product_category() || is_product_tag() || is_product() || is_search() || is_front_page()) {
+            wp_enqueue_script(
+                "aaapos-cart-notifications",
+                MR_THEME_URI . "/assets/js/cart-notifications.js",
+                ["jquery"],
+                MR_THEME_VERSION,
+                true,
+            );
+        }
 
         // SINGLE PRODUCT PAGE - Modern variation swatches
         if (is_product()) {
@@ -445,6 +513,8 @@ function mr_script_loader_tag($tag, $handle, $src)
         "mr-header-scroll",
         "mr-variation-swatches",
         "mr-quantity-selector",
+        "aaapos-quick-view",
+        "aaapos-cart-notifications",
     ];
 
     if (in_array($handle, $async_scripts, true)) {

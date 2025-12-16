@@ -291,7 +291,7 @@ function aaapos_social_media_icons($style = 'rounded') {
 }
 
 /**
- * Display Payment Method Icons - Image Based with Customizer Control
+ * Display Payment Method Icons - Image Based with Show/Hide Control
  */
 function aaapos_payment_method_icons() {
     $payment_methods = array(
@@ -317,37 +317,33 @@ function aaapos_payment_method_icons() {
         ),
     );
     
-    // Get enabled payment methods from customizer (with default all enabled)
-    $enabled_methods = get_theme_mod('footer_payment_methods', array_keys($payment_methods));
-    
-    if (empty($enabled_methods)) {
-        $enabled_methods = array_keys($payment_methods);
-    }
-    
-    foreach ($enabled_methods as $method) {
-        if (isset($payment_methods[$method])) {
-            $data = $payment_methods[$method];
-            
-            // Check if user uploaded custom image via customizer
-            $custom_image_id = get_theme_mod('payment_icon_' . $method);
-            
-            if ($custom_image_id) {
-                // Use custom uploaded image
-                $image_url = wp_get_attachment_image_url($custom_image_id, 'full');
-            } else {
-                // Use default image from theme
-                $image_url = get_template_directory_uri() . '/assets/images/payments/' . $data['image'];
-            }
-            
-            if ($image_url) {
-                printf(
-                    '<div class="payment-icon payment-%s"><img src="%s" alt="%s" title="%s" loading="lazy"></div>',
-                    esc_attr($method),
-                    esc_url($image_url),
-                    esc_attr($data['label']),
-                    esc_attr($data['label'])
-                );
-            }
+    foreach ($payment_methods as $method => $data) {
+        // Check if this payment method should be shown
+        $show_payment = get_theme_mod('payment_show_' . $method, true);
+        
+        if (!$show_payment) {
+            continue; // Skip this payment method
+        }
+        
+        // Check if user uploaded custom image via customizer
+        $custom_image_id = get_theme_mod('payment_icon_' . $method);
+        
+        if ($custom_image_id) {
+            // Use custom uploaded image
+            $image_url = wp_get_attachment_image_url($custom_image_id, 'full');
+        } else {
+            // Use default image from theme
+            $image_url = get_template_directory_uri() . '/assets/images/payments/' . $data['image'];
+        }
+        
+        if ($image_url) {
+            printf(
+                '<div class="payment-icon payment-%s"><img src="%s" alt="%s" title="%s" loading="lazy"></div>',
+                esc_attr($method),
+                esc_url($image_url),
+                esc_attr($data['label']),
+                esc_attr($data['label'])
+            );
         }
     }
 }

@@ -195,7 +195,7 @@
    DROPDOWN INDICATOR ARROWS
    ========================================================================== */
 
-/* Top level dropdown indicator */
+/* Top level dropdown indicator - DESKTOP ONLY */
 .nav-menu .menu-item-has-children > a::after {
   content: '';
   display: inline-block;
@@ -209,7 +209,7 @@
   transition: transform 0.2s ease;
 }
 
-/* Submenu dropdown indicator (right arrow) */
+/* Submenu dropdown indicator (right arrow) - DESKTOP ONLY */
 .nav-menu .sub-menu .menu-item-has-children > a::after {
   content: '';
   display: inline-block;
@@ -225,7 +225,7 @@
   transition: transform 0.2s ease;
 }
 
-/* Rotate arrow on hover */
+/* Rotate arrow on hover - DESKTOP ONLY */
 .nav-menu li:hover > a::after {
   transform: rotate(180deg);
 }
@@ -255,6 +255,12 @@
    ========================================================================== */
 
 @media (max-width: 1023px) {
+  /* HIDE DESKTOP ARROWS ON MOBILE */
+  .nav-menu .menu-item-has-children > a::after,
+  .nav-menu .sub-menu .menu-item-has-children > a::after {
+    display: none !important;
+  }
+
   .main-navigation {
     position: fixed;
     top: 0;
@@ -459,22 +465,20 @@
     background: var(--color-bg-secondary);
   }
 
-  /* Mobile dropdown arrows - Only for items with children */
+  /* MOBILE-ONLY dropdown arrows - Clean chevron style */
   .nav-menu .menu-item-has-children > a::after {
-    display: block !important;
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(45deg);
+    display: inline-block !important;
+    content: '▼';
+    font-size: 4px;
+    margin-left: 4px;
     transition: transform 0.2s ease;
-    flex-shrink: 0;
-    margin-left: 12px;
+    vertical-align: middle;
+    line-height: 1;
+    opacity: 0.7;
   }
 
   .nav-menu .menu-item-has-children.active > a::after {
-    transform: rotate(225deg);
+    transform: rotate(180deg);
   }
 
   /* Mobile Dropdowns */
@@ -512,22 +516,20 @@
     border-left: none;
   }
 
-  /* Submenu dropdown arrows */
+  /* Submenu dropdown arrows - Mobile only */
   .nav-menu .sub-menu .menu-item-has-children > a::after {
-    display: block !important;
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(-45deg);
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
+    display: inline-block !important;
+    content: '▶';
+    font-size: 3px;
     margin-left: auto;
+    transition: transform 0.2s ease;
+    vertical-align: middle;
+    line-height: 1;
+    opacity: 0.7;
   }
 
   .nav-menu .sub-menu .menu-item-has-children.active > a::after {
-    transform: rotate(45deg);
+    transform: rotate(90deg);
   }
 
   /* Nested submenus */

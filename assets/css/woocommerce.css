@@ -281,7 +281,7 @@
   padding: 0 !important;
   float: none !important;
   background: var(--color-dark-white) !important;
-  border-radius: 12px !important;
+  border-radius: 18px !important;
   overflow: hidden !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06) !important;
@@ -294,9 +294,8 @@
 
 .woocommerce ul.products li.product:hover,
 .woocommerce-page ul.products li.product:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
   border-color: rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-6px) !important;
 }
 
 /* === IMAGE LINK - Image Only === */
@@ -504,7 +503,7 @@
   background: var(--color-woo-add-to-cart-bg) !important;
   color: var(--color-woo-add-to-cart-text) !important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   font-size: 0.9rem !important;
   font-weight: 600 !important;
   text-decoration: none !important;
@@ -885,4 +884,18 @@
   .single-product .rating-text {
     font-size: 0.875rem;
   }
+}
+/* ============================================
+   FLOATING CARD SHADOW — MATCHES REFERENCE IMAGE
+   ============================================ */
+
+.woocommerce ul.products li.product,
+.woocommerce-page ul.products li.product {
+  background: var(--color-dark-white) !important;
+  border: none !important;
+
+  /* Soft floating shadow */
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.08),
+    0 12px 24px rgba(0, 0, 0, 0.04) !important;
 }

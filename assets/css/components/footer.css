@@ -254,7 +254,6 @@
 .footer-menu a:hover,
 .footer-menu a:focus {
   color: var(--brand-color) !important;
-  transform: translateX(4px);
 }
 
 .footer-menu a::before {
