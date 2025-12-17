@@ -3,10 +3,10 @@
  * 
  * Handles beautiful toast notifications for cart actions
  * Auto-dismiss after 5 seconds with progress bar
- * EXCLUDES My Account pages
+ * EXCLUDES My Account pages AND Search No Results
  * 
  * @package AAAPOS_Prime
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 (function($) {
@@ -20,6 +20,15 @@
                $('body').hasClass('woocommerce-edit-address') ||
                $('body').hasClass('woocommerce-edit-account') ||
                $('.woocommerce-MyAccount-navigation').length > 0;
+    }
+
+    /**
+     * Check if element is a search no-results message
+     */
+    function isSearchNoResults($element) {
+        return $element.hasClass('search-no-results') || 
+               $element.closest('.search-no-results').length > 0 ||
+               $element.parents('.search-no-results').length > 0;
     }
 
     /**
@@ -67,6 +76,12 @@
             
             // Skip if inside My Account content
             if ($notice.closest('.woocommerce-MyAccount-content').length > 0) {
+                return;
+            }
+            
+            // IMPORTANT: Skip if this is a search no-results message
+            if (isSearchNoResults($notice)) {
+                console.log('Skipping search no-results message');
                 return;
             }
             
@@ -177,8 +192,8 @@
         notification.append(closeButton);
         notification.append(messageContent);
         
-        // Remove existing notifications
-        $('.woocommerce-message').not('.woocommerce-MyAccount-content .woocommerce-message').remove();
+        // Remove existing notifications (but not search no-results)
+        $('.woocommerce-message').not('.woocommerce-MyAccount-content .woocommerce-message').not('.search-no-results').not('.search-no-results *').remove();
         
         // Append to body
         $('body').append(notification);
@@ -200,6 +215,11 @@
         
         // Don't dismiss My Account page notifications
         if ($notice.closest('.woocommerce-MyAccount-content').length > 0) {
+            return;
+        }
+        
+        // Don't dismiss search no-results messages
+        if (isSearchNoResults($notice)) {
             return;
         }
         

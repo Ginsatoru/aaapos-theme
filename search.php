@@ -1,7 +1,7 @@
 <?php
 /**
  * The template for displaying search results
- * FIXED: Quick View and Cart Notifications now work properly
+ * WITH AJAX SORTING & COLUMN CONTROLS (2, 3, or 4 columns)
  * 
  * @package aaapos-prime
  */
@@ -13,11 +13,11 @@ get_header();
     <div class="container-wide">
         
         <!-- Search Header -->
-        <header class="search-header woocommerce-products-header">
+<header class="search-header woocommerce-products-header<?php echo !have_posts() ? ' no-results-header' : ''; ?>">
             <h1 class="search-title woocommerce-products-header__title">
                 <?php
                 printf(
-                    esc_html__('Search Results for: "%s"', 'aaapos-prime'),
+                    esc_html__('Search Results for %s', 'aaapos-prime'),
                     '<span class="search-query">' . get_search_query() . '</span>'
                 );
                 ?>
@@ -30,8 +30,8 @@ get_header();
                     $total = $wp_query->found_posts;
                     printf(
                         _n(
-                            'Found %s result',
-                            'Found %s results',
+                            'We found %s product matching your search',
+                            'We found %s products matching your search',
                             $total,
                             'aaapos-prime'
                         ),
@@ -44,8 +44,10 @@ get_header();
 
         <?php if (have_posts()) : ?>
             
-            <!-- Search Refinement Bar -->
-            <div class="search-refinement shop-toolbar">
+            <!-- WooCommerce Sorting & Column Controls Bar -->
+            <div class="search-toolbar shop-toolbar">
+                
+                <!-- Result Count -->
                 <div class="woocommerce-result-count">
                     <?php
                     printf(
@@ -54,24 +56,105 @@ get_header();
                     );
                     ?>
                 </div>
-                <form role="search" method="get" class="search-refinement-form" action="<?php echo esc_url(home_url('/')); ?>">
-                    <div class="search-input-group">
-                        <input 
-                            type="search" 
-                            class="search-input-field" 
-                            placeholder="<?php esc_attr_e('Refine your search...', 'aaapos-prime'); ?>" 
-                            value="<?php echo get_search_query(); ?>" 
-                            name="s"
-                        />
-                        <button type="submit" class="search-submit-btn">
-                            <?php esc_html_e('Search', 'aaapos-prime'); ?>
+                
+                <!-- Sorting & Column Controls -->
+                <div class="toolbar-controls">
+                    
+                    <!-- Sort By Dropdown (NO SUBMIT - AJAX HANDLED) -->
+                    <form class="woocommerce-ordering" method="get" action="#">
+                        <select name="orderby" class="orderby" aria-label="<?php esc_attr_e('Shop order', 'aaapos-prime'); ?>">
+                            <?php
+                            $orderby_options = array(
+                                'menu_order' => __('Default sorting', 'aaapos-prime'),
+                                'popularity' => __('Sort by popularity', 'aaapos-prime'),
+                                'rating'     => __('Sort by average rating', 'aaapos-prime'),
+                                'date'       => __('Sort by latest', 'aaapos-prime'),
+                                'price'      => __('Sort by price: low to high', 'aaapos-prime'),
+                                'price-desc' => __('Sort by price: high to low', 'aaapos-prime'),
+                            );
+                            
+                            $current_orderby = isset($_GET['orderby']) ? wc_clean($_GET['orderby']) : 'menu_order';
+                            
+                            foreach ($orderby_options as $id => $name) {
+                                echo '<option value="' . esc_attr($id) . '" ' . selected($current_orderby, $id, false) . '>' . esc_html($name) . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <input type="hidden" name="s" value="<?php echo esc_attr(get_search_query()); ?>" />
+                        <input type="hidden" name="post_type" value="product" />
+                    </form>
+                    
+                    <!-- Column Toggle (2, 3, 4 columns) -->
+                    <div class="column-toggle-wrapper">
+                        <!-- 2 Columns Button -->
+                        <button 
+                            type="button" 
+                            class="column-toggle" 
+                            data-columns="2" 
+                            data-tooltip="<?php esc_attr_e('2 columns', 'aaapos-prime'); ?>"
+                            aria-label="<?php esc_attr_e('2 columns view', 'aaapos-prime'); ?>">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="3" y="3" width="8" height="8" rx="1"></rect>
+                                <rect x="13" y="3" width="8" height="8" rx="1"></rect>
+                                <rect x="3" y="13" width="8" height="8" rx="1"></rect>
+                                <rect x="13" y="13" width="8" height="8" rx="1"></rect>
+                            </svg>
+                        </button>
+                        
+                        <!-- 3 Columns Button -->
+                        <button 
+                            type="button" 
+                            class="column-toggle" 
+                            data-columns="3" 
+                            data-tooltip="<?php esc_attr_e('3 columns', 'aaapos-prime'); ?>"
+                            aria-label="<?php esc_attr_e('3 columns view', 'aaapos-prime'); ?>">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="2" y="3" width="5" height="5" rx="0.5"></rect>
+                                <rect x="9.5" y="3" width="5" height="5" rx="0.5"></rect>
+                                <rect x="17" y="3" width="5" height="5" rx="0.5"></rect>
+                                <rect x="2" y="10" width="5" height="5" rx="0.5"></rect>
+                                <rect x="9.5" y="10" width="5" height="5" rx="0.5"></rect>
+                                <rect x="17" y="10" width="5" height="5" rx="0.5"></rect>
+                                <rect x="2" y="17" width="5" height="5" rx="0.5"></rect>
+                                <rect x="9.5" y="17" width="5" height="5" rx="0.5"></rect>
+                                <rect x="17" y="17" width="5" height="5" rx="0.5"></rect>
+                            </svg>
+                        </button>
+                        
+                        <!-- 4 Columns Button (Default Active) -->
+                        <button 
+                            type="button" 
+                            class="column-toggle active" 
+                            data-columns="4" 
+                            data-tooltip="<?php esc_attr_e('4 columns', 'aaapos-prime'); ?>"
+                            aria-label="<?php esc_attr_e('4 columns view', 'aaapos-prime'); ?>">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="2" y="3" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="7.5" y="3" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="13" y="3" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="18.5" y="3" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="2" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="7.5" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="13" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="18.5" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="2" y="14" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="7.5" y="14" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="13" y="14" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="18.5" y="14" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="2" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="7.5" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="13" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
+                                <rect x="18.5" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
+                            </svg>
                         </button>
                     </div>
-                </form>
+                    
+                </div>
+                
             </div>
 
-            <!-- Search Results Grid - MATCHES SHOP STRUCTURE -->
-            <ul class="products search-results-grid">
+            <!-- Search Results Grid -->
+            <ul class="products search-results-grid" data-columns="4">
                 <?php
                 while (have_posts()) : the_post();
                     
@@ -276,42 +359,37 @@ get_header();
     </div><!-- .container-wide -->
 </div><!-- .search-results-wrapper -->
 
-<style>
-/* =========================================
-   SEARCH PAGE SPECIFIC FIXES
-   ========================================= */
-
-/* Hide "View cart" button on product cards in search page */
-.search-results-wrapper .products li.product .added_to_cart {
-    display: none !important;
-}
-
-/* Remove border and background from Quick View button */
-.search-results-wrapper .products li.product .quick-view-button {
-    background: transparent !important;
-    border: none !important;
-    color: var(--color-text) !important;
-    padding: 0.75rem 1rem !important;
-}
-
-.search-results-wrapper .products li.product .quick-view-button:hover {
-    background: transparent !important;
-    border: none !important;
-    color: var(--color-primary) !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Bigger search title with more padding */
-.search-header.woocommerce-products-header {
-    padding: 3rem 0 2.5rem 0 !important;
-    margin-bottom: 2.5rem !important;
-}
-
-.search-title.woocommerce-products-header__title {
-    font-size: clamp(2rem, 3.5vw, 2.75rem) !important;
-    margin-bottom: 1rem !important;
-}
-</style>
+<!-- Initialize column preference on page load -->
+<script>
+(function() {
+    'use strict';
+    
+    // Get saved column preference (default: 4)
+    var savedColumns = localStorage.getItem('searchResultsColumns');
+    
+    if (!savedColumns || savedColumns === 'undefined' || savedColumns === 'null') {
+        savedColumns = '4';
+        localStorage.setItem('searchResultsColumns', '4');
+    }
+    
+    // Apply to grid
+    var productsGrid = document.querySelector('.products.search-results-grid');
+    if (productsGrid) {
+        productsGrid.setAttribute('data-columns', savedColumns);
+    }
+    
+    // Update active button
+    var columnToggles = document.querySelectorAll('.column-toggle');
+    columnToggles.forEach(function(toggle) {
+        var toggleColumns = toggle.getAttribute('data-columns');
+        if (toggleColumns === savedColumns) {
+            toggle.classList.add('active');
+        } else {
+            toggle.classList.remove('active');
+        }
+    });
+})();
+</script>
 
 <?php
 get_footer();

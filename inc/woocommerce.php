@@ -1,6 +1,7 @@
 <?php
 /**
  * WooCommerce Integration - FULLY INTEGRATED WITH CUSTOMIZER
+ * NOW WITH SEARCH RESULTS SORTING SUPPORT
  *
  * ALL settings now respect WooCommerce Customizer options
  */
@@ -182,7 +183,8 @@ function aaapos_woocommerce_nuclear_styles()
         !is_woocommerce() &&
         !is_cart() &&
         !is_checkout() &&
-        !is_account_page()
+        !is_account_page() &&
+        !is_search()
     ) {
         return;
     }
@@ -190,7 +192,7 @@ function aaapos_woocommerce_nuclear_styles()
     // Main WooCommerce styles (base styles, buttons, forms, etc.)
     wp_enqueue_style(
         "aaapos-woocommerce-base",
-        get_template_directory_uri() . "/assets/css/woocommerce.css",
+        get_template_directory_uri() . "/assets/css/woocommerce/woocommerce.css",
         [],
         AAAPOS_VERSION . "." . time(),
         "all",
@@ -257,50 +259,89 @@ function aaapos_enqueue_quick_view_assets()
         return;
     }
 
-    if (!is_shop() && !is_product_category() && !is_product_tag()) {
+    if (!is_shop() && !is_product_category() && !is_product_tag() && !is_search()) {
         return;
     }
 
-    // Quick View Button CSS - HIGHEST PRIORITY
-    wp_enqueue_style(
-        "aaapos-quick-view-button",
-        get_template_directory_uri() . "/assets/css/quick-view-button.css",
-        ["aaapos-woocommerce-base"],
-        AAAPOS_VERSION . "." . time(),
-        "all",
-    );
+    // Quick View Button CSS - Check if file exists first
+    $quick_view_button_css = get_template_directory() . "/assets/css/quick-view-button.css";
+    if (file_exists($quick_view_button_css)) {
+        wp_enqueue_style(
+            "aaapos-quick-view-button",
+            get_template_directory_uri() . "/assets/css/quick-view-button.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION . "." . time(),
+            "all",
+        );
+    }
 
     // Quick View Modal CSS
+    $quick_view_css = get_template_directory() . "/assets/css/quick-view.css";
+    if (file_exists($quick_view_css)) {
+        wp_enqueue_style(
+            "aaapos-quick-view",
+            get_template_directory_uri() . "/assets/css/quick-view.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION,
+            "all",
+        );
+    }
+
+    // Quick View JS - with proper dependencies
+    $quick_view_js = get_template_directory() . "/assets/js/quick-view.js";
+    if (file_exists($quick_view_js)) {
+        wp_enqueue_script(
+            "aaapos-quick-view-js",
+            get_template_directory_uri() . "/assets/js/quick-view.js",
+            ["jquery", "wc-add-to-cart-variation"],
+            AAAPOS_VERSION,
+            true,
+        );
+
+        // Localize script with AJAX data
+        wp_localize_script("aaapos-quick-view-js", "aaaposQuickView", [
+            "ajax_url" => admin_url("admin-ajax.php"),
+            "nonce" => wp_create_nonce("woocommerce-cart"),
+        ]);
+    }
+}
+add_action("wp_enqueue_scripts", "aaapos_enqueue_quick_view_assets", 1000);
+
+/**
+ * Enqueue Search Results Assets
+ */
+function aaapos_enqueue_search_assets()
+{
+    if (!is_search()) {
+        return;
+    }
+
+    // Search results CSS
     wp_enqueue_style(
-        "aaapos-quick-view",
-        get_template_directory_uri() . "/assets/css/quick-view.css",
-        ["aaapos-quick-view-button"],
+        "aaapos-search-results",
+        get_template_directory_uri() . "/assets/css/components/search-results.css",
+        ["aaapos-woocommerce-base"],
         AAAPOS_VERSION,
         "all",
     );
 
-    // Quick View JS - with proper dependencies
+    // Search results JS (sorting & view toggle)
     wp_enqueue_script(
-        "aaapos-quick-view-js",
-        get_template_directory_uri() . "/assets/js/quick-view.js",
-        ["jquery", "wc-add-to-cart-variation"],
+        "aaapos-search-results-js",
+        get_template_directory_uri() . "/assets/js/search-results.js",
+        ["jquery"],
         AAAPOS_VERSION,
         true,
     );
-
-    // Localize script with AJAX data
-    wp_localize_script("aaapos-quick-view-js", "aaaposQuickView", [
-        "ajax_url" => admin_url("admin-ajax.php"),
-        "nonce" => wp_create_nonce("woocommerce-cart"),
-    ]);
 }
-add_action("wp_enqueue_scripts", "aaapos_enqueue_quick_view_assets", 1000);
+add_action("wp_enqueue_scripts", "aaapos_enqueue_search_assets", 1001);
+
 /**
  * Add Critical Inline CSS - UPDATED TO USE CUSTOMIZER COLUMNS
  */
 function aaapos_woocommerce_inline_critical_css()
 {
-    if (!is_woocommerce() && !is_cart() && !is_checkout()) {
+    if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_search()) {
         return;
     }
 
@@ -384,7 +425,7 @@ add_filter("woocommerce_enqueue_styles", function ($styles) {
  */
 function aaapos_remove_woo_inline_css()
 {
-    if (is_woocommerce()) {
+    if (is_woocommerce() || is_search()) {
         wp_add_inline_style(
             "woocommerce-inline",
             '
@@ -790,3 +831,105 @@ function aaapos_update_cart_count()
 }
 add_action("wp_ajax_update_cart_count", "aaapos_update_cart_count");
 add_action("wp_ajax_nopriv_update_cart_count", "aaapos_update_cart_count");
+
+/**
+ * =========================================================================
+ * SEARCH RESULTS PRODUCT SORTING
+ * Modify search query to support WooCommerce product sorting
+ * =========================================================================
+ */
+
+/**
+ * Modify Search Query for Product Sorting
+ */
+function aaapos_search_product_sorting($query)
+{
+    // Only on search results page, main query, not admin
+    if (!is_search() || !$query->is_main_query() || is_admin()) {
+        return;
+    }
+
+    // Only if searching products
+    if (!isset($query->query_vars['post_type']) || $query->query_vars['post_type'] !== 'product') {
+        // Check if any products are in results
+        $has_products = false;
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                if (get_post_type() === 'product') {
+                    $has_products = true;
+                    break;
+                }
+            }
+            wp_reset_postdata();
+        }
+        
+        if (!$has_products) {
+            return;
+        }
+    }
+
+    // Get orderby parameter
+    $orderby = isset($_GET['orderby']) ? wc_clean($_GET['orderby']) : 'menu_order';
+
+    // Apply sorting
+    switch ($orderby) {
+        case 'popularity':
+            $query->set('meta_key', 'total_sales');
+            $query->set('orderby', 'meta_value_num');
+            $query->set('order', 'DESC');
+            break;
+
+        case 'rating':
+            $query->set('meta_key', '_wc_average_rating');
+            $query->set('orderby', 'meta_value_num');
+            $query->set('order', 'DESC');
+            break;
+
+        case 'date':
+            $query->set('orderby', 'date');
+            $query->set('order', 'DESC');
+            break;
+
+        case 'price':
+            $query->set('meta_key', '_price');
+            $query->set('orderby', 'meta_value_num');
+            $query->set('order', 'ASC');
+            break;
+
+        case 'price-desc':
+            $query->set('meta_key', '_price');
+            $query->set('orderby', 'meta_value_num');
+            $query->set('order', 'DESC');
+            break;
+
+        case 'menu_order':
+        default:
+            $query->set('orderby', 'menu_order title');
+            $query->set('order', 'ASC');
+            break;
+    }
+}
+add_action('pre_get_posts', 'aaapos_search_product_sorting', 20);
+
+/**
+ * Add WooCommerce Product Meta to Search Results
+ * Ensures product data is available for sorting
+ */
+function aaapos_search_product_meta($query)
+{
+    if (!is_search() || !$query->is_main_query() || is_admin()) {
+        return;
+    }
+
+    // Include product post type in search
+    $post_types = $query->get('post_type');
+    
+    if (empty($post_types)) {
+        $query->set('post_type', array('post', 'page', 'product'));
+    } elseif (is_array($post_types) && !in_array('product', $post_types)) {
+        $post_types[] = 'product';
+        $query->set('post_type', $post_types);
+    }
+}
+add_action('pre_get_posts', 'aaapos_search_product_meta', 10);

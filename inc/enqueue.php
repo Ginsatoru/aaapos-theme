@@ -91,7 +91,7 @@ function mr_enqueue_styles()
         ["mr-components"],
         MR_THEME_VERSION,
     );
-    
+
     // Breadcrumb component styles
     wp_enqueue_style(
         "mr-breadcrumb-shop",
@@ -119,7 +119,7 @@ function mr_enqueue_styles()
     );
 
     // WooCommerce specific styles
-    if (class_exists('WooCommerce')) {
+    if (class_exists("WooCommerce")) {
         // Quick View Modal styles
         wp_enqueue_style(
             "aaapos-quick-view",
@@ -261,7 +261,13 @@ function mr_enqueue_scripts()
         // ============================================
         // QUICK VIEW - Load on shop, archive, search pages
         // ============================================
-        if (is_shop() || is_product_category() || is_product_tag() || is_search() || is_front_page()) {
+        if (
+            is_shop() ||
+            is_product_category() ||
+            is_product_tag() ||
+            is_search() ||
+            is_front_page()
+        ) {
             wp_enqueue_script(
                 "aaapos-quick-view",
                 MR_THEME_URI . "/assets/js/quick-view.js",
@@ -280,7 +286,14 @@ function mr_enqueue_scripts()
         // ============================================
         // CART NOTIFICATIONS - Load on all pages with products
         // ============================================
-        if (is_shop() || is_product_category() || is_product_tag() || is_product() || is_search() || is_front_page()) {
+        if (
+            is_shop() ||
+            is_product_category() ||
+            is_product_tag() ||
+            is_product() ||
+            is_search() ||
+            is_front_page()
+        ) {
             wp_enqueue_script(
                 "aaapos-cart-notifications",
                 MR_THEME_URI . "/assets/js/cart-notifications.js",
@@ -305,6 +318,18 @@ function mr_enqueue_scripts()
                 MR_THEME_URI . "/assets/js/quantity-selector.js",
                 ["jquery"],
                 MR_THEME_VERSION,
+                true,
+            );
+        }
+
+        // Shop column toggle
+        if (is_shop() || is_product_category() || is_product_tag()) {
+            wp_enqueue_script(
+                "aaapos-shop-column-toggle",
+                get_template_directory_uri() .
+                    "/assets/js/shop-column-toggle.js",
+                ["jquery"],
+                "1.0.0",
                 true,
             );
         }
