@@ -1,7 +1,7 @@
 <?php
 /**
  * WooCommerce Integration - FULLY INTEGRATED WITH CUSTOMIZER
- * NOW WITH SEARCH RESULTS SORTING SUPPORT
+ * NOW WITH WORKING CATEGORY FILTER FUNCTIONALITY
  *
  * ALL settings now respect WooCommerce Customizer options
  */
@@ -99,6 +99,139 @@ add_action(
 );
 
 /**
+ * Render Category Filter with Modern Card Design
+ * Updated version with proper folder icon SVGs
+ */
+
+if (!function_exists('aaapos_render_category_filter')) {
+    function aaapos_render_category_filter() {
+        // Check if we're on shop or category page
+        if (!is_shop() && !is_product_category()) {
+            return;
+        }
+
+        // Check if filter is enabled
+        if (!get_theme_mod('enable_category_filter', true)) {
+            return;
+        }
+
+        // Get selected categories from customizer (comma-separated string)
+        $selected_categories_string = get_theme_mod('category_filter_categories', '');
+        
+        // Convert to array
+        $selected_categories = [];
+        if (!empty($selected_categories_string)) {
+            $selected_categories = array_map('intval', explode(',', $selected_categories_string));
+            $selected_categories = array_filter($selected_categories);
+        }
+
+        // Build query args
+        $args = [
+            'taxonomy'   => 'product_cat',
+            'hide_empty' => true,
+            'orderby'    => 'name',
+            'order'      => 'ASC',
+        ];
+
+        // If specific categories selected, filter them
+        if (!empty($selected_categories)) {
+            $args['include'] = $selected_categories;
+        }
+
+        $categories = get_terms($args);
+
+        // If no categories or error, don't show filter
+        if (empty($categories) || is_wp_error($categories)) {
+            return;
+        }
+
+        // Get total product count
+        $all_products_count = wp_count_posts('product')->publish;
+
+        // Get current category (if on category page)
+        $current_cat = is_product_category() ? get_queried_object()->term_id : 0;
+
+        // Get shop URL
+        $shop_url = get_permalink(wc_get_page_id('shop'));
+        ?>
+        
+        <div class="shop-category-filter">
+            <div class="category-filter-buttons">
+                
+                <!-- All Products Button -->
+                <a href="<?php echo esc_url($shop_url); ?>" 
+                   class="category-filter-btn<?php echo !$current_cat ? ' active' : ''; ?>" 
+                   aria-current="<?php echo !$current_cat ? 'page' : 'false'; ?>">
+                    
+                    <!-- Icon Box with Grid Icon -->
+                    <div class="filter-icon-box">
+                        <svg class="filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                        </svg>
+                    </div>
+                    
+                    <!-- Text Content -->
+                    <div class="filter-content">
+                        <span class="filter-label"><?php esc_html_e('All Products', 'aaapos-prime'); ?></span>
+                        <span class="filter-count"><?php 
+                            printf(
+                                esc_html(_n('%s Item', '%s Items', $all_products_count, 'aaapos-prime')),
+                                number_format_i18n($all_products_count)
+                            ); 
+                        ?></span>
+                    </div>
+                </a>
+                
+                <?php
+                // Loop through selected categories
+                foreach ($categories as $category) :
+                    $category_url = get_term_link($category);
+                    
+                    if (is_wp_error($category_url)) {
+                        continue;
+                    }
+                    
+                    $is_active = ($current_cat === $category->term_id);
+                    $product_count = $category->count;
+                ?>
+                
+                <a href="<?php echo esc_url($category_url); ?>" 
+                   class="category-filter-btn<?php echo $is_active ? ' active' : ''; ?>"
+                   aria-current="<?php echo $is_active ? 'page' : 'false'; ?>">
+                    
+                    <!-- Icon Box with Folder Icon -->
+                    <div class="filter-icon-box">
+                        <svg class="filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 7V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Text Content -->
+                    <div class="filter-content">
+                        <span class="filter-label"><?php echo esc_html($category->name); ?></span>
+                        <span class="filter-count"><?php 
+                            printf(
+                                esc_html(_n('%s Item', '%s Items', $product_count, 'aaapos-prime')),
+                                number_format_i18n($product_count)
+                            ); 
+                        ?></span>
+                    </div>
+                </a>
+                
+                <?php endforeach; ?>
+                
+            </div><!-- .category-filter-buttons -->
+        </div><!-- .shop-category-filter -->
+        
+        <?php
+    }
+}
+
+/**
  * Add Custom Star Rating to Single Product Page
  */
 function aaapos_custom_single_rating()
@@ -192,11 +325,27 @@ function aaapos_woocommerce_nuclear_styles()
     // Main WooCommerce styles (base styles, buttons, forms, etc.)
     wp_enqueue_style(
         "aaapos-woocommerce-base",
-        get_template_directory_uri() . "/assets/css/woocommerce/woocommerce.css",
+        get_template_directory_uri() .
+            "/assets/css/woocommerce/woocommerce.css",
         [],
         AAAPOS_VERSION . "." . time(),
         "all",
     );
+
+    // Category filter styles - enqueue when enabled and on shop pages
+    if (
+        get_theme_mod("enable_category_filter", true) &&
+        (is_shop() || is_product_category())
+    ) {
+        wp_enqueue_style(
+            "aaapos-category-filter",
+            get_template_directory_uri() .
+                "/assets/css/components/categories-shop.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION . "." . time(),
+            "all",
+        );
+    }
 
     // My Account page styles
     if (is_account_page()) {
@@ -259,12 +408,18 @@ function aaapos_enqueue_quick_view_assets()
         return;
     }
 
-    if (!is_shop() && !is_product_category() && !is_product_tag() && !is_search()) {
+    if (
+        !is_shop() &&
+        !is_product_category() &&
+        !is_product_tag() &&
+        !is_search()
+    ) {
         return;
     }
 
     // Quick View Button CSS - Check if file exists first
-    $quick_view_button_css = get_template_directory() . "/assets/css/quick-view-button.css";
+    $quick_view_button_css =
+        get_template_directory() . "/assets/css/quick-view-button.css";
     if (file_exists($quick_view_button_css)) {
         wp_enqueue_style(
             "aaapos-quick-view-button",
@@ -319,7 +474,8 @@ function aaapos_enqueue_search_assets()
     // Search results CSS
     wp_enqueue_style(
         "aaapos-search-results",
-        get_template_directory_uri() . "/assets/css/components/search-results.css",
+        get_template_directory_uri() .
+            "/assets/css/components/search-results.css",
         ["aaapos-woocommerce-base"],
         AAAPOS_VERSION,
         "all",
@@ -850,67 +1006,72 @@ function aaapos_search_product_sorting($query)
     }
 
     // Only if searching products
-    if (!isset($query->query_vars['post_type']) || $query->query_vars['post_type'] !== 'product') {
+    if (
+        !isset($query->query_vars["post_type"]) ||
+        $query->query_vars["post_type"] !== "product"
+    ) {
         // Check if any products are in results
         $has_products = false;
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-                if (get_post_type() === 'product') {
+                if (get_post_type() === "product") {
                     $has_products = true;
                     break;
                 }
             }
             wp_reset_postdata();
         }
-        
+
         if (!$has_products) {
             return;
         }
     }
 
     // Get orderby parameter
-    $orderby = isset($_GET['orderby']) ? wc_clean($_GET['orderby']) : 'menu_order';
+    $orderby = isset($_GET["orderby"])
+        ? wc_clean($_GET["orderby"])
+        : "menu_order";
 
     // Apply sorting
     switch ($orderby) {
-        case 'popularity':
-            $query->set('meta_key', 'total_sales');
-            $query->set('orderby', 'meta_value_num');
-            $query->set('order', 'DESC');
+        case "popularity":
+            $query->set("meta_key", "total_sales");
+            $query->set("orderby", "meta_value_num");
+            $query->set("order", "DESC");
             break;
 
-        case 'rating':
-            $query->set('meta_key', '_wc_average_rating');
-            $query->set('orderby', 'meta_value_num');
-            $query->set('order', 'DESC');
+        case "rating":
+            $query->set("meta_key", "_wc_average_rating");
+            $query->set("orderby", "meta_value_num");
+            $query->set("order", "DESC");
             break;
 
-        case 'date':
-            $query->set('orderby', 'date');
-            $query->set('order', 'DESC');
+        case "date":
+            $query->set("orderby", "date");
+            $query->set("order", "DESC");
             break;
 
-        case 'price':
-            $query->set('meta_key', '_price');
-            $query->set('orderby', 'meta_value_num');
-            $query->set('order', 'ASC');
+        case "price":
+            $query->set("meta_key", "_price");
+            $query->set("orderby", "meta_value_num");
+            $query->set("order", "ASC");
             break;
 
-        case 'price-desc':
-            $query->set('meta_key', '_price');
-            $query->set('orderby', 'meta_value_num');
-            $query->set('order', 'DESC');
+        case "price-desc":
+            $query->set("meta_key", "_price");
+            $query->set("orderby", "meta_value_num");
+            $query->set("order", "DESC");
             break;
 
-        case 'menu_order':
+        case "menu_order":
         default:
-            $query->set('orderby', 'menu_order title');
-            $query->set('order', 'ASC');
+            $query->set("orderby", "menu_order title");
+            $query->set("order", "ASC");
             break;
     }
 }
-add_action('pre_get_posts', 'aaapos_search_product_sorting', 20);
+add_action("pre_get_posts", "aaapos_search_product_sorting", 20);
 
 /**
  * Add WooCommerce Product Meta to Search Results
@@ -923,13 +1084,14 @@ function aaapos_search_product_meta($query)
     }
 
     // Include product post type in search
-    $post_types = $query->get('post_type');
-    
+    $post_types = $query->get("post_type");
+
     if (empty($post_types)) {
-        $query->set('post_type', array('post', 'page', 'product'));
-    } elseif (is_array($post_types) && !in_array('product', $post_types)) {
-        $post_types[] = 'product';
-        $query->set('post_type', $post_types);
+        $query->set("post_type", ["post", "page", "product"]);
+    } elseif (is_array($post_types) && !in_array("product", $post_types)) {
+        $post_types[] = "product";
+        $query->set("post_type", $post_types);
     }
 }
-add_action('pre_get_posts', 'aaapos_search_product_meta', 10);
+add_action("pre_get_posts", "aaapos_search_product_meta", 10);
+?>

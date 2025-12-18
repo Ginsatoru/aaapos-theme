@@ -1,10 +1,10 @@
 <?php
 /**
  * The Template for displaying product archives
- * NOW WITH COLUMN TOGGLE CONTROLS (2, 3, 4 columns)
+ * NOW WITH CATEGORY FILTER BELOW TOOLBAR
  * 
  * @package AAAPOS_Prime
- * @version 1.0.0
+ * @version 2.1.0
  */
 
 defined('ABSPATH') || exit;
@@ -19,6 +19,9 @@ do_action('woocommerce_before_main_content');
 // Check if sidebar should be shown
 $show_sidebar = get_theme_mod('show_shop_sidebar', false) && is_active_sidebar('shop-sidebar');
 $container_class = $show_sidebar ? 'has-sidebar' : 'no-sidebar';
+
+// Check if category filter is enabled
+$show_category_filter = get_theme_mod('enable_category_filter', true);
 ?>
 
 <div class="shop-page-wrapper <?php echo esc_attr($container_class); ?>">
@@ -137,6 +140,13 @@ $container_class = $show_sidebar ? 'has-sidebar' : 'no-sidebar';
                         
                     </div>
                     <?php
+
+                    // ============================================
+                    // CATEGORY FILTER SECTION - BELOW TOOLBAR
+                    // ============================================
+                    if ($show_category_filter && (is_shop() || is_product_category())) {
+                        aaapos_render_category_filter();
+                    }
 
                     woocommerce_product_loop_start();
 

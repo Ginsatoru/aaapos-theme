@@ -1,14 +1,12 @@
 /* ============================================
-   SHOP PAGE CATEGORY CARDS - MODERN E-COMMERCE STYLE
    File: categories-shop.css
-   Version: 4.1.0 - WITH ARROW HOVER EFFECT
-   
-   Clean cards with image, title, description, and count
-   NEW: Animated arrow appears on hover
    ============================================ */
 
+@import "category-filter.css";
+
 /* ==========================================================================
-   BASE CARD STRUCTURE
+   CATEGORY CARDS STYLES (Existing - Preserved)
+   These styles apply to category archive pages showing category cards
    ========================================================================== */
 
 .woocommerce-shop ul.products li.product-category,
@@ -37,10 +35,7 @@ body.tax-product_cat ul.products li.product-category:hover {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* ==========================================================================
-   FULL CARD LINK
-   ========================================================================== */
-
+/* Full Card Link */
 .woocommerce-shop ul.products li.product-category > a,
 .woocommerce-page.archive ul.products li.product-category > a,
 .post-type-archive-product ul.products li.product-category > a,
@@ -55,7 +50,6 @@ body.tax-product_cat ul.products li.product-category > a {
   position: relative !important;
 }
 
-/* Remove any overlay */
 .woocommerce-shop ul.products li.product-category > a::before,
 .woocommerce-page.archive ul.products li.product-category > a::before,
 .post-type-archive-product ul.products li.product-category > a::before,
@@ -63,19 +57,14 @@ body.tax-product_cat ul.products li.product-category > a::before {
   display: none !important;
 }
 
-/* ==========================================================================
-   ANIMATED ARROW ON HOVER - INLINE WITH PRODUCT COUNT
-   Now uses CSS variables for colors
-   ========================================================================== */
-
-/* Arrow icon - inline with count, no background */
+/* Animated Arrow */
 .woocommerce-shop ul.products li.product-category > a::after,
 .woocommerce-page.archive ul.products li.product-category > a::after,
 .post-type-archive-product ul.products li.product-category > a::after,
 body.tax-product_cat ul.products li.product-category > a::after {
   content: "" !important;
   position: absolute !important;
-  bottom: var(--space-5) !important; /* Same level as count */
+  bottom: var(--space-5) !important;
   right: var(--space-5) !important;
   width: 20px !important;
   height: 20px !important;
@@ -84,15 +73,13 @@ body.tax-product_cat ul.products li.product-category > a::after {
   transform: translateX(-10px) !important;
   transition: all 0.3s ease !important;
   z-index: 10 !important;
-  
-  /* Simple arrow icon - uses color-text-light variable (default gray) */
+
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   background-size: 20px 20px !important;
   background-color: transparent !important;
-  
-  /* Fallback mask for dynamic color support */
+
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E") !important;
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E") !important;
   -webkit-mask-repeat: no-repeat !important;
@@ -105,7 +92,6 @@ body.tax-product_cat ul.products li.product-category > a::after {
   background-image: none !important;
 }
 
-/* Arrow appears and slides in on hover - changes to brand color */
 .woocommerce-shop ul.products li.product-category:hover > a::after,
 .woocommerce-page.archive ul.products li.product-category:hover > a::after,
 .post-type-archive-product ul.products li.product-category:hover > a::after,
@@ -113,12 +99,9 @@ body.tax-product_cat ul.products li.product-category:hover > a::after {
   opacity: 1 !important;
   visibility: visible !important;
   transform: translateX(0) !important;
-  
-  /* Uses brand color variable on hover */
-  background-color: var(--brand-color, #357DFD) !important;
+  background-color: var(--brand-color, #357dfd) !important;
 }
 
-/* Arrow subtle pulse animation on hover */
 .woocommerce-shop ul.products li.product-category:hover > a::after,
 .woocommerce-page.archive ul.products li.product-category:hover > a::after,
 .post-type-archive-product ul.products li.product-category:hover > a::after,
@@ -127,7 +110,8 @@ body.tax-product_cat ul.products li.product-category:hover > a::after {
 }
 
 @keyframes arrowPulseInline {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0) !important;
   }
   50% {
@@ -135,10 +119,7 @@ body.tax-product_cat ul.products li.product-category:hover > a::after {
   }
 }
 
-/* ==========================================================================
-   CATEGORY IMAGE
-   ========================================================================== */
-
+/* Category Image */
 .woocommerce-shop ul.products li.product-category > a > img,
 .woocommerce-page.archive ul.products li.product-category > a > img,
 .post-type-archive-product ul.products li.product-category > a > img,
@@ -162,18 +143,27 @@ body.tax-product_cat ul.products li.product-category:hover > a > img {
   transform: scale(1.05) !important;
 }
 
-/* ==========================================================================
-   TITLE (H2) - Category Name Container
-   ========================================================================== */
-
+/* Title (H2) */
 .woocommerce-shop ul.products li.product-category h2,
-.woocommerce-shop ul.products li.product-category .woocommerce-loop-category__title,
+.woocommerce-shop
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title,
 .woocommerce-page.archive ul.products li.product-category h2,
-.woocommerce-page.archive ul.products li.product-category .woocommerce-loop-category__title,
+.woocommerce-page.archive
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title,
 .post-type-archive-product ul.products li.product-category h2,
-.post-type-archive-product ul.products li.product-category .woocommerce-loop-category__title,
+.post-type-archive-product
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title,
 body.tax-product_cat ul.products li.product-category h2,
-body.tax-product_cat ul.products li.product-category .woocommerce-loop-category__title {
+body.tax-product_cat
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title {
   position: relative !important;
   padding: var(--space-5) !important;
   padding-bottom: 0 !important;
@@ -192,27 +182,53 @@ body.tax-product_cat ul.products li.product-category .woocommerce-loop-category_
   flex-shrink: 0 !important;
 }
 
-/* Hover - Title changes to brand color */
 .woocommerce-shop ul.products li.product-category:hover h2,
-.woocommerce-shop ul.products li.product-category:hover .woocommerce-loop-category__title,
+.woocommerce-shop
+  ul.products
+  li.product-category:hover
+  .woocommerce-loop-category__title,
 .woocommerce-page.archive ul.products li.product-category:hover h2,
-.woocommerce-page.archive ul.products li.product-category:hover .woocommerce-loop-category__title,
+.woocommerce-page.archive
+  ul.products
+  li.product-category:hover
+  .woocommerce-loop-category__title,
 .post-type-archive-product ul.products li.product-category:hover h2,
-.post-type-archive-product ul.products li.product-category:hover .woocommerce-loop-category__title,
+.post-type-archive-product
+  ul.products
+  li.product-category:hover
+  .woocommerce-loop-category__title,
 body.tax-product_cat ul.products li.product-category:hover h2,
-body.tax-product_cat ul.products li.product-category:hover .woocommerce-loop-category__title {
+body.tax-product_cat
+  ul.products
+  li.product-category:hover
+  .woocommerce-loop-category__title {
   color: var(--brand-color) !important;
 }
 
-/* Category name text inside H2 */
 .woocommerce-shop ul.products li.product-category h2 mark,
-.woocommerce-shop ul.products li.product-category .woocommerce-loop-category__title mark,
+.woocommerce-shop
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title
+  mark,
 .woocommerce-page.archive ul.products li.product-category h2 mark,
-.woocommerce-page.archive ul.products li.product-category .woocommerce-loop-category__title mark,
+.woocommerce-page.archive
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title
+  mark,
 .post-type-archive-product ul.products li.product-category h2 mark,
-.post-type-archive-product ul.products li.product-category .woocommerce-loop-category__title mark,
+.post-type-archive-product
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title
+  mark,
 body.tax-product_cat ul.products li.product-category h2 mark,
-body.tax-product_cat ul.products li.product-category .woocommerce-loop-category__title mark {
+body.tax-product_cat
+  ul.products
+  li.product-category
+  .woocommerce-loop-category__title
+  mark {
   background: none !important;
   color: inherit !important;
   font-weight: inherit !important;
@@ -221,13 +237,16 @@ body.tax-product_cat ul.products li.product-category .woocommerce-loop-category_
   display: inline !important;
 }
 
-/* ==========================================================================
-   CONTENT AREA - Description + Count Container
-   ========================================================================== */
-
+/* Content Area */
 .woocommerce-shop ul.products li.product-category .category-content-area,
-.woocommerce-page.archive ul.products li.product-category .category-content-area,
-.post-type-archive-product ul.products li.product-category .category-content-area,
+.woocommerce-page.archive
+  ul.products
+  li.product-category
+  .category-content-area,
+.post-type-archive-product
+  ul.products
+  li.product-category
+  .category-content-area,
 body.tax-product_cat ul.products li.product-category .category-content-area {
   padding: 0 var(--space-6) var(--space-6) var(--space-6) !important;
   display: flex !important;
@@ -236,13 +255,13 @@ body.tax-product_cat ul.products li.product-category .category-content-area {
   flex-grow: 1 !important;
 }
 
-/* ==========================================================================
-   CATEGORY DESCRIPTION
-   ========================================================================== */
-
+/* Category Description */
 .woocommerce-shop ul.products li.product-category .category-description,
 .woocommerce-page.archive ul.products li.product-category .category-description,
-.post-type-archive-product ul.products li.product-category .category-description,
+.post-type-archive-product
+  ul.products
+  li.product-category
+  .category-description,
 body.tax-product_cat ul.products li.product-category .category-description {
   font-size: 0.9375rem !important;
   color: #666 !important;
@@ -255,10 +274,7 @@ body.tax-product_cat ul.products li.product-category .category-description {
   margin-bottom: -20px !important;
 }
 
-/* ==========================================================================
-   PRODUCT COUNT - Clean format "X Products"
-   ========================================================================== */
-
+/* Product Count */
 .woocommerce-shop ul.products li.product-category .count,
 .woocommerce-page.archive ul.products li.product-category .count,
 .post-type-archive-product ul.products li.product-category .count,
@@ -289,10 +305,7 @@ body.tax-product_cat ul.products li.product-category .count::after {
   display: none !important;
 }
 
-/* ==========================================================================
-   BADGE (NEW/SALE) - Top right corner
-   ========================================================================== */
-
+/* Badge */
 .woocommerce-shop ul.products li.product-category .category-badge,
 .woocommerce-page.archive ul.products li.product-category .category-badge,
 .post-type-archive-product ul.products li.product-category .category-badge,
@@ -311,16 +324,20 @@ body.tax-product_cat ul.products li.product-category .category-badge {
   font-family: var(--font-body) !important;
 }
 
-/* ==========================================================================
-   FIX: Ensure proper content structure wrapping
-   ========================================================================== */
-
-/* Wrap description and count together after title */
+/* Content Structure */
 .woocommerce-shop ul.products li.product-category h2 ~ .category-description,
 .woocommerce-shop ul.products li.product-category h2 ~ .count,
-.woocommerce-page.archive ul.products li.product-category h2 ~ .category-description,
+.woocommerce-page.archive
+  ul.products
+  li.product-category
+  h2
+  ~ .category-description,
 .woocommerce-page.archive ul.products li.product-category h2 ~ .count,
-.post-type-archive-product ul.products li.product-category h2 ~ .category-description,
+.post-type-archive-product
+  ul.products
+  li.product-category
+  h2
+  ~ .category-description,
 .post-type-archive-product ul.products li.product-category h2 ~ .count,
 body.tax-product_cat ul.products li.product-category h2 ~ .category-description,
 body.tax-product_cat ul.products li.product-category h2 ~ .count {
@@ -328,16 +345,17 @@ body.tax-product_cat ul.products li.product-category h2 ~ .count {
   padding-right: var(--space-5) !important;
 }
 
-/* Description spacing - TIGHTER GAP */
 .woocommerce-shop ul.products li.product-category .category-description,
 .woocommerce-page.archive ul.products li.product-category .category-description,
-.post-type-archive-product ul.products li.product-category .category-description,
+.post-type-archive-product
+  ul.products
+  li.product-category
+  .category-description,
 body.tax-product_cat ul.products li.product-category .category-description {
   padding-top: var(--space-1) !important;
   padding-bottom: var(--space-1) !important;
 }
 
-/* Count at bottom with spacing */
 .woocommerce-shop ul.products li.product-category .count,
 .woocommerce-page.archive ul.products li.product-category .count,
 .post-type-archive-product ul.products li.product-category .count,
@@ -345,10 +363,7 @@ body.tax-product_cat ul.products li.product-category .count {
   padding-bottom: var(--space-5) !important;
 }
 
-/* ==========================================================================
-   TABLET RESPONSIVE
-   ========================================================================== */
-
+/* Tablet Responsive */
 @media (max-width: 1024px) {
   .woocommerce-shop ul.products li.product-category > a > img,
   .woocommerce-page.archive ul.products li.product-category > a > img,
@@ -358,18 +373,30 @@ body.tax-product_cat ul.products li.product-category .count {
   }
 
   .woocommerce-shop ul.products li.product-category h2,
-  .woocommerce-shop ul.products li.product-category .woocommerce-loop-category__title,
+  .woocommerce-shop
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title,
   .woocommerce-page.archive ul.products li.product-category h2,
-  .woocommerce-page.archive ul.products li.product-category .woocommerce-loop-category__title,
+  .woocommerce-page.archive
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title,
   .post-type-archive-product ul.products li.product-category h2,
-  .post-type-archive-product ul.products li.product-category .woocommerce-loop-category__title,
+  .post-type-archive-product
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title,
   body.tax-product_cat ul.products li.product-category h2,
-  body.tax-product_cat ul.products li.product-category .woocommerce-loop-category__title {
+  body.tax-product_cat
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title {
     font-size: 1.375rem !important;
     padding: var(--space-5) !important;
     padding-bottom: 0 !important;
   }
-  
+
   .woocommerce-shop ul.products li.product-category .count,
   .woocommerce-page.archive ul.products li.product-category .count,
   .post-type-archive-product ul.products li.product-category .count,
@@ -377,16 +404,21 @@ body.tax-product_cat ul.products li.product-category .count {
     font-size: 0.8125rem !important;
     padding: 0 var(--space-5) var(--space-5) var(--space-5) !important;
   }
-  
+
   .woocommerce-shop ul.products li.product-category .category-description,
-  .woocommerce-page.archive ul.products li.product-category .category-description,
-  .post-type-archive-product ul.products li.product-category .category-description,
+  .woocommerce-page.archive
+    ul.products
+    li.product-category
+    .category-description,
+  .post-type-archive-product
+    ul.products
+    li.product-category
+    .category-description,
   body.tax-product_cat ul.products li.product-category .category-description {
     font-size: 0.875rem !important;
     padding: var(--space-3) var(--space-5) var(--space-2) var(--space-5) !important;
   }
 
-  /* Smaller arrow on tablets - inline with count */
   .woocommerce-shop ul.products li.product-category > a::after,
   .woocommerce-page.archive ul.products li.product-category > a::after,
   .post-type-archive-product ul.products li.product-category > a::after,
@@ -400,10 +432,7 @@ body.tax-product_cat ul.products li.product-category .count {
   }
 }
 
-/* ==========================================================================
-   MOBILE RESPONSIVE
-   ========================================================================== */
-
+/* Mobile Responsive */
 @media (max-width: 767px) {
   .woocommerce-shop ul.products li.product-category,
   .woocommerce-page.archive ul.products li.product-category,
@@ -420,13 +449,25 @@ body.tax-product_cat ul.products li.product-category .count {
   }
 
   .woocommerce-shop ul.products li.product-category h2,
-  .woocommerce-shop ul.products li.product-category .woocommerce-loop-category__title,
+  .woocommerce-shop
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title,
   .woocommerce-page.archive ul.products li.product-category h2,
-  .woocommerce-page.archive ul.products li.product-category .woocommerce-loop-category__title,
+  .woocommerce-page.archive
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title,
   .post-type-archive-product ul.products li.product-category h2,
-  .post-type-archive-product ul.products li.product-category .woocommerce-loop-category__title,
+  .post-type-archive-product
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title,
   body.tax-product_cat ul.products li.product-category h2,
-  body.tax-product_cat ul.products li.product-category .woocommerce-loop-category__title {
+  body.tax-product_cat
+    ul.products
+    li.product-category
+    .woocommerce-loop-category__title {
     font-size: 1.25rem !important;
     padding: var(--space-4) !important;
     padding-bottom: 0 !important;
@@ -441,14 +482,19 @@ body.tax-product_cat ul.products li.product-category .count {
   }
 
   .woocommerce-shop ul.products li.product-category .category-description,
-  .woocommerce-page.archive ul.products li.product-category .category-description,
-  .post-type-archive-product ul.products li.product-category .category-description,
+  .woocommerce-page.archive
+    ul.products
+    li.product-category
+    .category-description,
+  .post-type-archive-product
+    ul.products
+    li.product-category
+    .category-description,
   body.tax-product_cat ul.products li.product-category .category-description {
     font-size: 0.8125rem !important;
     padding: var(--space-3) var(--space-4) var(--space-2) var(--space-4) !important;
   }
 
-  /* Even smaller arrow on mobile - inline with count */
   .woocommerce-shop ul.products li.product-category > a::after,
   .woocommerce-page.archive ul.products li.product-category > a::after,
   .post-type-archive-product ul.products li.product-category > a::after,
@@ -462,10 +508,7 @@ body.tax-product_cat ul.products li.product-category .count {
   }
 }
 
-/* ==========================================================================
-   ACCESSIBILITY
-   ========================================================================== */
-
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .woocommerce-shop ul.products li.product-category,
   .woocommerce-shop ul.products li.product-category > a > img,
@@ -507,12 +550,17 @@ body.tax-product_cat ul.products li.product-category > a:focus {
 }
 
 .woocommerce-shop ul.products li.product-category > a:focus:not(:focus-visible),
-.woocommerce-page.archive ul.products li.product-category > a:focus:not(:focus-visible),
-.post-type-archive-product ul.products li.product-category > a:focus:not(:focus-visible),
-body.tax-product_cat ul.products li.product-category > a:focus:not(:focus-visible) {
+.woocommerce-page.archive
+  ul.products
+  li.product-category
+  > a:focus:not(:focus-visible),
+.post-type-archive-product
+  ul.products
+  li.product-category
+  > a:focus:not(:focus-visible),
+body.tax-product_cat
+  ul.products
+  li.product-category
+  > a:focus:not(:focus-visible) {
   outline: none !important;
 }
-
-/* ==========================================================================
-   END - Fixed Category Cards Layout with Arrow Hover Effect
-   ========================================================================== */

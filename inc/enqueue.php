@@ -118,6 +118,15 @@ function mr_enqueue_styles()
         "all",
     );
 
+    // JavaScript
+    wp_enqueue_script(
+        "aaapos-category-filter-drag",
+        get_template_directory_uri() . "/assets/js/category-filter-drag.js",
+        [],
+        "1.0.0",
+        true,
+    );
+
     // WooCommerce specific styles
     if (class_exists("WooCommerce")) {
         // Quick View Modal styles
