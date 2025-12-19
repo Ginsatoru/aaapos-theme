@@ -1,7 +1,8 @@
 <?php
 /**
  * WooCommerce Customizer Settings woocommerce.php
- * Updated with Multi-Checkbox Category Filter Controls
+ * Updated with Shop Header Background & Multi-Checkbox Category Filter Controls
+ * Version: 3.0.0
  */
 
 if (!defined("ABSPATH")) {
@@ -22,6 +23,59 @@ function mr_woocommerce_customizer($wp_customize)
     $wp_customize->add_section("mr_woocommerce_settings", [
         "title" => __("WooCommerce Settings", "macedon-ranges"),
         "priority" => 120,
+    ]);
+
+    // ============================================
+    // SHOP HEADER SETTINGS (Background Image)
+    // ============================================
+
+    // Shop Header Background Image
+    $wp_customize->add_setting("shop_header_bg_image", [
+        "default" => "",
+        "sanitize_callback" => "esc_url_raw",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control(
+        new WP_Customize_Image_Control($wp_customize, "shop_header_bg_image", [
+            "label" => __("Shop Header Background Image", "macedon-ranges"),
+            "description" => __(
+                "Upload a high-quality greenhouse or plant nursery image for the shop header. Recommended: Bright, airy interior with lush green plants.",
+                "macedon-ranges",
+            ),
+            "section" => "mr_woocommerce_settings",
+            "priority" => 3,
+        ]),
+    );
+
+    // Shop Header Title
+    $wp_customize->add_setting("shop_header_title", [
+        "default" => "Shop",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("shop_header_title", [
+        "label" => __("Shop Header Title", "macedon-ranges"),
+        "description" => __("Main heading text for shop page", "macedon-ranges"),
+        "section" => "mr_woocommerce_settings",
+        "type" => "text",
+        "priority" => 4,
+    ]);
+
+    // Shop Header Subtitle
+    $wp_customize->add_setting("shop_header_subtitle", [
+        "default" => "Evoke emotion, highlight artisan quality, create a unique experience.",
+        "sanitize_callback" => "wp_kses_post",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("shop_header_subtitle", [
+        "label" => __("Shop Header Subtitle", "macedon-ranges"),
+        "description" => __("Descriptive text below the title", "macedon-ranges"),
+        "section" => "mr_woocommerce_settings",
+        "type" => "textarea",
+        "priority" => 4.5,
     ]);
 
     // ============================================

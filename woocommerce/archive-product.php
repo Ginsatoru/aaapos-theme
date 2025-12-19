@@ -1,10 +1,10 @@
 <?php
 /**
  * The Template for displaying product archives
- * NOW WITH CATEGORY FILTER BELOW TOOLBAR
+ * WITH ENHANCED HEADER & CATEGORY FILTER
  * 
  * @package AAAPOS_Prime
- * @version 2.1.0
+ * @version 3.0.0
  */
 
 defined('ABSPATH') || exit;
@@ -22,6 +22,11 @@ $container_class = $show_sidebar ? 'has-sidebar' : 'no-sidebar';
 
 // Check if category filter is enabled
 $show_category_filter = get_theme_mod('enable_category_filter', true);
+
+// Get shop header customizer settings
+$header_bg_image = get_theme_mod('shop_header_bg_image', '');
+$header_title = get_theme_mod('shop_header_title', 'Shop');
+$header_subtitle = get_theme_mod('shop_header_subtitle', 'Evoke emotion, highlight artisan quality, create a unique experience.');
 ?>
 
 <div class="shop-page-wrapper <?php echo esc_attr($container_class); ?>">
@@ -33,15 +38,23 @@ $show_category_filter = get_theme_mod('enable_category_filter', true);
             <div class="shop-main-content">
                 
                 <?php if (apply_filters('woocommerce_show_page_title', true)) : ?>
-                    <header class="woocommerce-products-header">
-                        <h1 class="woocommerce-products-header__title page-title"><?php woocommerce_page_title(); ?></h1>
+                    <header class="woocommerce-products-header <?php echo !empty($header_bg_image) ? 'has-background-image' : ''; ?>"
+                            <?php if (!empty($header_bg_image)) : ?>
+                                style="--shop-header-bg-image: url('<?php echo esc_url($header_bg_image); ?>');"
+                            <?php endif; ?>>
                         
-                        <?php
-                        /**
-                         * Hook: woocommerce_archive_description.
-                         */
-                        do_action('woocommerce_archive_description');
-                        ?>
+                        <div class="woocommerce-products-header__inner">
+                            <h1 class="woocommerce-products-header__title page-title">
+                                <?php echo esc_html($header_title); ?>
+                            </h1>
+                            
+                            <?php if (!empty($header_subtitle)) : ?>
+                                <div class="woocommerce-archive-description">
+                                    <p><?php echo wp_kses_post($header_subtitle); ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        
                     </header>
                 <?php endif; ?>
 

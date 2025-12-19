@@ -125,7 +125,7 @@ body.tax-product_cat ul.products li.product-category:hover > a::after {
 .post-type-archive-product ul.products li.product-category > a > img,
 body.tax-product_cat ul.products li.product-category > a > img {
   width: 100% !important;
-  height: 240px !important;
+  height: 300px !important;
   object-fit: cover !important;
   display: block !important;
   margin: 0 !important;

@@ -1,11 +1,14 @@
 /**
- * Category Filter - Drag Scroll Functionality (FINAL FIX v3.2)
+ * Category Filter - Drag Scroll Functionality with Gradient Overlays
  * File: category-filter-drag.js
  * Location: assets/js/
- * Version: 3.2.0
+ * Version: 4.0.0
  * 
- * BOTH drag and click work perfectly!
- * Key: Only add is-dragging class when actually dragging
+ * Features:
+ * - Drag to scroll with smooth gesture detection
+ * - Dynamic gradient overlays (left/right) based on scroll position
+ * - Both drag and click work perfectly
+ * - Pointer-events: none on overlays to allow clicking through
  */
 
 (function() {
@@ -26,6 +29,12 @@
         
         // Drag threshold
         const DRAG_THRESHOLD = 5;
+        
+        // Create gradient overlays
+        createGradientOverlays(container);
+        
+        // Update overlays on initial load
+        updateGradientOverlays(container);
         
         // Prevent drag ghost images on links
         const links = container.querySelectorAll('a');
@@ -93,7 +102,15 @@
                 
                 // Perform scroll
                 container.scrollLeft = scrollLeft - walk;
+                
+                // Update gradient overlays during scroll
+                updateGradientOverlays(container);
             }
+        });
+        
+        // Scroll event - Update overlays when scrolling via other means
+        container.addEventListener('scroll', function() {
+            updateGradientOverlays(container);
         });
         
         // Click handler - block if dragged
@@ -133,6 +150,9 @@
             if (touchMoveDistance > walkY && touchMoveDistance > DRAG_THRESHOLD) {
                 touchIsDragging = true;
                 container.scrollLeft = touchScrollLeft + walkX;
+                
+                // Update gradient overlays during touch scroll
+                updateGradientOverlays(container);
             }
         }, { passive: true });
         
@@ -152,6 +172,88 @@
                 return false;
             }
         }, true);
+        
+        // Update overlays on window resize
+        window.addEventListener('resize', function() {
+            updateGradientOverlays(container);
+        });
+    }
+    
+    /**
+     * Create gradient overlay elements
+     */
+    function createGradientOverlays(container) {
+        const wrapper = container.parentElement;
+        
+        // Check if overlays already exist
+        if (wrapper.querySelector('.category-filter-overlay')) {
+            return;
+        }
+        
+        // Create left overlay
+        const leftOverlay = document.createElement('div');
+        leftOverlay.className = 'category-filter-overlay category-filter-overlay--left';
+        leftOverlay.setAttribute('aria-hidden', 'true');
+        
+        // Create right overlay
+        const rightOverlay = document.createElement('div');
+        rightOverlay.className = 'category-filter-overlay category-filter-overlay--right';
+        rightOverlay.setAttribute('aria-hidden', 'true');
+        
+        // Append overlays to wrapper
+        wrapper.appendChild(leftOverlay);
+        wrapper.appendChild(rightOverlay);
+    }
+    
+    /**
+     * Update gradient overlays based on scroll position
+     */
+    function updateGradientOverlays(container) {
+        const wrapper = container.parentElement;
+        const leftOverlay = wrapper.querySelector('.category-filter-overlay--left');
+        const rightOverlay = wrapper.querySelector('.category-filter-overlay--right');
+        
+        if (!leftOverlay || !rightOverlay) {
+            return;
+        }
+        
+        const scrollLeft = container.scrollLeft;
+        const scrollWidth = container.scrollWidth;
+        const clientWidth = container.clientWidth;
+        const maxScroll = scrollWidth - clientWidth;
+        
+        // Tolerance for floating point calculations (1px)
+        const tolerance = 1;
+        
+        // Check if content overflows
+        const hasOverflow = scrollWidth > clientWidth;
+        
+        if (!hasOverflow) {
+            // No overflow - hide both overlays
+            leftOverlay.classList.remove('visible');
+            leftOverlay.classList.add('hidden');
+            rightOverlay.classList.remove('visible');
+            rightOverlay.classList.add('hidden');
+            return;
+        }
+        
+        // Left overlay: Show when scrolled away from start
+        if (scrollLeft > tolerance) {
+            leftOverlay.classList.add('visible');
+            leftOverlay.classList.remove('hidden');
+        } else {
+            leftOverlay.classList.remove('visible');
+            leftOverlay.classList.add('hidden');
+        }
+        
+        // Right overlay: Show when not at end
+        if (scrollLeft < (maxScroll - tolerance)) {
+            rightOverlay.classList.add('visible');
+            rightOverlay.classList.remove('hidden');
+        } else {
+            rightOverlay.classList.remove('visible');
+            rightOverlay.classList.add('hidden');
+        }
     }
     
     // Initialize

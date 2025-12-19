@@ -182,8 +182,8 @@
   overflow: hidden;
   background: var(--color-bg-secondary);
   width: 100%;
-  min-height: 220px; /* Reduced from 260px */
-  max-height: 220px;
+  min-height: 280px;
+  max-height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,8 +192,8 @@
 
 @media (max-width: 640px) {
   .featured-products .product-card .product-image {
-    min-height: 200px;
-    max-height: 200px;
+    min-height: 340px;
+    max-height: 340px;
   }
 }
 
