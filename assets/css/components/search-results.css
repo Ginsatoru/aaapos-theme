@@ -70,14 +70,14 @@
 
 .search-count {
   font-size: var(--text-base);
-  color: var(--color-text-light);
+  color: var(--color-white) !important;
   margin: 0;
   font-weight: 400;
   margin-top: var(--space-2);
 }
 
 .search-count strong {
-  color: var(--color-text-dark);
+  color: var(--color-white) !important;
   font-weight: 600;
 }
 

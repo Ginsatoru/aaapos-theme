@@ -2,44 +2,57 @@
 /**
  * The template for displaying search results
  * WITH AJAX SORTING & COLUMN CONTROLS (2, 3, or 4 columns)
+ * NOW WITH SHOP HEADER BACKGROUND IMAGE SUPPORT
  * 
  * @package aaapos-prime
  */
 
 get_header();
+
+// Get shop header customizer settings (same as shop page)
+$header_bg_image = get_theme_mod('shop_header_bg_image', '');
+$header_title = get_theme_mod('shop_header_title', 'Shop');
+$header_subtitle = get_theme_mod('shop_header_subtitle', 'Evoke emotion, highlight artisan quality, create a unique experience.');
 ?>
 
 <div class="search-results-wrapper shop-page-wrapper">
     <div class="container-wide">
         
-        <!-- Search Header -->
-<header class="search-header woocommerce-products-header<?php echo !have_posts() ? ' no-results-header' : ''; ?>">
-            <h1 class="search-title woocommerce-products-header__title">
-                <?php
-                printf(
-                    esc_html__('Search Results for %s', 'aaapos-prime'),
-                    '<span class="search-query">' . get_search_query() . '</span>'
-                );
-                ?>
-            </h1>
+        <!-- Search Header with Background Image Support -->
+        <header class="search-header woocommerce-products-header<?php echo !have_posts() ? ' no-results-header' : ''; ?><?php echo !empty($header_bg_image) ? ' has-background-image' : ''; ?>"
+                <?php if (!empty($header_bg_image)) : ?>
+                    style="--shop-header-bg-image: url('<?php echo esc_url($header_bg_image); ?>');"
+                <?php endif; ?>>
             
-            <?php if (have_posts()) : ?>
-                <p class="search-count">
+            <div class="woocommerce-products-header__inner">
+                <h1 class="search-title woocommerce-products-header__title">
                     <?php
-                    global $wp_query;
-                    $total = $wp_query->found_posts;
                     printf(
-                        _n(
-                            'We found %s product matching your search',
-                            'We found %s products matching your search',
-                            $total,
-                            'aaapos-prime'
-                        ),
-                        '<strong>' . number_format_i18n($total) . '</strong>'
+                        esc_html__('Search Results for %s', 'aaapos-prime'),
+                        '<span class="search-query">' . get_search_query() . '</span>'
                     );
                     ?>
-                </p>
-            <?php endif; ?>
+                </h1>
+                
+                <?php if (have_posts()) : ?>
+                    <p class="search-count">
+                        <?php
+                        global $wp_query;
+                        $total = $wp_query->found_posts;
+                        printf(
+                            _n(
+                                'We found %s product matching your search',
+                                'We found %s products matching your search',
+                                $total,
+                                'aaapos-prime'
+                            ),
+                            '<strong>' . number_format_i18n($total) . '</strong>'
+                        );
+                        ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+            
         </header>
 
         <?php if (have_posts()) : ?>

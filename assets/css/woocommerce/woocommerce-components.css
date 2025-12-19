@@ -74,7 +74,7 @@
   top: 1rem !important;
   right: 1rem !important;
   left: auto !important;
-  background: #00c532 !important;
+  background: var(--color-primary)!important;
   color: var(--color-woo-sale-badge-text) !important;
   padding: 0.5rem 0.875rem !important;
   border-radius: 9999px !important;

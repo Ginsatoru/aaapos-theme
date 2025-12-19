@@ -1,295 +1,102 @@
 /**
- * WooCommerce Cart Notifications - FIXED
- * 
- * Handles beautiful toast notifications for cart actions
- * Auto-dismiss after 5 seconds with progress bar
- * EXCLUDES My Account pages AND Search No Results
- * 
- * @package AAAPOS_Prime
- * @version 1.0.3
+ * AAAPOS – WooCommerce Animated Cart Notification
+ * Tick → Expand → Collapse → Slide
+ * @version 2.0.0
  */
 
 (function($) {
-    'use strict';
+  'use strict';
 
-    /**
-     * Check if we're on My Account page
-     */
-    function isMyAccountPage() {
-        return $('body').hasClass('woocommerce-account') || 
-               $('body').hasClass('woocommerce-edit-address') ||
-               $('body').hasClass('woocommerce-edit-account') ||
-               $('.woocommerce-MyAccount-navigation').length > 0;
-    }
+  let autoCloseTimer = null;
 
-    /**
-     * Check if element is a search no-results message
-     */
-    function isSearchNoResults($element) {
-        return $element.hasClass('search-no-results') || 
-               $element.closest('.search-no-results').length > 0 ||
-               $element.parents('.search-no-results').length > 0;
-    }
+  function isMyAccountPage() {
+    return $('body').hasClass('woocommerce-account') ||
+           $('.woocommerce-MyAccount-navigation').length > 0;
+  }
 
-    /**
-     * Initialize Cart Notifications
-     */
-    function initCartNotifications() {
-        // Don't initialize on My Account pages
-        if (isMyAccountPage()) {
-            console.log('Cart notifications disabled on My Account page');
-            return;
-        }
-        
-        // Process existing notifications on page load
-        processExistingNotifications();
-        
-        // Listen for AJAX add to cart events
-        $(document.body).on('added_to_cart', function(event, fragments, cart_hash, button) {
-            showSuccessNotification('Product added to cart!', button);
-        });
-        
-        // Handle manual close buttons
-        $(document).on('click', '.close-notice', function(e) {
-            e.preventDefault();
-            dismissNotification($(this).closest('.woocommerce-message, .woocommerce-info, .woocommerce-error'));
-        });
-    }
+  function createNotification(productName) {
+    removeNotification();
 
-    /**
-     * Process Existing Notifications
-     * Enhances notifications that are already in the DOM
-     */
-    function processExistingNotifications() {
-        // Don't process on My Account pages
-        if (isMyAccountPage()) {
-            return;
-        }
-        
-        $('.woocommerce-message, .woocommerce-info, .woocommerce-error').each(function() {
-            const $notice = $(this);
-            
-            // Skip if already processed
-            if ($notice.hasClass('processed')) {
-                return;
-            }
-            
-            // Skip if inside My Account content
-            if ($notice.closest('.woocommerce-MyAccount-content').length > 0) {
-                return;
-            }
-            
-            // IMPORTANT: Skip if this is a search no-results message
-            if (isSearchNoResults($notice)) {
-                console.log('Skipping search no-results message');
-                return;
-            }
-            
-            // Mark as processed
-            $notice.addClass('processed');
-            
-            // Store the button first if it exists
-            const $button = $notice.find('a.button, .button').first();
-            const buttonHtml = $button.length ? $button.prop('outerHTML') : '';
-            
-            // Get all text content (excluding button)
-            $button.remove();
-            const textContent = $notice.html().trim();
-            
-            // Restructure the notification
-            $notice.html('');
-            
-            // Add close button
-            $notice.append('<button class="close-notice" aria-label="Close notification">&times;</button>');
-            
-            // Create message content wrapper
-            const $messageContent = $('<div class="message-content"></div>');
-            
-            // Clean and parse the text content
-            const cleanText = textContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-            
-            // Check if there's a product name pattern (usually "ProductName has been added")
-            const hasBeenAddedMatch = cleanText.match(/^(.+?)\s+has been added/i);
-            
-            if (hasBeenAddedMatch) {
-                // Create structured content with product name
-                const productName = hasBeenAddedMatch[1].trim();
-                $messageContent.append('<strong>' + escapeHtml(productName) + '</strong>');
-                $messageContent.append(' has been added to your cart.');
-            } else {
-                // Use the original text
-                $messageContent.html(textContent);
-            }
-            
-            // Add button if exists
-            if (buttonHtml) {
-                $messageContent.append(buttonHtml);
-            }
-            
-            $notice.append($messageContent);
-            
-            // Auto-dismiss after 5 seconds
-            setTimeout(function() {
-                dismissNotification($notice);
-            }, 5000);
-        });
-    }
+    const $el = $(`
+      <div class="aaapos-cart-notification">
+        <div class="aaapos-cart-tick">✓</div>
+        <div class="aaapos-cart-content">
+          <div class="aaapos-cart-close">&times;</div>
+          <div class="aaapos-cart-icon">✓</div>
+          <div class="aaapos-cart-title">
+            <strong>${escapeHtml(productName)}</strong><br>
+            has been added to your cart successfully
+          </div>
+          <div class="aaapos-cart-actions">
+            <a href="${getCartUrl()}" class="aaapos-cart-view">View Cart</a>
+          </div>
+        </div>
+      </div>
+    `);
 
-    /**
-     * Show Success Notification
-     * Creates and displays a success toast notification
-     */
-    function showSuccessNotification(message, button) {
-        // Don't show on My Account pages
-        if (isMyAccountPage()) {
-            return;
-        }
-        
-        // Get product name if available
-        let productName = 'Product';
-        
-        if (button && button.length) {
-            const $productCard = button.closest('.product, li.product, .product-card');
-            if ($productCard.length) {
-                const $title = $productCard.find('.woocommerce-loop-product__title, h2, h3, .product-title');
-                if ($title.length) {
-                    productName = $title.text().trim();
-                }
-            }
-        }
-        
-        // Create notification HTML with proper structure
-        const notification = $('<div>', {
-            'class': 'woocommerce-message processed',
-            'role': 'alert'
-        });
-        
-        // Add close button
-        const closeButton = $('<button>', {
-            'class': 'close-notice',
-            'aria-label': 'Close notification',
-            'html': '&times;'
-        });
-        
-        // Create message content
-        const messageContent = $('<div>', {
-            'class': 'message-content'
-        });
-        
-        // Add product name
-        messageContent.append($('<strong>').text(productName));
-        messageContent.append(' has been added to your cart.');
-        
-        // Add view cart button
-        const viewCartButton = $('<a>', {
-            'href': getCartUrl(),
-            'class': 'button wc-forward',
-            'text': 'View cart'
-        });
-        messageContent.append(viewCartButton);
-        
-        // Assemble notification
-        notification.append(closeButton);
-        notification.append(messageContent);
-        
-        // Remove existing notifications (but not search no-results)
-        $('.woocommerce-message').not('.woocommerce-MyAccount-content .woocommerce-message').not('.search-no-results').not('.search-no-results *').remove();
-        
-        // Append to body
-        $('body').append(notification);
-        
-        // Auto-dismiss after 5 seconds
-        setTimeout(function() {
-            dismissNotification(notification);
-        }, 5000);
-    }
+    $('body').append($el);
 
-    /**
-     * Dismiss Notification
-     * Animates and removes a notification
-     */
-    function dismissNotification($notice) {
-        if (!$notice || !$notice.length) {
-            return;
-        }
-        
-        // Don't dismiss My Account page notifications
-        if ($notice.closest('.woocommerce-MyAccount-content').length > 0) {
-            return;
-        }
-        
-        // Don't dismiss search no-results messages
-        if (isSearchNoResults($notice)) {
-            return;
-        }
-        
-        // Add fade out class
-        $notice.addClass('fade-out');
-        
-        // Remove after animation completes
-        setTimeout(function() {
-            $notice.remove();
-        }, 300);
-    }
+    requestAnimationFrame(() => {
+      $el.addClass('is-active');
 
-    /**
-     * Get Cart URL
-     * Returns the WooCommerce cart page URL
-     */
-    function getCartUrl() {
-        // Try to get from WooCommerce params
-        if (typeof wc_add_to_cart_params !== 'undefined' && wc_add_to_cart_params.cart_url) {
-            return wc_add_to_cart_params.cart_url;
-        }
-        
-        // Fallback to current site URL + /cart
-        return window.location.origin + '/cart';
-    }
+      setTimeout(() => {
+        $el.addClass('is-center');
+      }, 50);
 
-    /**
-     * Escape HTML to prevent XSS
-     */
-    function escapeHtml(text) {
-        const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
+      setTimeout(() => {
+        $el.addClass('is-expanded');
+      }, 550);
 
-    /**
-     * Handle WooCommerce Fragments Refresh
-     * Re-process notifications after AJAX updates
-     */
-    $(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function() {
-        if (!isMyAccountPage()) {
-            processExistingNotifications();
-        }
+      autoCloseTimer = setTimeout(closeNotification, 4000);
     });
 
-    /**
-     * Initialize on Document Ready
-     */
-    $(document).ready(function() {
-        initCartNotifications();
-    });
+    $el.on('click', '.aaapos-cart-close', closeNotification);
+  }
 
-    /**
-     * Re-initialize after AJAX complete
-     */
-    $(document).ajaxComplete(function() {
-        // Don't process on My Account pages
-        if (isMyAccountPage()) {
-            return;
-        }
-        
-        // Small delay to ensure DOM is updated
-        setTimeout(function() {
-            processExistingNotifications();
-        }, 100);
-    });
+  function closeNotification() {
+    const $el = $('.aaapos-cart-notification');
+    if (!$el.length) return;
+
+    clearTimeout(autoCloseTimer);
+
+    $el.removeClass('is-expanded');
+
+    setTimeout(() => {
+      $el.removeClass('is-center');
+    }, 450);
+
+    setTimeout(() => {
+      $el.removeClass('is-active');
+      setTimeout(() => $el.remove(), 300);
+    }, 900);
+  }
+
+  function removeNotification() {
+    $('.aaapos-cart-notification').remove();
+  }
+
+  function getProductName(button) {
+    const $card = button.closest('.product, li.product');
+    const $title = $card.find('.woocommerce-loop-product__title, h2, h3');
+    return $title.length ? $title.text().trim() : 'Product';
+  }
+
+  function getCartUrl() {
+    return (typeof wc_add_to_cart_params !== 'undefined')
+      ? wc_add_to_cart_params.cart_url
+      : '/cart';
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+    }[m]));
+  }
+
+  /* Listen to WooCommerce */
+  $(document.body).on('added_to_cart', function(e, fragments, hash, button) {
+    if (isMyAccountPage()) return;
+    createNotification(getProductName($(button)));
+  });
 
 })(jQuery);
