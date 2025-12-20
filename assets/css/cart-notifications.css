@@ -1,7 +1,6 @@
 /* ============================================
    AAAPOS – CART NOTIFICATION
-   Tick → Expand → Collapse → Slide
-   VARIABLE COLORS (INCLUDING TICK)
+   COMPACT ROW TOAST
    ============================================ */
 
 .aaapos-cart-notification {
@@ -10,12 +9,12 @@
   right: 24px;
   width: 56px;
   height: 56px;
+  background: var(--color-primary);
   color: var(--color-white);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary);
   box-shadow: 0 20px 40px rgba(0,0,0,.25);
   z-index: 999999;
   opacity: 0;
@@ -39,27 +38,35 @@
   pointer-events: auto;
 }
 
-/* Slide to center top */
+/* Center slide */
 .aaapos-cart-notification.is-center {
   right: 50%;
   transform: translateX(50%) scale(1);
 }
 
-/* Expanded card */
+/* Expanded (COMPACT) */
 .aaapos-cart-notification.is-expanded {
-  width: 380px;
-  height: 210px;
-  border-radius: 16px;
+  width: 520px;
+  height: 60px;
+  border-radius: 50px;
   background: var(--color-white);
   color: var(--color-text-dark);
 }
 
-/* Tick icon (EXPLICIT COLOR CONTROL) */
+/* Tick */
 .aaapos-cart-tick {
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--color-white);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity .25s ease, transform .25s ease;
+}
+
+.aaapos-cart-tick svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .is-expanded .aaapos-cart-tick {
@@ -67,19 +74,16 @@
   transform: scale(0.5);
 }
 
-/* Content */
-.aaapos-cart-content {
+/* Content row */
+.aaapos-cart-content.aaapos-cart-row {
   position: absolute;
   inset: 0;
-  padding: 24px;
+  padding: 0 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 14px;
-  text-align: center;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(8px);
   transition: opacity .3s ease, transform .3s ease;
 }
 
@@ -88,56 +92,68 @@
   transform: translateY(0);
 }
 
-/* Success icon inside card */
+/* Icon */
 .aaapos-cart-icon {
-  font-size: 34px;
-  color: var(--color-primary);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-/* Text */
+.aaapos-cart-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Title */
 .aaapos-cart-title {
-  font-size: 0.875rem;
-  color: var(--color-text-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.aaapos-cart-title strong {
-  font-weight: 600;
+/* Description */
+.aaapos-cart-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  white-space: nowrap;
 }
 
 /* Actions */
 .aaapos-cart-actions {
+  margin-left: auto;
   display: flex;
-  gap: 12px;
+  align-items: center;
 }
 
 .aaapos-cart-view {
-  padding: 10px 18px;
+  padding: 6px 14px;
   border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
   background: var(--color-primary);
   color: var(--color-white);
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all .2s ease;
 }
 
 .aaapos-cart-view:hover {
   background: var(--color-primary-hover);
   transform: translateY(-1px);
+  color: var(--color-white);
 }
 
-/* Close button */
+/* Close */
 .aaapos-cart-close {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 22px;
-  line-height: 1;
-  color: var(--color-text-light);
+  margin-left: 10px;
+  font-size: 20px;
   cursor: pointer;
-  transition: color 0.2s ease;
+  color: var(--color-text-light);
 }
 
 .aaapos-cart-close:hover {
@@ -148,5 +164,19 @@
 @media (max-width: 480px) {
   .aaapos-cart-notification.is-expanded {
     width: calc(100vw - 32px);
+    height: auto;
+  }
+
+  .aaapos-cart-content.aaapos-cart-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .aaapos-cart-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
   }
 }

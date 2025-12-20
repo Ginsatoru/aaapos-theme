@@ -1,13 +1,21 @@
 /**
  * AAAPOS – WooCommerce Animated Cart Notification
  * Tick → Expand → Collapse → Slide
- * @version 2.0.0
+ * FULL ROW LAYOUT (COMPACT + GROUPED)
+ * @version 2.2.3
  */
 
-(function($) {
+(function ($) {
   'use strict';
 
   let autoCloseTimer = null;
+
+  // SVG Checkmark Icon
+  const checkmarkSVG = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+    </svg>
+  `;
 
   function isMyAccountPage() {
     return $('body').hasClass('woocommerce-account') ||
@@ -19,17 +27,26 @@
 
     const $el = $(`
       <div class="aaapos-cart-notification">
-        <div class="aaapos-cart-tick">✓</div>
-        <div class="aaapos-cart-content">
-          <div class="aaapos-cart-close">&times;</div>
-          <div class="aaapos-cart-icon">✓</div>
+        <div class="aaapos-cart-tick">${checkmarkSVG}</div>
+
+        <div class="aaapos-cart-content aaapos-cart-row">
+          <div class="aaapos-cart-icon">${checkmarkSVG}</div>
+
           <div class="aaapos-cart-title">
-            <strong>${escapeHtml(productName)}</strong><br>
-            has been added to your cart successfully
+            <strong>${escapeHtml(productName)}</strong>
           </div>
+
+          <div class="aaapos-cart-desc">
+            added to cart
+          </div>
+
           <div class="aaapos-cart-actions">
-            <a href="${getCartUrl()}" class="aaapos-cart-view">View Cart</a>
+            <a href="${getCartUrl()}" class="aaapos-cart-view">
+              View Cart
+            </a>
           </div>
+
+          <div class="aaapos-cart-close">&times;</div>
         </div>
       </div>
     `);
@@ -45,7 +62,7 @@
 
       setTimeout(() => {
         $el.addClass('is-expanded');
-      }, 550);
+      }, 1000);
 
       autoCloseTimer = setTimeout(closeNotification, 4000);
     });
@@ -88,13 +105,18 @@
   }
 
   function escapeHtml(text) {
-    return text.replace(/[&<>"']/g, m => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
-    }[m]));
+    return text.replace(/[&<>"']/g, function (m) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[m];
+    });
   }
 
-  /* Listen to WooCommerce */
-  $(document.body).on('added_to_cart', function(e, fragments, hash, button) {
+  $(document.body).on('added_to_cart', function (e, fragments, hash, button) {
     if (isMyAccountPage()) return;
     createNotification(getProductName($(button)));
   });
