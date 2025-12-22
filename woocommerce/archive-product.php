@@ -2,9 +2,10 @@
 /**
  * The Template for displaying product archives
  * WITH ENHANCED HEADER & CATEGORY FILTER
+ * UPDATED: Uses fallback background image function
  * 
  * @package AAAPOS_Prime
- * @version 3.0.0
+ * @version 3.0.1
  */
 
 defined('ABSPATH') || exit;
@@ -23,8 +24,8 @@ $container_class = $show_sidebar ? 'has-sidebar' : 'no-sidebar';
 // Check if category filter is enabled
 $show_category_filter = get_theme_mod('enable_category_filter', true);
 
-// Get shop header customizer settings
-$header_bg_image = get_theme_mod('shop_header_bg_image', '');
+// Get shop header customizer settings with fallback
+$header_bg_image = aaapos_get_shop_header_bg_image(); // Uses new function with fallback
 $header_title = get_theme_mod('shop_header_title', 'Shop');
 $header_subtitle = get_theme_mod('shop_header_subtitle', 'Evoke emotion, highlight artisan quality, create a unique experience.');
 ?>

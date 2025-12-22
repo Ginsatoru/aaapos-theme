@@ -2,15 +2,16 @@
 /**
  * The template for displaying search results
  * WITH AJAX SORTING & COLUMN CONTROLS (2, 3, or 4 columns)
- * NOW WITH SHOP HEADER BACKGROUND IMAGE SUPPORT
+ * NOW WITH SHOP HEADER BACKGROUND IMAGE SUPPORT + FALLBACK
+ * UPDATED: Uses fallback image function for consistency
  * 
  * @package aaapos-prime
  */
 
 get_header();
 
-// Get shop header customizer settings (same as shop page)
-$header_bg_image = get_theme_mod('shop_header_bg_image', '');
+// Get shop header customizer settings with FALLBACK SUPPORT
+$header_bg_image = aaapos_get_shop_header_bg_image(); // Now uses fallback image
 $header_title = get_theme_mod('shop_header_title', 'Shop');
 $header_subtitle = get_theme_mod('shop_header_subtitle', 'Evoke emotion, highlight artisan quality, create a unique experience.');
 ?>
@@ -18,7 +19,7 @@ $header_subtitle = get_theme_mod('shop_header_subtitle', 'Evoke emotion, highlig
 <div class="search-results-wrapper shop-page-wrapper">
     <div class="container-wide">
         
-        <!-- Search Header with Background Image Support -->
+        <!-- Search Header with Background Image Support + Fallback -->
         <header class="search-header woocommerce-products-header<?php echo !have_posts() ? ' no-results-header' : ''; ?><?php echo !empty($header_bg_image) ? ' has-background-image' : ''; ?>"
                 <?php if (!empty($header_bg_image)) : ?>
                     style="--shop-header-bg-image: url('<?php echo esc_url($header_bg_image); ?>');"

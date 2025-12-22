@@ -111,6 +111,14 @@
   display: block;
 }
 
+/* Text container */
+.aaapos-cart-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 /* Title */
 .aaapos-cart-title {
   font-size: 0.85rem;
@@ -130,6 +138,7 @@
   margin-left: auto;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .aaapos-cart-view {
@@ -140,6 +149,7 @@
   background: var(--color-primary);
   color: var(--color-white);
   transition: all .2s ease;
+  white-space: nowrap;
 }
 
 .aaapos-cart-view:hover {
@@ -154,29 +164,238 @@
   font-size: 20px;
   cursor: pointer;
   color: var(--color-text-light);
+  flex-shrink: 0;
 }
 
 .aaapos-cart-close:hover {
   color: var(--color-text-dark);
 }
 
-/* Mobile */
-@media (max-width: 480px) {
+/* ============================================
+   MOBILE RESPONSIVE - SINGLE ROW LAYOUT
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .aaapos-cart-notification {
+    top: 100px;
+    right: 16px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .aaapos-cart-tick {
+    width: 24px;
+    height: 24px;
+  }
+
   .aaapos-cart-notification.is-expanded {
     width: calc(100vw - 32px);
-    height: auto;
+    max-width: 520px;
+    height: 56px;
   }
 
   .aaapos-cart-content.aaapos-cart-row {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 12px;
-    text-align: center;
+    padding: 0 16px;
+    gap: 10px;
+  }
+
+  .aaapos-cart-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .aaapos-cart-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .aaapos-cart-title {
+    font-size: 0.8rem;
+  }
+
+  .aaapos-cart-desc {
+    font-size: 0.75rem;
+  }
+
+  .aaapos-cart-view {
+    padding: 5px 12px;
+    font-size: 0.75rem;
+  }
+
+  .aaapos-cart-close {
+    font-size: 18px;
+    margin-left: 8px;
+  }
+}
+
+/* Mobile - Keep everything in one row, scale down */
+@media (max-width: 480px) {
+  .aaapos-cart-notification {
+    top: 80px;
+    right: 12px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .aaapos-cart-tick {
+    width: 22px;
+    height: 22px;
+  }
+
+  .aaapos-cart-notification.is-expanded {
+    width: calc(100vw - 24px);
+    height: auto;
+    min-height: 50px;
+    border-radius: 40px;
+    padding: 8px 0;
+  }
+
+  .aaapos-cart-content.aaapos-cart-row {
+    padding: 0 12px;
+    gap: 8px;
+    /* Keep single row - no wrap */
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .aaapos-cart-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .aaapos-cart-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .aaapos-cart-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .aaapos-cart-title {
+    font-size: 0.7rem;
+    white-space: normal;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .aaapos-cart-desc {
+    font-size: 0.65rem;
+    white-space: normal;
+    line-height: 1.2;
+    word-break: break-word;
   }
 
   .aaapos-cart-actions {
-    margin-left: 0;
-    width: 100%;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .aaapos-cart-view {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+  }
+
+  .aaapos-cart-close {
+    font-size: 16px;
+    margin-left: 6px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+  .aaapos-cart-notification {
+    width: 44px;
+    height: 44px;
+  }
+
+  .aaapos-cart-tick {
+    width: 20px;
+    height: 20px;
+  }
+
+  .aaapos-cart-notification.is-expanded {
+    height: auto;
+    min-height: 48px;
+    border-radius: 36px;
+    padding: 8px 0;
+  }
+
+  .aaapos-cart-content.aaapos-cart-row {
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .aaapos-cart-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .aaapos-cart-icon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .aaapos-cart-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .aaapos-cart-title {
+    font-size: 0.65rem;
+    white-space: normal;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .aaapos-cart-desc {
+    font-size: 0.6rem;
+    white-space: normal;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .aaapos-cart-view {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+
+  .aaapos-cart-close {
+    font-size: 14px;
+    margin-left: 4px;
+  }
+}
+
+/* Optional: Hide description on very small screens to ensure single row */
+@media (max-width: 320px) {
+  .aaapos-cart-desc {
+    display: none;
+  }
+
+  .aaapos-cart-text {
     justify-content: center;
   }
+}
+
+/* ============================================
+   HIDE DUPLICATE WOOCOMMERCE CART NOTIFICATIONS ONLY
+   ============================================ */
+
+/* Only hide cart messages, not all WooCommerce messages */
+.woocommerce-message.cart-message,
+.cart-message--success,
+.woocommerce-notices-wrapper .woocommerce-message {
+  display: none !important;
+}
+
+/* Don't hide search result messages */
+.search-no-results,
+.search-results,
+.no-results {
+  display: block !important;
 }

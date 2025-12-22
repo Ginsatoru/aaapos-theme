@@ -39,46 +39,68 @@
 
 
 /* ==========================================================================
-   MOBILE – SEARCH HEADER SPACING
-   ========================================================================== */
-
-/* @media (max-width: 767px) {
-  .search-header.woocommerce-products-header {
-    margin-top: 60px;
-  }
-
-  .search-header.woocommerce-products-header.no-results-header {
-    margin-top: 60px;
-  }
-} */
-
-/* ==========================================================================
    SEARCH HEADER - WHEN NO RESULTS (NEW SEPARATE CLASS)
    ========================================================================== */
 
 .search-header.woocommerce-products-header.no-results-header {
   text-align: center;
-  margin-bottom: 0; /* Remove margin since .search-no-results has padding */
-  padding: 2.5rem 0 1.5rem 0; /* More top padding, moderate bottom */
+  margin-bottom: 0;
+  padding: 2.5rem 0 1.5rem 0;
 }
 
 .search-header.woocommerce-products-header.no-results-header .search-title {
-  margin-bottom: 0.5rem; /* Less margin when no results */
+  margin-bottom: 0.5rem;
 }
 
-/* Mobile responsive */
-@media (max-width: 767px) {
-  .search-header.woocommerce-products-header {
-    padding: 1rem 0 0.75rem 0;
-  }
-  
-  .search-header.woocommerce-products-header.no-results-header {
-    padding: 1.5rem 0 1rem 0;
-  }
-  
-  .search-title.woocommerce-products-header__title {
-    font-size: 1.75rem !important;
-  }
+/* ==========================================================================
+   NO RESULTS SECTION
+   ========================================================================== */
+
+.search-no-results.woocommerce-info {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.no-results-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+}
+
+.no-results-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto var(--space-6);
+  background: rgba(var(--brand-color-rgb), 0.08);
+  border-radius: 50%;
+  color: var(--brand-color);
+}
+
+.no-results-icon svg {
+  width: 50px;
+  height: 50px;
+  opacity: 0.8;
+}
+
+.no-results-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-heading);
+}
+
+.no-results-text {
+  font-size: var(--text-base);
+  color: var(--color-text-light);
+  margin-bottom: var(--space-8);
+  line-height: 1.6;
 }
 
 /* ==========================================================================
@@ -124,11 +146,11 @@
 
 .no-results-search-form .search-input-field {
   width: 100%;
-  padding: 18px 22px 18px 54px;
+  padding: 18px 22px;
   border: none;
   font-size: var(--text-lg);
   color: var(--color-text-dark);
-  background: transparent;
+  background: var(--color-white);
   font-family: var(--font-body);
 }
 
@@ -266,12 +288,20 @@
 }
 
 /* ==========================================================================
-   MOBILE RESPONSIVE
+   MOBILE RESPONSIVE - TABLET
    ========================================================================== */
 
-@media (max-width: 640px) {
-  .search-no-results {
-    padding: 1rem 0 2rem 0; /* Even less padding on mobile */
+@media (max-width: 768px) {
+  .search-header.woocommerce-products-header {
+    padding: 1rem 0 0.75rem 0;
+  }
+  
+  .search-header.woocommerce-products-header.no-results-header {
+    padding: 1.5rem 0 1rem 0;
+  }
+  
+  .search-title.woocommerce-products-header__title {
+    font-size: 1.75rem !important;
   }
   
   .no-results-content {
@@ -279,8 +309,63 @@
   }
   
   .no-results-icon {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .no-results-icon svg {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .no-results-title {
+    font-size: 1.75rem;
+  }
+  
+  .no-results-search-form .search-input-field {
+    padding: 16px 18px;
+    font-size: var(--text-base);
+  }
+  
+  .no-results-search-form .search-submit-btn {
+    padding: 16px 24px;
+  }
+  
+  .no-results-suggestions {
+    padding: var(--space-8) var(--space-4);
+  }
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE - PHONES
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .search-header.woocommerce-products-header {
+    padding: 0.75rem 1rem 0.5rem 1rem;
+  }
+  
+  .search-header.woocommerce-products-header.no-results-header {
+    padding: 1rem 1rem 0.75rem 1rem;
+  }
+  
+  .search-title.woocommerce-products-header__title {
+    font-size: 1.5rem !important;
+    line-height: 1.3;
+  }
+  
+  .search-no-results.woocommerce-info {
+    padding: 0;
+  }
+  
+  .no-results-content {
+    padding: 2rem 1rem;
+  }
+  
+  .no-results-icon {
     width: 80px;
     height: 80px;
+    margin-bottom: 1.5rem;
   }
   
   .no-results-icon svg {
@@ -288,29 +373,118 @@
     height: 40px;
   }
   
-  .no-results-search-form .search-input-field {
-    padding: 16px 18px 16px 50px;
-    font-size: var(--text-base);
+  .no-results-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
   }
   
-  .no-results-search-form .search-input-icon {
-    left: 18px;
+  .no-results-text {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+  }
+  
+  .no-results-search-form {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .no-results-search-form .search-input-field {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+  }
+  
+  .no-results-search-form .search-submit-btn {
+    padding: 14px 20px;
+    font-size: 0.9rem;
   }
   
   .no-results-search-form .search-submit-btn span {
     display: none;
   }
   
-  .no-results-search-form .search-submit-btn {
-    padding: 16px 20px;
+  .no-results-suggestions {
+    padding: 2rem 1rem;
   }
   
-  .no-results-suggestions {
-    padding: var(--space-8) var(--space-4);
+  .suggestions-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
   }
   
   .suggestion-grid {
     grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+  
+  .suggestion-card {
+    padding: 1.25rem;
+  }
+  
+  .suggestion-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .suggestion-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .suggestion-content h4 {
+    font-size: 15px;
+  }
+  
+  .suggestion-content p {
+    font-size: 12px;
+  }
+}
+
+/* ==========================================================================
+   EXTRA SMALL MOBILE
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .search-title.woocommerce-products-header__title {
+    font-size: 1.35rem !important;
+  }
+  
+  .no-results-content {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .no-results-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1.25rem;
+  }
+  
+  .no-results-icon svg {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .no-results-title {
+    font-size: 1.35rem;
+  }
+  
+  .no-results-text {
+    font-size: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .no-results-search-form .search-input-field {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .no-results-search-form .search-submit-btn {
+    padding: 12px 18px;
+    font-size: 0.85rem;
+  }
+  
+  .suggestions-title {
+    font-size: 1.15rem;
   }
 }
 

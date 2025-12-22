@@ -2,6 +2,7 @@
 /**
  * WooCommerce Integration - FULLY INTEGRATED WITH CUSTOMIZER
  * NOW WITH WORKING CATEGORY FILTER FUNCTIONALITY
+ * UPDATED: Added fallback background image support
  *
  * ALL settings now respect WooCommerce Customizer options
  */
@@ -21,6 +22,33 @@ function aaapos_woocommerce_setup()
     add_theme_support("wc-product-gallery-slider");
 }
 add_action("after_setup_theme", "aaapos_woocommerce_setup");
+
+/**
+ * Get Shop Header Background Image with Fallback
+ * Returns customizer image if set, otherwise returns default fallback
+ * 
+ * @return string Image URL
+ */
+function aaapos_get_shop_header_bg_image() {
+    // Get customizer setting
+    $custom_image = get_theme_mod('shop_header_bg_image', '');
+    
+    // If custom image is set, use it
+    if (!empty($custom_image)) {
+        return esc_url($custom_image);
+    }
+    
+    // Otherwise, use fallback image
+    $fallback_image = get_template_directory_uri() . '/assets/images/shop-img-header.png';
+    
+    // Check if fallback image exists
+    if (file_exists(get_template_directory() . '/assets/images/shop-img-header.png')) {
+        return esc_url($fallback_image);
+    }
+    
+    // If even fallback doesn't exist, return empty
+    return '';
+}
 
 /**
  * REPLACE TEXT RATINGS WITH STAR ICONS
@@ -1094,4 +1122,3 @@ function aaapos_search_product_meta($query)
     }
 }
 add_action("pre_get_posts", "aaapos_search_product_meta", 10);
-?>
