@@ -117,6 +117,17 @@ function mr_enqueue_styles()
         AAAPOS_VERSION . "." . time() . rand(1, 9999),
         "all",
     );
+    
+    // 404 Page styles
+    wp_enqueue_style(
+        "macedon-ranges-404",
+        get_template_directory_uri() . "/assets/css/404.css",
+        [],
+        "1.0.0",
+        "all",
+    );
+    
+    add_action("wp_enqueue_scripts", "macedon_ranges_enqueue_404_styles");
 
     // JavaScript
     wp_enqueue_script(

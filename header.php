@@ -1,6 +1,6 @@
 <?php
 /**
- * The header for our theme (header.php) - MODERN VERSION WITH UPDATED ICONS
+ * The header for our theme (header.php) - MODERN VERSION WITH ANIMATIONS
  * 
  * This is the template that displays all of the <head> section and everything up until <div id="content">
  *
@@ -38,8 +38,8 @@
         <div class="container">
             <div class="header-inner">
                 
-                <!-- Site Branding / Logo -->
-                <div class="site-branding">
+                <!-- Site Branding / Logo - ANIMATED -->
+                <div class="site-branding" data-animate="fade-right" data-animate-duration="normal">
                     <?php if (has_custom_logo()) {
                         the_custom_logo();
                     } else {
@@ -53,7 +53,7 @@
                     } ?>
                 </div><!-- .site-branding -->
 
-                <!-- Primary Navigation - Desktop & Mobile (single menu) -->
+                <!-- Primary Navigation - Desktop & Mobile (single menu) - ANIMATED -->
                 <nav id="site-navigation" class="main-navigation" role="navigation" aria-label="<?php esc_attr_e(
                     "Primary Navigation",
                     "macedon-ranges",
@@ -217,7 +217,7 @@
                         </div>
                     <?php endif; ?>
                     
-                    <!-- Navigation Menu (used for both desktop and mobile) -->
+                    <!-- Navigation Menu (used for both desktop and mobile) - ANIMATED -->
                     <?php if (has_nav_menu("primary")) {
                         wp_nav_menu([
                             "theme_location" => "primary",
@@ -260,12 +260,12 @@
                     } ?>
                 </nav><!-- .main-navigation -->
 
-                <!-- Header Actions -->
+                <!-- Header Actions - ANIMATED -->
                 <div class="header-actions">
                     
-                    <!-- Desktop Search Bar - CONDITIONAL -->
+                    <!-- Desktop Search Bar - CONDITIONAL - ANIMATED -->
                     <?php if (get_theme_mod("show_search_bar", true)): ?>
-                    <div class="header-search-bar">
+                    <div class="header-search-bar" data-animate="zoom-in" data-animate-duration="normal" data-animate-delay="200">
                         <form role="search" method="get" class="search-form" action="<?php echo esc_url(
                             home_url("/"),
                         ); ?>">
@@ -301,8 +301,8 @@
 
                     <?php if (class_exists("WooCommerce")): ?>
                         
-                        <!-- My Account Link with Dropdown -->
-                        <div class="header-account-wrapper">
+                        <!-- My Account Link with Dropdown - ANIMATED -->
+                        <div class="header-account-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="300">
                             <a href="<?php echo esc_url(
                                 get_permalink(
                                     get_option("woocommerce_myaccount_page_id"),
@@ -433,8 +433,8 @@
                             endif; ?>
                         </div>
 
-                        <!-- Shopping Cart with Dropdown - UPDATED WITH CART STYLE -->
-                        <div class="header-cart-wrapper">
+                        <!-- Shopping Cart with Dropdown - ANIMATED -->
+                        <div class="header-cart-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="400">
                             <?php
                             $cart_count = WC()->cart->get_cart_contents_count();
                             $cart_style = get_theme_mod(
@@ -593,14 +593,17 @@
                         
                     <?php endif; ?>
                     
-                    <!-- Mobile Menu Toggle -->
+                    <!-- Mobile Menu Toggle - ANIMATED -->
                     <button class="mobile-menu-toggle" 
                             aria-label="<?php esc_attr_e(
                                 "Toggle Mobile Menu",
                                 "macedon-ranges",
                             ); ?>" 
                             aria-expanded="false"
-                            aria-controls="primary-menu">
+                            aria-controls="primary-menu"
+                            data-animate="fade-left" 
+                            data-animate-duration="slow" 
+                            data-animate-delay="300">
                         <span></span>
                         <span></span>
                         <span></span>

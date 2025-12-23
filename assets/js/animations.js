@@ -19,11 +19,51 @@ class MRAnimations {
     }
 
     init() {
+        // Always initialize header animations on page load
+        this.initHeaderAnimations();
+        
+        // Initialize other animations only if enabled
         if (document.body.classList.contains('animations-enabled')) {
             this.initScrollAnimations();
             this.initBackToTop();
             this.initCountdowns();
         }
+    }
+
+    /**
+     * Initialize header animations on page load
+     * These run immediately when the page loads
+     */
+    initHeaderAnimations() {
+        // Wait for DOM to be fully ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.animateHeaderElements();
+            });
+        } else {
+            this.animateHeaderElements();
+        }
+    }
+
+    /**
+     * Animate header elements immediately on page load
+     */
+    animateHeaderElements() {
+        // Select all header elements with data-animate attribute
+        const headerElements = document.querySelectorAll('.site-header [data-animate]');
+        
+        headerElements.forEach(element => {
+            const delay = parseInt(element.dataset.animateDelay) || 0;
+            
+            setTimeout(() => {
+                element.classList.add('animated');
+                
+                // Clean up after animation completes
+                element.addEventListener('animationend', () => {
+                    element.style.willChange = 'auto';
+                }, { once: true });
+            }, delay);
+        });
     }
 
     /**
@@ -50,9 +90,12 @@ class MRAnimations {
             });
         }, this.config);
 
-        // Observe all elements with data-animate attribute
+        // Observe all elements with data-animate attribute (except header elements)
         document.querySelectorAll('[data-animate]').forEach(el => {
-            observer.observe(el);
+            // Skip header elements as they're animated on page load
+            if (!el.closest('.site-header')) {
+                observer.observe(el);
+            }
         });
     }
 

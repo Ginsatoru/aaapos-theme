@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Header Main - Import File
+   Header Main - Import File with Animations
    ==========================================================================
    
    This file imports all header component styles.
@@ -170,6 +170,102 @@ body.scrolled .site-header {
 }
 
 /* ==========================================================================
+   HEADER ELEMENT ANIMATIONS
+   ========================================================================== */
+
+/* Logo Animation */
+.site-branding[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translate3d(-30px, 0, 0);
+}
+
+.site-branding[data-animate].animated {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Navigation Menu Animation - Stagger effect for menu items */
+@media (min-width: 1024px) {
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  /* Stagger animation for menu items on page load */
+  .nav-menu > li {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+    animation: navItemFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  .nav-menu > li:nth-child(1) { animation-delay: 0.2s; }
+  .nav-menu > li:nth-child(2) { animation-delay: 0.25s; }
+  .nav-menu > li:nth-child(3) { animation-delay: 0.3s; }
+  .nav-menu > li:nth-child(4) { animation-delay: 0.35s; }
+  .nav-menu > li:nth-child(5) { animation-delay: 0.3s; }
+  .nav-menu > li:nth-child(6) { animation-delay: 0.35s; }
+  .nav-menu > li:nth-child(7) { animation-delay: 0.4s; }
+  .nav-menu > li:nth-child(8) { animation-delay: 0.45s; }
+}
+
+@keyframes navItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Search Bar Animation */
+.header-search-bar[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: scale3d(0.95, 0.95, 0.95);
+}
+
+.header-search-bar[data-animate].animated {
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+}
+
+/* Account and Cart Animations */
+.header-account-wrapper[data-animate]:not(.animated),
+.header-cart-wrapper[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translate3d(30px, 0, 0);
+}
+
+.header-account-wrapper[data-animate].animated,
+.header-cart-wrapper[data-animate].animated {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Mobile Menu Toggle Animation */
+.mobile-menu-toggle[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translate3d(30px, 0, 0);
+}
+
+.mobile-menu-toggle[data-animate].animated {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Ensure smooth animation performance */
+.site-branding,
+.header-search-bar,
+.header-account-wrapper,
+.header-cart-wrapper,
+.mobile-menu-toggle {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ==========================================================================
    BODY STATES
    ========================================================================== */
 
@@ -252,5 +348,21 @@ body.menu-open {
 
   .nav-menu > li > a::before {
     transition: none;
+  }
+  
+  /* Disable load animations for reduced motion */
+  .site-branding[data-animate]:not(.animated),
+  .header-search-bar[data-animate]:not(.animated),
+  .header-account-wrapper[data-animate]:not(.animated),
+  .header-cart-wrapper[data-animate]:not(.animated),
+  .mobile-menu-toggle[data-animate]:not(.animated) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .nav-menu > li {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
 }

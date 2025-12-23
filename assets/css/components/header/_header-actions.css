@@ -71,7 +71,7 @@
 }
 
 /* ==========================================================================
-   HEADER SEARCH BAR (Desktop)
+   HEADER SEARCH BAR (Desktop) - WITH SMOOTH WIDTH ANIMATION
    ========================================================================== */
 
 .header-search-bar {
@@ -89,6 +89,12 @@
   align-items: center;
   position: relative;
   width: 280px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expand width smoothly when search field is focused */
+.header-search-bar .search-form:focus-within {
+  width: 310px;
 }
 
 .header-search-bar .search-field {
@@ -142,6 +148,20 @@
   width: 18px;
   height: 18px;
   color: var(--color-text);
+}
+
+/* ==========================================================================
+   SEARCH BAR ANIMATION - REDUCED MOTION SUPPORT
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .header-search-bar .search-form {
+    transition: none;
+  }
+  
+  .header-search-bar .search-form:focus-within {
+    width: 280px;
+  }
 }
 
 /* ==========================================================================
