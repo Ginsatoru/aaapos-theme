@@ -40,6 +40,7 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   display: flex;
+  box-shadow: none !important;
 }
 
 .auth-modal.active {
@@ -100,10 +101,20 @@
   justify-content: center;
   transition: background 0.3s ease;
   z-index: 10;
+  box-shadow: none !important;
 }
 
 .auth-modal-close:hover {
   background: rgba(0, 0, 0, 0.1);
+  box-shadow: none !important;
+}
+
+.auth-modal-close:focus {
+  box-shadow: none !important;
+}
+
+.auth-modal-close:active {
+  box-shadow: none !important;
 }
 
 .auth-modal-close svg {
@@ -214,11 +225,21 @@
   background: var(--color-white);
   color: var(--color-text);
   transition: all 0.3s ease;
+  box-shadow: none !important;
 }
 
 .auth-form-input:focus {
   outline: none;
   border-color: var(--brand-color);
+  box-shadow: none !important;
+}
+
+.auth-form-input:hover {
+  box-shadow: none !important;
+}
+
+.auth-form-input:active {
+  box-shadow: none !important;
 }
 
 .auth-form-input::placeholder {
@@ -249,10 +270,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: none !important;
 }
 
 .auth-password-toggle:hover {
   color: var(--color-text);
+  box-shadow: none !important;
+}
+
+.auth-password-toggle:focus {
+  box-shadow: none !important;
+}
+
+.auth-password-toggle:active {
+  box-shadow: none !important;
 }
 
 .auth-password-toggle svg {
@@ -268,10 +299,16 @@
   transition: opacity 0.3s ease;
   align-self: flex-start;
   margin-top: -4px;
+  box-shadow: none !important;
 }
 
 .auth-forgot-link:hover {
   opacity: 0.8;
+  box-shadow: none !important;
+}
+
+.auth-forgot-link:focus {
+  box-shadow: none !important;
 }
 
 /* Remember Me */
@@ -288,6 +325,15 @@
   cursor: pointer;
   accent-color: var(--brand-color);
   border-radius: 3px;
+  box-shadow: none !important;
+}
+
+.auth-checkbox:focus {
+  box-shadow: none !important;
+}
+
+.auth-checkbox:hover {
+  box-shadow: none !important;
 }
 
 .auth-checkbox-label {
@@ -313,28 +359,35 @@
   position: relative;
   overflow: hidden;
   margin-top: 6px;
+  box-shadow: none !important;
 }
 
 .auth-submit-btn:hover {
-  /* background: var(--brand-color-hover); */
   transform: translateY(-2px);
-  /* box-shadow: none !important; */
+  box-shadow: none !important;
 }
 
 .auth-submit-btn:active {
   transform: translateY(0);
+  box-shadow: none !important;
+}
+
+.auth-submit-btn:focus {
+  box-shadow: none !important;
 }
 
 .auth-submit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none !important;
 }
 
 /* Loading State */
 .auth-submit-btn.loading {
   color: transparent;
   pointer-events: none;
+  box-shadow: none !important;
 }
 
 .auth-submit-btn.loading::after {
@@ -399,11 +452,21 @@
   color: #4b5563;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: none !important;
 }
 
 .auth-social-btn:hover {
   border-color: #e5e7eb;
   background: #f9fafb;
+  box-shadow: none !important;
+}
+
+.auth-social-btn:focus {
+  box-shadow: none !important;
+}
+
+.auth-social-btn:active {
+  box-shadow: none !important;
 }
 
 .auth-social-btn svg {
@@ -421,6 +484,7 @@
   font-size: 0.82rem;
   margin-bottom: 16px;
   animation: slideDown 0.3s ease;
+  box-shadow: none !important;
 }
 
 @keyframes slideDown {
@@ -444,6 +508,7 @@
   font-size: 0.82rem;
   margin-bottom: 16px;
   animation: slideDown 0.3s ease;
+  box-shadow: none !important;
 }
 
 /* Footer Text */
@@ -460,10 +525,16 @@
   text-decoration: none;
   font-weight: var(--font-semibold);
   transition: opacity 0.3s ease;
+  box-shadow: none !important;
 }
 
 .auth-footer-text a:hover {
   opacity: 0.8;
+  box-shadow: none !important;
+}
+
+.auth-footer-text a:focus {
+  box-shadow: none !important;
 }
 
 /* ==========================================================================
@@ -571,7 +642,7 @@
   }
 }
 
-/* Focus Visible for Keyboard Navigation */
+/* Focus Visible for Keyboard Navigation - NO BOX SHADOW */
 .auth-form-input:focus-visible,
 .auth-checkbox:focus-visible,
 .auth-submit-btn:focus-visible,
@@ -579,4 +650,42 @@
 .auth-modal-close:focus-visible {
   outline: 2px solid var(--brand-color);
   outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   CRITICAL: Override ALL possible box-shadow sources
+   ========================================================================== */
+
+/* Target all interactive elements inside auth modal */
+.auth-modal *,
+.auth-modal *:hover,
+.auth-modal *:focus,
+.auth-modal *:active,
+.auth-modal *:focus-visible,
+.auth-modal button,
+.auth-modal button:hover,
+.auth-modal button:focus,
+.auth-modal button:active,
+.auth-modal input,
+.auth-modal input:hover,
+.auth-modal input:focus,
+.auth-modal input:active,
+.auth-modal a,
+.auth-modal a:hover,
+.auth-modal a:focus,
+.auth-modal a:active {
+  box-shadow: none !important;
+}
+
+/* Specific WooCommerce button override */
+.auth-modal .button,
+.auth-modal .button:hover,
+.auth-modal .button:focus,
+.auth-modal .button:active,
+.auth-modal .wp-element-button,
+.auth-modal .wp-element-button:hover,
+.auth-modal .wp-element-button:focus,
+.auth-modal .wp-element-button:active {
+  box-shadow: none !important;
 }
