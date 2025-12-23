@@ -25,10 +25,8 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
         <div class="container">
             <div class="footer-widgets-grid">
                 
-                <!-- Column 1: Brand & Description with Animation -->
-                <div class="footer-widget footer-brand" 
-                     data-animate="fade-up" 
-                     data-animate-delay="100">
+                <!-- Column 1: Brand & Description -->
+                <div class="footer-widget footer-brand">
                     <?php if ($show_logo): ?>
                         <div class="footer-logo">
                             <?php 
@@ -80,10 +78,8 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
                     <?php endif; ?>
                 </div>
                 
-                <!-- Column 2: Quick Links with Animation -->
-                <div class="footer-widget footer-links" 
-                     data-animate="fade-up" 
-                     data-animate-delay="200">
+                <!-- Column 2: Quick Links -->
+                <div class="footer-widget footer-links">
                     <h4 class="widget-title"><?php esc_html_e('Quick Links', 'aaapos-prime'); ?></h4>
                     
                     <?php
@@ -103,11 +99,9 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
                     ?>
                 </div>
                 
-                <!-- Column 3: Product Categories with Animation -->
+                <!-- Column 3: Product Categories -->
                 <?php if (class_exists('WooCommerce')): ?>
-                    <div class="footer-widget footer-categories" 
-                         data-animate="fade-up" 
-                         data-animate-delay="300">
+                    <div class="footer-widget footer-categories">
                         <h4 class="widget-title"><?php esc_html_e('Categories', 'aaapos-prime'); ?></h4>
                         
                         <?php
@@ -135,10 +129,8 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
                     </div>
                 <?php endif; ?>
                 
-                <!-- Column 4: Contact Information with Animation -->
-                <div class="footer-widget footer-contact-info" 
-                     data-animate="fade-up" 
-                     data-animate-delay="400">
+                <!-- Column 4: Contact Information -->
+                <div class="footer-widget footer-contact-info">
                     <h4 class="widget-title"><?php esc_html_e('Contact Us', 'aaapos-prime'); ?></h4>
                     
                     <ul class="footer-contact">
@@ -184,10 +176,8 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
         </div>
     </div>
     
-    <!-- Footer Bottom with Animation -->
-    <div class="footer-bottom" 
-         data-animate="fade-up" 
-         data-animate-delay="500">
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-inner">
                 <!-- Copyright -->
@@ -380,3 +370,4 @@ function aaapos_footer_bottom_menu_fallback() {
     echo '<li><a href="' . esc_url(home_url('/refund-policy')) . '">' . esc_html__('Refunds', 'aaapos-prime') . '</a></li>';
     echo '</ul>';
 }
+?>

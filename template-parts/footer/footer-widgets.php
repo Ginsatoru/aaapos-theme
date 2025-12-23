@@ -20,7 +20,7 @@ for ($i = 1; $i <= 4; $i++) {
     <div class="container">
         <div class="footer-widgets-grid">
             <!-- Footer Column 1: About/Brand -->
-            <div class="footer-widget footer-brand" data-animate="fade-up" data-animate-delay="100">
+            <div class="footer-widget footer-brand">
                 <?php if (is_active_sidebar('footer-1')) : ?>
                     <?php dynamic_sidebar('footer-1'); ?>
                 <?php else : ?>
@@ -103,7 +103,7 @@ for ($i = 1; $i <= 4; $i++) {
             </div>
 
             <!-- Footer Column 2: Quick Links -->
-            <div class="footer-widget" data-animate="fade-up" data-animate-delay="200">
+            <div class="footer-widget">
                 <?php if (is_active_sidebar('footer-2')) : ?>
                     <?php dynamic_sidebar('footer-2'); ?>
                 <?php else : ?>
@@ -122,7 +122,7 @@ for ($i = 1; $i <= 4; $i++) {
             </div>
 
             <!-- Footer Column 3: Customer Service -->
-            <div class="footer-widget" data-animate="fade-up" data-animate-delay="300">
+            <div class="footer-widget">
                 <?php if (is_active_sidebar('footer-3')) : ?>
                     <?php dynamic_sidebar('footer-3'); ?>
                 <?php else : ?>
@@ -142,7 +142,7 @@ for ($i = 1; $i <= 4; $i++) {
             </div>
 
             <!-- Footer Column 4: Newsletter -->
-            <div class="footer-widget" data-animate="fade-up" data-animate-delay="400">
+            <div class="footer-widget">
                 <?php if (is_active_sidebar('footer-4')) : ?>
                     <?php dynamic_sidebar('footer-4'); ?>
                 <?php else : ?>

@@ -29,6 +29,7 @@ function aaapos_load_theme_files()
 {
     $includes = [
         "inc/setup.php",
+        "inc/auth-ajax.php",
         "inc/testimonials.php",
         "inc/enqueue.php",
         "inc/security.php",
@@ -37,6 +38,7 @@ function aaapos_load_theme_files()
         "inc/woocommerce.php",
         "inc/ajax.php",
         "inc/customizer/customizer.php",
+        "inc/customizer/auth-customizer.php",
         "inc/customizer/about-customizer.php",
         "inc/customizer/contact-customizer.php",
         "inc/customizer/colors.php",
