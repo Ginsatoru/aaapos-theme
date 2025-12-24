@@ -6,6 +6,7 @@ class AuthModal {
         this.modal = null;
         this.backdrop = null;
         this.activeTab = 'login';
+        this.hasOpenedBefore = false; // Track if modal has been opened before
         this.init();
     }
 
@@ -427,6 +428,18 @@ class AuthModal {
 
     open(tab = 'login') {
         this.switchTab(tab);
+        
+        // Add 'first-open' class ONLY if this is the first time opening
+        if (!this.hasOpenedBefore) {
+            this.modal?.classList.add('first-open');
+            this.hasOpenedBefore = true; // Mark that modal has been opened
+            
+            // Remove 'first-open' class after animations complete (1 second)
+            setTimeout(() => {
+                this.modal?.classList.remove('first-open');
+            }, 1000);
+        }
+        
         this.modal?.classList.add('active');
         this.backdrop?.classList.add('active');
         document.body.style.overflow = 'hidden';
