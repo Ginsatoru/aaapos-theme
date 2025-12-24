@@ -1,6 +1,6 @@
 <?php
 /**
- * aaapos-prime Theme Functions
+ * AAAPOS Theme Functions
  */
 
 if (!defined("ABSPATH")) {
@@ -58,7 +58,7 @@ function aaapos_load_theme_files()
             require_once $filepath;
         } else {
             if (defined("WP_DEBUG") && WP_DEBUG) {
-                error_log("aaapos-prime: Missing file " . $file);
+                error_log("AAAPOS: Missing file " . $file);
             }
         }
     }
@@ -74,7 +74,7 @@ add_action("after_setup_theme", "aaapos_load_theme_files", 1);
 function aaapos_theme_setup()
 {
     // Internationalization
-    load_theme_textdomain("aaapos-prime", AAAPOS_THEME_DIR . "/languages");
+    load_theme_textdomain("AAAPOS", AAAPOS_THEME_DIR . "/languages");
 
     // Essential WordPress features
     add_theme_support("automatic-feed-links");
@@ -119,10 +119,10 @@ function aaapos_theme_setup()
 
     // Navigation menus
     register_nav_menus([
-        "primary" => esc_html__("Primary Navigation", "aaapos-prime"),
-        "mobile" => esc_html__("Mobile Navigation", "aaapos-prime"),
-        "footer" => esc_html__("Footer Navigation", "aaapos-prime"),
-        "utility" => esc_html__("Utility Navigation", "aaapos-prime"),
+        "primary" => esc_html__("Primary Navigation", "AAAPOS"),
+        "mobile" => esc_html__("Mobile Navigation", "AAAPOS"),
+        "footer" => esc_html__("Footer Navigation", "AAAPOS"),
+        "utility" => esc_html__("Utility Navigation", "AAAPOS"),
     ]);
 
     // WooCommerce support
@@ -137,6 +137,30 @@ function aaapos_theme_setup()
     aaapos_register_image_sizes();
 }
 add_action("after_setup_theme", "aaapos_theme_setup");
+
+/**
+ * Replace Cart & Checkout Blocks with Classic Templates on Theme Activation
+ */
+function aaapos_setup_classic_woocommerce_pages() {
+    // Setup Cart Page
+    $cart_page = get_page_by_path('cart');
+    if ($cart_page && has_blocks($cart_page->post_content)) {
+        wp_update_post([
+            'ID' => $cart_page->ID,
+            'post_content' => '[woocommerce_cart]'
+        ]);
+    }
+    
+    // Setup Checkout Page
+    $checkout_page = get_page_by_path('checkout');
+    if ($checkout_page && has_blocks($checkout_page->post_content)) {
+        wp_update_post([
+            'ID' => $checkout_page->ID,
+            'post_content' => '[woocommerce_checkout]'
+        ]);
+    }
+}
+add_action('after_switch_theme', 'aaapos_setup_classic_woocommerce_pages');
 
 /**
  * Register Custom Image Sizes
@@ -177,10 +201,10 @@ function aaapos_register_image_sizes()
 function aaapos_custom_image_sizes($sizes)
 {
     return array_merge($sizes, [
-        "aaapos-product-card" => esc_html__("Product Card", "aaapos-prime"),
-        "aaapos-blog-card" => esc_html__("Blog Card", "aaapos-prime"),
-        "aaapos-category-card" => esc_html__("Category Card", "aaapos-prime"),
-        "aaapos-hero-large" => esc_html__("Hero Large", "aaapos-prime"),
+        "aaapos-product-card" => esc_html__("Product Card", "AAAPOS"),
+        "aaapos-blog-card" => esc_html__("Blog Card", "AAAPOS"),
+        "aaapos-category-card" => esc_html__("Category Card", "AAAPOS"),
+        "aaapos-hero-large" => esc_html__("Hero Large", "AAAPOS"),
     ]);
 }
 add_filter("image_size_names_choose", "aaapos_custom_image_sizes");
@@ -346,7 +370,7 @@ function aaapos_menu_fallback($args)
 
     echo '<ul class="' . esc_attr($args["menu_class"]) . '">';
     echo '<li><a href="' . esc_url(admin_url("nav-menus.php")) . '">';
-    esc_html_e("Add a Menu", "aaapos-prime");
+    esc_html_e("Add a Menu", "AAAPOS");
     echo "</a></li>";
     echo "</ul>";
 }
@@ -447,7 +471,7 @@ function aaapos_create_default_homepage()
     if (!$homepage_id || !get_post($homepage_id)) {
         // Create new homepage
         $homepage_id = wp_insert_post([
-            "post_title" => esc_html__("Home", "aaapos-prime"),
+            "post_title" => esc_html__("Home", "AAAPOS"),
             "post_content" => "",
             "post_status" => "publish",
             "post_type" => "page",
@@ -462,7 +486,7 @@ function aaapos_create_default_homepage()
 
             // Create blog page
             $blog_page_id = wp_insert_post([
-                "post_title" => esc_html__("Blog", "aaapos-prime"),
+                "post_title" => esc_html__("Blog", "AAAPOS"),
                 "post_content" => "",
                 "post_status" => "publish",
                 "post_type" => "page",
@@ -501,8 +525,8 @@ function aaapos_woocommerce_notice()
                 <?php printf(
                     /* translators: %s: WooCommerce plugin link */
                     esc_html__(
-                        "The aaapos-prime theme recommends installing %s for full functionality.",
-                        "aaapos-prime",
+                        "The AAAPOS theme recommends installing %s for full functionality.",
+                        "AAAPOS",
                     ),
                     '<a href="' .
                         esc_url(
@@ -694,9 +718,9 @@ function aaapos_handle_contact_form_submission()
         wp_die(
             esc_html__(
                 "Security check failed. Please go back and try again.",
-                "aaapos-prime",
+                "AAAPOS",
             ),
-            esc_html__("Security Error", "aaapos-prime"),
+            esc_html__("Security Error", "AAAPOS"),
             ["response" => 403, "back_link" => true],
         );
     }
@@ -728,24 +752,24 @@ function aaapos_handle_contact_form_submission()
     $errors = [];
 
     if (empty($name)) {
-        $errors[] = esc_html__("Name is required", "aaapos-prime");
+        $errors[] = esc_html__("Name is required", "AAAPOS");
     }
 
     if (empty($email)) {
-        $errors[] = esc_html__("Email is required", "aaapos-prime");
+        $errors[] = esc_html__("Email is required", "AAAPOS");
     } elseif (!is_email($email)) {
         $errors[] = esc_html__(
             "Please enter a valid email address",
-            "aaapos-prime",
+            "AAAPOS",
         );
     }
 
     if (empty($subject)) {
-        $errors[] = esc_html__("Subject is required", "aaapos-prime");
+        $errors[] = esc_html__("Subject is required", "AAAPOS");
     }
 
     if (empty($message)) {
-        $errors[] = esc_html__("Message is required", "aaapos-prime");
+        $errors[] = esc_html__("Message is required", "AAAPOS");
     }
 
     // If there are validation errors, redirect back with error
@@ -778,7 +802,7 @@ function aaapos_handle_contact_form_submission()
         get_bloginfo("name"),
         $name,
         $email,
-        !empty($phone) ? $phone : esc_html__("Not provided", "aaapos-prime"),
+        !empty($phone) ? $phone : esc_html__("Not provided", "AAAPOS"),
         $subject,
         $message,
         home_url(),
@@ -839,7 +863,7 @@ function aaapos_display_contact_form_messages()
         echo "<span>" .
             esc_html__(
                 'Thank you! Your message has been sent successfully. We\'ll get back to you soon.',
-                "aaapos-prime",
+                "AAAPOS",
             ) .
             "</span>";
         echo "</div>";
@@ -852,11 +876,11 @@ function aaapos_display_contact_form_messages()
         $error_messages = [
             "email_failed" => esc_html__(
                 "Sorry, there was a problem sending your message. Please try again or contact us directly.",
-                "aaapos-prime",
+                "AAAPOS",
             ),
             "spam" => esc_html__(
                 "Your submission was flagged as spam. Please try again.",
-                "aaapos-prime",
+                "AAAPOS",
             ),
         ];
 

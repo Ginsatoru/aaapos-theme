@@ -1,0 +1,364 @@
+/* ==========================================================================
+   CART TABLE - Modern Borderless Design
+   
+   @package aaapos-prime
+   @since 1.0.0
+   ========================================================================== */
+
+/* ==========================================================================
+   CART TABLE STRUCTURE
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+}
+
+/* Table Header - Primary Color Background with Light Border */
+body.woocommerce-cart table.shop_table.cart thead {
+  background: var(--color-primary);
+  border-radius: 12px;
+  border: 1px solid #E5E5E5 !important;
+  border-bottom: none !important;
+}
+
+body.woocommerce-cart table.shop_table.cart thead tr {
+  background: var(--color-primary);
+  border: 1px solid #E5E5E5 !important;
+  border-bottom: none !important;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th {
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-white);
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+  border: none;
+  border-top: 1px solid #E5E5E5 !important;
+  border-bottom: 1px solid #E5E5E5 !important;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th:first-child {
+  border-radius: 12px 0 0 12px;
+  border-left: 1px solid #E5E5E5 !important;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th:last-child {
+  border-radius: 0 12px 12px 0;
+  border-right: 1px solid #E5E5E5 !important;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th.product-remove {
+  width: 50px;
+  text-align: center;
+  padding-left: 1.5rem;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th.product-thumbnail {
+  width: 100px;
+  padding-left: 0;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th.product-name {
+  width: auto;
+  padding-left: 0;
+  text-indent: -100px;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th.product-price {
+  width: 120px;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th.product-quantity {
+  width: 180px;
+  text-align: center;
+}
+
+body.woocommerce-cart table.shop_table.cart thead th.product-subtotal {
+  width: 150px;
+  text-align: right;
+  padding-right: 1.5rem;
+}
+
+/* ==========================================================================
+   TABLE BODY ROWS - Bottom border only on each row
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart tbody tr.cart_item,
+body.woocommerce-cart table.shop_table.cart tbody tr.woocommerce-cart-form__cart-item {
+  background: var(--color-white);
+}
+
+body.woocommerce-cart table.shop_table.cart tbody td {
+  padding: 1.75rem 1.5rem;
+  vertical-align: middle;
+  border: none !important;
+  border-bottom: 1px solid #E5E5E5 !important;
+  background: transparent;
+}
+
+/* Remove border from actions row (coupon/update cart) */
+body.woocommerce-cart table.shop_table.cart tbody tr:last-child td,
+body.woocommerce-cart table.shop_table.cart tbody td.actions {
+  border-bottom: none !important;
+}
+
+/* ==========================================================================
+   REMOVE BUTTON - Simple X icon
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-remove {
+  text-align: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-remove a.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  color: #6C757D;
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-remove a.remove:hover {
+  background: #F8F9FA;
+  color: #212529;
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   PRODUCT THUMBNAIL - Rounded with subtle border
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-thumbnail {
+  text-align: left;
+  padding-left: 0.5rem;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-thumbnail img,
+body.woocommerce-cart table.shop_table.cart td.product-thumbnail a img,
+body.woocommerce-cart table.shop_table.cart td.product-thumbnail img.attachment-woocommerce_thumbnail {
+  width: 92px !important;
+  height: 90px !important;
+  max-width: 92px !important;
+  max-height: 90px !important;
+  min-width: 92px !important;
+  min-height: 90px !important;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #EDEDED;
+  background: #F8F9FA;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-thumbnail a:hover img {
+  opacity: 0.85;
+  border-color: #D1D5DB;
+}
+
+/* ==========================================================================
+   PRODUCT NAME - Bold title with light subtitle
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-name a {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212529;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-name a:hover {
+  color: var(--brand-color);
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-name .wc-item-meta,
+body.woocommerce-cart table.shop_table.cart td.product-name dl.variation {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #6C757D;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-name dl.variation dt {
+  font-weight: 400;
+  color: #6C757D;
+  float: none;
+  display: inline;
+  margin: 0;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-name dl.variation dd {
+  display: inline;
+  margin: 0;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-name dl.variation dt::after {
+  content: ": ";
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-name .backorder_notification {
+  display: inline-block;
+  margin-top: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  background: #FFF3CD;
+  color: #856404;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   PRODUCT PRICE - Large, clear numbers
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-price {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-price del {
+  display: block;
+  font-size: 0.875rem;
+  color: #ADB5BD;
+  margin-bottom: 0.25rem;
+  font-weight: 400;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-price ins {
+  text-decoration: none;
+  color: #DC3545;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   QUANTITY SELECTOR - Pill-shaped with horizontal layout
+   UPDATED: Targeting .quantity-wrapper instead of .quantity
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-quantity {
+  text-align: center;
+}
+
+/* Parent .quantity container - NO border, just wrapper */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity {
+  display: inline-block !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Child .quantity-wrapper - This gets the styled border */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #EDEDED !important;
+  border-radius: 30px;
+  overflow: hidden;
+  background: var(--color-white);
+  padding: 0.25rem;
+  gap: 0;
+}
+
+/* Input field styling */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity input.qty,
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper input.qty,
+body.woocommerce-cart table.shop_table.cart td.product-quantity input.input-text.qty {
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 36px;
+  border: none !important;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212529;
+  -moz-appearance: textfield;
+  background: transparent;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0;
+  order: 2 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-quantity input.qty::-webkit-outer-spin-button,
+body.woocommerce-cart table.shop_table.cart td.product-quantity input.qty::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-quantity input.qty:focus {
+  outline: none;
+}
+
+/* Quantity buttons - both .quantity button and .quantity-btn */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity button,
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button,
+body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn {
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #6C757D;
+  font-size: 1.25rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Minus button - force to left */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity button.minus,
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button.minus,
+body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn.minus {
+  order: 1 !important;
+}
+
+/* Plus button - force to right */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity button.plus,
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button.plus,
+body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn.plus {
+  order: 3 !important;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-quantity button:hover,
+body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn:hover {
+  background: #F8F9FA;
+  color: #212529;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-quantity button:active,
+body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================================
+   PRODUCT SUBTOTAL - Bold, right-aligned
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-subtotal {
+  text-align: right;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #212529;
+  padding-right: 1.5rem;
+}

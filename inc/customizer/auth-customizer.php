@@ -17,8 +17,8 @@ function mr_auth_modal_customizer($wp_customize) {
     
     // Add Authentication Section
     $wp_customize->add_section('mr_auth_modal_section', array(
-        'title'       => __('Authentication Modal', 'macedon-ranges'),
-        'description' => __('Customize the login and registration modal appearance.', 'macedon-ranges'),
+        'title'       => __('Authentication Modal', 'aaapos'),
+        'description' => __('Customize the login and registration modal appearance.', 'aaapos'),
         'priority'    => 140,
     ));
 
@@ -30,38 +30,23 @@ function mr_auth_modal_customizer($wp_customize) {
     ));
 
     $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'auth_modal_login_image', array(
-        'label'       => __('Login Modal Image', 'macedon-ranges'),
-        'description' => __('Upload an image for the right side of the login modal. Recommended size: 800x1200px', 'macedon-ranges'),
+        'label'       => __('Login Modal Image', 'aaapos'),
+        'description' => __('Upload an image for the right side of the login modal. Recommended size: 800x1200px', 'aaapos'),
         'section'     => 'mr_auth_modal_section',
         'settings'    => 'auth_modal_login_image',
         'priority'    => 10,
     )));
 
-    // Enable/Disable Social Login Buttons
-    $wp_customize->add_setting('auth_modal_show_social', array(
-        'default'           => true,
-        'sanitize_callback' => 'rest_sanitize_boolean',
-        'transport'         => 'refresh',
-    ));
-
-    $wp_customize->add_control('auth_modal_show_social', array(
-        'label'       => __('Show Social Login Buttons', 'macedon-ranges'),
-        'description' => __('Display Google and Facebook login options in the modal.', 'macedon-ranges'),
-        'section'     => 'mr_auth_modal_section',
-        'type'        => 'checkbox',
-        'priority'    => 30,
-    ));
-
     // Login Modal Welcome Text
     $wp_customize->add_setting('auth_modal_login_subtitle', array(
-        'default'           => __('Welcome back! Please enter your details', 'macedon-ranges'),
+        'default'           => __('Welcome back! Please enter your details', 'aaapos'),
         'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'postMessage',
     ));
 
     $wp_customize->add_control('auth_modal_login_subtitle', array(
-        'label'       => __('Login Subtitle', 'macedon-ranges'),
-        'description' => __('Subtitle text shown in the login form.', 'macedon-ranges'),
+        'label'       => __('Login Subtitle', 'aaapos'),
+        'description' => __('Subtitle text shown in the login form.', 'aaapos'),
         'section'     => 'mr_auth_modal_section',
         'type'        => 'text',
         'priority'    => 40,
@@ -69,14 +54,14 @@ function mr_auth_modal_customizer($wp_customize) {
 
     // Register Modal Welcome Text
     $wp_customize->add_setting('auth_modal_register_subtitle', array(
-        'default'           => __('Create your account to get started', 'macedon-ranges'),
+        'default'           => __('Create your account to get started', 'aaapos'),
         'sanitize_callback' => 'sanitize_text_field',
         'transport'         => 'postMessage',
     ));
 
     $wp_customize->add_control('auth_modal_register_subtitle', array(
-        'label'       => __('Register Subtitle', 'macedon-ranges'),
-        'description' => __('Subtitle text shown in the registration form.', 'macedon-ranges'),
+        'label'       => __('Register Subtitle', 'aaapos'),
+        'description' => __('Subtitle text shown in the registration form.', 'aaapos'),
         'section'     => 'mr_auth_modal_section',
         'type'        => 'text',
         'priority'    => 50,
@@ -120,11 +105,6 @@ function mr_auth_modal_custom_css() {
         
         .auth-checkbox {
             accent-color: var(--auth-primary-color) !important;
-        }
-        
-        .auth-social-btn:hover {
-            border-color: var(--auth-primary-color) !important;
-            background: rgba(var(--auth-primary-rgb), 0.05) !important;
         }
         
         .auth-modal-title::before {

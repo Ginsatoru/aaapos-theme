@@ -26,28 +26,34 @@ add_action("after_setup_theme", "aaapos_woocommerce_setup");
 /**
  * Get Shop Header Background Image with Fallback
  * Returns customizer image if set, otherwise returns default fallback
- * 
+ *
  * @return string Image URL
  */
-function aaapos_get_shop_header_bg_image() {
+function aaapos_get_shop_header_bg_image()
+{
     // Get customizer setting
-    $custom_image = get_theme_mod('shop_header_bg_image', '');
-    
+    $custom_image = get_theme_mod("shop_header_bg_image", "");
+
     // If custom image is set, use it
     if (!empty($custom_image)) {
         return esc_url($custom_image);
     }
-    
+
     // Otherwise, use fallback image
-    $fallback_image = get_template_directory_uri() . '/assets/images/shop-img-header.png';
-    
+    $fallback_image =
+        get_template_directory_uri() . "/assets/images/shop-img-header.png";
+
     // Check if fallback image exists
-    if (file_exists(get_template_directory() . '/assets/images/shop-img-header.png')) {
+    if (
+        file_exists(
+            get_template_directory() . "/assets/images/shop-img-header.png",
+        )
+    ) {
         return esc_url($fallback_image);
     }
-    
+
     // If even fallback doesn't exist, return empty
-    return '';
+    return "";
 }
 
 /**
@@ -131,39 +137,46 @@ add_action(
  * Updated version with proper folder icon SVGs
  */
 
-if (!function_exists('aaapos_render_category_filter')) {
-    function aaapos_render_category_filter() {
+if (!function_exists("aaapos_render_category_filter")) {
+    function aaapos_render_category_filter()
+    {
         // Check if we're on shop or category page
         if (!is_shop() && !is_product_category()) {
             return;
         }
 
         // Check if filter is enabled
-        if (!get_theme_mod('enable_category_filter', true)) {
+        if (!get_theme_mod("enable_category_filter", true)) {
             return;
         }
 
         // Get selected categories from customizer (comma-separated string)
-        $selected_categories_string = get_theme_mod('category_filter_categories', '');
-        
+        $selected_categories_string = get_theme_mod(
+            "category_filter_categories",
+            "",
+        );
+
         // Convert to array
         $selected_categories = [];
         if (!empty($selected_categories_string)) {
-            $selected_categories = array_map('intval', explode(',', $selected_categories_string));
+            $selected_categories = array_map(
+                "intval",
+                explode(",", $selected_categories_string),
+            );
             $selected_categories = array_filter($selected_categories);
         }
 
         // Build query args
         $args = [
-            'taxonomy'   => 'product_cat',
-            'hide_empty' => true,
-            'orderby'    => 'name',
-            'order'      => 'ASC',
+            "taxonomy" => "product_cat",
+            "hide_empty" => true,
+            "orderby" => "name",
+            "order" => "ASC",
         ];
 
         // If specific categories selected, filter them
         if (!empty($selected_categories)) {
-            $args['include'] = $selected_categories;
+            $args["include"] = $selected_categories;
         }
 
         $categories = get_terms($args);
@@ -174,13 +187,15 @@ if (!function_exists('aaapos_render_category_filter')) {
         }
 
         // Get total product count
-        $all_products_count = wp_count_posts('product')->publish;
+        $all_products_count = wp_count_posts("product")->publish;
 
         // Get current category (if on category page)
-        $current_cat = is_product_category() ? get_queried_object()->term_id : 0;
+        $current_cat = is_product_category()
+            ? get_queried_object()->term_id
+            : 0;
 
         // Get shop URL
-        $shop_url = get_permalink(wc_get_page_id('shop'));
+        $shop_url = get_permalink(wc_get_page_id("shop"));
         ?>
         
         <div class="shop-category-filter">
@@ -188,8 +203,12 @@ if (!function_exists('aaapos_render_category_filter')) {
                 
                 <!-- All Products Button -->
                 <a href="<?php echo esc_url($shop_url); ?>" 
-                   class="category-filter-btn<?php echo !$current_cat ? ' active' : ''; ?>" 
-                   aria-current="<?php echo !$current_cat ? 'page' : 'false'; ?>">
+                   class="category-filter-btn<?php echo !$current_cat
+                       ? " active"
+                       : ""; ?>" 
+                   aria-current="<?php echo !$current_cat
+                       ? "page"
+                       : "false"; ?>">
                     
                     <!-- Icon Box with Grid Icon -->
                     <div class="filter-icon-box">
@@ -203,32 +222,42 @@ if (!function_exists('aaapos_render_category_filter')) {
                     
                     <!-- Text Content -->
                     <div class="filter-content">
-                        <span class="filter-label"><?php esc_html_e('All Products', 'aaapos-prime'); ?></span>
-                        <span class="filter-count"><?php 
-                            printf(
-                                esc_html(_n('%s Item', '%s Items', $all_products_count, 'aaapos-prime')),
-                                number_format_i18n($all_products_count)
-                            ); 
-                        ?></span>
+                        <span class="filter-label"><?php esc_html_e(
+                            "All Products",
+                            "aaapos-prime",
+                        ); ?></span>
+                        <span class="filter-count"><?php printf(
+                            esc_html(
+                                _n(
+                                    "%s Item",
+                                    "%s Items",
+                                    $all_products_count,
+                                    "aaapos-prime",
+                                ),
+                            ),
+                            number_format_i18n($all_products_count),
+                        ); ?></span>
                     </div>
                 </a>
                 
-                <?php
-                // Loop through selected categories
-                foreach ($categories as $category) :
+                <?php // Loop through selected categories
+                foreach ($categories as $category):
+
                     $category_url = get_term_link($category);
-                    
+
                     if (is_wp_error($category_url)) {
                         continue;
                     }
-                    
-                    $is_active = ($current_cat === $category->term_id);
+
+                    $is_active = $current_cat === $category->term_id;
                     $product_count = $category->count;
-                ?>
+                    ?>
                 
                 <a href="<?php echo esc_url($category_url); ?>" 
-                   class="category-filter-btn<?php echo $is_active ? ' active' : ''; ?>"
-                   aria-current="<?php echo $is_active ? 'page' : 'false'; ?>">
+                   class="category-filter-btn<?php echo $is_active
+                       ? " active"
+                       : ""; ?>"
+                   aria-current="<?php echo $is_active ? "page" : "false"; ?>">
                     
                     <!-- Icon Box with Folder Icon -->
                     <div class="filter-icon-box">
@@ -240,17 +269,25 @@ if (!function_exists('aaapos_render_category_filter')) {
                     
                     <!-- Text Content -->
                     <div class="filter-content">
-                        <span class="filter-label"><?php echo esc_html($category->name); ?></span>
-                        <span class="filter-count"><?php 
-                            printf(
-                                esc_html(_n('%s Item', '%s Items', $product_count, 'aaapos-prime')),
-                                number_format_i18n($product_count)
-                            ); 
-                        ?></span>
+                        <span class="filter-label"><?php echo esc_html(
+                            $category->name,
+                        ); ?></span>
+                        <span class="filter-count"><?php printf(
+                            esc_html(
+                                _n(
+                                    "%s Item",
+                                    "%s Items",
+                                    $product_count,
+                                    "aaapos-prime",
+                                ),
+                            ),
+                            number_format_i18n($product_count),
+                        ); ?></span>
                     </div>
                 </a>
                 
-                <?php endforeach; ?>
+                <?php
+                endforeach; ?>
                 
             </div><!-- .category-filter-buttons -->
         </div><!-- .shop-category-filter -->
@@ -375,6 +412,17 @@ function aaapos_woocommerce_nuclear_styles()
         );
     }
 
+    // Cart page styles
+    if (is_cart()) {
+        wp_enqueue_style(
+            "aaapos-cart",
+            get_template_directory_uri() . "/assets/css/components/cart/cart-main.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION . "." . time(),
+            "all",
+        );
+    }
+
     // My Account page styles
     if (is_account_page()) {
         wp_enqueue_style(
@@ -425,6 +473,92 @@ function aaapos_woocommerce_nuclear_styles()
     }
 }
 add_action("wp_enqueue_scripts", "aaapos_woocommerce_nuclear_styles", 999);
+
+/**
+ * Add Clear Shopping Cart Button
+ * This adds a "Clear Shopping Cart" link below the cart actions
+ */
+add_action('woocommerce_cart_actions', 'add_clear_cart_button');
+function add_clear_cart_button() {
+    ?>
+    <a href="<?php echo esc_url(add_query_arg('clear-cart', 'true', wc_get_cart_url())); ?>" 
+       class="button clear-cart-link" 
+       onclick="return confirm('<?php esc_attr_e('Are you sure you want to clear your cart?', 'macedon-ranges'); ?>');">
+        <?php esc_html_e('Clear Shopping Cart', 'macedon-ranges'); ?>
+    </a>
+    <?php
+}
+
+/**
+ * Handle Clear Cart Action
+ */
+add_action('init', 'handle_clear_cart');
+function handle_clear_cart() {
+    if (isset($_GET['clear-cart']) && $_GET['clear-cart'] === 'true') {
+        WC()->cart->empty_cart();
+        wp_safe_redirect(wc_get_cart_url());
+        exit;
+    }
+}
+
+/**
+ * Force Enable Shipping Calculator
+ * This ensures shipping always shows in cart totals
+ */
+add_filter('woocommerce_shipping_calculator_enable_city', '__return_true');
+add_filter('woocommerce_shipping_calculator_enable_postcode', '__return_true');
+
+/**
+ * Add item count to cart totals
+ */
+add_action('woocommerce_cart_totals_before_order_total', 'add_cart_item_count_row');
+function add_cart_item_count_row() {
+    $item_count = WC()->cart->get_cart_contents_count();
+    ?>
+    <tr class="cart-items-count">
+        <th><?php esc_html_e('Items', 'macedon-ranges'); ?></th>
+        <td data-title="<?php esc_attr_e('Items', 'macedon-ranges'); ?>">
+            <?php echo esc_html($item_count); ?>
+        </td>
+    </tr>
+    <?php
+}
+
+/**
+ * Modify cart totals to show all necessary rows
+ */
+add_action('woocommerce_before_cart_totals', 'ensure_cart_totals_display');
+function ensure_cart_totals_display() {
+    // Force display of shipping
+    add_filter('woocommerce_cart_needs_shipping_address', '__return_true');
+}
+
+/**
+ * Add custom cart totals rows
+ */
+add_action('woocommerce_cart_totals_after_order_total', 'add_custom_cart_totals_info');
+function add_custom_cart_totals_info() {
+    // This can be used to add additional info if needed
+}
+
+/**
+ * Enable Update Cart button
+ */
+add_action('wp_footer', 'enable_cart_update_button');
+function enable_cart_update_button() {
+    if (is_cart()) {
+        ?>
+        <script>
+        jQuery(function($) {
+            // Enable update cart button when quantity changes
+            $('div.woocommerce').on('change', 'input.qty', function(){
+                $('[name="update_cart"]').prop('disabled', false);
+            });
+        });
+        </script>
+        <?php
+    }
+}
 
 /**
  * Enqueue Quick View Assets (FIXED - Separate function)

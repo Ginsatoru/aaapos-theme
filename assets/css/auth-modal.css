@@ -60,7 +60,7 @@
 .auth-modal-left {
   flex: 0 0 50%;
   width: 50%;
-  padding: 55px 70px;
+  padding: 70px 70px 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -164,7 +164,7 @@
 
 /* Header - Center Aligned - ONLY animate on first open */
 .auth-modal-header {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   text-align: center;
 }
 
@@ -486,86 +486,6 @@
   }
 }
 
-/* Divider - ONLY animate on first open */
-.auth-divider {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 18px 0;
-  color: #9ca3af;
-  font-size: 0.76rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.auth-modal.first-open .auth-divider {
-  opacity: 0;
-  animation: fadeInSimple 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
-}
-
-@keyframes fadeInSimple {
-  to {
-    opacity: 1;
-  }
-}
-
-.auth-divider::before,
-.auth-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #e5e7eb;
-}
-
-/* Social Login Buttons - ONLY animate on first open */
-.auth-social-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.auth-modal.first-open .auth-social-buttons {
-  opacity: 0;
-  animation: fadeInSimple 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
-}
-
-.auth-social-btn {
-  padding: 10px 18px;
-  font-size: 0.86rem;
-  font-weight: var(--font-semibold);
-  font-family: var(--font-body);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: 1px solid #f3f4f6;
-  border-radius: 10px;
-  background: var(--color-white);
-  color: #4b5563;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: none !important;
-}
-
-.auth-social-btn:hover {
-  border-color: #e5e7eb;
-  background: #f9fafb;
-  box-shadow: none !important;
-}
-
-.auth-social-btn:focus {
-  box-shadow: none !important;
-}
-
-.auth-social-btn:active {
-  box-shadow: none !important;
-}
-
-.auth-social-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
 /* Error Messages */
 .auth-error-message {
   padding: 11px 15px;
@@ -606,15 +526,20 @@
 /* Footer Text - ONLY animate on first open */
 .auth-footer-text {
   text-align: center;
-  margin-top: auto;
-  padding-top: 18px;
+  margin-top: 20px;
   font-size: 0.82rem;
   color: #9ca3af;
 }
 
 .auth-modal.first-open .auth-footer-text {
   opacity: 0;
-  animation: fadeInSimple 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards;
+  animation: fadeInSimple 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
+}
+
+@keyframes fadeInSimple {
+  to {
+    opacity: 1;
+  }
 }
 
 .auth-footer-text a {
@@ -664,10 +589,6 @@
   .auth-modal-title {
     font-size: 1.75rem;
   }
-
-  .auth-social-buttons {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 480px) {
@@ -699,23 +620,12 @@
     color: var(--color-white, #fff);
   }
 
-  .auth-social-btn {
-    background: var(--color-bg-secondary, #2a2a2a);
-    border-color: #374151;
-    color: #9ca3af;
-  }
-
   .auth-modal-close {
     background: rgba(255, 255, 255, 0.1);
   }
 
   .auth-modal-close:hover {
     background: rgba(255, 255, 255, 0.15);
-  }
-
-  .auth-divider::before,
-  .auth-divider::after {
-    background: #374151;
   }
 }
 
@@ -743,7 +653,6 @@
 .auth-form-input:focus-visible,
 .auth-checkbox:focus-visible,
 .auth-submit-btn:focus-visible,
-.auth-social-btn:focus-visible,
 .auth-modal-close:focus-visible {
   outline: 2px solid var(--brand-color);
   outline-offset: 2px;
