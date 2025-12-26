@@ -92,6 +92,16 @@ function mr_enqueue_styles()
         MR_THEME_VERSION,
     );
 
+    // Cart Confirmation Modal CSS
+    wp_enqueue_style(
+        "cart-confirm-modal",
+        get_template_directory_uri() . "/assets/css/cart-confirm-modal.css",
+        [],
+        filemtime(
+            get_template_directory() . "/assets/css/cart-confirm-modal.css",
+        ),
+    );
+
     // Breadcrumb component styles
     wp_enqueue_style(
         "mr-breadcrumb-shop",
@@ -117,7 +127,7 @@ function mr_enqueue_styles()
         AAAPOS_VERSION . "." . time() . rand(1, 9999),
         "all",
     );
-    
+
     // 404 Page styles
     wp_enqueue_style(
         "macedon-ranges-404",
@@ -126,7 +136,7 @@ function mr_enqueue_styles()
         "1.0.0",
         "all",
     );
-    
+
     add_action("wp_enqueue_scripts", "macedon_ranges_enqueue_404_styles");
 
     // JavaScript
@@ -269,11 +279,22 @@ function mr_enqueue_scripts()
             true,
         );
 
-        // Cart scripts
+        // Cart Confirmation Modal JS - Load BEFORE cart.js
+        wp_enqueue_script(
+            "cart-confirm-modal",
+            get_template_directory_uri() . "/assets/js/cart-confirm-modal.js",
+            [],
+            filemtime(
+                get_template_directory() . "/assets/js/cart-confirm-modal.js",
+            ),
+            true,
+        );
+
+        // Cart scripts - Depends on modal
         wp_enqueue_script(
             "mr-cart",
             MR_THEME_URI . "/assets/js/cart.js",
-            ["mr-woocommerce", "jquery"],
+            ["mr-woocommerce", "jquery", "cart-confirm-modal"],
             MR_THEME_VERSION,
             true,
         );
@@ -555,6 +576,7 @@ function mr_script_loader_tag($tag, $handle, $src)
         "mr-footer",
         "mr-woocommerce",
         "mr-cart",
+        "cart-confirm-modal",
         "mr-header-scroll",
         "mr-variation-swatches",
         "mr-quantity-selector",

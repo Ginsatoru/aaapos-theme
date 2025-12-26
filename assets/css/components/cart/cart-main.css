@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CART MAIN - Entry Point & Layout (Modern Redesign)
+   CART MAIN - Entry Point & Layout (Modern Redesign - Compact)
    
    @package Macedon_Ranges
    @since 1.0.0
@@ -33,21 +33,38 @@ body.woocommerce-cart #main.site-main article.page {
   margin: 0;
 }
 
-/* Cart page container */
+/* Cart page container - smaller bottom padding */
 body.woocommerce-cart #main.site-main .container {
   max-width: 1410px;
   margin: 0 auto;
   padding: 0 var(--container-padding);
-  padding-bottom: var(--space-8);
+  padding-bottom: var(--space-6); /* Reduced from space-8 */
 }
 
 /* ==========================================================================
-   PAGE HEADER WITH BREADCRUMB
+   BREADCRUMB POSITIONING - Match Shop Page (Left Side, Above Header)
+   ========================================================================== */
+body.woocommerce-cart .woocommerce-breadcrumb {
+  margin-bottom: var(--space-6, 1.5rem) !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+  margin-top: var(--space-4, 1rem) !important;
+}
+
+/* Remove any center alignment from breadcrumb */
+body.woocommerce-cart nav.woocommerce-breadcrumb {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+/* ==========================================================================
+   PAGE HEADER - Compact
    ========================================================================== */
 body.woocommerce-cart #main.site-main .entry-header {
-  margin-bottom: -30px !important;
+  margin-bottom: -25px !important;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* Reduced from 2rem */
   margin-top: 0;
   padding: 0.5rem 0 0 0;
   background: transparent;
@@ -55,44 +72,24 @@ body.woocommerce-cart #main.site-main .entry-header {
 
 body.woocommerce-cart #main.site-main .entry-header .entry-title,
 body.woocommerce-cart #main.site-main article .entry-title {
-  margin-top: -80px;
-  font-size: 3rem;
+  margin-top: -160px; /* Reduced from -80px */
+  font-size: 2.5rem; /* Reduced from 3rem */
   font-weight: 700;
   color: #212529;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2); /* Reduced from space-3 */
   font-family: var(--font-heading);
-  letter-spacing: -0.5px;
-}
-
-/* Breadcrumb styling */
-body.woocommerce-cart #main.site-main .woocommerce-breadcrumb {
-  font-size: 0.95rem;
-  color: #6C757D;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-}
-
-body.woocommerce-cart #main.site-main .woocommerce-breadcrumb a {
-  color: #6C757D;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-body.woocommerce-cart #main.site-main .woocommerce-breadcrumb a:hover {
-  color: #212529;
+  letter-spacing: -0.3px; /* Reduced from -0.5px */
 }
 
 /* ==========================================================================
-   TWO COLUMN GRID LAYOUT - Updated for narrower sidebar
+   TWO COLUMN GRID LAYOUT - More compact
    ========================================================================== */
 @media (min-width: 1024px) {
   /* Target the woocommerce wrapper that contains both form and collaterals */
   body.woocommerce-cart #main.site-main .entry-content .woocommerce {
     display: grid;
-    grid-template-columns: 1fr 420px; /* Changed from 480px to 420px to match sidebar max-width */
-    gap: 2rem;
+    grid-template-columns: 1fr 380px; /* Reduced from 1fr 420px */
+    gap: 1.5rem; /* Reduced from 2rem */
     align-items: start;
   }
   
@@ -108,12 +105,94 @@ body.woocommerce-cart #main.site-main .woocommerce-breadcrumb a:hover {
 }
 
 /* ==========================================================================
-   CART FORM WRAPPER - Clean white card (No shadow)
+   CART FORM WRAPPER - Clean white card (No shadow) - More compact
    ========================================================================== */
 body.woocommerce-cart #main.site-main form.woocommerce-cart-form {
   background: var(--color-white);
-  border-radius: 15px;
+  border-radius: 12px; /* Reduced from 15px */
   overflow: hidden;
   margin-bottom: 0;
   width: 100%;
+}
+
+/* ==========================================================================
+   APPLIED COUPONS DISPLAY - Below cart table
+   ========================================================================== */
+body.woocommerce-cart .applied-coupons-list {
+  margin: 0rem 0 0.75rem 0;
+  padding: 0.75rem 1.25rem;
+  background: rgba(34, 66, 41, 0.08);
+  border-left: 3px solid var(--brand-color, #224229);
+  border-radius: 6px;
+}
+
+body.woocommerce-cart .applied-coupon-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+body.woocommerce-cart .applied-coupon-item + .applied-coupon-item {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(34, 66, 41, 0.15);
+}
+
+body.woocommerce-cart .applied-coupon-info {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex: 1;
+}
+
+body.woocommerce-cart .applied-coupon-info svg {
+  flex-shrink: 0;
+  stroke: var(--brand-color, #224229);
+}
+
+body.woocommerce-cart .applied-coupon-info .coupon-code {
+  color: var(--brand-color, #224229);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+body.woocommerce-cart .applied-coupon-info .coupon-amount {
+  color: var(--brand-color, #224229);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+body.woocommerce-cart .remove-applied-coupon {
+  color: #dc2626;
+  text-decoration: underline;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+}
+
+body.woocommerce-cart .remove-applied-coupon:hover {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREADCRUMB ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 768px) {
+  body.woocommerce-cart .woocommerce-breadcrumb {
+    margin-top: var(--space-3, 0.75rem) !important;
+    margin-bottom: var(--space-4, 1rem) !important;
+  }
+  
+  body.woocommerce-cart .applied-coupon-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  body.woocommerce-cart .remove-applied-coupon {
+    align-self: flex-end;
+  }
 }

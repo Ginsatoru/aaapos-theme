@@ -4,6 +4,8 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/cart/cart-totals.php.
  *
+ * UPDATED: Removed estimated text from Tax, made tax amount bold
+ *
  * @package Macedon_Ranges
  */
 
@@ -30,36 +32,104 @@ defined('ABSPATH') || exit;
 			<td data-title="<?php esc_attr_e('Subtotal', 'macedon-ranges'); ?>"><?php wc_cart_totals_subtotal_html(); ?></td>
 		</tr>
 
-		<?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
-			<tr class="cart-discount coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
-				<th><?php esc_html_e('Coupon Discount', 'macedon-ranges'); ?></th>
-				<td data-title="<?php echo esc_attr(wc_cart_totals_coupon_label($coupon)); ?>">-<?php wc_cart_totals_coupon_html($coupon); ?></td>
-			</tr>
-		<?php endforeach; ?>
-
 		<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
 
 			<?php do_action('woocommerce_cart_totals_before_shipping'); ?>
 
-			<tr class="woocommerce-shipping-totals shipping">
-				<th><?php esc_html_e('Shipping', 'macedon-ranges'); ?></th>
-				<td data-title="<?php esc_attr_e('Shipping', 'macedon-ranges'); ?>">
-					<?php wc_cart_totals_shipping_html(); ?>
-				</td>
-			</tr>
+			<?php wc_cart_totals_shipping_html(); ?>
 
 			<?php do_action('woocommerce_cart_totals_after_shipping'); ?>
 
-		<?php elseif (WC()->cart->needs_shipping() && WC()->cart->needs_shipping_address()) : ?>
+		<?php elseif (WC()->cart->needs_shipping()) : ?>
 
 			<tr class="shipping">
 				<th><?php esc_html_e('Shipping', 'macedon-ranges'); ?></th>
 				<td data-title="<?php esc_attr_e('Shipping', 'macedon-ranges'); ?>">
-					<?php esc_html_e('$0.00', 'macedon-ranges'); ?>
+					<?php
+					/* translators: %s: shipping destination. */
+					echo wp_kses_post(sprintf(esc_html__('Shipping options will be updated during checkout.', 'macedon-ranges')));
+					?>
 				</td>
 			</tr>
 
 		<?php endif; ?>
+
+		<?php
+		// ALWAYS DISPLAY TAX (even if $0) - WITH BOLD STYLING AND NO ESTIMATED TEXT
+		if (wc_tax_enabled()) {
+			$tax_total = WC()->cart->get_total_tax();
+
+			if (!WC()->cart->display_prices_including_tax()) {
+				if ('itemized' === get_option('woocommerce_tax_total_display')) {
+					// Show itemized taxes
+					$tax_totals = WC()->cart->get_tax_totals();
+					if (!empty($tax_totals)) {
+						foreach ($tax_totals as $code => $tax) {
+							?>
+							<tr class="tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
+								<th><?php esc_html_e('Tax', 'macedon-ranges'); ?></th>
+								<td data-title="<?php esc_attr_e('Tax', 'macedon-ranges'); ?>"><strong><?php echo wp_kses_post($tax->formatted_amount); ?></strong></td>
+							</tr>
+							<?php
+						}
+					} else {
+						// No taxes, show $0.00
+						?>
+						<tr class="tax-total">
+							<th><?php esc_html_e('Tax', 'macedon-ranges'); ?></th>
+							<td data-title="<?php esc_attr_e('Tax', 'macedon-ranges'); ?>"><strong><?php echo wc_price(0); ?></strong></td>
+						</tr>
+						<?php
+					}
+				} else {
+					// Show total tax (or $0.00 if no tax)
+					?>
+					<tr class="tax-total">
+						<th><?php esc_html_e('Tax', 'macedon-ranges'); ?></th>
+						<td data-title="<?php esc_attr_e('Tax', 'macedon-ranges'); ?>">
+							<?php if ($tax_total > 0) : ?>
+								<strong><?php wc_cart_totals_taxes_total_html(); ?></strong>
+							<?php else : ?>
+								<strong><?php echo wc_price(0); ?></strong>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<?php
+				}
+			}
+		}
+		?>
+
+		<?php
+		// ALWAYS DISPLAY COUPON DISCOUNT (even if $0 or no coupon applied)
+		$coupons = WC()->cart->get_coupons();
+		$discount_total = WC()->cart->get_discount_total();
+		
+		if (!empty($coupons)) {
+			// Show actual coupons - simple display like other rows
+			foreach ($coupons as $code => $coupon) : 
+				// Get the discount amount
+				$discount_amount = WC()->cart->get_coupon_discount_amount($code);
+				?>
+				<tr class="cart-discount coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
+					<th><?php esc_html_e('Coupon Discount', 'macedon-ranges'); ?></th>
+					<td data-title="<?php esc_attr_e('Coupon Discount', 'macedon-ranges'); ?>">
+						<strong>-<?php echo wc_price($discount_amount); ?></strong>
+					</td>
+				</tr>
+			<?php endforeach;
+		} else {
+			// No coupon applied, show $0.00
+			?>
+			<tr class="cart-discount no-coupon">
+				<th><?php esc_html_e('Coupon Discount', 'macedon-ranges'); ?></th>
+				<td data-title="<?php esc_attr_e('Coupon Discount', 'macedon-ranges'); ?>">
+					<strong><?php echo wc_price(0); ?></strong>
+				</td>
+			</tr>
+			<?php
+		}
+		?>
 
 		<?php foreach (WC()->cart->get_fees() as $fee) : ?>
 			<tr class="fee">
@@ -68,41 +138,11 @@ defined('ABSPATH') || exit;
 			</tr>
 		<?php endforeach; ?>
 
-		<?php
-		if (wc_tax_enabled() && !WC()->cart->display_prices_including_tax()) {
-			$taxable_address = WC()->customer->get_taxable_address();
-			$estimated_text  = '';
-
-			if (WC()->customer->is_customer_outside_base() && !WC()->customer->has_calculated_shipping()) {
-				/* translators: %s location. */
-				$estimated_text = sprintf(' <small>' . esc_html__('(estimated for %s)', 'macedon-ranges') . '</small>', WC()->countries->estimated_for_prefix($taxable_address[0]) . WC()->countries->countries[$taxable_address[0]]);
-			}
-
-			if ('itemized' === get_option('woocommerce_tax_total_display')) {
-				foreach (WC()->cart->get_tax_totals() as $code => $tax) {
-					?>
-					<tr class="tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
-						<th><?php echo esc_html($tax->label) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
-						<td data-title="<?php echo esc_attr($tax->label); ?>"><?php echo wp_kses_post($tax->formatted_amount); ?></td>
-					</tr>
-					<?php
-				}
-			} else {
-				?>
-				<tr class="tax-total">
-					<th><?php echo esc_html(WC()->countries->tax_or_vat()) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></th>
-					<td data-title="<?php echo esc_attr(WC()->countries->tax_or_vat()); ?>"><?php wc_cart_totals_taxes_total_html(); ?></td>
-				</tr>
-				<?php
-			}
-		}
-		?>
-
 		<?php do_action('woocommerce_cart_totals_before_order_total'); ?>
 
 		<tr class="order-total">
-			<th><?php esc_html_e('Total', 'macedon-ranges'); ?></th>
-			<td data-title="<?php esc_attr_e('Total', 'macedon-ranges'); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
+			<th><strong><?php esc_html_e('Total', 'macedon-ranges'); ?></strong></th>
+			<td data-title="<?php esc_attr_e('Total', 'macedon-ranges'); ?>"><strong><?php wc_cart_totals_order_total_html(); ?></strong></td>
 		</tr>
 
 		<?php do_action('woocommerce_cart_totals_after_order_total'); ?>

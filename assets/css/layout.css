@@ -209,6 +209,11 @@
     padding: var(--space-8) 0;
 }
 
+/* Cart page - remove top padding for breadcrumb */
+body.woocommerce-cart .content-area {
+    padding-top: 0;
+}
+
 .content-full {
     width: 100%;
     padding: var(--space-8) var(--container-padding);

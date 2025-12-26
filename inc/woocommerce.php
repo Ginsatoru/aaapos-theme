@@ -3,6 +3,7 @@
  * WooCommerce Integration - FULLY INTEGRATED WITH CUSTOMIZER
  * NOW WITH WORKING CATEGORY FILTER FUNCTIONALITY
  * UPDATED: Added fallback background image support
+ * FIXED: Removed shipping calculator from cart page
  *
  * ALL settings now respect WooCommerce Customizer options
  */
@@ -241,7 +242,8 @@ if (!function_exists("aaapos_render_category_filter")) {
                 </a>
                 
                 <?php // Loop through selected categories
-                foreach ($categories as $category):
+
+        foreach ($categories as $category):
 
                     $category_url = get_term_link($category);
 
@@ -416,7 +418,8 @@ function aaapos_woocommerce_nuclear_styles()
     if (is_cart()) {
         wp_enqueue_style(
             "aaapos-cart",
-            get_template_directory_uri() . "/assets/css/components/cart/cart-main.css",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/cart-main.css",
             ["aaapos-woocommerce-base"],
             AAAPOS_VERSION . "." . time(),
             "all",
@@ -478,13 +481,19 @@ add_action("wp_enqueue_scripts", "aaapos_woocommerce_nuclear_styles", 999);
  * Add Clear Shopping Cart Button
  * This adds a "Clear Shopping Cart" link below the cart actions
  */
-add_action('woocommerce_cart_actions', 'add_clear_cart_button');
-function add_clear_cart_button() {
+add_action("woocommerce_cart_actions", "add_clear_cart_button");
+function add_clear_cart_button()
+{
     ?>
-    <a href="<?php echo esc_url(add_query_arg('clear-cart', 'true', wc_get_cart_url())); ?>" 
+    <a href="<?php echo esc_url(
+        add_query_arg("clear-cart", "true", wc_get_cart_url()),
+    ); ?>" 
        class="button clear-cart-link" 
-       onclick="return confirm('<?php esc_attr_e('Are you sure you want to clear your cart?', 'macedon-ranges'); ?>');">
-        <?php esc_html_e('Clear Shopping Cart', 'macedon-ranges'); ?>
+       onclick="return confirm('<?php esc_attr_e(
+           "Are you sure you want to clear your cart?",
+           "macedon-ranges",
+       ); ?>');">
+        <?php esc_html_e("Clear Shopping Cart", "macedon-ranges"); ?>
     </a>
     <?php
 }
@@ -492,62 +501,84 @@ function add_clear_cart_button() {
 /**
  * Handle Clear Cart Action
  */
-add_action('init', 'handle_clear_cart');
-function handle_clear_cart() {
-    if (isset($_GET['clear-cart']) && $_GET['clear-cart'] === 'true') {
+add_action("init", "handle_clear_cart");
+function handle_clear_cart()
+{
+    if (isset($_GET["clear-cart"]) && $_GET["clear-cart"] === "true") {
         WC()->cart->empty_cart();
         wp_safe_redirect(wc_get_cart_url());
-        exit;
+        exit();
     }
 }
 
 /**
- * Force Enable Shipping Calculator
- * This ensures shipping always shows in cart totals
+ * Display Applied Coupons with Remove Option in Cart
  */
-add_filter('woocommerce_shipping_calculator_enable_city', '__return_true');
-add_filter('woocommerce_shipping_calculator_enable_postcode', '__return_true');
+function mr_display_applied_coupons_in_cart() {
+    if (!is_cart()) {
+        return;
+    }
+    
+    $applied_coupons = WC()->cart->get_applied_coupons();
+    
+    if (!empty($applied_coupons)) {
+        echo '<div class="applied-coupons-list">';
+        
+        foreach ($applied_coupons as $code) {
+            $coupon = new WC_Coupon($code);
+            $discount_amount = WC()->cart->get_coupon_discount_amount($code);
+            $remove_url = add_query_arg('remove_coupon', $code, wc_get_cart_url());
+            
+            echo '<div class="applied-coupon-item">';
+            echo '<div class="applied-coupon-info">';
+            echo '<svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>';
+            echo '<span class="coupon-code">Coupon ' . esc_html(strtoupper($code)) . ' applied</span>';
+            echo '<span class="coupon-amount">-' . wc_price($discount_amount) . '</span>';
+            echo '</div>';
+            echo '<a href="' . esc_url($remove_url) . '" class="remove-applied-coupon">' . esc_html__('Remove', 'macedon-ranges') . '</a>';
+            echo '</div>';
+        }
+        
+        echo '</div>';
+    }
+}
+add_action('woocommerce_after_cart_table', 'mr_display_applied_coupons_in_cart', 5);
+
 
 /**
- * Add item count to cart totals
+ * Handle Coupon Removal from URL
  */
-add_action('woocommerce_cart_totals_before_order_total', 'add_cart_item_count_row');
-function add_cart_item_count_row() {
-    $item_count = WC()->cart->get_cart_contents_count();
-    ?>
-    <tr class="cart-items-count">
-        <th><?php esc_html_e('Items', 'macedon-ranges'); ?></th>
-        <td data-title="<?php esc_attr_e('Items', 'macedon-ranges'); ?>">
-            <?php echo esc_html($item_count); ?>
-        </td>
-    </tr>
-    <?php
+function mr_handle_coupon_removal() {
+    if (isset($_GET['remove_coupon'])) {
+        $coupon_code = sanitize_text_field($_GET['remove_coupon']);
+        WC()->cart->remove_coupon($coupon_code);
+        wc_add_notice(__('Coupon removed successfully.', 'macedon-ranges'), 'success');
+        wp_safe_redirect(wc_get_cart_url());
+        exit;
+    }
 }
+add_action('wp_loaded', 'mr_handle_coupon_removal', 20);
 
 /**
- * Modify cart totals to show all necessary rows
+ * REMOVED: Force Enable Shipping Calculator functions
+ * These were causing shipping to show on cart page
  */
-add_action('woocommerce_before_cart_totals', 'ensure_cart_totals_display');
-function ensure_cart_totals_display() {
-    // Force display of shipping
-    add_filter('woocommerce_cart_needs_shipping_address', '__return_true');
-}
+// DELETED: add_filter('woocommerce_shipping_calculator_enable_city', '__return_true');
+// DELETED: add_filter('woocommerce_shipping_calculator_enable_postcode', '__return_true');
 
 /**
- * Add custom cart totals rows
+ * REMOVED: Functions that forced shipping display on cart
  */
-add_action('woocommerce_cart_totals_after_order_total', 'add_custom_cart_totals_info');
-function add_custom_cart_totals_info() {
-    // This can be used to add additional info if needed
-}
+// DELETED: ensure_cart_totals_display()
+// DELETED: add_filter('woocommerce_cart_needs_shipping_address', '__return_true');
 
 /**
  * Enable Update Cart button
  */
-add_action('wp_footer', 'enable_cart_update_button');
-function enable_cart_update_button() {
-    if (is_cart()) {
-        ?>
+add_action("wp_footer", "enable_cart_update_button");
+function enable_cart_update_button()
+{
+    if (is_cart()) { ?>
         <script>
         jQuery(function($) {
             // Enable update cart button when quantity changes
@@ -556,9 +587,72 @@ function enable_cart_update_button() {
             });
         });
         </script>
-        <?php
-    }
+        <?php }
 }
+
+/**
+ * Simplify Cart Shipping Display - Show only selected shipping cost
+ * This removes the radio buttons and shows shipping like checkout
+ */
+function aaapos_simplify_cart_shipping_display() {
+    if (!is_cart()) {
+        return;
+    }
+    ?>
+    <style>
+        /* Hide shipping calculator and radio buttons on cart page */
+        .cart_totals .shipping-calculator-button,
+        .cart_totals .shipping-calculator-form,
+        .cart_totals .woocommerce-shipping-methods {
+            display: none !important;
+        }
+        
+        /* Show only the shipping label and cost */
+        .cart_totals .shipping th,
+        .cart_totals .shipping td {
+            display: table-cell !important;
+        }
+        
+        .cart_totals .shipping td {
+            font-weight: 600;
+        }
+    </style>
+    <script>
+    jQuery(function($) {
+        // Simplify shipping display - show only selected method cost
+        function simplifyShippingDisplay() {
+            var $shippingRow = $('.cart_totals .shipping');
+            
+            if ($shippingRow.length) {
+                // Find selected shipping method
+                var $selectedMethod = $shippingRow.find('input[type="radio"]:checked');
+                
+                if ($selectedMethod.length) {
+                    // Get the shipping cost from the label
+                    var $label = $selectedMethod.closest('li').find('label');
+                    var shippingText = $label.text().trim();
+                    
+                    // Extract just the cost (everything after the colon)
+                    var cost = shippingText.split(':').pop().trim();
+                    
+                    // Update the cell to show only the cost
+                    $shippingRow.find('td').html('<span class="woocommerce-Price-amount amount">' + cost + '</span>');
+                }
+            }
+        }
+        
+        // Run on page load
+        simplifyShippingDisplay();
+        
+        // Run after cart updates
+        $(document.body).on('updated_cart_totals', function() {
+            simplifyShippingDisplay();
+        });
+    });
+    </script>
+    <?php
+}
+add_action('wp_footer', 'aaapos_simplify_cart_shipping_display');
 
 /**
  * Enqueue Quick View Assets (FIXED - Separate function)
@@ -1256,3 +1350,15 @@ function aaapos_search_product_meta($query)
     }
 }
 add_action("pre_get_posts", "aaapos_search_product_meta", 10);
+
+/**
+ * Display breadcrumb before page title on cart page
+ */
+function aaapos_cart_breadcrumb_before_title() {
+    if (is_cart() && function_exists('woocommerce_breadcrumb')) {
+        echo '<div class="cart-breadcrumb-wrapper">';
+        woocommerce_breadcrumb();
+        echo '</div>';
+    }
+}
+add_action('woocommerce_before_main_content', 'aaapos_cart_breadcrumb_before_title', 5);

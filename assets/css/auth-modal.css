@@ -471,9 +471,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
+  margin: -10px 0 0 -10px; /* Use margin instead of transform for centering */
   border: 2px solid var(--color-white);
   border-top-color: transparent;
   border-radius: 50%;
@@ -481,8 +481,11 @@
 }
 
 @keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 

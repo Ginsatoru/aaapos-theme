@@ -17,6 +17,25 @@
     list-style: none;
 }
 
+/* Cart page breadcrumb wrapper - adds proper spacing and LEFT alignment */
+.cart-breadcrumb-wrapper {
+    margin-bottom: var(--space-6, 1.5rem);
+    width: 100%;
+    display: block;
+}
+
+.cart-breadcrumb-wrapper .woocommerce-breadcrumb {
+    justify-content: flex-start;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* Cart page specific - ensure breadcrumb stays left aligned */
+.woocommerce-cart .cart-breadcrumb-wrapper {
+    text-align: left;
+}
+
 /* Hide default separators completely */
 .woocommerce-breadcrumb .breadcrumb-separator {
     display: none !important;
@@ -183,6 +202,10 @@
         margin-bottom: var(--space-6, 1.5rem);
     }
 
+    .cart-breadcrumb-wrapper {
+        margin-bottom: var(--space-4, 1rem);
+    }
+
     .woocommerce-breadcrumb a,
     .woocommerce-breadcrumb .breadcrumb-current {
         height: 32px;
@@ -230,6 +253,10 @@
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         margin-bottom: var(--space-4, 1rem);
+    }
+
+    .cart-breadcrumb-wrapper {
+        margin-bottom: var(--space-3, 0.75rem);
     }
 
     .woocommerce-breadcrumb a,
@@ -360,3 +387,28 @@ nav.woocommerce-breadcrumb {
     opacity: 1 !important;
     visibility: visible !important;
 }
+
+/* CART PAGE BREADCRUMB - LEFT ALIGNED WITHIN CONTAINER */
+body.woocommerce-cart .cart-breadcrumb-wrapper {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    margin: 0 0 var(--space-6, 1.5rem) 0 !important;
+    padding: 0 !important;
+}
+
+body.woocommerce-cart .cart-breadcrumb-wrapper .woocommerce-breadcrumb {
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove any text-align center from parent containers on cart page */
+body.woocommerce-cart .content-area {
+    text-align: left !important;
+}
+
+body.woocommerce-cart article {
+    text-align: left !important;
+}
+

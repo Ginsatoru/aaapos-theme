@@ -9,6 +9,16 @@ get_header();
     <div class="content-area">
         <?php while (have_posts()) : the_post(); ?>
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                
+                <?php 
+                // For cart page, show breadcrumb before title
+                if (is_cart() && function_exists('woocommerce_breadcrumb')) {
+                    echo '<div class="cart-breadcrumb-wrapper">';
+                    woocommerce_breadcrumb();
+                    echo '</div>';
+                }
+                ?>
+                
                 <header class="entry-header">
                     <?php the_title('<h1 class="entry-title">', '</h1>'); ?>
                 </header>

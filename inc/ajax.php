@@ -312,6 +312,7 @@ add_action("wp_ajax_nopriv_remove_cart_item", "mr_ajax_remove_cart_item");
 
 /**
  * AJAX Handler: Update cart item quantity
+ * FIXED: Now returns line subtotal and cart totals HTML
  */
 function mr_ajax_update_cart_quantity()
 {
@@ -345,11 +346,32 @@ function mr_ajax_update_cart_quantity()
         ]);
     }
 
+    // Get cart item before update to access product
+    $cart = WC()->cart->get_cart();
+    if (!isset($cart[$cart_item_key])) {
+        wp_send_json_error([
+            "message" => __("Cart item not found", "macedon-ranges"),
+        ]);
+    }
+
+    $cart_item = $cart[$cart_item_key];
+    $_product = $cart_item['data'];
+
     // Update quantity
     $updated = WC()->cart->set_quantity($cart_item_key, $quantity);
 
     if ($updated) {
         WC()->cart->calculate_totals();
+
+        // Get the updated line subtotal for this specific item
+        $updated_cart = WC()->cart->get_cart();
+        $updated_item = $updated_cart[$cart_item_key];
+        $line_subtotal = WC()->cart->get_product_subtotal($_product, $updated_item['quantity']);
+
+        // Get updated cart totals HTML
+        ob_start();
+        woocommerce_cart_totals();
+        $cart_totals_html = ob_get_clean();
 
         // Get updated fragments
         $fragments = apply_filters("woocommerce_add_to_cart_fragments", []);
@@ -359,6 +381,8 @@ function mr_ajax_update_cart_quantity()
             "cart_count" => WC()->cart->get_cart_contents_count(),
             "cart_subtotal" => WC()->cart->get_cart_subtotal(),
             "cart_total" => WC()->cart->get_total(),
+            "line_subtotal" => $line_subtotal,
+            "cart_totals_html" => $cart_totals_html,
             "fragments" => $fragments,
         ]);
     } else {

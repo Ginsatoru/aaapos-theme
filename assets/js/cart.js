@@ -73,12 +73,28 @@ class CartManager {
       }
     }, true);
 
-    // Quantity changes in cart page
+    // Quantity changes in cart page - FIXED: Look for cart item key in the name attribute
     document.addEventListener("change", (e) => {
-      if (e.target.classList.contains("qty") && e.target.dataset.cartItemKey) {
-        this.updateQuantity(e.target);
+      if (e.target.classList.contains("qty")) {
+        const cartItemKey = this.getCartItemKeyFromInput(e.target);
+        if (cartItemKey) {
+          this.updateQuantity(e.target, cartItemKey);
+        }
       }
     });
+  }
+
+  /**
+   * Extract cart item key from input name attribute
+   * Input name format: cart[CART_ITEM_KEY][qty]
+   */
+  getCartItemKeyFromInput(input) {
+    const name = input.getAttribute('name');
+    if (!name) return null;
+    
+    // Match pattern: cart[CART_ITEM_KEY][qty]
+    const match = name.match(/cart\[([^\]]+)\]\[qty\]/);
+    return match ? match[1] : null;
   }
 
   bindWooCommerceEvents() {
@@ -234,7 +250,7 @@ class CartManager {
         // Remove the item from dropdown with animation (slide to the RIGHT)
         if (listItem) {
           listItem.style.transition = "all 0.3s ease";
-          listItem.style.transform = "translateX(5%)"; // Changed from -100% to 100%
+          listItem.style.transform = "translateX(5%)";
           listItem.style.opacity = "0";
 
           setTimeout(() => {
@@ -290,11 +306,17 @@ class CartManager {
     }
   }
 
-  async updateQuantity(input) {
-    const cartItemKey = input.dataset.cartItemKey;
+  async updateQuantity(input, cartItemKey) {
     const quantity = input.value;
 
-    if (!cartItemKey) return;
+    if (!cartItemKey || quantity < 0) return;
+
+    // Show loading state on the row
+    const row = input.closest('tr');
+    if (row) {
+      row.style.opacity = '0.6';
+      row.style.pointerEvents = 'none';
+    }
 
     try {
       const formData = new FormData();
@@ -316,6 +338,22 @@ class CartManager {
       const data = await response.json();
 
       if (data.success) {
+        // Update the product subtotal in the same row
+        if (data.data.line_subtotal && row) {
+          const subtotalCell = row.querySelector('.product-subtotal');
+          if (subtotalCell) {
+            subtotalCell.innerHTML = data.data.line_subtotal;
+          }
+        }
+
+        // Update cart totals section
+        if (data.data.cart_totals_html) {
+          const cartTotals = document.querySelector('.cart_totals');
+          if (cartTotals) {
+            cartTotals.outerHTML = data.data.cart_totals_html;
+          }
+        }
+
         // Update fragments if provided
         if (data.data.fragments) {
           this.updateFragments(data.data.fragments);
@@ -323,15 +361,30 @@ class CartManager {
         
         this.updateCartCount(data.data.cart_count);
 
-        // Update subtotal
+        // Update subtotal in header/dropdown
         const subtotalEl = document.querySelector(".cart-subtotal-amount");
         if (subtotalEl && data.data.cart_subtotal) {
           subtotalEl.innerHTML = data.data.cart_subtotal;
         }
+
+        // Trigger WooCommerce event
+        if (typeof jQuery !== "undefined") {
+          jQuery(document.body).trigger('updated_cart_totals');
+        }
+
+        this.showMessage("Cart updated successfully!", "success");
+      } else {
+        throw new Error(data.data?.message || "Failed to update cart");
       }
     } catch (error) {
       console.error("Update cart error:", error);
       this.showMessage("Failed to update cart. Please try again.", "error");
+    } finally {
+      // Remove loading state
+      if (row) {
+        row.style.opacity = '1';
+        row.style.pointerEvents = '';
+      }
     }
   }
 
