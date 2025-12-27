@@ -1,9 +1,8 @@
 <?php
 /**
  * Cart page template
+ * UPDATED: Single coupon implementation with toggle button
  * 
- * This template can be overridden by copying it to yourtheme/woocommerce/cart/cart.php.
- *
  * @package Macedon_Ranges
  */
 
@@ -44,12 +43,11 @@ do_action('woocommerce_before_cart'); ?>
                         <!-- Remove Button -->
                         <td class="product-remove">
                             <?php
-                                echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                echo apply_filters(
                                     'woocommerce_cart_item_remove_link',
                                     sprintf(
                                         '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
                                         esc_url(wc_get_cart_remove_url($cart_item_key)),
-                                        /* translators: %s: Product name */
                                         esc_attr(sprintf(__('Remove %s from cart', 'macedon-ranges'), wp_strip_all_tags($_product->get_name()))),
                                         esc_attr($product_id),
                                         esc_attr($_product->get_sku())
@@ -65,9 +63,9 @@ do_action('woocommerce_before_cart'); ?>
                             $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
 
                             if (!$product_permalink) {
-                                echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                echo $thumbnail;
                             } else {
-                                printf('<a href="%s">%s</a>', esc_url($product_permalink), $thumbnail); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                printf('<a href="%s">%s</a>', esc_url($product_permalink), $thumbnail);
                             }
                             ?>
                         </td>
@@ -83,10 +81,8 @@ do_action('woocommerce_before_cart'); ?>
 
                             do_action('woocommerce_after_cart_item_name', $cart_item, $cart_item_key);
 
-                            // Meta data (variations, etc).
-                            echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            echo wc_get_formatted_cart_item_data($cart_item);
 
-                            // Backorder notification.
                             if ($_product->backorders_require_notification() && $_product->is_on_backorder($cart_item['quantity'])) {
                                 echo wp_kses_post(apply_filters('woocommerce_cart_item_backorder_notification', '<p class="backorder_notification">' . esc_html__('Available on backorder', 'macedon-ranges') . '</p>', $product_id));
                             }
@@ -96,7 +92,7 @@ do_action('woocommerce_before_cart'); ?>
                         <!-- Product Price -->
                         <td class="product-price" data-title="<?php esc_attr_e('Price', 'macedon-ranges'); ?>">
                             <?php
-                                echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                echo apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key);
                             ?>
                         </td>
 
@@ -123,14 +119,14 @@ do_action('woocommerce_before_cart'); ?>
                                 false
                             );
 
-                            echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item);
                             ?>
                         </td>
 
                         <!-- Product Subtotal -->
                         <td class="product-subtotal" data-title="<?php esc_attr_e('Subtotal', 'macedon-ranges'); ?>">
                             <?php
-                                echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key);
                             ?>
                         </td>
                     </tr>
@@ -144,11 +140,46 @@ do_action('woocommerce_before_cart'); ?>
             <tr>
                 <td colspan="6" class="actions">
                     <div class="cart-actions-wrapper">
-                        <?php if (wc_coupons_enabled()) { ?>
+                        <?php if (wc_coupons_enabled()) { 
+                            // Check if a coupon is already applied
+                            $applied_coupons = WC()->cart->get_applied_coupons();
+                            $has_coupon = !empty($applied_coupons);
+                            $coupon_code = $has_coupon ? reset($applied_coupons) : '';
+                        ?>
                             <div class="coupon">
                                 <label for="coupon_code" class="screen-reader-text"><?php esc_html_e('Coupon:', 'macedon-ranges'); ?></label>
-                                <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e('Coupon code', 'macedon-ranges'); ?>" />
-                                <button type="submit" class="button<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>" name="apply_coupon" value="<?php esc_attr_e('Apply coupon', 'macedon-ranges'); ?>"><?php esc_html_e('Apply coupon', 'macedon-ranges'); ?></button>
+                                <input 
+                                    type="text" 
+                                    name="coupon_code" 
+                                    class="input-text" 
+                                    id="coupon_code" 
+                                    value="<?php echo esc_attr($coupon_code); ?>" 
+                                    placeholder="<?php esc_attr_e('Coupon code', 'macedon-ranges'); ?>"
+                                    <?php echo $has_coupon ? 'readonly' : ''; ?>
+                                />
+                                
+                                <?php if ($has_coupon) : ?>
+                                    <!-- Remove Coupon Button -->
+                                    <button 
+                                        type="submit" 
+                                        class="button button-remove-coupon<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>" 
+                                        name="remove_coupon" 
+                                        value="<?php echo esc_attr($coupon_code); ?>"
+                                    >
+                                        <?php esc_html_e('Remove Coupon', 'macedon-ranges'); ?>
+                                    </button>
+                                <?php else : ?>
+                                    <!-- Apply Coupon Button -->
+                                    <button 
+                                        type="submit" 
+                                        class="button<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>" 
+                                        name="apply_coupon" 
+                                        value="<?php esc_attr_e('Apply coupon', 'macedon-ranges'); ?>"
+                                    >
+                                        <?php esc_html_e('Apply coupon', 'macedon-ranges'); ?>
+                                    </button>
+                                <?php endif; ?>
+                                
                                 <?php do_action('woocommerce_cart_coupon'); ?>
                             </div>
                         <?php } ?>
@@ -184,12 +215,6 @@ do_action('woocommerce_before_cart'); ?>
 
 <div class="cart-collaterals">
     <?php
-        /**
-         * Cart collaterals hook.
-         *
-         * @hooked woocommerce_cross_sell_display
-         * @hooked woocommerce_cart_totals - 10
-         */
         do_action('woocommerce_cart_collaterals');
     ?>
 </div>

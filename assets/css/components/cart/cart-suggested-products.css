@@ -1,0 +1,201 @@
+/* ==========================================================================
+   SUGGESTED PRODUCTS SECTION - Below Cart
+   Uses standard WooCommerce product card structure from shop page
+   @package Macedon_Ranges
+   ========================================================================== */
+
+/* ==========================================================================
+   SUGGESTED PRODUCTS SECTION - Below Cart
+   Uses standard WooCommerce product card structure from shop page
+   FULL WIDTH - Breaks out of cart grid layout
+   @package Macedon_Ranges
+   ========================================================================== */
+
+/* Wrapper - Break out of cart grid and span full viewport */
+body.woocommerce-cart .woocommerce .cart-suggested-products-wrapper {
+  /* Break out of grid */
+  grid-column: 1 / -1 !important;
+  
+  /* Full viewport width breakout */
+  position: relative !important;
+  width: 100vw !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  margin-top: 3rem !important;
+  padding-top: 3rem !important;
+  border-top: 1px solid #E5E5E5;
+  clear: both !important;
+}
+
+/* Container - 71% width, centered */
+body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+  width: 71% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Section Header */
+.cart-suggested-products__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cart-suggested-products__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #212529;
+  margin: 0 0 0.5rem 0;
+  font-family: var(--font-heading);
+}
+
+.cart-suggested-products__subtitle {
+  font-size: 0.9375rem;
+  color: #6C757D;
+  margin: 0;
+}
+
+/* Products Grid - Use WooCommerce standard grid */
+.cart-suggested-products .cart-suggested-products__grid.products {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.75rem !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+/* Product Cards - Inherit all shop page styles */
+.cart-suggested-products .products li.product {
+  /* Shop page styles will apply automatically */
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Quick View Button - Match content-product.php inline styles exactly */
+body.woocommerce-cart .cart-suggested-products ul.products li.product button.quick-view-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem 1.5rem !important;
+  color: #374151 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+  margin-bottom: 0.75rem !important; /* Increased spacing */
+  line-height: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+body.woocommerce-cart .cart-suggested-products ul.products li.product button.quick-view-button:hover {
+  color: var(--brand-color, #0ea5e9) !important;
+  transform: translateY(-2px) !important;
+  background: transparent !important;
+}
+
+body.woocommerce-cart .cart-suggested-products ul.products li.product button.quick-view-button:active {
+  transform: translateY(0) !important;
+}
+
+body.woocommerce-cart .cart-suggested-products ul.products li.product button.quick-view-button svg {
+  flex-shrink: 0 !important;
+  width: 18px !important;
+  height: 18px !important;
+  stroke-width: 2 !important;
+  pointer-events: none !important;
+}
+
+body.woocommerce-cart .cart-suggested-products ul.products li.product button.quick-view-button span {
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Add to Cart Button - Ensure proper spacing */
+body.woocommerce-cart .cart-suggested-products ul.products li.product a.button.add_to_cart_button {
+  margin-top: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .cart-suggested-products .woocommerce ul.products li.product .quick-view-button {
+    font-size: 0.9375rem !important;
+    padding: 0.625rem 1.25rem !important;
+    gap: 0.375rem !important;
+  }
+  
+  .cart-suggested-products .woocommerce ul.products li.product .quick-view-button svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Tablet (3 columns) */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    width: 85% !important;
+    max-width: 85% !important;
+  }
+  
+  .cart-suggested-products .cart-suggested-products__grid.products {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+}
+
+/* Mobile (2 columns) */
+@media (max-width: 767px) {
+  body.woocommerce-cart .woocommerce .cart-suggested-products-wrapper {
+    margin-top: 2rem !important;
+    padding-top: 2rem !important;
+  }
+  
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    width: 90% !important;
+    max-width: 90% !important;
+  }
+
+  .cart-suggested-products__title {
+    font-size: 1.5rem;
+  }
+
+  .cart-suggested-products .cart-suggested-products__grid.products {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+}
+
+/* Small Mobile (1 column) */
+@media (max-width: 480px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    width: 95% !important;
+    max-width: 95% !important;
+  }
+  
+  .cart-suggested-products .cart-suggested-products__grid.products {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .cart-suggested-products .products li.product {
+    max-width: 400px !important;
+    margin: 0 auto !important;
+  }
+}

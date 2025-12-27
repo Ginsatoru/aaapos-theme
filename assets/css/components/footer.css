@@ -244,31 +244,15 @@
   color: #cbd5e1 !important;
   text-decoration: none;
   font-size: 0.9375rem;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  position: relative;
 }
 
 .footer-menu a:hover,
 .footer-menu a:focus {
   color: var(--brand-color) !important;
-}
-
-.footer-menu a::before {
-  content: '';
-  width: 0;
-  height: 2px;
-  background: var(--brand-color);
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  transition: width 0.2s ease;
-}
-
-.footer-menu a:hover::before {
-  width: 100%;
 }
 
 /* Category Count */
@@ -293,7 +277,7 @@
   line-height: 1.6;
   color: #cbd5e1 !important;
   margin-bottom: 0.75rem;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .contact-item:hover {
@@ -324,7 +308,7 @@
 }
 
 /* ===================================================================
-   SOCIAL MEDIA ICONS - MODERNIZED
+   SOCIAL MEDIA ICONS - SIMPLIFIED
    =================================================================== */
 
 .footer-social-links {
@@ -346,8 +330,7 @@
   justify-content: center;
   color: var(--footer-social-icon);
   text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  transition: all 0.2s ease;
 }
 
 .social-link svg {
@@ -355,7 +338,6 @@
   height: 20px;
   fill: currentColor;
   stroke: none;
-  transition: transform 0.25s ease;
 }
 
 /* Circle Style */
@@ -364,10 +346,8 @@
   border-radius: 50%;
 }
 
-.social-style-circle .social-link:hover,
-.social-style-circle .social-link:focus {
+.social-style-circle .social-link:hover {
   background: var(--brand-color);
-  transform: translateY(-3px) scale(1.05);
 }
 
 /* Rounded Square Style (Default) */
@@ -376,10 +356,8 @@
   border-radius: 0.5rem;
 }
 
-.social-style-rounded .social-link:hover,
-.social-style-rounded .social-link:focus {
+.social-style-rounded .social-link:hover {
   background: var(--brand-color);
-  transform: translateY(-3px);
 }
 
 /* Square Style */
@@ -388,10 +366,8 @@
   border-radius: 0;
 }
 
-.social-style-square .social-link:hover,
-.social-style-square .social-link:focus {
+.social-style-square .social-link:hover {
   background: var(--brand-color);
-  transform: scale(1.08);
 }
 
 /* Minimal Style (No Background) */
@@ -401,11 +377,9 @@
   color: var(--footer-link);
 }
 
-.social-style-minimal .social-link:hover,
-.social-style-minimal .social-link:focus {
+.social-style-minimal .social-link:hover {
   border-color: var(--brand-color);
   color: var(--brand-color);
-  background: rgba(var(--brand-color-rgb), 0.1);
 }
 
 /* ===================================================================
@@ -522,14 +496,12 @@
   padding: 0;
   height: 36px;
   min-width: 50px;
-  transition: all 0.25s ease;
+  transition: border-color 0.2s ease;
   overflow: hidden;
 }
 
 .payment-icon:hover {
   border-color: var(--brand-color);
-  background: rgba(var(--brand-color-rgb), 0.1);
-  transform: translateY(-2px);
 }
 
 .payment-icon img {
@@ -538,36 +510,10 @@
   width: 100%;
   object-fit: cover;
   border-radius: 0.375rem;
-  transition: all 0.25s ease;
-}
-
-.payment-icon:hover img {
-  transform: scale(1.05);
-}
-
-/* Individual payment card backgrounds (optional subtle tints) */
-.payment-icon.payment-visa:hover {
-  background: rgba(20, 52, 203, 0.08);
-}
-
-.payment-icon.payment-mastercard:hover {
-  background: rgba(235, 0, 27, 0.08);
-}
-
-.payment-icon.payment-amex:hover {
-  background: rgba(0, 111, 207, 0.08);
-}
-
-.payment-icon.payment-paypal:hover {
-  background: rgba(0, 69, 124, 0.08);
-}
-
-.payment-icon.payment-discover:hover {
-  background: rgba(255, 96, 0, 0.08);
 }
 
 /* ===================================================================
-   BACK TO TOP BUTTON
+   BACK TO TOP BUTTON - SIMPLIFIED
    =================================================================== */
 
 .back-to-top {
@@ -583,11 +529,10 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s ease;
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(20px);
 }
 
 /* Position Variations */
@@ -603,29 +548,11 @@
 .back-to-top.visible {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
 }
 
 /* Hover State */
-.back-to-top:hover,
-.back-to-top:focus {
+.back-to-top:hover {
   background: var(--brand-color-hover) !important;
-  transform: translateY(-4px) scale(1.05);
-  outline: none;
-}
-
-.back-to-top:active {
-  transform: translateY(-2px) scale(1.02);
-}
-
-.back-to-top svg {
-  stroke: currentColor !important;
-  fill: none !important;
-  transition: transform 0.2s ease;
-}
-
-.back-to-top:hover svg {
-  transform: translateY(-3px);
 }
 
 /* ===================================================================

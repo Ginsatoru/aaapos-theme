@@ -1,6 +1,7 @@
 /* ============================================
    AAAPOS – CART NOTIFICATION
    COMPACT ROW TOAST
+   NOW WITH COUPON SUPPORT - ROW LAYOUT FOR TITLE
    ============================================ */
 
 .aaapos-cart-notification {
@@ -111,12 +112,24 @@
   display: block;
 }
 
-/* Text container */
+/* Coupon-specific icon styling */
+.aaapos-cart-icon--coupon {
+  background: var(--color-primary);
+}
+
+.aaapos-cart-icon--coupon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Text container - ROW LAYOUT */
 .aaapos-cart-text {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-direction: row; 
+  align-items: center; 
+  gap: 8px;
   min-width: 0;
+  flex: 1;
 }
 
 /* Title */
@@ -124,6 +137,9 @@
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1; 
 }
 
 /* Description */
@@ -131,6 +147,9 @@
   font-size: 0.8rem;
   color: var(--color-text-light);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 /* Actions */
@@ -172,7 +191,7 @@
 }
 
 /* ============================================
-   MOBILE RESPONSIVE - SINGLE ROW LAYOUT
+   MOBILE RESPONSIVE - MAINTAIN ROW LAYOUT
    ============================================ */
 
 /* Tablet */
@@ -210,6 +229,15 @@
     height: 16px;
   }
 
+  .aaapos-cart-icon--coupon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .aaapos-cart-text {
+    gap: 6px; /* Slightly smaller gap on tablet */
+  }
+
   .aaapos-cart-title {
     font-size: 0.8rem;
   }
@@ -229,7 +257,7 @@
   }
 }
 
-/* Mobile - Keep everything in one row, scale down */
+/* Mobile - Keep row layout */
 @media (max-width: 480px) {
   .aaapos-cart-notification {
     top: 80px;
@@ -254,7 +282,6 @@
   .aaapos-cart-content.aaapos-cart-row {
     padding: 0 12px;
     gap: 8px;
-    /* Keep single row - no wrap */
     flex-wrap: nowrap;
     justify-content: flex-start;
   }
@@ -269,26 +296,32 @@
     height: 14px;
   }
 
+  .aaapos-cart-icon--coupon svg {
+    width: 13px;
+    height: 13px;
+  }
+
   .aaapos-cart-text {
     display: flex;
-    flex-direction: column;
-    gap: 1px;
+    flex-direction: row; /* Maintain row layout on mobile */
+    align-items: center;
+    gap: 6px;
     min-width: 0;
     flex: 1;
   }
 
   .aaapos-cart-title {
     font-size: 0.7rem;
-    white-space: normal;
-    line-height: 1.2;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .aaapos-cart-desc {
     font-size: 0.65rem;
-    white-space: normal;
-    line-height: 1.2;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .aaapos-cart-actions {
@@ -341,23 +374,29 @@
     height: 13px;
   }
 
+  .aaapos-cart-icon--coupon svg {
+    width: 12px;
+    height: 12px;
+  }
+
   .aaapos-cart-text {
     flex: 1;
     min-width: 0;
+    gap: 4px;
   }
 
   .aaapos-cart-title {
     font-size: 0.65rem;
-    white-space: normal;
-    line-height: 1.2;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .aaapos-cart-desc {
     font-size: 0.6rem;
-    white-space: normal;
-    line-height: 1.2;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .aaapos-cart-view {
@@ -371,14 +410,14 @@
   }
 }
 
-/* Optional: Hide description on very small screens to ensure single row */
+/* Very small screens - Optional: Hide description to save space */
 @media (max-width: 320px) {
   .aaapos-cart-desc {
     display: none;
   }
 
   .aaapos-cart-text {
-    justify-content: center;
+    justify-content: flex-start;
   }
 }
 

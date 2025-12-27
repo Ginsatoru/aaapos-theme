@@ -8,13 +8,17 @@ class CartConfirmModal {
         this.overlay = null;
         this.modal = null;
         this.callback = null;
+        this.isInitialized = false;
         this.init();
     }
 
     init() {
+        if (this.isInitialized) return;
+        
         this.createModal();
         this.attachEvents();
         this.bindClearCartButton();
+        this.isInitialized = true;
     }
 
     createModal() {
@@ -50,79 +54,68 @@ class CartConfirmModal {
             </div>
         `;
 
-        // Append to body
         document.body.appendChild(this.overlay);
         this.modal = this.overlay.querySelector('.cart-confirm-modal');
     }
 
     attachEvents() {
-        // Close on overlay click
-        this.overlay.addEventListener('click', (e) => {
-            if (e.target === this.overlay) {
-                this.close();
-            }
-        });
-
-        // Handle button clicks
-        this.overlay.addEventListener('click', (e) => {
-            const action = e.target.dataset.action;
-            if (action === 'cancel') {
-                this.close();
-            } else if (action === 'confirm') {
-                this.confirm();
-            }
-        });
-
-        // Close on Escape key
+        this.overlay.addEventListener('click', this.handleOverlayClick.bind(this));
+        
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.overlay.classList.contains('active')) {
+            if (e.key === 'Escape' && this.isOpen()) {
                 this.close();
             }
         });
     }
 
+    handleOverlayClick(e) {
+        // Close on overlay click
+        if (e.target === this.overlay) {
+            this.close();
+            return;
+        }
+
+        // Handle button clicks
+        const action = e.target.dataset?.action;
+        if (action === 'cancel') {
+            this.close();
+        } else if (action === 'confirm') {
+            this.confirm();
+        }
+    }
+
     bindClearCartButton() {
-        // Wait for DOM to be ready
-        const attachToButton = () => {
-            // Multiple selectors to catch the button
+        const attachHandler = () => {
             const clearCartBtn = document.querySelector(
                 '.clear-cart-btn, .clear-cart-link, [name="clear_cart"], a[href*="clear-cart"]'
             );
             
-            if (clearCartBtn) {
-                console.log('Clear cart button found:', clearCartBtn);
+            if (!clearCartBtn) return;
+
+            clearCartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 
-                clearCartBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const clearUrl = clearCartBtn.href || clearCartBtn.dataset.url;
-                    console.log('Clear cart URL:', clearUrl);
-                    
-                    this.show(() => {
-                        // Proceed with clearing cart
-                        if (clearUrl) {
-                            window.location.href = clearUrl;
-                        } else {
-                            // If it's a form button
-                            const form = clearCartBtn.closest('form');
-                            if (form) {
-                                form.submit();
-                            }
-                        }
-                    });
+                const clearUrl = clearCartBtn.href || clearCartBtn.dataset?.url;
+                
+                this.show(() => {
+                    if (clearUrl) {
+                        window.location.href = clearUrl;
+                    } else {
+                        const form = clearCartBtn.closest('form');
+                        form?.submit();
+                    }
                 });
-            } else {
-                console.warn('Clear cart button not found');
-            }
+            });
         };
 
-        // Try immediately
-        attachToButton();
+        // Attempt to attach handler
+        attachHandler();
         
-        // Also try after a short delay in case the button loads later
-        setTimeout(attachToButton, 500);
-        setTimeout(attachToButton, 1000);
+        // Retry if button loads dynamically
+        [500, 1000].forEach(delay => {
+            setTimeout(attachHandler, delay);
+        });
     }
 
     show(callback) {
@@ -130,11 +123,11 @@ class CartConfirmModal {
         this.overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
 
-        // Focus on cancel button for accessibility
-        setTimeout(() => {
+        // Focus management for accessibility
+        requestAnimationFrame(() => {
             const cancelBtn = this.overlay.querySelector('[data-action="cancel"]');
-            if (cancelBtn) cancelBtn.focus();
-        }, 100);
+            cancelBtn?.focus();
+        });
     }
 
     close() {
@@ -144,38 +137,65 @@ class CartConfirmModal {
     }
 
     confirm() {
-        if (typeof this.callback === 'function') {
-            this.callback();
-        }
+        this.callback?.();
         this.close();
     }
-}
 
-// Initialize modal
-let cartConfirmModal;
+    isOpen() {
+        return this.overlay.classList.contains('active');
+    }
 
-// Multiple initialization methods to ensure it loads
-function initCartConfirmModal() {
-    if (!cartConfirmModal) {
-        cartConfirmModal = new CartConfirmModal();
-        window.cartConfirmModal = cartConfirmModal;
-        console.log('Cart Confirm Modal initialized');
+    destroy() {
+        this.overlay?.remove();
+        this.overlay = null;
+        this.modal = null;
+        this.callback = null;
+        this.isInitialized = false;
     }
 }
 
-// Try different loading methods
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCartConfirmModal);
-} else {
-    initCartConfirmModal();
+// Singleton instance management
+const CartConfirmModalManager = (() => {
+    let instance = null;
+
+    return {
+        getInstance: () => {
+            if (!instance) {
+                instance = new CartConfirmModal();
+            }
+            return instance;
+        },
+        
+        init: () => {
+            return CartConfirmModalManager.getInstance();
+        },
+        
+        destroy: () => {
+            if (instance) {
+                instance.destroy();
+                instance = null;
+            }
+        }
+    };
+})();
+
+// Initialize when DOM is ready
+const initCartConfirmModal = () => {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', CartConfirmModalManager.init);
+    } else {
+        CartConfirmModalManager.init();
+    }
+};
+
+// Initialize immediately
+initCartConfirmModal();
+
+// Export for module systems if needed
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { CartConfirmModal, CartConfirmModalManager };
 }
 
-// Also try after window load
-window.addEventListener('load', () => {
-    if (!cartConfirmModal) {
-        initCartConfirmModal();
-    }
-});
-
-// Export for use in other scripts
+// Global access for browser
 window.CartConfirmModal = CartConfirmModal;
+window.CartConfirmModalManager = CartConfirmModalManager;

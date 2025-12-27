@@ -1,5 +1,7 @@
 /* ==========================================================================
    CART MAIN - Entry Point & Layout (Modern Redesign - Compact)
+   UPDATED: Removed applied coupons display box styling
+   UPDATED: Bigger suggested products section with centered alignment
    
    @package Macedon_Ranges
    @since 1.0.0
@@ -9,6 +11,7 @@
 @import 'cart-table.css';
 @import 'cart-sidebar.css';
 @import 'cart-responsive.css';
+@import 'checkout-progress.css';
 
 /* ==========================================================================
    CART PAGE ROOT - Very specific selectors to avoid navbar conflicts
@@ -72,11 +75,11 @@ body.woocommerce-cart #main.site-main .entry-header {
 
 body.woocommerce-cart #main.site-main .entry-header .entry-title,
 body.woocommerce-cart #main.site-main article .entry-title {
-  margin-top: -160px; /* Reduced from -80px */
+  margin-top: -10px; /* Reduced from -80px */
   font-size: 2.5rem; /* Reduced from 3rem */
   font-weight: 700;
   color: #212529;
-  margin-bottom: var(--space-2); /* Reduced from space-3 */
+  margin-bottom: var(--space-6); /* Reduced from space-3 */
   font-family: var(--font-heading);
   letter-spacing: -0.3px; /* Reduced from -0.5px */
 }
@@ -116,66 +119,9 @@ body.woocommerce-cart #main.site-main form.woocommerce-cart-form {
 }
 
 /* ==========================================================================
-   APPLIED COUPONS DISPLAY - Below cart table
+   REMOVED: Applied Coupons Display - No longer needed
+   User sees coupon only in the input field and order summary
    ========================================================================== */
-body.woocommerce-cart .applied-coupons-list {
-  margin: 0rem 0 0.75rem 0;
-  padding: 0.75rem 1.25rem;
-  background: rgba(34, 66, 41, 0.08);
-  border-left: 3px solid var(--brand-color, #224229);
-  border-radius: 6px;
-}
-
-body.woocommerce-cart .applied-coupon-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-body.woocommerce-cart .applied-coupon-item + .applied-coupon-item {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(34, 66, 41, 0.15);
-}
-
-body.woocommerce-cart .applied-coupon-info {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  flex: 1;
-}
-
-body.woocommerce-cart .applied-coupon-info svg {
-  flex-shrink: 0;
-  stroke: var(--brand-color, #224229);
-}
-
-body.woocommerce-cart .applied-coupon-info .coupon-code {
-  color: var(--brand-color, #224229);
-  font-weight: 600;
-  font-size: 0.9375rem;
-}
-
-body.woocommerce-cart .applied-coupon-info .coupon-amount {
-  color: var(--brand-color, #224229);
-  font-weight: 600;
-  font-size: 0.9375rem;
-}
-
-body.woocommerce-cart .remove-applied-coupon {
-  color: #dc2626;
-  text-decoration: underline;
-  font-size: 0.875rem;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: opacity 0.2s ease;
-  text-decoration: none;
-}
-
-body.woocommerce-cart .remove-applied-coupon:hover {
-  opacity: 0.8;
-}
 
 /* ==========================================================================
    RESPONSIVE BREADCRUMB ADJUSTMENTS
@@ -185,14 +131,127 @@ body.woocommerce-cart .remove-applied-coupon:hover {
     margin-top: var(--space-3, 0.75rem) !important;
     margin-bottom: var(--space-4, 1rem) !important;
   }
-  
-  body.woocommerce-cart .applied-coupon-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+}
+
+/* ==========================================================================
+   SUGGESTED PRODUCTS - FULL WIDTH BREAKOUT (BIGGER WIDTH)
+   ========================================================================== */
+
+/* Make suggested products span both grid columns and break out */
+@media (min-width: 1024px) {
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce .cart-suggested-products-wrapper {
+    grid-column: 1 / -1 !important;
+    position: relative !important;
+    width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    margin-top: 4rem !important; /* More space above */
+    padding-top: 3rem !important;
   }
   
-  body.woocommerce-cart .remove-applied-coupon {
-    align-self: flex-end;
+  /* Border line with same width as content (80%) */
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce .cart-suggested-products-wrapper::before {
+    content: '';
+    display: block;
+    width: 80%;
+    max-width: 1350px;
+    height: 1px;
+    background: #E5E7EB;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* On mobile, no grid so just breakout */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper {
+    position: relative !important;
+    width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    margin-top: 3rem !important; /* More space above on mobile */
+    padding-top: 2.5rem !important;
+  }
+  
+  /* Border line with same width as content (88%) */
+  body.woocommerce-cart .cart-suggested-products-wrapper::before {
+    content: '';
+    display: block;
+    width: 88%;
+    height: 1px;
+    background: #E5E7EB;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  /* Adjust border width for mobile (95%) */
+  body.woocommerce-cart .cart-suggested-products-wrapper::before {
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Adjust border width for small mobile (98%) */
+  body.woocommerce-cart .cart-suggested-products-wrapper::before {
+    width: 98%;
+  }
+}
+
+/* Inner container - SLIGHTLY SMALLER WIDTH (80%) centered */
+body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+  width: 80% !important;
+  max-width: 1350px !important;
+  margin: 0 auto !important;
+  padding: 0 1.5rem !important;
+}
+
+/* Ensure header is centered */
+body.woocommerce-cart .cart-suggested-products__header {
+  text-align: center !important;
+  margin-bottom: 2.5rem !important;
+}
+
+body.woocommerce-cart .cart-suggested-products__title,
+body.woocommerce-cart .cart-suggested-products__subtitle {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Tablet - 88% width */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    width: 88% !important;
+    padding: 0 1rem !important;
+  }
+}
+
+/* Mobile - 95% width */
+@media (max-width: 767px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    width: 95% !important;
+    padding: 0 0.75rem !important;
+  }
+  
+  body.woocommerce-cart .cart-suggested-products__header {
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* Small Mobile - 98% width */
+@media (max-width: 480px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    width: 98% !important;
+    padding: 0 0.5rem !important;
   }
 }

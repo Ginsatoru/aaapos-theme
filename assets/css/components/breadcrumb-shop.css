@@ -2,6 +2,7 @@
    WOOCOMMERCE BREADCRUMB - ARROW STYLE DESIGN (FULLY RESPONSIVE)
    Modern arrow-style breadcrumbs with home icon
    Works on ALL WooCommerce pages
+   UPDATED: Cart page breadcrumb moved UP closer to header
    =================================== */
 
 /* Main breadcrumb container */
@@ -17,23 +18,162 @@
     list-style: none;
 }
 
-/* Cart page breadcrumb wrapper - adds proper spacing and LEFT alignment */
+/* ===================================
+   CART PAGE BREADCRUMB - MOVE UP ONLY (NOT RIGHT)
+   This ensures breadcrumb moves UP but stays LEFT aligned
+   =================================== */
+
+/* Cart page breadcrumb wrapper - MOVED UP, LOCKED LEFT */
 .cart-breadcrumb-wrapper {
-    margin-bottom: var(--space-6, 1.5rem);
+    margin-top: -125px !important; /* Move up */
+    margin-left: 0 !important; /* Force left alignment */
+    margin-right: auto !important; /* Push to left */
+    margin-bottom: var(--space-6, 1.5rem) !important;
     width: 100%;
     display: block;
+    position: relative; /* Ensure positioning context */
+    left: 0 !important; /* Lock to left */
 }
 
 .cart-breadcrumb-wrapper .woocommerce-breadcrumb {
-    justify-content: flex-start;
+    justify-content: flex-start !important; /* Align items to left */
     margin-bottom: 0;
-    margin-left: 0;
-    margin-right: auto;
+    margin-left: 0 !important;
+    margin-right: auto !important;
 }
 
-/* Cart page specific - ensure breadcrumb stays left aligned */
+/* Cart page specific - FORCE left alignment */
 .woocommerce-cart .cart-breadcrumb-wrapper {
-    text-align: left;
+    text-align: left !important;
+}
+
+/* Alternative selectors - MOVE UP, STAY LEFT */
+body.woocommerce-cart .woocommerce-breadcrumb {
+    margin-top: -125px !important; /* Move up */
+    margin-left: 0 !important; /* Lock left */
+    margin-right: auto !important; /* Force left */
+    margin-bottom: 2rem !important;
+    justify-content: flex-start !important; /* Content left aligned */
+}
+
+/* Ensure container doesn't shift */
+body.woocommerce-cart .content-area,
+body.woocommerce-cart article,
+body.woocommerce-cart .site-main {
+    text-align: left !important;
+    margin-left: 0 !important;
+}
+
+/* Force breadcrumb to start from left edge of container */
+body.woocommerce-cart nav.woocommerce-breadcrumb {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* ===================================
+   RESPONSIVE - MOVE UP ONLY
+   =================================== */
+
+/* Large tablets and small desktops (1024px and below) */
+@media (max-width: 1024px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -120px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -120px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+}
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -80px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: var(--space-4, 1rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -80px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+/* Mobile devices (640px and below) */
+@media (max-width: 640px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -50px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: var(--space-3, 0.75rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -50px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -30px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -30px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+}
+
+/* Extra small mobile devices (360px and below) */
+@media (max-width: 360px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -20px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -20px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+}
+
+/* ===================================
+   FINAL SAFETY - PREVENT ANY RIGHT SHIFT
+   =================================== */
+
+/* Override any container centering on cart page */
+body.woocommerce-cart .woocommerce {
+    text-align: left !important;
+}
+
+body.woocommerce-cart .woocommerce > * {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+/* Ensure breadcrumb items start from left */
+.woocommerce-breadcrumb a:first-child,
+body.woocommerce-cart .woocommerce-breadcrumb a:first-child {
+    margin-left: 0 !important;
 }
 
 /* Hide default separators completely */
@@ -156,6 +296,14 @@
 
 /* Large tablets and small desktops (1024px and below) */
 @media (max-width: 1024px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -80px !important; /* Less negative on tablets */
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -80px !important;
+    }
+    
     .woocommerce-breadcrumb a,
     .woocommerce-breadcrumb .breadcrumb-current {
         height: 34px;
@@ -198,12 +346,18 @@
 
 /* Tablets (768px and below) */
 @media (max-width: 768px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -50px !important; /* Even less on mobile */
+        margin-bottom: var(--space-4, 1rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -50px !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
     .woocommerce-breadcrumb {
         margin-bottom: var(--space-6, 1.5rem);
-    }
-
-    .cart-breadcrumb-wrapper {
-        margin-bottom: var(--space-4, 1rem);
     }
 
     .woocommerce-breadcrumb a,
@@ -248,15 +402,21 @@
 
 /* Mobile devices (640px and below) */
 @media (max-width: 640px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -30px !important;
+        margin-bottom: var(--space-3, 0.75rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -30px !important;
+        margin-bottom: 1rem !important;
+    }
+    
     .woocommerce-breadcrumb {
         font-size: 11px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         margin-bottom: var(--space-4, 1rem);
-    }
-
-    .cart-breadcrumb-wrapper {
-        margin-bottom: var(--space-3, 0.75rem);
     }
 
     .woocommerce-breadcrumb a,
@@ -301,6 +461,14 @@
 
 /* Small mobile devices (480px and below) */
 @media (max-width: 480px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -20px !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -20px !important;
+    }
+    
     .woocommerce-breadcrumb a,
     .woocommerce-breadcrumb .breadcrumb-current {
         height: 28px;
@@ -342,6 +510,14 @@
 
 /* Extra small mobile devices (360px and below) */
 @media (max-width: 360px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -15px !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -15px !important;
+    }
+    
     .woocommerce-breadcrumb a,
     .woocommerce-breadcrumb .breadcrumb-current {
         height: 26px;
@@ -393,13 +569,13 @@ body.woocommerce-cart .cart-breadcrumb-wrapper {
     display: block !important;
     width: 100% !important;
     text-align: left !important;
-    margin: 0 0 var(--space-6, 1.5rem) 0 !important;
     padding: 0 !important;
 }
 
 body.woocommerce-cart .cart-breadcrumb-wrapper .woocommerce-breadcrumb {
     justify-content: flex-start !important;
-    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
     padding: 0 !important;
 }
 
@@ -411,4 +587,3 @@ body.woocommerce-cart .content-area {
 body.woocommerce-cart article {
     text-align: left !important;
 }
-

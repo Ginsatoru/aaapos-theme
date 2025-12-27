@@ -512,52 +512,90 @@ function handle_clear_cart()
 }
 
 /**
- * Display Applied Coupons with Remove Option in Cart
+ * Handle Coupon Removal and Application with Redirect
  */
-function mr_display_applied_coupons_in_cart() {
+function mr_handle_coupon_removal()
+{
+    // Only run on cart page
     if (!is_cart()) {
         return;
     }
-    
-    $applied_coupons = WC()->cart->get_applied_coupons();
-    
-    if (!empty($applied_coupons)) {
-        echo '<div class="applied-coupons-list">';
-        
-        foreach ($applied_coupons as $code) {
-            $coupon = new WC_Coupon($code);
-            $discount_amount = WC()->cart->get_coupon_discount_amount($code);
-            $remove_url = add_query_arg('remove_coupon', $code, wc_get_cart_url());
-            
-            echo '<div class="applied-coupon-item">';
-            echo '<div class="applied-coupon-info">';
-            echo '<svg width="20" height="20" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>';
-            echo '<span class="coupon-code">Coupon ' . esc_html(strtoupper($code)) . ' applied</span>';
-            echo '<span class="coupon-amount">-' . wc_price($discount_amount) . '</span>';
-            echo '</div>';
-            echo '<a href="' . esc_url($remove_url) . '" class="remove-applied-coupon">' . esc_html__('Remove', 'macedon-ranges') . '</a>';
-            echo '</div>';
+
+    // Handle removal via form button
+    if (isset($_POST["remove_coupon"]) && !empty($_POST["remove_coupon"])) {
+        $coupon_code = sanitize_text_field($_POST["remove_coupon"]);
+
+        // Verify nonce
+        if (
+            isset($_POST["woocommerce-cart-nonce"]) &&
+            wp_verify_nonce(
+                $_POST["woocommerce-cart-nonce"],
+                "woocommerce-cart",
+            )
+        ) {
+            WC()->cart->remove_coupon($coupon_code);
+            wc_add_notice(
+                __("Coupon removed successfully.", "macedon-ranges"),
+                "success",
+            );
+
+            // Redirect to prevent form resubmission warning
+            wp_safe_redirect(wc_get_cart_url());
+            exit();
         }
-        
-        echo '</div>';
+    }
+
+    // Also handle removal via URL (backward compatibility)
+    if (isset($_GET["remove_coupon"])) {
+        $coupon_code = sanitize_text_field($_GET["remove_coupon"]);
+        WC()->cart->remove_coupon($coupon_code);
+        wc_add_notice(
+            __("Coupon removed successfully.", "macedon-ranges"),
+            "success",
+        );
+        wp_safe_redirect(wc_get_cart_url());
+        exit();
     }
 }
-add_action('woocommerce_after_cart_table', 'mr_display_applied_coupons_in_cart', 5);
-
+add_action("wp_loaded", "mr_handle_coupon_removal", 20);
 
 /**
- * Handle Coupon Removal from URL
+ * Enforce Single Coupon Policy
+ * Automatically removes existing coupon when applying a new one
  */
-function mr_handle_coupon_removal() {
-    if (isset($_GET['remove_coupon'])) {
-        $coupon_code = sanitize_text_field($_GET['remove_coupon']);
-        WC()->cart->remove_coupon($coupon_code);
-        wc_add_notice(__('Coupon removed successfully.', 'macedon-ranges'), 'success');
-        wp_safe_redirect(wc_get_cart_url());
-        exit;
+function mr_enforce_single_coupon($valid, $coupon)
+{
+    if (!$valid) {
+        return $valid;
     }
+
+    $applied_coupons = WC()->cart->get_applied_coupons();
+
+    // If there's already a coupon and user is trying to apply a different one
+    if (
+        !empty($applied_coupons) &&
+        !in_array($coupon->get_code(), $applied_coupons)
+    ) {
+        // Remove all existing coupons
+        foreach ($applied_coupons as $applied_coupon) {
+            WC()->cart->remove_coupon($applied_coupon);
+        }
+
+        wc_add_notice(
+            sprintf(
+                __(
+                    'Previous coupon "%s" was removed. Only one coupon can be applied at a time.',
+                    "macedon-ranges",
+                ),
+                $applied_coupons[0],
+            ),
+            "notice",
+        );
+    }
+
+    return $valid;
 }
-add_action('wp_loaded', 'mr_handle_coupon_removal', 20);
+add_filter("woocommerce_coupon_is_valid", "mr_enforce_single_coupon", 10, 2);
 
 /**
  * REMOVED: Force Enable Shipping Calculator functions
@@ -594,11 +632,11 @@ function enable_cart_update_button()
  * Simplify Cart Shipping Display - Show only selected shipping cost
  * This removes the radio buttons and shows shipping like checkout
  */
-function aaapos_simplify_cart_shipping_display() {
+function aaapos_simplify_cart_shipping_display()
+{
     if (!is_cart()) {
         return;
-    }
-    ?>
+    } ?>
     <style>
         /* Hide shipping calculator and radio buttons on cart page */
         .cart_totals .shipping-calculator-button,
@@ -652,7 +690,7 @@ function aaapos_simplify_cart_shipping_display() {
     </script>
     <?php
 }
-add_action('wp_footer', 'aaapos_simplify_cart_shipping_display');
+add_action("wp_footer", "aaapos_simplify_cart_shipping_display");
 
 /**
  * Enqueue Quick View Assets (FIXED - Separate function)
@@ -668,7 +706,8 @@ function aaapos_enqueue_quick_view_assets()
         !is_shop() &&
         !is_product_category() &&
         !is_product_tag() &&
-        !is_search()
+        !is_search() &&
+        !is_cart()
     ) {
         return;
     }
@@ -1352,13 +1391,402 @@ function aaapos_search_product_meta($query)
 add_action("pre_get_posts", "aaapos_search_product_meta", 10);
 
 /**
- * Display breadcrumb before page title on cart page
+ * =============================================================================
+ * CHECKOUT PROGRESS STEPS
+ * Display a visual progress indicator on cart, checkout, and order received pages
+ * =============================================================================
  */
-function aaapos_cart_breadcrumb_before_title() {
-    if (is_cart() && function_exists('woocommerce_breadcrumb')) {
-        echo '<div class="cart-breadcrumb-wrapper">';
-        woocommerce_breadcrumb();
-        echo '</div>';
+
+/**
+ * Display Checkout Progress Steps
+ * Shows current step in the checkout process
+ */
+function aaapos_checkout_progress_steps()
+{
+    // Determine current step
+    $current_step = 1; // Default to step 1 (cart)
+
+    if (is_checkout() && !is_order_received_page()) {
+        $current_step = 2; // Checkout page
+    } elseif (is_order_received_page()) {
+        $current_step = 3; // Order complete page
+    } elseif (is_cart()) {
+        $current_step = 1; // Cart page
+    }
+
+    // Steps data
+    $steps = [
+        1 => [
+            "number" => "1",
+            "label" => __("Shopping cart", "macedon-ranges"),
+            "url" => wc_get_cart_url(),
+        ],
+        2 => [
+            "number" => "2",
+            "label" => __("Checkout details", "macedon-ranges"),
+            "url" => wc_get_checkout_url(),
+        ],
+        3 => [
+            "number" => "3",
+            "label" => __("Order complete", "macedon-ranges"),
+            "url" => "", // No link for this step
+        ],
+    ];
+    ?>
+    <div class="woocommerce-checkout-progress">
+        <div class="checkout-steps">
+            <?php foreach ($steps as $step_num => $step): ?>
+                <?php
+                $step_class = "checkout-step";
+
+                // Add active class for current step
+                if ($step_num === $current_step) {
+                    $step_class .= " active";
+                }
+
+                // Add completed class for steps before current
+                if ($step_num < $current_step) {
+                    $step_class .= " completed";
+                }
+
+                // Add clickable class if step has URL and is completed
+                $is_clickable =
+                    !empty($step["url"]) && $step_num < $current_step;
+                if ($is_clickable) {
+                    $step_class .= " clickable";
+                }
+                ?>
+                
+                <?php if ($is_clickable): ?>
+                    <a href="<?php echo esc_url(
+                        $step["url"],
+                    ); ?>" class="<?php echo esc_attr($step_class); ?>">
+                <?php else: ?>
+                    <div class="<?php echo esc_attr($step_class); ?>">
+                <?php endif; ?>
+                
+                    <span class="step-number"><?php echo esc_html(
+                        $step["number"],
+                    ); ?></span>
+                    <span class="step-label"><?php echo esc_html(
+                        $step["label"],
+                    ); ?></span>
+                
+                <?php if ($is_clickable): ?>
+                    </a>
+                <?php else: ?>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ($step_num < count($steps)): ?>
+                    <svg class="step-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                <?php endif; ?>
+                
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Add progress steps to cart page
+ */
+function aaapos_add_progress_to_cart()
+{
+    if (is_cart() && !WC()->cart->is_empty()) {
+        aaapos_checkout_progress_steps();
     }
 }
-add_action('woocommerce_before_main_content', 'aaapos_cart_breadcrumb_before_title', 5);
+add_action("woocommerce_before_cart", "aaapos_add_progress_to_cart", 5);
+
+/**
+ * Add progress steps to checkout page
+ */
+function aaapos_add_progress_to_checkout()
+{
+    if (is_checkout() && !is_order_received_page()) {
+        aaapos_checkout_progress_steps();
+    }
+}
+add_action(
+    "woocommerce_before_checkout_form",
+    "aaapos_add_progress_to_checkout",
+    5,
+);
+
+/**
+ * Add progress steps to order received page
+ */
+function aaapos_add_progress_to_order_received()
+{
+    if (is_order_received_page()) {
+        aaapos_checkout_progress_steps();
+    }
+}
+add_action(
+    "woocommerce_before_thankyou",
+    "aaapos_add_progress_to_order_received",
+    5,
+);
+
+/**
+ * Display suggested products on cart page
+ * UPDATED: Uses wrapper for full-width display without breaking layout
+ */
+function aaapos_cart_suggested_products()
+{
+    if (!is_cart()) {
+        return;
+    }
+
+    // Get products from cart to find related products
+    $cart_items = WC()->cart->get_cart();
+
+    if (empty($cart_items)) {
+        return;
+    }
+
+    // Collect category IDs from cart products
+    $category_ids = [];
+    $product_ids_in_cart = [];
+
+    foreach ($cart_items as $cart_item) {
+        $product_id = $cart_item["product_id"];
+        $product_ids_in_cart[] = $product_id;
+
+        // Get product categories
+        $terms = get_the_terms($product_id, "product_cat");
+        if ($terms && !is_wp_error($terms)) {
+            foreach ($terms as $term) {
+                $category_ids[] = $term->term_id;
+            }
+        }
+    }
+
+    // Remove duplicates
+    $category_ids = array_unique($category_ids);
+
+    if (empty($category_ids)) {
+        return;
+    }
+
+    // Query for related products
+    $args = [
+        "post_type" => "product",
+        "posts_per_page" => 4,
+        "post__not_in" => $product_ids_in_cart,
+        "orderby" => "rand",
+        "post_status" => "publish",
+        "tax_query" => [
+            [
+                "taxonomy" => "product_cat",
+                "field" => "term_id",
+                "terms" => $category_ids,
+                "operator" => "IN",
+            ],
+        ],
+    ];
+
+    $suggested_products = new WP_Query($args);
+
+    if (!$suggested_products->have_posts()) {
+        wp_reset_postdata();
+        return;
+    }
+
+    // Get customizer settings
+    $show_rating = get_theme_mod("show_product_rating", true);
+    $sale_badge_text = get_theme_mod(
+        "sale_badge_text",
+        __("Sale", "macedon-ranges"),
+    );
+    $show_quick_view = get_theme_mod("show_quick_view", true);
+    ?>
+    
+    <!-- Suggested Products Section with Wrapper -->
+    <div class="cart-suggested-products-wrapper">
+        <div class="cart-suggested-products">
+            <div class="cart-suggested-products__header">
+                <h2 class="cart-suggested-products__title"><?php esc_html_e(
+                    "You May Also Like",
+                    "macedon-ranges",
+                ); ?></h2>
+                <p class="cart-suggested-products__subtitle"><?php esc_html_e(
+                    "Customers who bought these items also bought",
+                    "macedon-ranges",
+                ); ?></p>
+            </div>
+            
+            <!-- Use WooCommerce standard structure with products class -->
+            <ul class="products columns-4 cart-suggested-products__grid">
+                <?php while ($suggested_products->have_posts()):
+
+                    $suggested_products->the_post();
+                    global $product;
+
+                    // Get rating data
+                    $average_rating = $product->get_average_rating();
+                    $rating_count = $product->get_rating_count();
+                    ?>
+                    
+                    <li <?php wc_product_class("", $product); ?>>
+                        
+                        <!-- Product Image Link (Image + Badge ONLY) -->
+                        <a href="<?php echo esc_url(
+                            $product->get_permalink(),
+                        ); ?>" class="woocommerce-LoopProduct-link">
+                            
+                            <!-- Product Image -->
+                            <?php echo $product->get_image(
+                                "woocommerce_thumbnail",
+                            ); ?>
+                            
+                            <!-- Sale Badge with Custom Text -->
+                            <?php if ($product->is_on_sale()): ?>
+                                <span class="onsale"><?php echo esc_html(
+                                    $sale_badge_text,
+                                ); ?></span>
+                            <?php endif; ?>
+                            
+                        </a>
+                        
+                        <!-- Product Info Container (Outside image link) -->
+                        <div class="product-info">
+                            
+                            <!-- Product Title with Link -->
+                            <h2 class="woocommerce-loop-product__title">
+                                <a href="<?php echo esc_url(
+                                    $product->get_permalink(),
+                                ); ?>">
+                                    <?php echo esc_html(
+                                        $product->get_name(),
+                                    ); ?>
+                                </a>
+                            </h2>
+                            
+                            <!-- Star Rating Section (Conditional based on Customizer) -->
+                            <?php if ($show_rating && $average_rating > 0): ?>
+                                <div class="product-rating">
+                                    <div class="rating-stars" aria-label="<?php echo esc_attr(
+                                        sprintf(
+                                            __(
+                                                "Rated %s out of 5",
+                                                "macedon-ranges",
+                                            ),
+                                            number_format($average_rating, 2),
+                                        ),
+                                    ); ?>">
+                                        <?php
+                                        // Generate unique ID for gradient
+                                        $gradient_id =
+                                            "half-fill-" . $product->get_id();
+
+                                        // Display 5 stars
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            if ($i <= floor($average_rating)) {
+                                                // Full star
+                                                echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                                            } elseif (
+                                                $i == ceil($average_rating) &&
+                                                $average_rating -
+                                                    floor($average_rating) >=
+                                                    0.5
+                                            ) {
+                                                // Half star
+                                                echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="' .
+                                                    esc_attr($gradient_id) .
+                                                    '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
+                                                    esc_attr($gradient_id) .
+                                                    ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                                            } else {
+                                                // Empty star
+                                                echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                    <?php if ($rating_count > 0): ?>
+                                        <span class="rating-count">(<?php echo esc_html(
+                                            $rating_count,
+                                        ); ?>)</span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <!-- Price -->
+                            <div class="product-price-wrapper">
+                                <?php echo $product->get_price_html(); ?>
+                            </div>
+                            
+                        </div>
+                        
+                       <!-- Quick View Button (Conditional based on Customizer) -->
+<?php if ($show_quick_view): ?>
+    <button type="button" 
+            class="quick-view-button" 
+            data-product-id="<?php echo esc_attr($product->get_id()); ?>"
+            aria-label="<?php echo esc_attr(
+                sprintf(
+                    __("Quick view %s", "macedon-ranges"),
+                    $product->get_name(),
+                ),
+            ); ?>"
+            style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-bottom: 0.875rem; line-height: 1; background: transparent; border: none;"
+            onmouseover="this.style.color='var(--brand-color, #0ea5e9)'; this.style.transform='translateY(-2px)';"
+            onmouseout="this.style.color='#374151'; this.style.transform='translateY(0)';">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span><?php esc_html_e("Quick View", "macedon-ranges"); ?></span>
+    </button>
+<?php endif; ?>
+                        
+                        <!-- Add to Cart Button with Icon -->
+<?php if ($product->is_type("variable")): ?>
+    <a href="<?php echo esc_url($product->get_permalink()); ?>" 
+       class="button product_type_variable"
+       style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span><?php esc_html_e("Select options", "macedon-ranges"); ?></span>
+    </a>
+<?php else: ?>
+    <a href="<?php echo esc_url("?add-to-cart=" . $product->get_id()); ?>" 
+       data-quantity="1" 
+       class="button product_type_simple add_to_cart_button ajax_add_to_cart" 
+       data-product_id="<?php echo esc_attr($product->get_id()); ?>" 
+       data-product_sku="<?php echo esc_attr($product->get_sku()); ?>" 
+       aria-label="<?php echo esc_attr(
+           sprintf(
+               __('Add "%s" to your cart', "macedon-ranges"),
+               $product->get_name(),
+           ),
+       ); ?>" 
+       rel="nofollow"
+       style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span><?php echo esc_html($product->add_to_cart_text()); ?></span>
+    </a>
+<?php endif; ?>
+                        
+                    </li>
+                    
+                <?php
+                endwhile; ?>
+            </ul>
+        </div>
+    </div>
+    
+    <?php wp_reset_postdata();
+}
+add_action("woocommerce_after_cart", "aaapos_cart_suggested_products", 20);
