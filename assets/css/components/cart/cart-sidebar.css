@@ -136,8 +136,8 @@ body.woocommerce-cart .clear-cart-link {
   height: 44px;
   padding: 0 1.5rem;
   background: transparent;
-  color: #DC3545;
-  border: 1px solid #DC3545;
+  color: var(--brand-color);
+  border: 1px solid var(--brand-color);
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -156,10 +156,9 @@ body.woocommerce-cart .clear-cart-link svg {
 }
 
 body.woocommerce-cart .clear-cart-link:hover {
-  background: #DC3545;
+  background: var(--brand-color);
   color: var(--color-white, #ffffff);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
 }
 
 body.woocommerce-cart .clear-cart-link:active {

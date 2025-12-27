@@ -491,9 +491,9 @@ function add_clear_cart_button()
        class="button clear-cart-link" 
        onclick="return confirm('<?php esc_attr_e(
            "Are you sure you want to clear your cart?",
-           "macedon-ranges",
+           "aaapos",
        ); ?>');">
-        <?php esc_html_e("Clear Shopping Cart", "macedon-ranges"); ?>
+        <?php esc_html_e("Clear Shopping Cart", "aaapos"); ?>
     </a>
     <?php
 }
@@ -535,7 +535,7 @@ function mr_handle_coupon_removal()
         ) {
             WC()->cart->remove_coupon($coupon_code);
             wc_add_notice(
-                __("Coupon removed successfully.", "macedon-ranges"),
+                __("Coupon removed successfully.", "aaapos"),
                 "success",
             );
 
@@ -550,7 +550,7 @@ function mr_handle_coupon_removal()
         $coupon_code = sanitize_text_field($_GET["remove_coupon"]);
         WC()->cart->remove_coupon($coupon_code);
         wc_add_notice(
-            __("Coupon removed successfully.", "macedon-ranges"),
+            __("Coupon removed successfully.", "aaapos"),
             "success",
         );
         wp_safe_redirect(wc_get_cart_url());
@@ -585,7 +585,7 @@ function mr_enforce_single_coupon($valid, $coupon)
             sprintf(
                 __(
                     'Previous coupon "%s" was removed. Only one coupon can be applied at a time.',
-                    "macedon-ranges",
+                    "aaapos",
                 ),
                 $applied_coupons[0],
             ),
@@ -1418,17 +1418,17 @@ function aaapos_checkout_progress_steps()
     $steps = [
         1 => [
             "number" => "1",
-            "label" => __("Shopping cart", "macedon-ranges"),
+            "label" => __("Shopping cart", "aaapos"),
             "url" => wc_get_cart_url(),
         ],
         2 => [
             "number" => "2",
-            "label" => __("Checkout details", "macedon-ranges"),
+            "label" => __("Checkout details", "aaapos"),
             "url" => wc_get_checkout_url(),
         ],
         3 => [
             "number" => "3",
-            "label" => __("Order complete", "macedon-ranges"),
+            "label" => __("Order complete", "aaapos"),
             "url" => "", // No link for this step
         ],
     ];
@@ -1600,7 +1600,7 @@ function aaapos_cart_suggested_products()
     $show_rating = get_theme_mod("show_product_rating", true);
     $sale_badge_text = get_theme_mod(
         "sale_badge_text",
-        __("Sale", "macedon-ranges"),
+        __("Sale", "aaapos"),
     );
     $show_quick_view = get_theme_mod("show_quick_view", true);
     ?>
@@ -1611,11 +1611,11 @@ function aaapos_cart_suggested_products()
             <div class="cart-suggested-products__header">
                 <h2 class="cart-suggested-products__title"><?php esc_html_e(
                     "You May Also Like",
-                    "macedon-ranges",
+                    "aaapos",
                 ); ?></h2>
                 <p class="cart-suggested-products__subtitle"><?php esc_html_e(
                     "Customers who bought these items also bought",
-                    "macedon-ranges",
+                    "aaapos",
                 ); ?></p>
             </div>
             
@@ -1673,7 +1673,7 @@ function aaapos_cart_suggested_products()
                                         sprintf(
                                             __(
                                                 "Rated %s out of 5",
-                                                "macedon-ranges",
+                                                "aaapos",
                                             ),
                                             number_format($average_rating, 2),
                                         ),
@@ -1729,7 +1729,7 @@ function aaapos_cart_suggested_products()
             data-product-id="<?php echo esc_attr($product->get_id()); ?>"
             aria-label="<?php echo esc_attr(
                 sprintf(
-                    __("Quick view %s", "macedon-ranges"),
+                    __("Quick view %s", "aaapos"),
                     $product->get_name(),
                 ),
             ); ?>"
@@ -1740,7 +1740,7 @@ function aaapos_cart_suggested_products()
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
             <circle cx="12" cy="12" r="3"/>
         </svg>
-        <span><?php esc_html_e("Quick View", "macedon-ranges"); ?></span>
+        <span><?php esc_html_e("Quick View", "aaapos"); ?></span>
     </button>
 <?php endif; ?>
                         
@@ -1754,7 +1754,7 @@ function aaapos_cart_suggested_products()
             <circle cx="20" cy="21" r="1"></circle>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
         </svg>
-        <span><?php esc_html_e("Select options", "macedon-ranges"); ?></span>
+        <span><?php esc_html_e("Select options", "aaapos"); ?></span>
     </a>
 <?php else: ?>
     <a href="<?php echo esc_url("?add-to-cart=" . $product->get_id()); ?>" 
@@ -1764,7 +1764,7 @@ function aaapos_cart_suggested_products()
        data-product_sku="<?php echo esc_attr($product->get_sku()); ?>" 
        aria-label="<?php echo esc_attr(
            sprintf(
-               __('Add "%s" to your cart', "macedon-ranges"),
+               __('Add "%s" to your cart', "aaapos"),
                $product->get_name(),
            ),
        ); ?>" 

@@ -12,6 +12,7 @@
 @import 'cart-sidebar.css';
 @import 'cart-responsive.css';
 @import 'checkout-progress.css';
+/* @import 'cart-empty.css'; */
 
 /* ==========================================================================
    CART PAGE ROOT - Very specific selectors to avoid navbar conflicts
