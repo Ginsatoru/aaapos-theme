@@ -1,6 +1,7 @@
 /**
  * Auto-update Cart on Quantity Change
  * Automatically updates cart when quantity changes
+ * UPDATED: Extended notification timing without page fade
  * 
  * @package Macedon_Ranges
  */
@@ -52,14 +53,49 @@
         }
     });
 
-    // Hide update cart button (optional - if you want to completely hide it)
+    // Hide update cart button
     $(document).ready(function() {
         $('[name="update_cart"]').hide();
+        
+        // Check if we're on empty cart page
+        if ($('.cart-empty-wrapper').length > 0 || 
+            $('.wc-empty-cart-message').length > 0 || 
+            $('.cart-empty').length > 0) {
+            
+            // Mark body as having empty cart
+            $('body').addClass('cart-is-currently-empty');
+            
+            // Prevent any fragments from updating by intercepting them
+            $(document.body).on('wc_fragment_refresh wc_fragments_refreshed', function(e) {
+                if ($('body').hasClass('cart-is-currently-empty')) {
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+        }
     });
 
     // Remove loading state after cart updates
     $(document.body).on('updated_cart_totals', function() {
         $('.woocommerce-cart-form').removeClass('cart-updating');
+    });
+
+    // CRITICAL: Reload page when product added to empty cart
+    // Extended timing to let notification complete its full display cycle
+    $(document.body).on('added_to_cart', function(event, fragments, cart_hash, $button) {
+        if ($('body').hasClass('cart-is-currently-empty') && $('body').hasClass('woocommerce-cart')) {
+            // Stop the event from propagating
+            event.stopImmediatePropagation();
+            
+            // Wait for notification to fully display and complete its animation cycle
+            // Notification appears (0s) -> displays (2s) -> auto-fade starts (2s) -> completes (2.3s)
+            setTimeout(function() {
+                window.location.reload();
+            }, 2500);
+            
+            // Return false to prevent any further processing
+            return false;
+        }
     });
 
 })(jQuery);

@@ -1,7 +1,8 @@
 /* ==========================================================================
    CART RESPONSIVE - Mobile, Messages & Loading (Modern Design)
+   UPDATED: Removed old empty cart styles (now in cart-empty.css)
    
-   @package aaapos-prime
+   @package Macedon_Ranges
    @since 1.0.0
    ========================================================================== */
 
@@ -47,53 +48,6 @@ body.woocommerce-cart .woocommerce-error {
   font-weight: 500;
   margin-bottom: 1rem;
   box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
-}
-
-/* ==========================================================================
-   EMPTY CART - Centered with icon
-   ========================================================================== */
-body.woocommerce-cart .cart-empty {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: var(--color-white);
-  border-radius: 15px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-body.woocommerce-cart .cart-empty::before {
-  content: "🛒";
-  display: block;
-  font-size: 80px;
-  margin-bottom: 1.5rem;
-  opacity: 0.3;
-}
-
-body.woocommerce-cart p.cart-empty {
-  font-size: 1.125rem;
-  color: #6C757D;
-  margin-bottom: 2rem;
-}
-
-body.woocommerce-cart .return-to-shop {
-  margin-top: 2rem;
-}
-
-body.woocommerce-cart .return-to-shop .button {
-  display: inline-block;
-  padding: 0.875rem 2.5rem;
-  background: #224229;
-  color: var(--color-white);
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-}
-
-body.woocommerce-cart .return-to-shop .button:hover {
-  background: #1a3320;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(34, 66, 41, 0.25);
 }
 
 /* ==========================================================================

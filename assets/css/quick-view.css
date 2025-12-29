@@ -82,20 +82,6 @@ body.quick-view-open {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.quick-view-close:hover {
-  background: #f3f4f6;
-  transform: rotate(90deg);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.quick-view-close:active {
-  transform: rotate(90deg) scale(0.95);
-}
-
-.quick-view-close svg {
-  color: #374151;
-}
-
 /* Content Area - FIXED: Better scrolling */
 .quick-view-content {
   overflow-y: auto;

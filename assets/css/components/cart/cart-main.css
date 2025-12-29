@@ -2,6 +2,7 @@
    CART MAIN - Entry Point & Layout (Modern Redesign - Compact)
    UPDATED: Removed applied coupons display box styling
    UPDATED: Bigger suggested products section with centered alignment
+   UPDATED: Empty cart breakout styling (71% width)
    
    @package Macedon_Ranges
    @since 1.0.0
@@ -12,7 +13,7 @@
 @import 'cart-sidebar.css';
 @import 'cart-responsive.css';
 @import 'checkout-progress.css';
-/* @import 'cart-empty.css'; */
+@import 'cart-empty.css';
 
 /* ==========================================================================
    CART PAGE ROOT - Very specific selectors to avoid navbar conflicts
@@ -117,6 +118,35 @@ body.woocommerce-cart #main.site-main form.woocommerce-cart-form {
   overflow: hidden;
   margin-bottom: 0;
   width: 100%;
+}
+
+/* ==========================================================================
+   EMPTY CART - CENTERED BREAKOUT (71% WIDTH)
+   ========================================================================== */
+body.woocommerce-cart .cart-empty-wrapper {
+  width: 71% !important;
+  max-width: 1000px !important;
+  margin: 0 auto 2rem !important;
+  position: relative !important;
+}
+
+/* Responsive widths for empty cart */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-empty-wrapper {
+    width: 88% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body.woocommerce-cart .cart-empty-wrapper {
+    width: 95% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.woocommerce-cart .cart-empty-wrapper {
+    width: 98% !important;
+  }
 }
 
 /* ==========================================================================

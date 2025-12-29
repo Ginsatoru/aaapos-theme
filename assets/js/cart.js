@@ -1,10 +1,12 @@
 /**
  * Shopping cart functionality
+ * UPDATED: Extended notification timing without fade effects
  */
 class CartManager {
   constructor() {
     this.ajaxUrl = this.getAjaxUrl();
     this.nonce = this.getNonce();
+    this.isEmptyCart = this.checkIfEmptyCart();
     this.init();
   }
 
@@ -45,9 +47,46 @@ class CartManager {
     return "";
   }
 
+  /**
+   * Check if cart is currently empty on page load
+   */
+  checkIfEmptyCart() {
+    if (!this.isCartPage()) return false;
+    
+    return document.querySelector('.cart-empty-wrapper') !== null ||
+           document.querySelector('.wc-empty-cart-message') !== null ||
+           document.querySelector('.cart-empty') !== null;
+  }
+
   init() {
     this.bindEvents();
     this.bindWooCommerceEvents();
+    
+    // If on empty cart, prevent fragment updates
+    if (this.isEmptyCart && this.isCartPage()) {
+      this.preventFragmentUpdates();
+    }
+  }
+
+  /**
+   * Prevent WooCommerce from updating fragments on empty cart page
+   * This stops any broken layout from rendering
+   */
+  preventFragmentUpdates() {
+    // Override the fragment refresh
+    if (typeof jQuery !== 'undefined') {
+      const originalTrigger = jQuery.fn.trigger;
+      jQuery.fn.trigger = function(event) {
+        // Block fragment-related events on empty cart
+        if ((event === 'wc_fragment_refresh' || 
+             event === 'wc_fragments_refreshed' || 
+             event === 'wc_fragments_loaded') && 
+            document.body.classList.contains('cart-is-empty')) {
+          return this;
+        }
+        return originalTrigger.apply(this, arguments);
+      };
+    }
   }
 
   bindEvents() {
@@ -73,7 +112,7 @@ class CartManager {
       }
     }, true);
 
-    // Quantity changes in cart page - FIXED: Look for cart item key in the name attribute
+    // Quantity changes in cart page
     document.addEventListener("change", (e) => {
       if (e.target.classList.contains("qty")) {
         const cartItemKey = this.getCartItemKeyFromInput(e.target);
@@ -108,6 +147,21 @@ class CartManager {
     jQuery(document.body).on(
       "added_to_cart",
       (event, fragments, cart_hash, $button) => {
+        // If adding to empty cart, wait for notification to complete
+        if (this.isEmptyCart && this.isCartPage()) {
+          // Prevent any fragment updates
+          event.stopImmediatePropagation();
+          
+          // Wait for notification to complete its full display cycle
+          // This gives time for: appear -> display -> auto-hide animation
+          setTimeout(() => {
+            window.location.reload();
+          }, 5500);
+          
+          return false;
+        }
+        
+        // Normal flow for non-empty cart
         this.updateFragments(fragments);
         this.showMessage("Product added to cart!", "success");
       },
@@ -125,8 +179,18 @@ class CartManager {
 
     // Listen for cart update
     jQuery(document.body).on("wc_fragments_refreshed", () => {
-      this.updateCartCountVisibility();
+      // Only update if not on empty cart
+      if (!this.isEmptyCart || !this.isCartPage()) {
+        this.updateCartCountVisibility();
+      }
     });
+  }
+
+  /**
+   * Check if current page is the cart page
+   */
+  isCartPage() {
+    return document.body.classList.contains('woocommerce-cart');
   }
 
   async addToCart(button) {
@@ -173,8 +237,20 @@ class CartManager {
       }
 
       if (data.fragments) {
-        this.updateFragments(data.fragments);
+        // Show success message
         this.showMessage("Product added to cart!", "success");
+        
+        // If we're on empty cart, wait for notification to complete
+        if (this.isEmptyCart && this.isCartPage()) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 2500);
+          
+          return;
+        }
+        
+        // Normal flow for non-empty cart
+        this.updateFragments(data.fragments);
 
         // Trigger WooCommerce event for compatibility
         if (typeof jQuery !== "undefined") {
@@ -192,9 +268,12 @@ class CartManager {
         "error",
       );
     } finally {
-      button.classList.remove("loading");
-      button.disabled = false;
-      button.innerHTML = originalText;
+      // Only update button if not reloading
+      if (!this.isEmptyCart || !this.isCartPage()) {
+        button.classList.remove("loading");
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
     }
   }
 
@@ -391,6 +470,11 @@ class CartManager {
   updateFragments(fragments) {
     if (!fragments) return;
 
+    // Don't update fragments if on empty cart page
+    if (this.isEmptyCart && this.isCartPage()) {
+      return;
+    }
+
     Object.keys(fragments).forEach((selector) => {
       const elements = document.querySelectorAll(selector);
       
@@ -463,18 +547,20 @@ class CartManager {
       message.classList.add("cart-message--visible");
     });
 
-    // Auto remove after 4 seconds
-    const autoRemove = setTimeout(() => {
-      this.removeMessage(message);
-    }, 4000);
-
-    // Close button
-    message
-      .querySelector(".cart-message__close")
-      .addEventListener("click", () => {
-        clearTimeout(autoRemove);
+    // Auto remove after 4 seconds (unless on empty cart page where it will be handled differently)
+    if (!this.isEmptyCart || !this.isCartPage()) {
+      const autoRemove = setTimeout(() => {
         this.removeMessage(message);
-      });
+      }, 4000);
+
+      // Close button
+      message
+        .querySelector(".cart-message__close")
+        .addEventListener("click", () => {
+          clearTimeout(autoRemove);
+          this.removeMessage(message);
+        });
+    }
   }
 
   removeMessage(message) {
