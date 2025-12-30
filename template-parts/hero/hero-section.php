@@ -24,12 +24,6 @@ $primary_btn_text = get_theme_mod('hero_primary_button_text', 'Shop All Products
 $primary_btn_link = get_theme_mod('hero_primary_button_link', '/shop');
 $secondary_btn_text = get_theme_mod('hero_secondary_button_text', 'About Our Store');
 $secondary_btn_link = get_theme_mod('hero_secondary_button_link', '/about');
-$trust_1_number = get_theme_mod('hero_trust_1_number', '1000+');
-$trust_1_label = get_theme_mod('hero_trust_1_label', 'Products');
-$trust_2_number = get_theme_mod('hero_trust_2_number', '100%');
-$trust_2_label = get_theme_mod('hero_trust_2_label', 'Quality Assured');
-$trust_3_number = get_theme_mod('hero_trust_3_number', 'Local');
-$trust_3_label = get_theme_mod('hero_trust_3_label', 'Family Owned');
 $slideshow_speed = get_theme_mod('hero_slideshow_speed', 5000);
 
 // Default fallback images
@@ -142,24 +136,6 @@ if (!$enable_slideshow) {
                         </svg>
                     </a>
                 <?php endif; ?>
-            </div>
-            
-            <!-- Trust Indicators with Animation -->
-            <div class="hero-trust-indicators" 
-                 data-animate="fade-up" 
-                 data-animate-delay="500">
-                <div class="trust-item">
-                    <div class="trust-number"><?php echo esc_html($trust_1_number); ?></div>
-                    <div class="trust-label"><?php echo esc_html($trust_1_label); ?></div>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-number"><?php echo esc_html($trust_2_number); ?></div>
-                    <div class="trust-label"><?php echo esc_html($trust_2_label); ?></div>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-number"><?php echo esc_html($trust_3_number); ?></div>
-                    <div class="trust-label"><?php echo esc_html($trust_3_label); ?></div>
-                </div>
             </div>
         </div>
     </div>

@@ -99,18 +99,6 @@ get_header();
                     ?>
                     
                     <?php if (get_theme_mod("about_show_stat_card", true)): ?>
-                    <!-- Floating Stats Card -->
-                    <div class="about-hero__stat-card" data-animate="zoom-in" data-animate-delay="400">
-                        <div class="stat-card__number"><?php echo esc_html(
-                            get_theme_mod("about_customer_count", "5,000+"),
-                        ); ?></div>
-                        <div class="stat-card__label"><?php echo esc_html(
-                            get_theme_mod(
-                                "about_customer_label",
-                                "Happy Customers",
-                            ),
-                        ); ?></div>
-                    </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -431,70 +419,81 @@ get_header();
     <?php endif; ?>
 
     <!-- CTA Section -->
-    <?php if (get_theme_mod("about_show_cta", true)): ?>
-    <section class="about-cta">
-        <div class="container">
-            <div class="about-cta__card" data-animate="zoom-in">
-                <div class="about-cta__content">
-                    <h2 class="about-cta__title"><?php echo esc_html(
+<?php if (get_theme_mod("about_show_cta", true)): ?>
+<section class="about-cta">
+    <div class="container">
+        <?php 
+        $cta_bg_image = get_theme_mod("about_cta_bg_image");
+        $cta_overlay_opacity = get_theme_mod("about_cta_overlay_opacity", "0.6");
+        
+        // Use custom image, or fallback to ctabg.jpg
+        $background_image = $cta_bg_image ? $cta_bg_image : get_template_directory_uri() . '/assets/images/ctabg.jpg';
+        
+        $cta_style = 'style="background-image: url(' . esc_url($background_image) . ');"';
+        $overlay_style = 'style="opacity: ' . esc_attr($cta_overlay_opacity) . ';"';
+        ?>
+        <div class="about-cta__card" data-animate="zoom-in" <?php echo $cta_style; ?>>
+            <div class="about-cta__card-overlay" <?php echo $overlay_style; ?>></div>
+            <div class="about-cta__content">
+                <h2 class="about-cta__title"><?php echo esc_html(
+                    get_theme_mod(
+                        "about_cta_title",
+                        "Ready to Experience the Difference?",
+                    ),
+                ); ?></h2>
+                <p class="about-cta__text">
+                    <?php echo esc_html(
                         get_theme_mod(
-                            "about_cta_title",
-                            "Ready to Experience the Difference?",
+                            "about_cta_text",
+                            "Join thousands of satisfied customers who trust us for quality products and exceptional service.",
                         ),
-                    ); ?></h2>
-                    <p class="about-cta__text">
-                        <?php echo esc_html(
-                            get_theme_mod(
-                                "about_cta_text",
-                                "Join thousands of satisfied customers who trust us for quality products and exceptional service.",
-                            ),
-                        ); ?>
-                    </p>
-                    
-                    <div class="about-cta__buttons">
-                        <?php if (
-                            class_exists("WooCommerce") &&
-                            get_theme_mod("about_show_cta_shop_btn", true)
-                        ): ?>
-                            <a href="<?php echo esc_url(
-                                get_permalink(wc_get_page_id("shop")),
-                            ); ?>" class="btn-about btn-about--primary">
-                                <span><?php echo esc_html(
-                                    get_theme_mod(
-                                        "about_cta_shop_text",
-                                        "Shop Now",
-                                    ),
-                                ); ?></span>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                        <?php endif; ?>
-                        
-                        <?php if (
-                            get_theme_mod("about_show_cta_contact_btn", true)
-                        ): ?>
-                            <a href="<?php echo esc_url(
+                    ); ?>
+                </p>
+                
+                <div class="about-cta__buttons">
+                    <?php if (
+                        class_exists("WooCommerce") &&
+                        get_theme_mod("about_show_cta_shop_btn", true)
+                    ): ?>
+                        <a href="<?php echo esc_url(
+                            get_permalink(wc_get_page_id("shop")),
+                        ); ?>" class="btn-about btn-about--primary">
+                            <span><?php echo esc_html(
                                 get_theme_mod(
-                                    "about_cta_contact_url",
-                                    home_url("/contact"),
+                                    "about_cta_shop_text",
+                                    "Shop Now",
                                 ),
-                            ); ?>" class="btn-about btn-about--secondary">
-                                <span><?php echo esc_html(
-                                    get_theme_mod(
-                                        "about_cta_contact_text",
-                                        "Get in Touch",
-                                    ),
-                                ); ?></span>
-                            </a>
-                        <?php endif; ?>
-                    </div>
+                            ); ?></span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    <?php endif; ?>
+                    
+                    <?php if (
+                        get_theme_mod("about_show_cta_contact_btn", true)
+                    ): ?>
+                        <a href="<?php echo esc_url(
+                            get_theme_mod(
+                                "about_cta_contact_url",
+                                home_url("/contact"),
+                            ),
+                        ); ?>" class="btn-about btn-about--secondary">
+                            <span><?php echo esc_html(
+                                get_theme_mod(
+                                    "about_cta_contact_text",
+                                    "Get in Touch",
+                                ),
+                            ); ?></span>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-    </section>
-    <?php endif; ?>
+    </div>
+</section>
+<?php endif; ?>
 
 </div>
 

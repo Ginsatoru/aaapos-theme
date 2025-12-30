@@ -119,7 +119,7 @@ get_header();
                                     id="contact-name" 
                                     name="contact_name" 
                                     class="form-input"
-                                    placeholder="John Smith"
+                                    placeholder="Neil Riding"
                                     required>
                             </div>
                             
@@ -133,7 +133,7 @@ get_header();
                                     id="contact-email" 
                                     name="contact_email" 
                                     class="form-input"
-                                    placeholder="john@example.com"
+                                    placeholder="support@aaapos.com"
                                     required>
                             </div>
                         </div>
@@ -148,7 +148,7 @@ get_header();
                                     id="contact-phone" 
                                     name="contact_phone" 
                                     class="form-input"
-                                    placeholder="0412 345 678">
+                                    placeholder="1300 555 115">
                             </div>
                             
                             <div class="form-field">
@@ -206,7 +206,7 @@ get_header();
                             
                             <!-- Phone -->
                             <?php 
-                            $phone = get_theme_mod('contact_phone', '03 5427 3552');
+                            $phone = get_theme_mod('contact_phone', '1300 555 115');
                             if (!empty($phone)) : 
                             ?>
                             <a href="tel:<?php echo esc_attr(preg_replace('/[^0-9+]/', '', $phone)); ?>" 
@@ -280,11 +280,11 @@ get_header();
                         <div class="hours-list">
                             <div class="hours-item">
                                 <span class="hours-day">Monday - Friday</span>
-                                <span class="hours-time"><?php echo esc_html(get_theme_mod('contact_hours_weekday', '9:00 AM - 6:00 PM')); ?></span>
+                                <span class="hours-time"><?php echo esc_html(get_theme_mod('contact_hours_weekday', '7:00 AM - 7:00 PM')); ?></span>
                             </div>
                             <div class="hours-item">
                                 <span class="hours-day">Saturday</span>
-                                <span class="hours-time"><?php echo esc_html(get_theme_mod('contact_hours_saturday', '10:00 AM - 4:00 PM')); ?></span>
+                                <span class="hours-time"><?php echo esc_html(get_theme_mod('contact_hours_saturday', '9:00 AM - 5:00 PM')); ?></span>
                             </div>
                             <div class="hours-item <?php echo (strtolower(get_theme_mod('contact_hours_sunday', 'Closed')) === 'closed') ? 'hours-item--closed' : ''; ?>">
                                 <span class="hours-day">Sunday</span>

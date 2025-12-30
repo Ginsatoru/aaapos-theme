@@ -51,20 +51,6 @@ function aaapos_about_page_customizer($wp_customize)
         ]),
     );
 
-    // Hero Badge
-    $wp_customize->add_setting("about_hero_badge", [
-        "default" => "Our Journey",
-        "sanitize_callback" => "sanitize_text_field",
-        "transport" => "refresh",
-    ]);
-    $wp_customize->add_control("about_hero_badge", [
-        "label" => __("Hero Badge Text", "aaapos-prime"),
-        "description" => __("Leave empty to hide badge", "aaapos-prime"),
-        "section" => "aaapos_about_page",
-        "type" => "text",
-        "priority" => 10,
-    ]);
-
     // Hero Title
     $wp_customize->add_setting("about_hero_title", [
         "default" => "Built on Trust, Driven by Quality",
@@ -147,45 +133,6 @@ function aaapos_about_page_customizer($wp_customize)
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 46,
-    ]);
-
-    // Show/Hide Stat Card
-    $wp_customize->add_setting("about_show_stat_card", [
-        "default" => true,
-        "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "refresh",
-    ]);
-    $wp_customize->add_control("about_show_stat_card", [
-        "label" => __("Show Stats Card", "aaapos-prime"),
-        "section" => "aaapos_about_page",
-        "type" => "checkbox",
-        "priority" => 48,
-    ]);
-
-    // Customer Count
-    $wp_customize->add_setting("about_customer_count", [
-        "default" => "5,000+",
-        "sanitize_callback" => "sanitize_text_field",
-        "transport" => "refresh",
-    ]);
-    $wp_customize->add_control("about_customer_count", [
-        "label" => __("Customer Count", "aaapos-prime"),
-        "section" => "aaapos_about_page",
-        "type" => "text",
-        "priority" => 50,
-    ]);
-
-    // Customer Count Label
-    $wp_customize->add_setting("about_customer_label", [
-        "default" => "Happy Customers",
-        "sanitize_callback" => "sanitize_text_field",
-        "transport" => "refresh",
-    ]);
-    $wp_customize->add_control("about_customer_label", [
-        "label" => __("Customer Count Label", "aaapos-prime"),
-        "section" => "aaapos_about_page",
-        "type" => "text",
-        "priority" => 51,
     ]);
 
     // ===================================
@@ -643,6 +590,43 @@ function aaapos_about_page_customizer($wp_customize)
         "type" => "checkbox",
         "priority" => 400,
     ]);
+
+    // CTA Background Image
+$wp_customize->add_setting("about_cta_bg_image", [
+    "default" => "",
+    "sanitize_callback" => "esc_url_raw",
+    "transport" => "refresh",
+]);
+$wp_customize->add_control(
+    new WP_Customize_Image_Control($wp_customize, "about_cta_bg_image", [
+        "label" => __("CTA Background Image", "aaapos-prime"),
+        "description" => __(
+            "Upload a background image for the CTA section (recommended: 1920x600px). Falls back to ctabg.jpg if not set.",
+            "aaapos-prime",
+        ),
+        "section" => "aaapos_about_page",
+        "priority" => 405,
+    ]),
+);
+
+// CTA Overlay Opacity
+$wp_customize->add_setting("about_cta_overlay_opacity", [
+    "default" => "0.6",
+    "sanitize_callback" => "sanitize_text_field",
+    "transport" => "refresh",
+]);
+$wp_customize->add_control("about_cta_overlay_opacity", [
+    "label" => __("CTA Overlay Opacity", "aaapos-prime"),
+    "description" => __("Black overlay opacity (0.0 to 1.0, default: 0.6)", "aaapos-prime"),
+    "section" => "aaapos_about_page",
+    "type" => "number",
+    "input_attrs" => [
+        "min" => "0",
+        "max" => "1",
+        "step" => "0.05",
+    ],
+    "priority" => 407,
+]);
 
     // CTA Title
     $wp_customize->add_setting("about_cta_title", [
