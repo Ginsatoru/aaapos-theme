@@ -1,6 +1,7 @@
 /**
  * Shopping cart functionality
  * UPDATED: Extended notification timing without fade effects
+ * UPDATED: Fix empty cart display when removing items one by one
  */
 class CartManager {
   constructor() {
@@ -102,6 +103,16 @@ class CartManager {
       }
     });
 
+    // Remove item from cart (X button in cart table)
+    document.addEventListener("click", (e) => {
+      const removeLink = e.target.closest("a.remove");
+      if (removeLink && this.isCartPage()) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.removeFromCartPage(removeLink);
+      }
+    }, true);
+
     // Remove item from cart dropdown - Using event delegation with capture phase
     document.addEventListener("click", (e) => {
       const removeBtn = e.target.closest(".cart-item-remove");
@@ -191,6 +202,63 @@ class CartManager {
    */
   isCartPage() {
     return document.body.classList.contains('woocommerce-cart');
+  }
+
+  /**
+   * Handle remove item from cart page (X button)
+   * This prevents the broken layout when cart becomes empty
+   */
+  async removeFromCartPage(link) {
+    const url = link.getAttribute('href');
+    
+    if (!url) {
+      console.error("No remove URL found");
+      return;
+    }
+
+    // Show loading state
+    const row = link.closest('tr');
+    if (row) {
+      row.style.opacity = '0.5';
+      row.style.pointerEvents = 'none';
+    }
+
+    try {
+      // Make the remove request
+      const response = await fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Check how many items are left in the cart
+      const remainingRows = document.querySelectorAll('.woocommerce-cart-form__cart-item').length;
+      
+      // If this is the last item, reload to show empty cart properly
+      if (remainingRows <= 1) {
+        this.showMessage("Item removed from cart.", "info");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+        return;
+      }
+
+      // If there are still items, just reload normally
+      window.location.reload();
+
+    } catch (error) {
+      console.error("Remove from cart error:", error);
+      this.showMessage("Failed to remove item. Please try again.", "error");
+
+      // Restore row state
+      if (row) {
+        row.style.opacity = '1';
+        row.style.pointerEvents = '';
+      }
+    }
   }
 
   async addToCart(button) {

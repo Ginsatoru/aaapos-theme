@@ -165,7 +165,7 @@ body.woocommerce-cart .cart-empty-wrapper {
 }
 
 /* ==========================================================================
-   SUGGESTED PRODUCTS - FULL WIDTH BREAKOUT (BIGGER WIDTH)
+   SUGGESTED PRODUCTS - FULL WIDTH BREAKOUT (RESPONSIVE)
    ========================================================================== */
 
 /* Make suggested products span both grid columns and break out */
@@ -178,15 +178,15 @@ body.woocommerce-cart .cart-empty-wrapper {
     right: 50% !important;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    margin-top: 4rem !important; /* More space above */
+    margin-top: 4rem !important;
     padding-top: 3rem !important;
   }
   
-  /* Border line with same width as content (80%) */
+  /* Border line - responsive width */
   body.woocommerce-cart #main.site-main .entry-content .woocommerce .cart-suggested-products-wrapper::before {
     content: '';
     display: block;
-    width: 80%;
+    width: 100%;
     max-width: 1350px;
     height: 1px;
     background: #E5E7EB;
@@ -194,6 +194,8 @@ body.woocommerce-cart .cart-empty-wrapper {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    padding: 0 2rem;
+    box-sizing: border-box;
   }
 }
 
@@ -206,15 +208,16 @@ body.woocommerce-cart .cart-empty-wrapper {
     right: 50% !important;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    margin-top: 3rem !important; /* More space above on mobile */
+    margin-top: 3rem !important;
     padding-top: 2.5rem !important;
   }
   
-  /* Border line with same width as content (88%) */
+  /* Border line - responsive width */
   body.woocommerce-cart .cart-suggested-products-wrapper::before {
     content: '';
     display: block;
-    width: 88%;
+    width: 100%;
+    max-width: calc(100% - 4rem);
     height: 1px;
     background: #E5E7EB;
     position: absolute;
@@ -225,25 +228,33 @@ body.woocommerce-cart .cart-empty-wrapper {
 }
 
 @media (max-width: 767px) {
-  /* Adjust border width for mobile (95%) */
+  /* Adjust border width for mobile */
   body.woocommerce-cart .cart-suggested-products-wrapper::before {
-    width: 95%;
+    max-width: calc(100% - 2rem);
   }
 }
 
-@media (max-width: 480px) {
-  /* Adjust border width for small mobile (98%) */
-  body.woocommerce-cart .cart-suggested-products-wrapper::before {
-    width: 98%;
-  }
-}
-
-/* Inner container - SLIGHTLY SMALLER WIDTH (80%) centered */
+/* Inner container - RESPONSIVE to screen size */
 body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
-  width: 80% !important;
+  width: 100% !important;
   max-width: 1350px !important;
   margin: 0 auto !important;
   padding: 0 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Product grid within suggested products - force full width */
+body.woocommerce-cart .cart-suggested-products ul.products {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Ensure product cards take full grid column width */
+body.woocommerce-cart .cart-suggested-products ul.products li.product {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* Ensure header is centered */
@@ -259,19 +270,17 @@ body.woocommerce-cart .cart-suggested-products__subtitle {
   margin-right: auto !important;
 }
 
-/* Tablet - 88% width */
+/* Tablet - responsive padding */
 @media (max-width: 1023px) {
   body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
-    width: 88% !important;
-    padding: 0 1rem !important;
+    padding: 0 1.5rem !important;
   }
 }
 
-/* Mobile - 95% width */
+/* Mobile - responsive padding */
 @media (max-width: 767px) {
   body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
-    width: 95% !important;
-    padding: 0 0.75rem !important;
+    padding: 0 1rem !important;
   }
   
   body.woocommerce-cart .cart-suggested-products__header {
@@ -279,10 +288,9 @@ body.woocommerce-cart .cart-suggested-products__subtitle {
   }
 }
 
-/* Small Mobile - 98% width */
+/* Small Mobile - responsive padding */
 @media (max-width: 480px) {
   body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
-    width: 98% !important;
-    padding: 0 0.5rem !important;
+    padding: 0 1rem !important;
   }
 }

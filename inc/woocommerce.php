@@ -1798,6 +1798,14 @@ function aaapos_cart_suggested_products()
 add_action("woocommerce_after_cart", "aaapos_cart_suggested_products", 20);
 
 /**
+ * Setup WooCommerce template path
+ */
+function aaapos_woocommerce_template_path() {
+    return 'woocommerce/';
+}
+add_filter('woocommerce_template_path', 'aaapos_woocommerce_template_path');
+
+/**
  * Display Recommended Products on Empty Cart Page
  * Shows 4 popular or recent products when cart is empty
  * UPDATED: Full width layout to match viewport edges

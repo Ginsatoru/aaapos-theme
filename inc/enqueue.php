@@ -102,6 +102,26 @@ function mr_enqueue_styles()
         ),
     );
 
+    // Checkout styles & scripts - ONLY on checkout page
+    if (is_checkout() && !is_order_received_page()) {
+        wp_enqueue_style(
+            "aaapos-checkout",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/checkout.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION,
+            "all",
+        );
+
+        wp_enqueue_script(
+            "aaapos-checkout",
+            get_template_directory_uri() . "/assets/js/checkout.js",
+            ["jquery", "wc-checkout"],
+            AAAPOS_VERSION,
+            true,
+        );
+    }
+
     // Breadcrumb component styles
     wp_enqueue_style(
         "mr-breadcrumb-shop",
