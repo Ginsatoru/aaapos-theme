@@ -1,5 +1,6 @@
 /* ==========================================================================
    Header Actions (Search, Account, Cart Buttons)
+   FIXED: Removed margin-left: auto that was causing the issue
    ========================================================================== */
 
 .header-actions {
@@ -8,7 +9,7 @@
   gap: var(--space-4);
   flex-shrink: 0;
   height: 100%;
-  margin-left: auto;
+  /* REMOVED: margin-left: auto; - This was causing the problem! */
 }
 
 .header-action {
@@ -151,7 +152,6 @@
   position: relative;
   width: 280px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-left: auto;
 }
 
 /* Expand width smoothly when search field is focused */

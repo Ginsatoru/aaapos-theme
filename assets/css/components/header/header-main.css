@@ -87,7 +87,7 @@ body.scrolled .site-header {
 
 @media (min-width: 1024px) {
   .header-inner {
-    padding: 0 23px 0 49px;
+    padding: 0 43px 0 49px;
   }
   
   /* Fix for menu alignment */

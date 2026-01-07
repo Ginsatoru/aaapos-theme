@@ -1,6 +1,6 @@
 /* ==========================================================================
    Main Navigation - Desktop & Mobile
-   Clean design with proper multi-level dropdown support
+   SIMPLIFIED FIX - Menu alignment based on header actions visibility
    ========================================================================== */
 
 /* ==========================================================================
@@ -9,10 +9,8 @@
 
 .main-navigation {
   display: none;
-  flex: 1;
-  max-width: 600px;
-  margin: 0 2rem;
   height: 100%;
+  transition: all 0.3s ease;
 }
 
 /* Hide mobile-only elements on desktop */
@@ -25,6 +23,18 @@
   .main-navigation {
     display: flex;
     align-items: center;
+    margin-left: 2rem;
+  }
+  
+  /* Push navigation right when search bar is hidden */
+  .header-inner:not(:has(.header-search-bar)) .main-navigation {
+    margin-left: auto !important;
+    margin-right: 0px !important;
+  }
+  
+  /* Remove any gap that might prevent alignment */
+  .header-inner:not(:has(.header-search-bar)) {
+    gap: 0 !important;
   }
 }
 
@@ -42,9 +52,10 @@
   margin: 0;
   padding: 0;
   gap: 8px;
-  justify-content: center;
   width: 100%;
   height: 100%;
+  justify-content: flex-end;
+  transition: justify-content 0.3s ease;
 }
 
 .nav-menu > li {
@@ -453,8 +464,8 @@
   .nav-menu .menu-item-has-children > a::after {
     display: inline-block !important;
     content: '▼';
-    font-size: 4px;
-    margin-left: 4px;
+    font-size: 10px;
+    margin-left: 8px;
     transition: transform 0.2s ease;
     vertical-align: middle;
     line-height: 1;
@@ -504,7 +515,7 @@
   .nav-menu .sub-menu .menu-item-has-children > a::after {
     display: inline-block !important;
     content: '▶';
-    font-size: 3px;
+    font-size: 8px;
     margin-left: auto;
     transition: transform 0.2s ease;
     vertical-align: middle;
@@ -562,6 +573,10 @@
   .nav-menu .sub-menu,
   .main-navigation,
   .mobile-menu-overlay {
+    transition: none;
+  }
+  
+  .main-navigation {
     transition: none;
   }
 }
