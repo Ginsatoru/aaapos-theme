@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/cart/cart-totals.php.
  *
- * UPDATED: Removed estimated text from Tax, made tax amount bold
+ * UPDATED: Fixed shipping display to show properly
  *
  * @package Macedon_Ranges
  */
@@ -36,7 +36,12 @@ defined('ABSPATH') || exit;
 
 			<?php do_action('woocommerce_cart_totals_before_shipping'); ?>
 
-			<?php wc_cart_totals_shipping_html(); ?>
+			<tr class="woocommerce-shipping-totals shipping">
+				<th><?php esc_html_e('Shipping', 'macedon-ranges'); ?></th>
+				<td data-title="<?php esc_attr_e('Shipping', 'macedon-ranges'); ?>">
+					<?php wc_cart_totals_shipping_html(); ?>
+				</td>
+			</tr>
 
 			<?php do_action('woocommerce_cart_totals_after_shipping'); ?>
 

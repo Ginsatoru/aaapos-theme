@@ -104,15 +104,6 @@ function mr_enqueue_styles()
 
     // Checkout styles & scripts - ONLY on checkout page
     if (is_checkout() && !is_order_received_page()) {
-        wp_enqueue_style(
-            "aaapos-checkout",
-            get_template_directory_uri() .
-                "/assets/css/components/cart/checkout.css",
-            ["aaapos-woocommerce-base"],
-            AAAPOS_VERSION,
-            "all",
-        );
-
         wp_enqueue_script(
             "aaapos-checkout",
             get_template_directory_uri() . "/assets/js/checkout.js",
@@ -137,6 +128,53 @@ function mr_enqueue_styles()
         ["mr-animations"],
         MR_THEME_VERSION,
     );
+
+    // Enqueue checkout styles
+    wp_enqueue_style(
+        "checkout-main",
+        get_template_directory_uri() .
+            "/assets/css/components/cart/checkout-main.css",
+        [],
+        THEME_VERSION,
+    );
+
+    // Order Received Page
+    if (is_order_received_page()) {
+        wp_enqueue_style(
+            "aaapos-order-received",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/order-received.css",
+            [],
+            AAAPOS_VERSION,
+        );
+    }
+
+    wp_enqueue_style(
+        "checkout-form",
+        get_template_directory_uri() .
+            "/assets/css/components/cart/checkout-form.css",
+        ["checkout-main"],
+        THEME_VERSION,
+    );
+    wp_enqueue_style(
+        "checkout-review",
+        get_template_directory_uri() .
+            "/assets/css/components/cart/checkout-review.css",
+        ["checkout-form"],
+        THEME_VERSION,
+    );
+
+    // In your woocommerce styles function
+    if (is_checkout() || is_cart()) {
+        wp_enqueue_style(
+            "aaapos-checkout-progress",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/checkout-progress.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION,
+            "all",
+        );
+    }
 
     // Category cards styles - NUCLEAR PRIORITY
     wp_enqueue_style(

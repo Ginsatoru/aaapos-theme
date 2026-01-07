@@ -5,7 +5,7 @@
  * This template can be overridden by copying it to yourtheme/woocommerce/global/breadcrumb.php.
  * 
  * CUSTOM: Arrow-style breadcrumbs with home icon
- * Works on ALL WooCommerce pages
+ * Works on ALL WooCommerce pages EXCEPT cart page
  *
  * @see         https://docs.woocommerce.com/document/template-structure/
  * @package     WooCommerce\Templates
@@ -14,6 +14,11 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// HIDE BREADCRUMBS ON CART PAGE
+if ( is_cart() ) {
+	return;
 }
 
 if ( ! empty( $breadcrumb ) ) {

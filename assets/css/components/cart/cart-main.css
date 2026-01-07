@@ -77,7 +77,6 @@ body.woocommerce-cart #main.site-main .entry-header {
 
 body.woocommerce-cart #main.site-main .entry-header .entry-title,
 body.woocommerce-cart #main.site-main article .entry-title {
-  margin-top: -10px; /* Reduced from -80px */
   font-size: 2.5rem; /* Reduced from 3rem */
   font-weight: 700;
   color: #212529;
@@ -293,4 +292,53 @@ body.woocommerce-cart .cart-suggested-products__subtitle {
   body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
     padding: 0 1rem !important;
   }
+}
+
+/* ==========================================================================
+   CHECKOUT PAGE PROGRESS STYLES (Ensure they load)
+   ========================================================================== */
+body.woocommerce-checkout .woocommerce-checkout-progress {
+    width: 100%;
+    margin: 0 auto 2rem auto;
+    padding: 2rem 0 0 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+body.woocommerce-checkout .checkout-steps {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   HIDE INLINE COUPON ERROR MESSAGES
+   These will be shown as notifications instead via cart.js
+   ========================================================================== */
+
+/* Hide WooCommerce error/info messages in coupon area */
+body.woocommerce-cart .woocommerce-error,
+body.woocommerce-cart .woocommerce-message,
+body.woocommerce-cart .woocommerce-info {
+  display: none !important;
+}
+
+/* Exception: Keep notices that are NOT coupon-related (if any) */
+body.woocommerce-cart .woocommerce-notices-wrapper .woocommerce-error:not([class*="coupon"]),
+body.woocommerce-cart .woocommerce-notices-wrapper .woocommerce-message:not([class*="coupon"]) {
+  /* You can adjust this if you want to show other types of notices */
+  display: none !important;
+}
+
+/* Ensure the coupon input error styling is removed */
+body.woocommerce-cart .coupon input[type="text"].error {
+  border-color: #ddd;
+}
+
+/* Add a subtle red border on empty coupon submission (optional) */
+body.woocommerce-cart .coupon input[type="text"]:invalid {
+  border-color: #e74c3c;
 }

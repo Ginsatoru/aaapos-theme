@@ -1,6 +1,8 @@
 <?php
 /**
- * Checkout Form
+ * Checkout Form - WITH INTEGRATED PROGRESS INDICATOR
+ * CLEANED UP - No duplicate fields
+ * UPDATED: Fixed checkbox alignment with custom styling
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/checkout/form-checkout.php.
  *
@@ -8,32 +10,75 @@
  * @version 3.5.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined("ABSPATH")) {
+    exit();
 }
-
-do_action( 'woocommerce_before_checkout_form', $checkout );
 
 // If checkout registration is disabled and not logged in, the user cannot checkout.
-if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
-	echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
-	return;
+if (
+    !$checkout->is_registration_enabled() &&
+    $checkout->is_registration_required() &&
+    !is_user_logged_in()
+) {
+    echo esc_html(
+        apply_filters(
+            "woocommerce_checkout_must_be_logged_in_message",
+            __("You must be logged in to checkout.", "woocommerce"),
+        ),
+    );
+    return;
 }
-
 ?>
+
+<!-- CHECKOUT PROGRESS INDICATOR -->
+<div class="woocommerce-checkout-progress">
+	<div class="checkout-steps">
+		
+		<!-- Step 1: Shopping Cart (Completed & Clickable) -->
+		<a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="checkout-step completed clickable">
+			<span class="step-number">1</span>
+			<span class="step-label"><?php esc_html_e("Shopping cart", "macedon-ranges"); ?></span>
+		</a>
+		
+		<!-- Arrow -->
+		<svg class="step-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+		
+		<!-- Step 2: Checkout Details (Active) -->
+		<div class="checkout-step active">
+			<span class="step-number">2</span>
+			<span class="step-label"><?php esc_html_e("Checkout details", "macedon-ranges"); ?></span>
+		</div>
+		
+		<!-- Arrow -->
+		<svg class="step-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+		
+		<!-- Step 3: Order Complete -->
+		<div class="checkout-step">
+			<span class="step-number">3</span>
+			<span class="step-label"><?php esc_html_e("Order complete", "macedon-ranges"); ?></span>
+		</div>
+		
+	</div>
+</div>
+
+<?php do_action("woocommerce_before_checkout_form", $checkout); ?>
 
 <div class="checkout-wrapper">
 	
-	<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
+	<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data">
 
 		<div class="checkout-container">
 			
 			<!-- Left Column: Billing & Shipping Details -->
 			<div class="checkout-main">
 				
-				<?php if ( $checkout->get_checkout_fields() ) : ?>
+				<?php if ($checkout->get_checkout_fields()): ?>
 
-					<?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
+					<?php do_action("woocommerce_checkout_before_customer_details"); ?>
 
 					<div class="checkout-customer-details">
 						
@@ -46,44 +91,70 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 										<circle cx="12" cy="7" r="4"></circle>
 									</svg>
 								</span>
-								<?php esc_html_e( 'Billing details', 'woocommerce' ); ?>
+								<?php esc_html_e("Billing details", "woocommerce"); ?>
 							</h3>
 							
 							<div class="billing-fields">
-								<?php do_action( 'woocommerce_checkout_billing' ); ?>
+								<?php do_action("woocommerce_checkout_billing"); ?>
 							</div>
 						</div>
 
-						<!-- Shipping Section -->
-						<?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
+						<!-- Shipping Method Section -->
+						<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()): ?>
 							
-							<div class="checkout-section shipping-section">
-								<div class="ship-to-different-address">
-									<h3 class="section-title">
-										<label class="ship-different-checkbox">
-											<input id="ship-to-different-address-checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" <?php checked( apply_filters( 'woocommerce_ship_to_different_address_checked', 'shipping' === get_option( 'woocommerce_ship_to_destination' ) ? 1 : 0 ), 1 ); ?> type="checkbox" name="ship_to_different_address" value="1" />
-											<span class="title-icon">
-												<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-													<rect x="1" y="3" width="15" height="13"></rect>
-													<polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-													<circle cx="5.5" cy="18.5" r="2.5"></circle>
-													<circle cx="18.5" cy="18.5" r="2.5"></circle>
-												</svg>
-											</span>
-											<?php esc_html_e( 'Ship to a different address?', 'woocommerce' ); ?>
-										</label>
-									</h3>
-								</div>
-
-								<div class="shipping-fields">
-									<?php do_action( 'woocommerce_checkout_shipping' ); ?>
+							<div class="checkout-section shipping-method-section">
+								<h3 class="section-title">
+									<span class="title-icon">
+										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<rect x="1" y="3" width="15" height="13"></rect>
+											<polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+											<circle cx="5.5" cy="18.5" r="2.5"></circle>
+											<circle cx="18.5" cy="18.5" r="2.5"></circle>
+										</svg>
+									</span>
+									<?php esc_html_e("Shipping method", "macedon-ranges"); ?>
+								</h3>
+								
+								<div class="shipping-method-options">
+									<?php wc_cart_totals_shipping_html(); ?>
 								</div>
 							</div>
 
 						<?php endif; ?>
 
-						<!-- Additional Information -->
-						<?php if ( apply_filters( 'woocommerce_enable_order_notes_field', 'yes' === get_option( 'woocommerce_enable_order_comments', 'yes' ) ) ) : ?>
+						<!-- Shipping Address Section (Only if shipping is needed) -->
+						<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()): ?>
+							
+							<div class="checkout-section shipping-section">
+								<h3 class="section-title shipping-section-title">
+									<div class="title-with-icon">
+										<span class="title-icon">
+											<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+												<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+												<circle cx="12" cy="7" r="4"></circle>
+											</svg>
+										</span>
+										<label class="ship-different-checkbox">
+											<input id="ship-to-different-address-checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox custom-checkbox" <?php checked(apply_filters("woocommerce_ship_to_different_address_checked", "shipping" === get_option("woocommerce_ship_to_destination") ? 1 : 0), 1); ?> type="checkbox" name="ship_to_different_address" value="1" />
+											<span class="custom-checkbox-box">
+												<svg class="checkmark" width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+												</svg>
+											</span>
+											<span class="checkbox-label-text"><?php esc_html_e("Ship to a different address?", "woocommerce"); ?></span>
+										</label>
+									</div>
+								</h3>
+
+								<div class="shipping-fields">
+									<?php do_action("woocommerce_checkout_shipping"); ?>
+								</div>
+							</div>
+
+						<?php endif; ?>
+
+						<!-- Additional Information (Order Notes Only) -->
+						<?php if (apply_filters("woocommerce_enable_order_notes_field", "yes" === get_option("woocommerce_enable_order_comments", "yes"))): ?>
 							
 							<div class="checkout-section additional-fields-section">
 								<h3 class="section-title">
@@ -95,21 +166,19 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 											<line x1="9" y1="15" x2="15" y2="15"></line>
 										</svg>
 									</span>
-									<?php esc_html_e( 'Additional information', 'woocommerce' ); ?>
+									<?php esc_html_e("Additional information", "woocommerce"); ?>
 								</h3>
 								
 								<div class="additional-fields">
-									<?php do_action( 'woocommerce_before_order_notes', $checkout ); ?>
+									<?php do_action("woocommerce_before_order_notes", $checkout); ?>
 									
-									<?php if ( apply_filters( 'woocommerce_enable_order_notes_field', 'yes' === get_option( 'woocommerce_enable_order_comments', 'yes' ) ) ) : ?>
-										<div class="woocommerce-additional-fields__field-wrapper">
-											<?php foreach ( $checkout->get_checkout_fields( 'order' ) as $key => $field ) : ?>
-												<?php woocommerce_form_field( $key, $field, $checkout->get_value( $key ) ); ?>
-											<?php endforeach; ?>
-										</div>
-									<?php endif; ?>
+									<div class="woocommerce-additional-fields__field-wrapper">
+										<?php foreach ($checkout->get_checkout_fields("order") as $key => $field): ?>
+											<?php woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
+										<?php endforeach; ?>
+									</div>
 
-									<?php do_action( 'woocommerce_after_order_notes', $checkout ); ?>
+									<?php do_action("woocommerce_after_order_notes", $checkout); ?>
 								</div>
 							</div>
 
@@ -117,7 +186,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 					</div>
 
-					<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
+					<?php do_action("woocommerce_checkout_after_customer_details"); ?>
 
 				<?php endif; ?>
 
@@ -127,24 +196,24 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			<div class="checkout-sidebar">
 				
 				<div class="order-review-wrapper">
+
 					<h3 id="order_review_heading" class="order-review-title">
 						<span class="title-icon">
-							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<circle cx="9" cy="21" r="1"></circle>
-								<circle cx="20" cy="21" r="1"></circle>
-								<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+								<circle cx="7.5" cy="17.5" r="0.833"></circle>
+								<circle cx="16.667" cy="17.5" r="0.833"></circle>
+								<path d="M0.833 0.833h3.334l2.233 11.158a1.667 1.667 0 0 0 1.667 1.342h8.1a1.667 1.667 0 0 0 1.666-1.342L19.167 5H5"></path>
 							</svg>
 						</span>
-						<?php esc_html_e( 'Your order', 'woocommerce' ); ?>
+						<?php esc_html_e('Your order', 'woocommerce'); ?>
 					</h3>
 
-					<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
+					<?php do_action('woocommerce_checkout_before_order_review'); ?>
 
 					<div id="order_review" class="woocommerce-checkout-review-order">
-						<?php do_action( 'woocommerce_checkout_order_review' ); ?>
+						<?php do_action('woocommerce_checkout_order_review'); ?>
 					</div>
 
-					<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
 				</div>
 
 			</div>
@@ -155,4 +224,4 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 </div>
 
-<?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>
+<?php do_action("woocommerce_after_checkout_form", $checkout); ?>

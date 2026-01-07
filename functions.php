@@ -8,6 +8,7 @@ if (!defined("ABSPATH")) {
 }
 
 // Theme Constants
+define('THEME_VERSION', '1.0.0');
 define("AAAPOS_VERSION", wp_get_theme()->get("Version"));
 define("AAAPOS_THEME_DIR", get_template_directory());
 define("AAAPOS_THEME_URI", get_template_directory_uri());

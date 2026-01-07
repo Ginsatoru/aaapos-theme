@@ -2,6 +2,7 @@
  * Shopping cart functionality
  * UPDATED: Extended notification timing without fade effects
  * UPDATED: Fix empty cart display when removing items one by one
+ * UPDATED: Coupon error messages show as notifications instead of inline
  */
 class CartManager {
   constructor() {
@@ -62,11 +63,76 @@ class CartManager {
   init() {
     this.bindEvents();
     this.bindWooCommerceEvents();
+    this.handleCouponErrors();
     
     // If on empty cart, prevent fragment updates
     if (this.isEmptyCart && this.isCartPage()) {
       this.preventFragmentUpdates();
     }
+  }
+
+  /**
+   * Handle coupon error messages - convert to notifications
+   */
+  handleCouponErrors() {
+    // Watch for WooCommerce error messages in the coupon area
+    if (typeof jQuery !== 'undefined') {
+      // Intercept coupon form submissions
+      jQuery(document).on('click', '.coupon button[name="apply_coupon"]', (e) => {
+        const couponInput = jQuery('input[name="coupon_code"]');
+        if (!couponInput.val().trim()) {
+          e.preventDefault();
+          this.showMessage('Please enter a coupon code.', 'error');
+          return false;
+        }
+      });
+
+      // Listen for WooCommerce notices after coupon application
+      jQuery(document.body).on('updated_wc_div', () => {
+        this.checkAndConvertCouponErrors();
+      });
+
+      // Also check on page load
+      setTimeout(() => {
+        this.checkAndConvertCouponErrors();
+      }, 100);
+    }
+  }
+
+  /**
+   * Check for coupon errors and convert them to notifications
+   */
+  checkAndConvertCouponErrors() {
+    // Find all WooCommerce error messages
+    const errorMessages = document.querySelectorAll('.woocommerce-error, .woocommerce-message, .woocommerce-info');
+    
+    errorMessages.forEach(message => {
+      // Check if it's a coupon-related message
+      const messageText = message.textContent.trim();
+      
+      if (messageText.toLowerCase().includes('coupon') || 
+          messageText.toLowerCase().includes('code') ||
+          message.querySelector('a[href*="cart"]')) {
+        
+        // Extract the actual message (remove any links)
+        const textOnly = messageText.replace(/×/g, '').trim();
+        
+        // Determine message type
+        let messageType = 'info';
+        if (message.classList.contains('woocommerce-error')) {
+          messageType = 'error';
+        } else if (message.classList.contains('woocommerce-message')) {
+          messageType = 'success';
+        }
+        
+        // Show as notification
+        this.showMessage(textOnly, messageType);
+        
+        // Remove the original message
+        message.style.display = 'none';
+        message.remove();
+      }
+    });
   }
 
   /**
@@ -615,20 +681,18 @@ class CartManager {
       message.classList.add("cart-message--visible");
     });
 
-    // Auto remove after 4 seconds (unless on empty cart page where it will be handled differently)
-    if (!this.isEmptyCart || !this.isCartPage()) {
-      const autoRemove = setTimeout(() => {
-        this.removeMessage(message);
-      }, 4000);
+    // Auto remove after 4 seconds
+    const autoRemove = setTimeout(() => {
+      this.removeMessage(message);
+    }, 4000);
 
-      // Close button
-      message
-        .querySelector(".cart-message__close")
-        .addEventListener("click", () => {
-          clearTimeout(autoRemove);
-          this.removeMessage(message);
-        });
-    }
+    // Close button
+    message
+      .querySelector(".cart-message__close")
+      .addEventListener("click", () => {
+        clearTimeout(autoRemove);
+        this.removeMessage(message);
+      });
   }
 
   removeMessage(message) {

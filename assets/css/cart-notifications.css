@@ -438,3 +438,57 @@
 .no-results {
   display: block !important;
 }
+
+/* ============================================
+   COUPON ERROR NOTICE - Custom JS Generated
+   Styles for "Please enter a coupon code"
+   ============================================ */
+
+.coupon-error-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  margin: 0 0 1rem 0;
+  background: #FEF2F2;
+  border-left: 4px solid #EF4444;
+  border-radius: 6px;
+  color: #991B1B;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Add warning icon before the text */
+.coupon-error-notice::before {
+  content: '⚠';
+  font-size: 1.125rem;
+  color: #EF4444;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .coupon-error-notice {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .coupon-error-notice::before {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .coupon-error-notice {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    gap: 0.5rem;
+  }
+
+  .coupon-error-notice::before {
+    font-size: 1rem;
+  }
+}

@@ -5,7 +5,7 @@
  * UPDATED: Added fallback background image support
  * FIXED: Removed shipping calculator from cart page
  *
- * ALL settings now respect WooCommerce Customizer options
+ * woocommerce.php
  */
 
 if (!defined("ABSPATH")) {
@@ -513,14 +513,10 @@ function handle_clear_cart()
 
 /**
  * Handle Coupon Removal and Application with Redirect
+ * FIXED: Only redirects to cart when on cart page, stays on checkout when on checkout
  */
 function mr_handle_coupon_removal()
 {
-    // Only run on cart page
-    if (!is_cart()) {
-        return;
-    }
-
     // Handle removal via form button
     if (isset($_POST["remove_coupon"]) && !empty($_POST["remove_coupon"])) {
         $coupon_code = sanitize_text_field($_POST["remove_coupon"]);
@@ -538,21 +534,18 @@ function mr_handle_coupon_removal()
                 __("Coupon removed successfully.", "aaapos"),
                 "success",
             );
-
-            // Redirect to prevent form resubmission warning
-            wp_safe_redirect(wc_get_cart_url());
-            exit();
+            if (is_cart()) {
+                wp_safe_redirect(wc_get_cart_url());
+                exit();
+            }
         }
     }
 
-    // Also handle removal via URL (backward compatibility)
-    if (isset($_GET["remove_coupon"])) {
+    // Also handle removal via URL (backward compatibility) - only on cart page
+    if (isset($_GET["remove_coupon"]) && is_cart()) {
         $coupon_code = sanitize_text_field($_GET["remove_coupon"]);
         WC()->cart->remove_coupon($coupon_code);
-        wc_add_notice(
-            __("Coupon removed successfully.", "aaapos"),
-            "success",
-        );
+        wc_add_notice(__("Coupon removed successfully.", "aaapos"), "success");
         wp_safe_redirect(wc_get_cart_url());
         exit();
     }
@@ -693,6 +686,35 @@ function aaapos_simplify_cart_shipping_display()
 add_action("wp_footer", "aaapos_simplify_cart_shipping_display");
 
 /**
+ * Remove duplicate "Ship to different address" section
+ * We're handling it manually in our checkout template
+ */
+remove_action('woocommerce_checkout_shipping', 'woocommerce_checkout_shipping', 10);
+
+/**
+ * Add custom shipping fields output without the duplicate checkbox
+ */
+add_action('woocommerce_checkout_shipping', function() {
+    $checkout = WC()->checkout();
+    
+    foreach ($checkout->get_checkout_fields('shipping') as $key => $field) {
+        woocommerce_form_field($key, $field, $checkout->get_value($key));
+    }
+}, 10);
+
+/**
+ * Remove order notes from shipping section to prevent duplicates
+ * Order notes will only show in "Additional information" section
+ */
+add_filter('woocommerce_enable_order_notes_field', function($enabled) {
+    // Only disable in shipping context
+    if (doing_action('woocommerce_checkout_shipping')) {
+        return false;
+    }
+    return $enabled;
+}, 10, 1);
+
+/**
  * Enqueue Quick View Assets (FIXED - Separate function)
  */
 function aaapos_enqueue_quick_view_assets()
@@ -756,6 +778,29 @@ function aaapos_enqueue_quick_view_assets()
     }
 }
 add_action("wp_enqueue_scripts", "aaapos_enqueue_quick_view_assets", 1000);
+
+/**
+ * AJAX Handler: Update checkout fragments when shipping method changes
+ * This ensures the order review updates when shipping is selected
+ */
+function aaapos_update_order_review_shipping() {
+    check_ajax_referer( 'update-order-review', 'security' );
+    
+    if ( isset( $_POST['shipping_method'] ) && is_array( $_POST['shipping_method'] ) ) {
+        foreach ( $_POST['shipping_method'] as $i => $value ) {
+            WC()->session->set( 'chosen_shipping_methods', array( $value ) );
+        }
+    }
+    
+    WC()->cart->calculate_shipping();
+    WC()->cart->calculate_totals();
+    
+    woocommerce_order_review();
+    
+    die();
+}
+add_action( 'wp_ajax_update_order_review', 'aaapos_update_order_review_shipping' );
+add_action( 'wp_ajax_nopriv_update_order_review', 'aaapos_update_order_review_shipping' );
 
 /**
  * Enqueue Search Results Assets
@@ -1499,7 +1544,7 @@ function aaapos_add_progress_to_cart()
     // This ensures proper layout even when transitioning from empty to non-empty
     if (is_cart()) {
         // Only skip if explicitly showing the empty cart template
-        if (WC()->cart->is_empty() && !isset($_GET['add-to-cart'])) {
+        if (WC()->cart->is_empty() && !isset($_GET["add-to-cart"])) {
             return;
         }
         aaapos_checkout_progress_steps();
@@ -1510,17 +1555,17 @@ add_action("woocommerce_before_cart", "aaapos_add_progress_to_cart", 5);
 /**
  * Add progress steps to checkout page
  */
-function aaapos_add_progress_to_checkout()
-{
-    if (is_checkout() && !is_order_received_page()) {
-        aaapos_checkout_progress_steps();
-    }
-}
-add_action(
-    "woocommerce_before_checkout_form",
-    "aaapos_add_progress_to_checkout",
-    5,
-);
+// function aaapos_add_progress_to_checkout()
+// {
+//     if (is_checkout() && !is_order_received_page()) {
+//         aaapos_checkout_progress_steps();
+//     }
+// }
+// add_action(
+//     "woocommerce_before_checkout_form",
+//     "aaapos_add_progress_to_checkout",
+//     5,
+// );
 
 /**
  * Add progress steps to order received page
@@ -1604,10 +1649,7 @@ function aaapos_cart_suggested_products()
 
     // Get customizer settings
     $show_rating = get_theme_mod("show_product_rating", true);
-    $sale_badge_text = get_theme_mod(
-        "sale_badge_text",
-        __("Sale", "aaapos"),
-    );
+    $sale_badge_text = get_theme_mod("sale_badge_text", __("Sale", "aaapos"));
     $show_quick_view = get_theme_mod("show_quick_view", true);
     ?>
     
@@ -1677,10 +1719,7 @@ function aaapos_cart_suggested_products()
                                 <div class="product-rating">
                                     <div class="rating-stars" aria-label="<?php echo esc_attr(
                                         sprintf(
-                                            __(
-                                                "Rated %s out of 5",
-                                                "aaapos",
-                                            ),
+                                            __("Rated %s out of 5", "aaapos"),
                                             number_format($average_rating, 2),
                                         ),
                                     ); ?>">
@@ -1734,10 +1773,7 @@ function aaapos_cart_suggested_products()
             class="quick-view-button" 
             data-product-id="<?php echo esc_attr($product->get_id()); ?>"
             aria-label="<?php echo esc_attr(
-                sprintf(
-                    __("Quick view %s", "aaapos"),
-                    $product->get_name(),
-                ),
+                sprintf(__("Quick view %s", "aaapos"), $product->get_name()),
             ); ?>"
             style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-bottom: 0.875rem; line-height: 1; background: transparent; border: none;"
             onmouseover="this.style.color='var(--brand-color, #0ea5e9)'; this.style.transform='translateY(-2px)';"
@@ -1769,10 +1805,7 @@ function aaapos_cart_suggested_products()
        data-product_id="<?php echo esc_attr($product->get_id()); ?>" 
        data-product_sku="<?php echo esc_attr($product->get_sku()); ?>" 
        aria-label="<?php echo esc_attr(
-           sprintf(
-               __('Add "%s" to your cart', "aaapos"),
-               $product->get_name(),
-           ),
+           sprintf(__('Add "%s" to your cart', "aaapos"), $product->get_name()),
        ); ?>" 
        rel="nofollow"
        style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
@@ -1800,106 +1833,143 @@ add_action("woocommerce_after_cart", "aaapos_cart_suggested_products", 20);
 /**
  * Setup WooCommerce template path
  */
-function aaapos_woocommerce_template_path() {
-    return 'woocommerce/';
+function aaapos_woocommerce_template_path()
+{
+    return "woocommerce/";
 }
-add_filter('woocommerce_template_path', 'aaapos_woocommerce_template_path');
+add_filter("woocommerce_template_path", "aaapos_woocommerce_template_path");
 
 /**
  * Display Recommended Products on Empty Cart Page
  * Shows 4 popular or recent products when cart is empty
  * UPDATED: Full width layout to match viewport edges
  */
-function aaapos_empty_cart_recommended_products() {
+function aaapos_empty_cart_recommended_products()
+{
     // Query for popular products (by sales) or recent products
-    $args = array(
-        'post_type'      => 'product',
-        'posts_per_page' => 4,
-        'post_status'    => 'publish',
-        'orderby'        => 'meta_value_num', // Order by sales
-        'meta_key'       => 'total_sales',
-        'order'          => 'DESC',
-    );
+    $args = [
+        "post_type" => "product",
+        "posts_per_page" => 4,
+        "post_status" => "publish",
+        "orderby" => "meta_value_num",
+        "meta_key" => "total_sales",
+        "order" => "DESC",
+    ];
 
-    $recommended_products = new WP_Query( $args );
+    $recommended_products = new WP_Query($args);
 
     // If no products with sales, get recent products
-    if ( ! $recommended_products->have_posts() ) {
-        $args = array(
-            'post_type'      => 'product',
-            'posts_per_page' => 4,
-            'post_status'    => 'publish',
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-        );
-        $recommended_products = new WP_Query( $args );
+    if (!$recommended_products->have_posts()) {
+        $args = [
+            "post_type" => "product",
+            "posts_per_page" => 4,
+            "post_status" => "publish",
+            "orderby" => "date",
+            "order" => "DESC",
+        ];
+        $recommended_products = new WP_Query($args);
     }
 
-    if ( ! $recommended_products->have_posts() ) {
+    if (!$recommended_products->have_posts()) {
         return;
     }
 
     // Get customizer settings
-    $show_rating = get_theme_mod( 'show_product_rating', true );
-    $sale_badge_text = get_theme_mod( 'sale_badge_text', __( 'Sale', 'macedon-ranges' ) );
-    $show_quick_view = get_theme_mod( 'show_quick_view', true );
+    $show_rating = get_theme_mod("show_product_rating", true);
+    $sale_badge_text = get_theme_mod(
+        "sale_badge_text",
+        __("Sale", "macedon-ranges"),
+    );
+    $show_quick_view = get_theme_mod("show_quick_view", true);
     ?>
     
     <div class="cart-empty-recommended">
         <div class="cart-empty-recommended-inner">
             <div class="cart-empty-recommended__header">
-                <span class="cart-empty-recommended__badge"><?php esc_html_e( 'START SHOPPING', 'macedon-ranges' ); ?></span>
-                <h2 class="cart-empty-recommended__title"><?php esc_html_e( 'Popular Products', 'macedon-ranges' ); ?></h2>
-                <p class="cart-empty-recommended__subtitle"><?php esc_html_e( 'Check out our most popular items to get started', 'macedon-ranges' ); ?></p>
+                <span class="cart-empty-recommended__badge"><?php esc_html_e(
+                    "START SHOPPING",
+                    "macedon-ranges",
+                ); ?></span>
+                <h2 class="cart-empty-recommended__title"><?php esc_html_e(
+                    "Popular Products",
+                    "macedon-ranges",
+                ); ?></h2>
+                <p class="cart-empty-recommended__subtitle"><?php esc_html_e(
+                    "Check out our most popular items to get started",
+                    "macedon-ranges",
+                ); ?></p>
             </div>
             
             <ul class="products columns-4">
-                <?php while ( $recommended_products->have_posts() ) : $recommended_products->the_post(); 
+                <?php while ($recommended_products->have_posts()):
+
+                    $recommended_products->the_post();
                     global $product;
-                    
+
                     // Get rating data
                     $average_rating = $product->get_average_rating();
                     $rating_count = $product->get_rating_count();
-                ?>
+                    ?>
                 
-                <li <?php wc_product_class( '', $product ); ?>>
+                <li <?php wc_product_class("", $product); ?>>
                     
                     <!-- Product Image Link -->
-                    <a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="woocommerce-LoopProduct-link">
-                        <?php echo $product->get_image( 'woocommerce_thumbnail' ); ?>
+                    <a href="<?php echo esc_url(
+                        $product->get_permalink(),
+                    ); ?>" class="woocommerce-LoopProduct-link">
+                        <?php echo $product->get_image(
+                            "woocommerce_thumbnail",
+                        ); ?>
                         
-                        <?php if ( $product->is_on_sale() ) : ?>
-                            <span class="onsale"><?php echo esc_html( $sale_badge_text ); ?></span>
+                        <?php if ($product->is_on_sale()): ?>
+                            <span class="onsale"><?php echo esc_html(
+                                $sale_badge_text,
+                            ); ?></span>
                         <?php endif; ?>
                     </a>
                     
                     <!-- Product Info -->
                     <div class="product-info">
                         <h2 class="woocommerce-loop-product__title">
-                            <a href="<?php echo esc_url( $product->get_permalink() ); ?>">
-                                <?php echo esc_html( $product->get_name() ); ?>
+                            <a href="<?php echo esc_url(
+                                $product->get_permalink(),
+                            ); ?>">
+                                <?php echo esc_html($product->get_name()); ?>
                             </a>
                         </h2>
                         
                         <!-- Rating -->
-                        <?php if ( $show_rating && $average_rating > 0 ) : ?>
+                        <?php if ($show_rating && $average_rating > 0): ?>
                             <div class="product-rating">
                                 <div class="rating-stars">
                                     <?php
-                                    $gradient_id = 'half-fill-empty-cart-' . $product->get_id();
-                                    for ( $i = 1; $i <= 5; $i++ ) {
-                                        if ( $i <= floor( $average_rating ) ) {
+                                    $gradient_id =
+                                        "half-fill-empty-cart-" .
+                                        $product->get_id();
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= floor($average_rating)) {
                                             echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                        } elseif ( $i == ceil( $average_rating ) && ( $average_rating - floor( $average_rating ) ) >= 0.5 ) {
-                                            echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="' . esc_attr( $gradient_id ) . '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' . esc_attr( $gradient_id ) . ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                                        } elseif (
+                                            $i == ceil($average_rating) &&
+                                            $average_rating -
+                                                floor($average_rating) >=
+                                                0.5
+                                        ) {
+                                            echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="' .
+                                                esc_attr($gradient_id) .
+                                                '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
+                                                esc_attr($gradient_id) .
+                                                ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
                                         } else {
                                             echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
                                         }
                                     }
                                     ?>
                                 </div>
-                                <?php if ( $rating_count > 0 ) : ?>
-                                    <span class="rating-count">(<?php echo esc_html( $rating_count ); ?>)</span>
+                                <?php if ($rating_count > 0): ?>
+                                    <span class="rating-count">(<?php echo esc_html(
+                                        $rating_count,
+                                    ); ?>)</span>
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
@@ -1911,44 +1981,62 @@ function aaapos_empty_cart_recommended_products() {
                     </div>
                     
                     <!-- Quick View Button -->
-                    <?php if ( $show_quick_view ) : ?>
-                        <button type="button" class="quick-view-button" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-bottom: 0.875rem; line-height: 1; background: transparent; border: none;" onmouseover="this.style.color='var(--brand-color, #0ea5e9)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#374151'; this.style.transform='translateY(0)';">
+                    <?php if ($show_quick_view): ?>
+                        <button type="button" class="quick-view-button" data-product-id="<?php echo esc_attr(
+                            $product->get_id(),
+                        ); ?>" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-bottom: 0.875rem; line-height: 1; background: transparent; border: none;" onmouseover="this.style.color='var(--brand-color, #0ea5e9)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#374151'; this.style.transform='translateY(0)';">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
-                            <span><?php esc_html_e( 'Quick View', 'macedon-ranges' ); ?></span>
+                            <span><?php esc_html_e(
+                                "Quick View",
+                                "macedon-ranges",
+                            ); ?></span>
                         </button>
                     <?php endif; ?>
                     
                     <!-- Add to Cart Button -->
-                    <?php if ( $product->is_type( 'variable' ) ) : ?>
-                        <a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="button product_type_variable" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <?php if ($product->is_type("variable")): ?>
+                        <a href="<?php echo esc_url(
+                            $product->get_permalink(),
+                        ); ?>" class="button product_type_variable" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                             </svg>
-                            <span><?php esc_html_e( 'Select options', 'macedon-ranges' ); ?></span>
+                            <span><?php esc_html_e(
+                                "Select options",
+                                "macedon-ranges",
+                            ); ?></span>
                         </a>
-                    <?php else : ?>
-                        <a href="<?php echo esc_url( '?add-to-cart=' . $product->get_id() ); ?>" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" rel="nofollow" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <?php else: ?>
+                        <a href="<?php echo esc_url(
+                            "?add-to-cart=" . $product->get_id(),
+                        ); ?>" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="<?php echo esc_attr(
+    $product->get_id(),
+); ?>" data-product_sku="<?php echo esc_attr(
+    $product->get_sku(),
+); ?>" rel="nofollow" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                             </svg>
-                            <span><?php echo esc_html( $product->add_to_cart_text() ); ?></span>
+                            <span><?php echo esc_html(
+                                $product->add_to_cart_text(),
+                            ); ?></span>
                         </a>
                     <?php endif; ?>
                     
                 </li>
                 
-                <?php endwhile; ?>
+                <?php
+                endwhile; ?>
             </ul>
         </div>
     </div>
     
-    <?php
-    wp_reset_postdata();
+    <?php wp_reset_postdata();
 }

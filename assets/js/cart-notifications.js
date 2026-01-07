@@ -3,7 +3,7 @@
  * Tick → Expand → Collapse → Slide
  * FULL ROW LAYOUT (COMPACT + GROUPED)
  * NOW WITH COUPON SUPPORT
- * @version 2.3.0
+ * @version 2.4.0 - WITH CHECKOUT INTEGRATION
  */
 
 (function ($) {
@@ -70,6 +70,7 @@
 
   /**
    * Create notification for coupon applied
+   * EXPOSED GLOBALLY for checkout page use
    */
   function createCouponNotification(couponCode, discountAmount) {
     removeNotification();
@@ -196,6 +197,11 @@
       amount: discountAmount
     };
   }
+
+  // ==========================================================================
+  // EXPOSE GLOBALLY for checkout.js to use
+  // ==========================================================================
+  window.createCouponNotification = createCouponNotification;
 
   // ==========================================================================
   // EVENT LISTENERS

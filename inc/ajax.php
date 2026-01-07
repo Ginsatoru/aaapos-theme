@@ -507,3 +507,95 @@ function mr_render_cart_dropdown_items($max_items = 99)
     <?php
     endif;
 }
+
+/**
+ * COUPON AJAX HANDLERS FOR CHECKOUT
+ * These are not used anymore - WooCommerce native handlers are used instead
+ * Keeping them for backward compatibility
+ */
+
+/**
+ * AJAX Handler: Apply coupon
+ */
+function mr_ajax_apply_coupon()
+{
+    // Check if WooCommerce is active
+    if (!class_exists("WooCommerce")) {
+        wp_send_json_error([
+            "message" => __("WooCommerce is not active", "macedon-ranges"),
+        ]);
+    }
+
+    // Get coupon code
+    $coupon_code = isset($_POST["coupon_code"])
+        ? sanitize_text_field($_POST["coupon_code"])
+        : "";
+
+    if (empty($coupon_code)) {
+        wp_send_json_error([
+            "message" => __("Please enter a coupon code", "macedon-ranges"),
+        ]);
+    }
+
+    // Apply coupon
+    $result = WC()->cart->apply_coupon($coupon_code);
+
+    if ($result) {
+        WC()->cart->calculate_totals();
+
+        wp_send_json_success([
+            "message" => __("Coupon applied successfully", "macedon-ranges"),
+            "coupon_code" => $coupon_code,
+        ]);
+    } else {
+        wp_send_json_error([
+            "message" => __("Failed to apply coupon", "macedon-ranges"),
+        ]);
+    }
+}
+
+add_action("wp_ajax_apply_coupon_checkout", "mr_ajax_apply_coupon");
+add_action("wp_ajax_nopriv_apply_coupon_checkout", "mr_ajax_apply_coupon");
+
+/**
+ * AJAX Handler: Remove coupon
+ */
+function mr_ajax_remove_coupon()
+{
+    // Check if WooCommerce is active
+    if (!class_exists("WooCommerce")) {
+        wp_send_json_error([
+            "message" => __("WooCommerce is not active", "macedon-ranges"),
+        ]);
+    }
+
+    // Get coupon code
+    $coupon_code = isset($_POST["coupon_code"])
+        ? sanitize_text_field($_POST["coupon_code"])
+        : "";
+
+    if (empty($coupon_code)) {
+        wp_send_json_error([
+            "message" => __("Invalid coupon code", "macedon-ranges"),
+        ]);
+    }
+
+    // Remove coupon
+    $result = WC()->cart->remove_coupon($coupon_code);
+
+    if ($result) {
+        WC()->cart->calculate_totals();
+
+        wp_send_json_success([
+            "message" => __("Coupon removed successfully", "macedon-ranges"),
+            "coupon_code" => $coupon_code,
+        ]);
+    } else {
+        wp_send_json_error([
+            "message" => __("Failed to remove coupon", "macedon-ranges"),
+        ]);
+    }
+}
+
+add_action("wp_ajax_remove_coupon_checkout", "mr_ajax_remove_coupon");
+add_action("wp_ajax_nopriv_remove_coupon_checkout", "mr_ajax_remove_coupon");

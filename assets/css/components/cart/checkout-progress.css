@@ -6,7 +6,7 @@
 
 .woocommerce-checkout-progress {
     width: 100%;
-    margin: 0 auto -1.90rem auto; 
+    margin: 0 auto 2rem auto;
     padding: 2rem 0 0 0;
     text-align: center;
     position: relative;
@@ -59,13 +59,13 @@
    ========================================================================== */
 
 .step-number {
-    width: 32px; /* Reduced from 40px */
-    height: 32px; /* Reduced from 40px */
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem; /* Reduced from 1.125rem */
+    font-size: 1rem;
     font-weight: 600;
     background: #E5E7EB;
     color: #9CA3AF;
@@ -83,9 +83,9 @@
 
 /* Active step number */
 .checkout-step.active .step-number {
-    background: var(--color-text-dark);
+    background: var(--color-text-dark, #1F2937);
     color: #FFFFFF;
-    border-color: var(--color-text-dark);
+    border-color: var(--color-text-dark, #1F2937);
 }
 
 /* ==========================================================================
@@ -107,7 +107,7 @@
 
 /* Active step label */
 .checkout-step.active .step-label {
-    color: var(--color-text-dark);
+    color: var(--color-text-dark, #1F2937);
     font-weight: 500;
 }
 
@@ -129,8 +129,8 @@
 
 body.woocommerce-cart .woocommerce-checkout-progress {
     margin-top: 0;
+    margin-bottom: -1.90rem;
     text-align: center;
-    /* Span full width if inside grid */
     grid-column: 1 / -1;
     width: 100%;
 }
@@ -142,24 +142,31 @@ body.woocommerce-cart .checkout-steps {
 }
 
 /* CRITICAL: Do NOT center parent containers - this breaks the cart layout */
-/* Remove any text-align center from these: */
 body.woocommerce-cart .entry-content,
 body.woocommerce-cart .woocommerce {
-    text-align: left; /* Keep left-aligned for cart layout */
+    text-align: left;
 }
 
 /* ==========================================================================
-   CHECKOUT PAGE SPECIFIC
+   CHECKOUT PAGE SPECIFIC - CRITICAL FIX
    ========================================================================== */
 
 body.woocommerce-checkout .woocommerce-checkout-progress {
     margin-top: 0;
+    margin-bottom: 2rem;
     text-align: center;
+    width: 100%;
 }
 
 body.woocommerce-checkout .checkout-steps {
     display: inline-flex;
     justify-content: center;
+    margin: 0 auto;
+}
+
+/* Ensure checkout page doesn't have conflicting text alignment */
+body.woocommerce-checkout .entry-content {
+    text-align: left;
 }
 
 /* ==========================================================================
@@ -168,6 +175,7 @@ body.woocommerce-checkout .checkout-steps {
 
 body.woocommerce-order-received .woocommerce-checkout-progress {
     margin-top: 0;
+    margin-bottom: 2rem;
     text-align: center;
 }
 
@@ -183,7 +191,7 @@ body.woocommerce-order-received .checkout-steps {
 /* Tablets and smaller */
 @media (max-width: 768px) {
     .woocommerce-checkout-progress {
-        margin-bottom: 1.25rem; /* Reduced from 2rem */
+        margin-bottom: 1.5rem;
         padding-top: 1.5rem;
         text-align: center;
     }
@@ -195,9 +203,9 @@ body.woocommerce-order-received .checkout-steps {
     }
     
     .step-number {
-        width: 34px; /* Reduced from 36px */
-        height: 34px;
-        font-size: 0.9375rem; /* Reduced from 1rem */
+        width: 36px;
+        height: 36px;
+        font-size: 0.9375rem;
     }
     
     .step-label {
@@ -213,7 +221,7 @@ body.woocommerce-order-received .checkout-steps {
 /* Mobile devices */
 @media (max-width: 640px) {
     .woocommerce-checkout-progress {
-        margin-bottom: 1rem; /* Reduced from 1.5rem */
+        margin-bottom: 1.25rem;
         padding-top: 1rem;
         text-align: center;
     }
@@ -230,13 +238,13 @@ body.woocommerce-order-received .checkout-steps {
     }
     
     .step-number {
-        width: 30px; /* Reduced from 32px */
-        height: 30px;
-        font-size: 0.8125rem; /* Reduced from 0.875rem */
+        width: 32px;
+        height: 32px;
+        font-size: 0.875rem;
     }
     
     .step-label {
-        font-size: 0.8125rem;
+        font-size: 0.875rem;
     }
     
     .step-arrow {
@@ -250,7 +258,7 @@ body.woocommerce-order-received .checkout-steps {
 @media (max-width: 480px) {
     .woocommerce-checkout-progress {
         text-align: center;
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
     }
     
     .checkout-steps {
@@ -279,13 +287,6 @@ body.woocommerce-order-received .checkout-steps {
 /* ==========================================================================
    ACCESSIBILITY
    ========================================================================== */
-
-/* Focus styles for keyboard navigation */
-.checkout-step.clickable:focus {
-    outline: 2px solid var(--brand-color, #0ea5e9);
-    outline-offset: 4px;
-    border-radius: 4px;
-}
 
 /* Screen reader only text */
 .checkout-step .screen-reader-text {
