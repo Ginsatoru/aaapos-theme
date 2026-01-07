@@ -83,6 +83,10 @@ function mr_header_customizer($wp_customize)
         "priority" => 50,
     ]);
 
+    // ===================================
+    // HEADER ELEMENTS VISIBILITY
+    // ===================================
+
     $wp_customize->add_setting("show_search_bar", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
@@ -95,6 +99,62 @@ function mr_header_customizer($wp_customize)
         "section" => "mr_header",
         "type" => "checkbox",
         "priority" => 55,
+    ]);
+
+    // NEW: Show/Hide Account Icon
+    $wp_customize->add_setting("show_account_icon", [
+        "default" => true,
+        "sanitize_callback" => "wp_validate_boolean",
+        "transport" => "refresh", // Use refresh to regenerate HTML
+    ]);
+
+    $wp_customize->add_control("show_account_icon", [
+        "label" => __("Show Account/Profile Icon", "macedon-ranges"),
+        "description" => __("Display account login/profile link in header", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "checkbox",
+        "priority" => 56,
+    ]);
+
+    // NEW: Show/Hide Cart Icon
+    $wp_customize->add_setting("show_cart_icon", [
+        "default" => true,
+        "sanitize_callback" => "wp_validate_boolean",
+        "transport" => "refresh", // Use refresh to regenerate HTML
+    ]);
+
+    $wp_customize->add_control("show_cart_icon", [
+        "label" => __("Show Shopping Cart Icon", "macedon-ranges"),
+        "description" => __("Display shopping cart in header (WooCommerce required)", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "checkbox",
+        "priority" => 57,
+    ]);
+
+    // ===================================
+    // CART ICON STYLE (only if cart is shown)
+    // ===================================
+
+    $wp_customize->add_setting("cart_icon_style", [
+        "default" => "icon-count",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("cart_icon_style", [
+        "label" => __("Cart Icon Style", "macedon-ranges"),
+        "description" => __("Choose how to display the cart icon", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "select",
+        "choices" => [
+            "icon-only" => __("Icon Only", "macedon-ranges"),
+            "icon-count" => __("Icon + Item Count", "macedon-ranges"),
+            "icon-total" => __("Icon + Cart Total", "macedon-ranges"),
+        ],
+        "priority" => 58,
+        "active_callback" => function() {
+            return get_theme_mod("show_cart_icon", true);
+        },
     ]);
 }
 add_action("customize_register", "mr_header_customizer");

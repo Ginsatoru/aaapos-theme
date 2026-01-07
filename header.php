@@ -79,7 +79,10 @@
                     </div>
                     <?php endif; ?>
                     
-                    <?php if (class_exists("WooCommerce")): ?>
+                    <?php 
+                    // Only show mobile account section if account icon is enabled
+                    if (class_exists("WooCommerce") && get_theme_mod("show_account_icon", true)): 
+                    ?>
                         <div class="mobile-account-section">
                             <?php if (is_user_logged_in()):
                                 $current_user = wp_get_current_user();
@@ -203,7 +206,10 @@
                     </div>
                     <?php endif; ?>
 
-                    <?php if (class_exists("WooCommerce")): ?>
+                    <?php 
+                    // Only show account section if both WooCommerce exists AND setting is enabled
+                    if (class_exists("WooCommerce") && get_theme_mod("show_account_icon", true)): 
+                    ?>
                         
                         <?php if (is_user_logged_in()): ?>
                             <!-- LOGGED IN: Show Account with Dropdown -->
@@ -292,6 +298,12 @@
                             </div>
                         <?php endif; ?>
 
+                    <?php endif; ?>
+
+                    <?php 
+                    // Only show cart if both WooCommerce exists AND setting is enabled
+                    if (class_exists("WooCommerce") && get_theme_mod("show_cart_icon", true)): 
+                    ?>
                         <!-- Shopping Cart with Dropdown -->
                         <div class="header-cart-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="400">
                             <?php
