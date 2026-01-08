@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero section customizer settings
+ * Hero section customizer settings with single WebM video support
  */
 function mr_hero_customizer($wp_customize) {
     // Hero Section
@@ -23,6 +23,115 @@ function mr_hero_customizer($wp_customize) {
         'priority' => 10,
     ));
 
+    // === HERO MEDIA TYPE (Image Slideshow OR Single Video) ===
+    $wp_customize->add_setting('hero_media_type', array(
+        'default' => 'image',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'refresh',
+    ));
+
+    $wp_customize->add_control('hero_media_type', array(
+        'label' => __('Hero Background Type', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'type' => 'select',
+        'choices' => array(
+            'image' => __('Image Slideshow', 'macedon-ranges'),
+            'video' => __('Single Video Background', 'macedon-ranges'),
+        ),
+        'priority' => 15,
+    ));
+
+    // === VIDEO SETTINGS (Only shown when video type is selected) ===
+    // Hero Video (WebM only)
+    $wp_customize->add_setting('hero_video_webm', array(
+        'default' => '',
+        'sanitize_callback' => 'absint',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'hero_video_webm', array(
+        'label' => __('Hero Background Video (WebM)', 'macedon-ranges'),
+        'description' => __('Upload WebM video file. This will replace the image slideshow. Recommended: VP8/VP9 codec, max 15MB.', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'mime_type' => 'video/webm',
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'video';
+        },
+        'priority' => 20,
+    )));
+
+    // Video Fallback Image
+    $wp_customize->add_setting('hero_video_fallback', array(
+        'default' => '',
+        'sanitize_callback' => 'absint',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'hero_video_fallback', array(
+        'label' => __('Video Fallback Image', 'macedon-ranges'),
+        'description' => __('Image shown while video loads or if video cannot play. Also used on mobile devices.', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'mime_type' => 'image',
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'video';
+        },
+        'priority' => 25,
+    )));
+
+    // Video Loop
+    $wp_customize->add_setting('hero_video_loop', array(
+        'default' => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('hero_video_loop', array(
+        'label' => __('Loop Video', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'type' => 'checkbox',
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'video';
+        },
+        'priority' => 30,
+    ));
+
+    // Video Mute
+    $wp_customize->add_setting('hero_video_mute', array(
+        'default' => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('hero_video_mute', array(
+        'label' => __('Mute Video', 'macedon-ranges'),
+        'description' => __('Video is muted by default for autoplay compatibility.', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'type' => 'checkbox',
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'video';
+        },
+        'priority' => 35,
+    ));
+
+    // Video Mobile Fallback
+    $wp_customize->add_setting('hero_video_mobile_fallback', array(
+        'default' => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('hero_video_mobile_fallback', array(
+        'label' => __('Use Image Fallback on Mobile', 'macedon-ranges'),
+        'description' => __('On mobile devices, show image instead of video for better performance.', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'type' => 'checkbox',
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'video';
+        },
+        'priority' => 40,
+    ));
+
+    // === IMAGE SLIDESHOW SETTINGS (Only shown when image type is selected) ===
     // Enable Slideshow
     $wp_customize->add_setting('hero_enable_slideshow', array(
         'default' => true,
@@ -31,11 +140,14 @@ function mr_hero_customizer($wp_customize) {
     ));
 
     $wp_customize->add_control('hero_enable_slideshow', array(
-        'label' => __('Enable Slideshow', 'macedon-ranges'),
+        'label' => __('Enable Image Slideshow', 'macedon-ranges'),
         'description' => __('When disabled, only the first slide image will be displayed as a static background.', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'checkbox',
-        'priority' => 15,
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'image';
+        },
+        'priority' => 45,
     ));
 
     // Hero Slide 1 Image
@@ -50,7 +162,10 @@ function mr_hero_customizer($wp_customize) {
         'description' => __('This image is used as the static background when slideshow is disabled.', 'macedon-ranges'),
         'section' => 'mr_hero',
         'mime_type' => 'image',
-        'priority' => 20,
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'image';
+        },
+        'priority' => 50,
     )));
 
     // Hero Slide 2 Image
@@ -64,7 +179,10 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Slide 2 Image', 'macedon-ranges'),
         'section' => 'mr_hero',
         'mime_type' => 'image',
-        'priority' => 30,
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'image';
+        },
+        'priority' => 60,
     )));
 
     // Hero Slide 3 Image
@@ -78,7 +196,10 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Slide 3 Image', 'macedon-ranges'),
         'section' => 'mr_hero',
         'mime_type' => 'image',
-        'priority' => 40,
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'image';
+        },
+        'priority' => 70,
     )));
 
     // Hero Slide 4 Image
@@ -92,9 +213,36 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Slide 4 Image', 'macedon-ranges'),
         'section' => 'mr_hero',
         'mime_type' => 'image',
-        'priority' => 50,
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'image';
+        },
+        'priority' => 80,
     )));
 
+    // Slideshow Speed
+    $wp_customize->add_setting('hero_slideshow_speed', array(
+        'default' => 5000,
+        'sanitize_callback' => 'absint',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('hero_slideshow_speed', array(
+        'label' => __('Slideshow Speed (ms)', 'macedon-ranges'),
+        'description' => __('Time between slide transitions in milliseconds.', 'macedon-ranges'),
+        'section' => 'mr_hero',
+        'type' => 'number',
+        'input_attrs' => array(
+            'min' => 2000,
+            'max' => 10000,
+            'step' => 500,
+        ),
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'image';
+        },
+        'priority' => 90,
+    ));
+
+    // === HERO CONTENT SETTINGS (Always shown) ===
     // Badge Text
     $wp_customize->add_setting('hero_badge_text', array(
         'default' => '🐾 Quality Pet & Animal Supplies',
@@ -106,7 +254,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Badge Text', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'text',
-        'priority' => 60,
+        'priority' => 100,
     ));
 
     // Hero Title
@@ -120,7 +268,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Hero Title', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'text',
-        'priority' => 70,
+        'priority' => 110,
     ));
 
     // Hero Title Highlight
@@ -134,7 +282,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Hero Title Highlight', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'text',
-        'priority' => 80,
+        'priority' => 120,
     ));
 
     // Hero Subtitle
@@ -148,7 +296,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Hero Subtitle', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'textarea',
-        'priority' => 90,
+        'priority' => 130,
     ));
 
     // Primary Button Text
@@ -162,7 +310,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Primary Button Text', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'text',
-        'priority' => 100,
+        'priority' => 140,
     ));
 
     // Primary Button Link
@@ -176,7 +324,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Primary Button Link', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'url',
-        'priority' => 110,
+        'priority' => 150,
     ));
 
     // Secondary Button Text
@@ -190,7 +338,7 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Secondary Button Text', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'text',
-        'priority' => 120,
+        'priority' => 160,
     ));
 
     // Secondary Button Link
@@ -204,26 +352,23 @@ function mr_hero_customizer($wp_customize) {
         'label' => __('Secondary Button Link', 'macedon-ranges'),
         'section' => 'mr_hero',
         'type' => 'url',
-        'priority' => 130,
+        'priority' => 170,
     ));
 
-    // Slideshow Speed
-    $wp_customize->add_setting('hero_slideshow_speed', array(
-        'default' => 5000,
-        'sanitize_callback' => 'absint',
-        'transport' => 'postMessage',
+    // Video Format Note
+    $wp_customize->add_setting('hero_video_note', array(
+        'default' => '',
+        'sanitize_callback' => 'wp_kses_post',
     ));
 
-    $wp_customize->add_control('hero_slideshow_speed', array(
-        'label' => __('Slideshow Speed (ms)', 'macedon-ranges'),
-        'description' => __('Time between slide transitions in milliseconds. Only applies when slideshow is enabled.', 'macedon-ranges'),
+    $wp_customize->add_control('hero_video_note', array(
+        'label' => __('Video Format Information', 'macedon-ranges'),
+        'description' => __('<strong>WebM Format Required:</strong><br>• Use .webm extension only<br>• Better compression than MP4<br>• Max recommended size: 15MB<br>• Modern browser compatibility', 'macedon-ranges'),
         'section' => 'mr_hero',
-        'type' => 'number',
-        'input_attrs' => array(
-            'min' => 2000,
-            'max' => 10000,
-            'step' => 500,
-        ),
+        'type' => 'hidden',
+        'active_callback' => function() {
+            return get_theme_mod('hero_media_type', 'image') === 'video';
+        },
         'priority' => 200,
     ));
 }

@@ -241,6 +241,31 @@ function mr_enqueue_styles()
 add_action("wp_enqueue_scripts", "mr_enqueue_styles", 10);
 
 /**
+ * Enqueue hero video script for single WebM video
+ */
+function mr_enqueue_hero_video_script()
+{
+    // Check if hero is shown and in video mode
+    if (
+        get_theme_mod("show_hero", true) &&
+        get_theme_mod("hero_media_type", "image") === "video"
+    ) {
+        $video_id = get_theme_mod("hero_video_webm", "");
+
+        if ($video_id) {
+            wp_enqueue_script(
+                "mr-hero-video",
+                get_template_directory_uri() . "/assets/js/hero-video.js",
+                ["jquery"],
+                "2.0.0",
+                true,
+            );
+        }
+    }
+}
+add_action("wp_enqueue_scripts", "mr_enqueue_hero_video_script", 20);
+
+/**
  * Enqueue theme scripts
  */
 function mr_enqueue_scripts()

@@ -4,6 +4,7 @@
  * 
  * Outputs CSS variables from a single brand color.
  * Automatically calculates hover, dark, and light variants.
+ * customizer.php
  * 
  * @package aaapos-prime
  * @since 1.0.0
