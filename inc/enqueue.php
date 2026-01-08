@@ -243,27 +243,23 @@ add_action("wp_enqueue_scripts", "mr_enqueue_styles", 10);
 /**
  * Enqueue hero video script for single WebM video
  */
-function mr_enqueue_hero_video_script()
-{
+function mr_enqueue_hero_video_script() {
     // Check if hero is shown and in video mode
-    if (
-        get_theme_mod("show_hero", true) &&
-        get_theme_mod("hero_media_type", "image") === "video"
-    ) {
-        $video_id = get_theme_mod("hero_video_webm", "");
-
+    if (get_theme_mod('show_hero', true) && get_theme_mod('hero_media_type', 'image') === 'video') {
+        $video_id = get_theme_mod('hero_video_webm', '');
+        
         if ($video_id) {
             wp_enqueue_script(
-                "mr-hero-video",
-                get_template_directory_uri() . "/assets/js/hero-video.js",
-                ["jquery"],
-                "2.0.0",
-                true,
+                'mr-hero-video',
+                get_template_directory_uri() . '/assets/js/hero-video.js',
+                array('jquery'),
+                '2.0.0',
+                true
             );
         }
     }
 }
-add_action("wp_enqueue_scripts", "mr_enqueue_hero_video_script", 20);
+add_action('wp_enqueue_scripts', 'mr_enqueue_hero_video_script', 20);
 
 /**
  * Enqueue theme scripts
@@ -678,3 +674,21 @@ function mr_script_loader_tag($tag, $handle, $src)
     return $tag;
 }
 add_filter("script_loader_tag", "mr_script_loader_tag", 10, 3);
+
+/**
+ * Enqueue WooCommerce Product Collection Block Styles
+ */
+
+function aaapos_enqueue_woocommerce_blocks_styles() {
+    // Only load on pages that have WooCommerce blocks
+    if (is_singular() || is_front_page() || is_page()) {
+        wp_enqueue_style(
+            'aaapos-woocommerce-blocks',
+            get_template_directory_uri() . '/assets/css/woocommerce/woocommerce-blocks.css',
+            array(), // No dependencies
+            filemtime(get_template_directory() . '/assets/css/woocommerce/woocommerce-blocks.css'), // Cache busting
+            'all'
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'aaapos_enqueue_woocommerce_blocks_styles', 999); // High priority to override WooCommerce
