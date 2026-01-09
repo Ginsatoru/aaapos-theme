@@ -1,6 +1,6 @@
 <?php
 /**
- * Deals and offers section with Scroll Animations
+ * Special Deals Section - Redesigned with Full Width Background
  *
  * @package AAAPOS
  */
@@ -12,9 +12,21 @@ if (!is_front_page() || !get_theme_mod("show_deals", true)) {
 
 // Get customizer settings
 $title = get_theme_mod("deals_title", "Special Deals");
-$description = get_theme_mod("deals_description", "");
+$description = get_theme_mod("deals_description", "Limited offer!");
 $deal_end_date = get_theme_mod("deal_end_date", "");
 $selection_method = get_theme_mod("deal_selection_method", "manual");
+
+// Get background image URL - Customizer with fallback
+$custom_bg = get_theme_mod('deals_background_image', '');
+if (!empty($custom_bg)) {
+    $bg_image_url = esc_url($custom_bg);
+} else {
+    // Fallback to default image
+    $bg_image_url = get_template_directory_uri() . '/assets/images/deal.png';
+}
+
+// Get overlay opacity
+$overlay_opacity = get_theme_mod('deals_overlay_opacity', 0.6);
 
 // Initialize product variable
 $deal_product = null;
@@ -105,26 +117,24 @@ $has_valid_deal =
     $deal_product->is_in_stock();
 ?>
 
-<section class="deals-offers section bg-light">
-    <div class="container">
-        <!-- Section Header with Animation -->
-        <div class="section-header" 
-             data-animate="fade-up" 
-             data-animate-delay="100">
-            <h2 class="section-title"><?php echo esc_html($title); ?></h2>
-            <?php if (!empty($description)): ?>
-                <p class="section-description"><?php echo esc_html(
-                    $description,
-                ); ?></p>
-            <?php endif; ?>
-        </div>
-
+<section class="special-deals-section" style="background-image: url('<?php echo esc_url($bg_image_url); ?>') !important; --overlay-opacity: <?php echo esc_attr($overlay_opacity); ?>;">
+    <div class="special-deals-container">
+        
         <?php if ($has_valid_deal): ?>
-            <div class="deal-content">
-                <!-- Deal Image with Animation -->
-                <div class="deal-image" 
-                     data-animate="fade-right" 
-                     data-animate-delay="200">
+            
+            <!-- Section Header -->
+            <div class="special-deals-header">
+                <h2 class="special-deals-title"><?php echo esc_html($title); ?></h2>
+                <?php if (!empty($description)): ?>
+                    <p class="special-deals-subtitle"><?php echo esc_html($description); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <!-- Deal Card -->
+            <div class="special-deal-card">
+                
+                <!-- Product Image -->
+                <div class="deal-card-image">
                     <?php if ($deal_product->get_image_id()) {
                         echo $deal_product->get_image("large");
                     } else {
@@ -146,58 +156,61 @@ $has_valid_deal =
                                         100,
                                 );
                                 echo sprintf(
-                                    esc_html__("Save %s%%", "AAAPOS"),
+                                    esc_html__("SAVE %s%%", "AAAPOS"),
                                     $percentage,
                                 );
                             } else {
-                                esc_html_e("Sale!", "AAAPOS");
+                                esc_html_e("SALE!", "AAAPOS");
                             }
                             ?>
                         </span>
                     <?php endif; ?>
                 </div>
                 
-                <!-- Deal Details with Staggered Animation -->
-                <div class="deal-details">
-                    <h3 class="deal-title" 
-                        data-animate="fade-left" 
-                        data-animate-delay="300">
+                <!-- Product Details -->
+                <div class="deal-card-content">
+                    
+                    <h3 class="deal-product-title">
                         <?php echo esc_html($deal_product->get_name()); ?>
                     </h3>
                     
                     <?php if ($deal_product->get_rating_count() > 0): ?>
-                        <div class="deal-rating" 
-                             data-animate="fade-left" 
-                             data-animate-delay="350">
-                            <?php echo wc_get_rating_html(
-                                $deal_product->get_average_rating(),
-                            ); ?>
-                            <span class="rating-count">
-                                <?php printf(
-                                    esc_html(
-                                        _n(
-                                            "%s review",
-                                            "%s reviews",
-                                            $deal_product->get_rating_count(),
-                                            "AAAPOS",
-                                        ),
-                                    ),
-                                    number_format_i18n(
-                                        $deal_product->get_rating_count(),
-                                    ),
-                                ); ?>
+                        <div class="deal-rating">
+                            <?php 
+                            $rating = $deal_product->get_average_rating();
+                            $full_stars = floor($rating);
+                            $half_star = ($rating - $full_stars) >= 0.5 ? 1 : 0;
+                            $empty_stars = 5 - $full_stars - $half_star;
+                            ?>
+                            <div class="deal-stars">
+                                <?php for ($i = 0; $i < $full_stars; $i++): ?>
+                                    <svg class="star-full" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                <?php endfor; ?>
+                                <?php if ($half_star): ?>
+                                    <svg class="star-half" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77V2z"/>
+                                    </svg>
+                                <?php endif; ?>
+                                <?php for ($i = 0; $i < $empty_stars; $i++): ?>
+                                    <svg class="star-empty" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                <?php endfor; ?>
+                            </div>
+                            <span class="rating-text">
+                                <?php echo number_format($rating, 1); ?> (<?php echo $deal_product->get_rating_count(); ?>)
                             </span>
                         </div>
                     <?php endif; ?>
                     
-                    <div class="deal-price" 
-                         data-animate="fade-left" 
-                         data-animate-delay="400">
+                    <div class="deal-price">
                         <?php if ($deal_product->is_on_sale()): ?>
-                            <span class="sale-price"><?php echo wc_price(
+                            <span class="price-current"><?php echo wc_price(
                                 $deal_product->get_sale_price(),
                             ); ?></span>
-                            <span class="regular-price"><?php echo wc_price(
+                            <span class="price-original"><?php echo wc_price(
                                 $deal_product->get_regular_price(),
                             ); ?></span>
                             <?php
@@ -205,7 +218,7 @@ $has_valid_deal =
                                 $deal_product->get_regular_price() -
                                 $deal_product->get_sale_price();
                             if ($saved > 0): ?>
-                                <span class="you-save">
+                                <span class="price-saved">
                                     <?php printf(
                                         esc_html__(
                                             "You save: %s",
@@ -217,65 +230,29 @@ $has_valid_deal =
                             <?php endif;
                             ?>
                         <?php else: ?>
-                            <span class="current-price"><?php echo $deal_product->get_price_html(); ?></span>
+                            <span class="price-current"><?php echo $deal_product->get_price_html(); ?></span>
                         <?php endif; ?>
                     </div>
                     
-                    <?php if ($deal_product->get_short_description()): ?>
-                        <div class="deal-description" 
-                             data-animate="fade-left" 
-                             data-animate-delay="450">
-                            <?php echo wp_kses_post(
-                                wpautop($deal_product->get_short_description()),
-                            ); ?>
-                        </div>
-                    <?php endif; ?>
-
                     <?php
                     // Display stock status
                     $stock_status = $deal_product->get_stock_status();
                     $stock_quantity = $deal_product->get_stock_quantity();
                     ?>
-                    <div class="deal-stock" 
-                         data-animate="fade-left" 
-                         data-animate-delay="500">
+                    <div class="deal-stock">
                         <?php if ($stock_status === "instock"): ?>
-                            <?php if (
-                                $stock_quantity &&
-                                $stock_quantity <= 10
-                            ): ?>
-                                <span class="stock-low">
-                                    <?php printf(
-                                        esc_html__(
-                                            "Only %s left in stock!",
-                                            "AAAPOS",
-                                        ),
-                                        $stock_quantity,
-                                    ); ?>
-                                </span>
-                            <?php else: ?>
-                                <span class="stock-available">
-                                    <?php esc_html_e(
-                                        "In Stock",
-                                        "AAAPOS",
-                                    ); ?>
-                                </span>
-                            <?php endif; ?>
-                        <?php elseif ($stock_status === "onbackorder"): ?>
-                            <span class="stock-backorder">
-                                <?php esc_html_e(
-                                    "Available on backorder",
-                                    "AAAPOS",
-                                ); ?>
+                            <span class="stock-badge stock-in">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <?php esc_html_e("In Stock", "AAAPOS"); ?>
                             </span>
                         <?php endif; ?>
                     </div>
 
                     <?php if (!empty($deal_end_date)): ?>
-                        <div class="deal-countdown" 
-                             data-animate="zoom-in" 
-                             data-animate-delay="550">
-                            <h4><?php esc_html_e(
+                        <div class="deal-countdown">
+                            <h4 class="countdown-title"><?php esc_html_e(
                                 "Offer ends in:",
                                 "AAAPOS",
                             ); ?></h4>
@@ -285,28 +262,28 @@ $has_valid_deal =
                                 <div class="countdown-item">
                                     <span class="countdown-value days">00</span>
                                     <span class="countdown-label"><?php esc_html_e(
-                                        "Days",
+                                        "DAYS",
                                         "AAAPOS",
                                     ); ?></span>
                                 </div>
                                 <div class="countdown-item">
                                     <span class="countdown-value hours">00</span>
                                     <span class="countdown-label"><?php esc_html_e(
-                                        "Hours",
+                                        "HOURS",
                                         "AAAPOS",
                                     ); ?></span>
                                 </div>
                                 <div class="countdown-item">
                                     <span class="countdown-value minutes">00</span>
                                     <span class="countdown-label"><?php esc_html_e(
-                                        "Minutes",
+                                        "MINUTES",
                                         "AAAPOS",
                                     ); ?></span>
                                 </div>
                                 <div class="countdown-item">
                                     <span class="countdown-value seconds">00</span>
                                     <span class="countdown-label"><?php esc_html_e(
-                                        "Seconds",
+                                        "SECONDS",
                                         "AAAPOS",
                                     ); ?></span>
                                 </div>
@@ -314,9 +291,7 @@ $has_valid_deal =
                         </div>
                     <?php endif; ?>
 
-                    <div class="deal-actions" 
-                         data-animate="fade-up" 
-                         data-animate-delay="600">
+                    <div class="deal-actions">
                         <?php if (
                             $deal_product->is_purchasable() &&
                             $deal_product->is_in_stock()
@@ -324,43 +299,37 @@ $has_valid_deal =
                             <a href="<?php echo esc_url(
                                 $deal_product->add_to_cart_url(),
                             ); ?>" 
-                               class="btn btn--primary btn--lg add-to-cart-btn"
+                               class="deal-btn deal-btn-primary"
                                data-product-id="<?php echo esc_attr(
                                    $deal_product->get_id(),
-                               ); ?>"
-                               data-product-name="<?php echo esc_attr(
-                                   $deal_product->get_name(),
                                ); ?>">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                                 </svg>
-                                <?php esc_html_e(
-                                    "Add to Cart",
-                                    "AAAPOS",
-                                ); ?>
+                                <?php esc_html_e("Add to Cart", "AAAPOS"); ?>
                             </a>
                         <?php endif; ?>
                         
                         <a href="<?php echo esc_url(
                             $deal_product->get_permalink(),
-                        ); ?>" class="btn btn--outline">
+                        ); ?>" class="deal-btn deal-btn-secondary">
                             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
-                            <?php esc_html_e(
-                                "View Details",
-                                "AAAPOS",
-                            ); ?>
+                            <?php esc_html_e("View Details", "AAAPOS"); ?>
                         </a>
                     </div>
+                    
                 </div>
+                
             </div>
+            
         <?php else: ?>
-            <div class="no-deals" 
-                 data-animate="fade-up" 
-                 data-animate-delay="200">
-                <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto var(--space-4);">
+            
+            <!-- No Deals Available -->
+            <div class="no-deals">
+                <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <h3><?php esc_html_e(
@@ -373,13 +342,12 @@ $has_valid_deal =
                 ); ?></p>
                 <a href="<?php echo esc_url(
                     wc_get_page_permalink("shop"),
-                ); ?>" class="btn btn--primary" style="margin-top: var(--space-4);">
-                    <?php esc_html_e(
-                        "Browse All Products",
-                        "AAAPOS",
-                    ); ?>
+                ); ?>" class="deal-btn deal-btn-primary">
+                    <?php esc_html_e("Browse All Products", "AAAPOS"); ?>
                 </a>
             </div>
+            
         <?php endif; ?>
+        
     </div>
 </section>

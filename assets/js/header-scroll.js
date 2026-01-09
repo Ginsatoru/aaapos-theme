@@ -14,6 +14,9 @@
         const topbar = document.querySelector('.top-bar');
         const isAdminBar = body.classList.contains('admin-bar');
         
+        // CRITICAL: Check if topbar actually exists and is visible
+        const hasTopbar = topbar !== null;
+        
         if (!header) return;
         
         let lastScrollTop = 0;
@@ -30,8 +33,8 @@
                     header.classList.add('is-sticky');
                 }
                 
-                // Hide topbar on scroll (desktop only)
-                if (topbar && !isMobile) {
+                // Hide topbar on scroll (desktop only) - only if it exists
+                if (hasTopbar && topbar && !isMobile) {
                     topbar.style.transform = 'translateY(-100%)';
                 }
                 
@@ -63,8 +66,8 @@
                     header.classList.remove('is-sticky');
                 }
                 
-                // Show topbar when at top (desktop only)
-                if (topbar && !isMobile) {
+                // Show topbar when at top (desktop only) - only if it exists
+                if (hasTopbar && topbar && !isMobile) {
                     topbar.style.transform = 'translateY(0)';
                 }
                 
@@ -78,12 +81,18 @@
                     }
                 } else {
                     // DESKTOP
-                    if (isAdminBar) {
+                    if (isAdminBar && hasTopbar) {
                         // Desktop: admin bar (32px) + topbar (45px)
                         header.style.top = '77px';
-                    } else {
+                    } else if (isAdminBar && !hasTopbar) {
+                        // Desktop: only admin bar (32px)
+                        header.style.top = '32px';
+                    } else if (!isAdminBar && hasTopbar) {
                         // Desktop: only topbar (45px)
                         header.style.top = '45px';
+                    } else {
+                        // Desktop: no admin bar, no topbar
+                        header.style.top = '0';
                     }
                 }
             }

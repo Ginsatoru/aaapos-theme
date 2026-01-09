@@ -40,7 +40,7 @@
     height: 90px;
   }
   
-  /* Only add top spacing when topbar is active */
+  /* Only add top spacing when topbar is active AND body has the class */
   body.has-topbar .site-header {
     top: 45px;
   }

@@ -17,7 +17,16 @@
     <?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php 
+    $body_classes = [];
+    
+    // Add 'has-topbar' class only if topbar is enabled
+    if (get_theme_mod("show_top_bar", true)) {
+        $body_classes[] = 'has-topbar';
+    }
+    
+    body_class($body_classes); 
+?>>
 <?php wp_body_open(); ?>
 
 <div id="page" class="site">

@@ -71,146 +71,6 @@ function mr_homepage_sections_customizer($wp_customize)
         "priority" => 30,
     ]);
 
-    // Featured Products Colors
-    $wp_customize->add_setting("featured_section_bg_color", [
-        "default" => "#ffffff",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            "featured_section_bg_color",
-            [
-                "label" => __("Section Background Color", "macedon-ranges"),
-                "section" => "mr_homepage_sections",
-                "priority" => 31,
-            ],
-        ),
-    );
-
-    $wp_customize->add_setting("featured_title_color", [
-        "default" => "#1f2937",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control($wp_customize, "featured_title_color", [
-            "label" => __("Title Color", "macedon-ranges"),
-            "section" => "mr_homepage_sections",
-            "priority" => 32,
-        ]),
-    );
-
-    $wp_customize->add_setting("featured_card_bg_color", [
-        "default" => "#ffffff",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            "featured_card_bg_color",
-            [
-                "label" => __("Product Card Background", "macedon-ranges"),
-                "section" => "mr_homepage_sections",
-                "priority" => 33,
-            ],
-        ),
-    );
-
-    $wp_customize->add_setting("featured_card_hover_color", [
-        "default" => "#0ea5e9",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            "featured_card_hover_color",
-            [
-                "label" => __("Card Hover Accent Color", "macedon-ranges"),
-                "section" => "mr_homepage_sections",
-                "priority" => 34,
-            ],
-        ),
-    );
-
-    $wp_customize->add_setting("featured_price_color", [
-        "default" => "#0ea5e9",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control($wp_customize, "featured_price_color", [
-            "label" => __("Price Color", "macedon-ranges"),
-            "section" => "mr_homepage_sections",
-            "priority" => 35,
-        ]),
-    );
-
-    $wp_customize->add_setting("featured_button_bg_color", [
-        "default" => "#0ea5e9",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            "featured_button_bg_color",
-            [
-                "label" => __(
-                    "Add to Cart Button Background",
-                    "macedon-ranges",
-                ),
-                "section" => "mr_homepage_sections",
-                "priority" => 36,
-            ],
-        ),
-    );
-
-    $wp_customize->add_setting("featured_button_text_color", [
-        "default" => "#ffffff",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            "featured_button_text_color",
-            [
-                "label" => __("Button Text Color", "macedon-ranges"),
-                "section" => "mr_homepage_sections",
-                "priority" => 37,
-            ],
-        ),
-    );
-
-    $wp_customize->add_setting("featured_sale_badge_color", [
-        "default" => "#ef4444",
-        "sanitize_callback" => "sanitize_hex_color",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            "featured_sale_badge_color",
-            [
-                "label" => __("Sale Badge Color", "macedon-ranges"),
-                "section" => "mr_homepage_sections",
-                "priority" => 38,
-            ],
-        ),
-    );
-
     // ===================================
     // PRODUCT CATEGORIES BY SLUG
     // ===================================
@@ -255,7 +115,7 @@ function mr_homepage_sections_customizer($wp_customize)
         "priority" => 55,
     ]);
 
-    // NEW: Category Slugs Input
+    // Category Slugs Input
     $wp_customize->add_setting("categories_slugs", [
         "default" => "",
         "sanitize_callback" => "sanitize_text_field",
@@ -296,7 +156,7 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     // ===================================
-    // DEALS SECTION
+    // SPECIAL DEALS SECTION - ENHANCED
     // ===================================
 
     $wp_customize->add_setting("show_deals", [
@@ -306,7 +166,7 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     $wp_customize->add_control("show_deals", [
-        "label" => __("Show Deals Section", "macedon-ranges"),
+        "label" => __("Show Special Deals Section", "macedon-ranges"),
         "section" => "mr_homepage_sections",
         "type" => "checkbox",
         "priority" => 60,
@@ -319,40 +179,115 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     $wp_customize->add_control("deals_title", [
-        "label" => __("Deals Title", "macedon-ranges"),
+        "label" => __("Deals Section Title", "macedon-ranges"),
         "section" => "mr_homepage_sections",
         "type" => "text",
-        "priority" => 70,
+        "priority" => 65,
     ]);
 
-    // NEW: Deals Description
     $wp_customize->add_setting("deals_description", [
-        "default" => "",
+        "default" => "Limited offer!",
         "sanitize_callback" => "sanitize_textarea_field",
         "transport" => "postMessage",
     ]);
 
     $wp_customize->add_control("deals_description", [
-        "label" => __("Deals Description", "macedon-ranges"),
+        "label" => __("Deals Section Description", "macedon-ranges"),
         "description" => __(
-            "Optional description text below the section title",
+            "Subtitle or tagline for the deals section",
             "macedon-ranges",
         ),
         "section" => "mr_homepage_sections",
         "type" => "textarea",
+        "priority" => 70,
+    ]);
+
+    // Background Image
+    $wp_customize->add_setting("deals_background_image", [
+        "default" => "",
+        "sanitize_callback" => "esc_url_raw",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control(
+        new WP_Customize_Image_Control(
+            $wp_customize,
+            "deals_background_image",
+            [
+                "label" => __("Background Image", "macedon-ranges"),
+                "description" => __(
+                    "Upload a background image for the deals section. Recommended size: 1920x800px. Leave empty to use default (deal.png).",
+                    "macedon-ranges",
+                ),
+                "section" => "mr_homepage_sections",
+                "settings" => "deals_background_image",
+                "priority" => 72,
+            ],
+        ),
+    );
+
+    // Background Overlay Opacity
+    $wp_customize->add_setting("deals_overlay_opacity", [
+        "default" => 0.6,
+        "sanitize_callback" => "aaapos_sanitize_float",
+        "transport" => "postMessage",
+    ]);
+
+    $wp_customize->add_control("deals_overlay_opacity", [
+        "label" => __("Background Overlay Opacity", "macedon-ranges"),
+        "description" => __(
+            "Adjust the darkness of the overlay (0 = transparent, 1 = fully dark)",
+            "macedon-ranges",
+        ),
+        "section" => "mr_homepage_sections",
+        "type" => "range",
+        "input_attrs" => [
+            "min" => 0,
+            "max" => 1,
+            "step" => 0.1,
+        ],
+        "priority" => 73,
+    ]);
+
+    // Deal Selection Method
+    $wp_customize->add_setting("deal_selection_method", [
+        "default" => "manual",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("deal_selection_method", [
+        "label" => __("Deal Selection Method", "macedon-ranges"),
+        "description" => __(
+            "Choose how to select the product to display",
+            "macedon-ranges",
+        ),
+        "section" => "mr_homepage_sections",
+        "type" => "select",
+        "choices" => [
+            "manual" => __("Manual - Select Product ID", "macedon-ranges"),
+            "latest_sale" => __(
+                "Automatic - Latest Sale Product",
+                "macedon-ranges",
+            ),
+            "featured_sale" => __(
+                "Automatic - Featured Sale Product",
+                "macedon-ranges",
+            ),
+        ],
         "priority" => 75,
     ]);
 
     $wp_customize->add_setting("deal_product_id", [
-        "default" => "",
+        "default" => 0,
         "sanitize_callback" => "absint",
-        "transport" => "postMessage",
+        "transport" => "refresh",
     ]);
 
     $wp_customize->add_control("deal_product_id", [
         "label" => __("Deal Product ID", "macedon-ranges"),
         "description" => __(
-            "Enter the product ID for the featured deal.",
+            "Enter the product ID to display (only used when Manual is selected)",
             "macedon-ranges",
         ),
         "section" => "mr_homepage_sections",
@@ -367,11 +302,14 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     $wp_customize->add_control("deal_end_date", [
-        "label" => __("Deal End Date", "macedon-ranges"),
-        "description" => __("Format: YYYY-MM-DD HH:MM:SS", "macedon-ranges"),
+        "label" => __("Deal End Date & Time", "macedon-ranges"),
+        "description" => __(
+            "Format: YYYY-MM-DD HH:MM:SS (e.g., 2026-12-31 23:59:59). Leave empty to hide countdown.",
+            "macedon-ranges",
+        ),
         "section" => "mr_homepage_sections",
         "type" => "text",
-        "priority" => 90,
+        "priority" => 85,
     ]);
 
     // ===================================
@@ -402,6 +340,30 @@ function mr_homepage_sections_customizer($wp_customize)
         "section" => "mr_homepage_sections",
         "type" => "text",
         "priority" => 110,
+    ]);
+
+    $wp_customize->add_setting("testimonials_section_title", [
+        "default" => "What Our Customers Say",
+        "sanitize_callback" => "sanitize_text_field",
+    ]);
+
+    $wp_customize->add_control("testimonials_section_title", [
+        "label" => __("Testimonials Section Title", "macedon-ranges"),
+        "section" => "mr_homepage_sections",
+        "type" => "text",
+        "priority" => 111,
+    ]);
+
+    $wp_customize->add_setting("testimonials_section_subtitle", [
+        "default" => "Don't just take our word for it",
+        "sanitize_callback" => "sanitize_text_field",
+    ]);
+
+    $wp_customize->add_control("testimonials_section_subtitle", [
+        "label" => __("Testimonials Section Subtitle", "macedon-ranges"),
+        "section" => "mr_homepage_sections",
+        "type" => "text",
+        "priority" => 112,
     ]);
 
     // ===================================
@@ -508,28 +470,15 @@ function mr_homepage_sections_customizer($wp_customize)
         "type" => "checkbox",
         "priority" => 180,
     ]);
-
-    // Testimonials Section
-    $wp_customize->add_setting("testimonials_section_title", [
-        "default" => "What Our Customers Say",
-        "sanitize_callback" => "sanitize_text_field",
-    ]);
-
-    $wp_customize->add_control("testimonials_section_title", [
-        "label" => __("Testimonials Section Title", "your-theme"),
-        "section" => "homepage_sections",
-        "type" => "text",
-    ]);
-
-    $wp_customize->add_setting("testimonials_section_subtitle", [
-        "default" => 'Don\'t just take our word for it',
-        "sanitize_callback" => "sanitize_text_field",
-    ]);
-
-    $wp_customize->add_control("testimonials_section_subtitle", [
-        "label" => __("Testimonials Section Subtitle", "your-theme"),
-        "section" => "homepage_sections",
-        "type" => "text",
-    ]);
 }
 add_action("customize_register", "mr_homepage_sections_customizer");
+
+/**
+ * Sanitize Float values for customizer
+ */
+if (!function_exists("aaapos_sanitize_float")) {
+    function aaapos_sanitize_float($input)
+    {
+        return floatval($input);
+    }
+}

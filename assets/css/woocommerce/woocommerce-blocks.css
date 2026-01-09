@@ -84,14 +84,14 @@
   border-radius: 18px !important;
   overflow: hidden !important;
   border: none !important;
-  box-shadow: 
-    0 30px 60px rgba(0, 0, 0, 0.08), 
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.08),
     0 12px 24px rgba(0, 0, 0, 0.04) !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
   position: relative !important;
-  transition: 
+  transition:
     box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   will-change: transform;
@@ -101,8 +101,8 @@
 
 .wc-block-product-template li.wc-block-product:hover {
   transform: translateY(-6px) translateZ(0) !important;
-  box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.12), 
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.12),
     0 16px 32px rgba(0, 0, 0, 0.06) !important;
 }
 
@@ -302,25 +302,26 @@
   gap: 0.5rem !important;
 }
 
-/* View cart link */
-.wc-block-product .added_to_cart {
-  display: inline-block !important;
-  width: 100% !important;
-  margin-top: 0.5rem !important;
-  padding: 0.75rem 1.25rem !important;
-  background: var(--color-success, #10b981) !important;
-  color: var(--color-white) !important;
-  border-radius: 12px !important;
-  font-size: 0.9375rem !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  text-align: center !important;
-  transition: all 0.2s ease !important;
+/* ========================================================================
+   HIDE VIEW CART LINK - CRITICAL
+   ======================================================================== */
+
+/* Hide the "View cart" link that appears after adding to cart */
+.wc-block-product .added_to_cart,
+.wc-block-product a.added_to_cart,
+.wc-block-components-product-button .added_to_cart {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-.wc-block-product .added_to_cart:hover {
-  background: var(--color-success-hover, #059669) !important;
-  transform: translateY(-2px) !important;
+/* Also hide in the button wrapper */
+.wp-block-woocommerce-product-button .added_to_cart {
+  display: none !important;
 }
 
 /* === MOBILE RESPONSIVE === */
@@ -402,4 +403,51 @@
 .wc-block-product-collection .wc-block-no-results p {
   font-size: 1.125rem;
   margin: 1rem 0;
+}
+
+/* ========================================================================
+   HIDE "VIEW CART" BUTTON - ALL LOCATIONS (UPDATED)
+   ======================================================================== */
+
+/* Product Collection Blocks */
+.wc-block-product .added_to_cart,
+.wc-block-product a.added_to_cart,
+.wc-block-components-product-button .added_to_cart,
+.wp-block-woocommerce-product-button .added_to_cart,
+
+/* Featured Products Section */
+.featured-products .added_to_cart,
+.featured-products a.added_to_cart,
+.featured-products-grid .added_to_cart,
+.featured-products-slider .added_to_cart,
+
+/* Homepage Product Sections */
+.home .product .added_to_cart,
+.front-page .product .added_to_cart,
+.homepage-products .added_to_cart,
+
+/* Shop Page & Archive Pages */
+.woocommerce ul.products li.product .added_to_cart,
+.woocommerce-page ul.products li.product .added_to_cart,
+
+/* Product Cards - General */
+.product .added_to_cart,
+.product-card .added_to_cart,
+.product-item .added_to_cart,
+li.product .added_to_cart,
+
+/* All "View cart" links */
+a.added_to_cart.wc-forward,
+
+/* Product Button Wrapper */
+.product-actions .added_to_cart,
+.product-buttons .added_to_cart,
+.add-to-cart-wrapper .added_to_cart {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
