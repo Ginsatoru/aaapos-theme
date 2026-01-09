@@ -5,7 +5,7 @@
  * Comprehensive theme initialization with automatic setup,
  * intelligent defaults, and progressive enhancement.
  *
- * @package Macedon_Ranges
+ * @package AAAPOS
  * @since 1.0.0
  */
 
@@ -525,6 +525,7 @@ function mr_auto_setup_on_activation()
  * Create Default Pages
  *
  * Automatically creates essential pages if they don't exist.
+ * IMPROVED: Better duplicate checking with multiple methods
  */
 function mr_create_default_pages()
 {
@@ -557,9 +558,33 @@ function mr_create_default_pages()
 
     // Create pages
     foreach ($default_pages as $slug => $page) {
-        // Check if page already exists
+        // IMPROVED: Multiple checks to prevent duplicates
+        
+        // Method 1: Check by slug
         $existing_page = get_page_by_path($slug);
+        
+        // Method 2: Check by title if slug check fails
+        if (!$existing_page) {
+            $existing_page = get_page_by_title($page["title"], OBJECT, 'page');
+        }
+        
+        // Method 3: For front page, check if one is already set
+        if (isset($page["is_front"]) && $page["is_front"]) {
+            $front_page_id = get_option("page_on_front");
+            if ($front_page_id && get_post($front_page_id)) {
+                continue; // Skip creation, front page already exists
+            }
+        }
+        
+        // Method 4: For blog page, check if one is already set
+        if (isset($page["is_posts"]) && $page["is_posts"]) {
+            $blog_page_id = get_option("page_for_posts");
+            if ($blog_page_id && get_post($blog_page_id)) {
+                continue; // Skip creation, blog page already exists
+            }
+        }
 
+        // Only create if page doesn't exist
         if (!$existing_page) {
             $page_id = wp_insert_post([
                 "post_title" => $page["title"],
@@ -575,13 +600,13 @@ function mr_create_default_pages()
             ]);
 
             // Set as front page
-            if (isset($page["is_front"]) && $page["is_front"] && $page_id) {
+            if (isset($page["is_front"]) && $page["is_front"] && $page_id && !is_wp_error($page_id)) {
                 update_option("show_on_front", "page");
                 update_option("page_on_front", $page_id);
             }
 
             // Set as posts page
-            if (isset($page["is_posts"]) && $page["is_posts"] && $page_id) {
+            if (isset($page["is_posts"]) && $page["is_posts"] && $page_id && !is_wp_error($page_id)) {
                 update_option("page_for_posts", $page_id);
             }
         }
@@ -592,6 +617,7 @@ function mr_create_default_pages()
  * Create Default Menus
  *
  * Automatically creates and assigns navigation menus.
+ * IMPROVED: Better duplicate checking
  */
 function mr_create_default_menus()
 {
@@ -766,6 +792,7 @@ function mr_set_customizer_defaults()
  * Configure WooCommerce Defaults
  *
  * Set up WooCommerce pages and settings automatically.
+ * IMPROVED: Better duplicate page prevention
  */
 function mr_configure_woocommerce_defaults()
 {
@@ -780,17 +807,26 @@ function mr_configure_woocommerce_defaults()
     foreach ($wc_pages as $slug => $title) {
         $page_id = get_option("woocommerce_" . $slug . "_page_id");
 
+        // IMPROVED: Check both if option exists AND if page actually exists
         if (!$page_id || !get_post($page_id)) {
-            $page_id = wp_insert_post([
-                "post_title" => $title,
-                "post_content" => "[woocommerce_" . $slug . "]",
-                "post_status" => "publish",
-                "post_type" => "page",
-                "post_name" => $slug,
-            ]);
+            // Also check if page exists by slug to prevent duplicates
+            $existing_page = get_page_by_path($slug);
+            
+            if (!$existing_page) {
+                $page_id = wp_insert_post([
+                    "post_title" => $title,
+                    "post_content" => "[woocommerce_" . $slug . "]",
+                    "post_status" => "publish",
+                    "post_type" => "page",
+                    "post_name" => $slug,
+                ]);
 
-            if ($page_id && !is_wp_error($page_id)) {
-                update_option("woocommerce_" . $slug . "_page_id", $page_id);
+                if ($page_id && !is_wp_error($page_id)) {
+                    update_option("woocommerce_" . $slug . "_page_id", $page_id);
+                }
+            } else {
+                // Page exists, just update the option
+                update_option("woocommerce_" . $slug . "_page_id", $existing_page->ID);
             }
         }
     }

@@ -143,6 +143,11 @@ add_action("after_setup_theme", "aaapos_theme_setup");
  * Replace Cart & Checkout Blocks with Classic Templates on Theme Activation
  */
 function aaapos_setup_classic_woocommerce_pages() {
+    // Only run once
+    if (get_option('aaapos_wc_blocks_replaced')) {
+        return;
+    }
+    
     // Setup Cart Page
     $cart_page = get_page_by_path('cart');
     if ($cart_page && has_blocks($cart_page->post_content)) {
@@ -160,6 +165,9 @@ function aaapos_setup_classic_woocommerce_pages() {
             'post_content' => '[woocommerce_checkout]'
         ]);
     }
+    
+    // Mark as complete
+    update_option('aaapos_wc_blocks_replaced', true);
 }
 add_action('after_switch_theme', 'aaapos_setup_classic_woocommerce_pages');
 
@@ -426,9 +434,15 @@ add_filter("wp_resource_hints", "aaapos_resource_hints", 10, 2);
  * Theme Activation
  *
  * Set default theme options on activation.
+ * NOTE: Page creation is handled by setup.php to avoid duplicates
  */
 function aaapos_theme_activation()
 {
+    // Only run once
+    if (get_option('aaapos_theme_activated')) {
+        return;
+    }
+    
     // Set default Customizer values if not already set
     $defaults = [
         "primary_color" => "#0ea5e9",
@@ -453,53 +467,11 @@ function aaapos_theme_activation()
 
     // Flush rewrite rules for custom post types/taxonomies
     flush_rewrite_rules();
-
-    // Create default homepage if none exists
-    aaapos_create_default_homepage();
+    
+    // Mark as activated
+    update_option('aaapos_theme_activated', true);
 }
 add_action("after_switch_theme", "aaapos_theme_activation");
-
-/**
- * Create Default Homepage
- *
- * Auto-create a homepage using the homepage template on theme activation.
- */
-function aaapos_create_default_homepage()
-{
-    // Check if homepage already exists
-    $homepage_id = get_option("page_on_front");
-
-    if (!$homepage_id || !get_post($homepage_id)) {
-        // Create new homepage
-        $homepage_id = wp_insert_post([
-            "post_title" => esc_html__("Home", "AAAPOS"),
-            "post_content" => "",
-            "post_status" => "publish",
-            "post_type" => "page",
-            "post_author" => 1,
-            "page_template" => "page-templates/homepage.php",
-        ]);
-
-        if ($homepage_id && !is_wp_error($homepage_id)) {
-            // Set as front page
-            update_option("show_on_front", "page");
-            update_option("page_on_front", $homepage_id);
-
-            // Create blog page
-            $blog_page_id = wp_insert_post([
-                "post_title" => esc_html__("Blog", "AAAPOS"),
-                "post_content" => "",
-                "post_status" => "publish",
-                "post_type" => "page",
-                "post_author" => 1,
-            ]);
-
-            if ($blog_page_id && !is_wp_error($blog_page_id)) {
-                update_option("page_for_posts", $blog_page_id);
-            }
-        }
-    }
-}
 
 /**
  * Theme Deactivation
@@ -510,6 +482,10 @@ function aaapos_theme_deactivation()
 {
     // Flush rewrite rules
     flush_rewrite_rules();
+    
+    // Remove activation flags so theme can re-run setup if reactivated
+    delete_option('aaapos_theme_activated');
+    delete_option('aaapos_wc_blocks_replaced');
 }
 add_action("switch_theme", "aaapos_theme_deactivation");
 
