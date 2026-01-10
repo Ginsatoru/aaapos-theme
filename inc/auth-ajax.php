@@ -2,13 +2,34 @@
 /**
  * Authentication AJAX Handlers
  * Handle login and registration via AJAX
- * auth-ajax.php
+ *
  * @package Macedon_Ranges
  */
 
 // Prevent direct access
 if (!defined('ABSPATH')) {
     exit;
+}
+
+/**
+ * Helper function to get auth modal image URL from attachment ID
+ * Moved here to ensure it's available before enqueue
+ */
+if (!function_exists('mr_get_auth_modal_image_url')) {
+    function mr_get_auth_modal_image_url() {
+        $image_id = get_theme_mod('auth_modal_login_image');
+        
+        // If empty or zero, return fallback
+        if (empty($image_id)) {
+            return 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=1200&fit=crop';
+        }
+        
+        // Get the full image URL from the attachment ID
+        $image_url = wp_get_attachment_image_url($image_id, 'full');
+        
+        // Return the URL or fallback if it doesn't exist
+        return $image_url ? $image_url : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=1200&fit=crop';
+    }
 }
 
 /**
@@ -21,32 +42,32 @@ function mr_enqueue_auth_scripts() {
             'mr-auth-modal',
             get_template_directory_uri() . '/assets/css/auth-modal.css',
             array(),
-            '1.0.0'
+            '1.0.3'
         );
 
         wp_enqueue_script(
             'mr-auth-modal',
             get_template_directory_uri() . '/assets/js/auth-modal.js',
             array(),
-            '1.0.0',
+            '1.0.3',
             true
         );
 
-        // Get login image from customizer
-        $customizer_image = get_theme_mod('auth_modal_login_image');
+        // Get login image URL using helper function
+        $login_image = mr_get_auth_modal_image_url();
         
-        // Fallback to default image if customizer image is not set or empty
-        $fallback_image = get_template_directory_uri() . '/assets/images/login.png';
-        $login_image = (!empty($customizer_image)) ? $customizer_image : $fallback_image;
+        // Get raw value for debugging
+        $raw_image_value = get_theme_mod('auth_modal_login_image');
 
         // Localize script with AJAX URL and nonce
         wp_localize_script('mr-auth-modal', 'mr_auth', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('mr_auth_nonce'),
+            'ajax_url'          => admin_url('admin-ajax.php'),
+            'nonce'             => wp_create_nonce('mr_auth_nonce'),
             'lost_password_url' => wp_lostpassword_url(),
-            'login_image' => esc_url($login_image), // Uses customizer image OR fallback
-            'login_subtitle' => get_theme_mod('auth_modal_login_subtitle', __('Welcome back! Please enter your details', 'aaapos')),
+            'login_image'       => esc_url($login_image),
+            'login_subtitle'    => get_theme_mod('auth_modal_login_subtitle', __('Welcome back! Please enter your details', 'aaapos')),
             'register_subtitle' => get_theme_mod('auth_modal_register_subtitle', __('Create your account to get started', 'aaapos')),
+            'has_custom_image'  => (!empty($raw_image_value)) ? 'yes' : 'no',
         ));
     }
 }
@@ -118,7 +139,7 @@ function mr_ajax_register() {
 
     // Sanitize input
     $username = sanitize_user($_POST['username']);
-    $email = sanitize_email($_POST['email']);
+    $email    = sanitize_email($_POST['email']);
     $password = $_POST['password'];
 
     // Validate
@@ -176,7 +197,7 @@ function mr_ajax_register() {
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id, true, is_ssl());
 
-    // Send new user notification (optional)
+    // Send new user notification
     wp_new_user_notification($user_id, null, 'user');
 
     // Success
@@ -189,7 +210,6 @@ add_action('wp_ajax_nopriv_mr_ajax_register', 'mr_ajax_register');
 
 /**
  * Add body class when user is logged in
- * This helps the JavaScript know whether to show the modal
  */
 function mr_add_logged_in_body_class($classes) {
     if (is_user_logged_in()) {
@@ -203,7 +223,6 @@ add_filter('body_class', 'mr_add_logged_in_body_class');
  * Redirect My Account page to homepage with modal trigger when user is logged out
  */
 function mr_redirect_myaccount_to_modal() {
-    // Only redirect if user is not logged in and on my-account page
     if (!is_user_logged_in() && is_account_page()) {
         wp_redirect(home_url('/?show_login=1'));
         exit;

@@ -82,13 +82,14 @@
   }
 }
 
-/* Right Side - Image (50%) - ONLY animate on first open */
+/* Right Side - Image (50%) - CRITICAL FIX */
 .auth-modal-right {
   flex: 0 0 50%;
   width: 50%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  min-height: 600px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
   position: relative;
   overflow: hidden;
 }
@@ -104,11 +105,6 @@
     transform: translateX(0);
     opacity: 1;
   }
-}
-
-/* Remove pink overlay */
-.auth-modal-right::before {
-  display: none;
 }
 
 /* Close Button - ONLY animate on first open */
@@ -473,7 +469,7 @@
   left: 50%;
   width: 20px;
   height: 20px;
-  margin: -10px 0 0 -10px; /* Use margin instead of transform for centering */
+  margin: -10px 0 0 -10px;
   border: 2px solid var(--color-white);
   border-top-color: transparent;
   border-radius: 50%;
@@ -697,4 +693,12 @@
 .auth-modal .wp-element-button:focus,
 .auth-modal .wp-element-button:active {
   box-shadow: none !important;
+}
+
+/* Ensure proper background behavior */
+.auth-modal-right {
+    background-color: #f3f4f6;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }

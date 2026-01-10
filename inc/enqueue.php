@@ -559,11 +559,27 @@ function mr_enqueue_scripts()
         true,
     );
 
+    // Get custom image directly from customizer
+    $login_image_id = get_theme_mod('auth_modal_login_image', '');
+    $login_image_url = '';
+    $has_custom_image = false;
+    
+    if (!empty($login_image_id)) {
+        $image_data = wp_get_attachment_image_src($login_image_id, 'full');
+        if ($image_data && isset($image_data[0])) {
+            $login_image_url = $image_data[0];
+            $has_custom_image = true;
+        }
+    }
+
     // Localize auth modal (ALWAYS - both modes)
     wp_localize_script("mr-auth-modal", "mr_auth", [
         "ajax_url" => admin_url("admin-ajax.php"),
         "nonce" => wp_create_nonce("mr_auth_nonce"),
-        "login_image" => get_template_directory_uri() . "/assets/images/login.png",
+        "login_image" => $login_image_url,
+        "has_custom_image" => $has_custom_image,
+        "login_subtitle" => get_theme_mod('auth_modal_login_subtitle', __('Welcome back! Please enter your details', 'aaapos')),
+        "register_subtitle" => get_theme_mod('auth_modal_register_subtitle', __('Create your account to get started', 'aaapos')),
         "lost_password_url" => wp_lostpassword_url(),
     ]);
 

@@ -1,12 +1,17 @@
 /**
- * Authentication Modal - Modern Split-Screen Login/Register
+ * Authentication Modal
+ * Handles login and registration modal functionality
+ * 
+ * @package AAAPOS
+ * @since 1.0.0
  */
 class AuthModal {
     constructor() {
         this.modal = null;
         this.backdrop = null;
         this.activeTab = 'login';
-        this.hasOpenedBefore = false; // Track if modal has been opened before
+        this.hasOpenedBefore = false;
+        
         this.init();
     }
 
@@ -17,8 +22,31 @@ class AuthModal {
     }
 
     createModal() {
-        // Check if modal already exists
-        if (document.querySelector('.auth-modal')) return;
+        // Prevent duplicate modals
+        if (document.querySelector('.auth-modal')) {
+            return;
+        }
+
+        // Verify mr_auth object exists
+        if (typeof mr_auth === 'undefined') {
+            console.error('Auth Modal: mr_auth object is not defined');
+            return;
+        }
+
+        // Get configuration values
+        const hasCustomImage = mr_auth.has_custom_image && 
+                              mr_auth.login_image && 
+                              mr_auth.login_image.trim() !== '';
+        const loginImage = mr_auth.login_image || '';
+        const loginSubtitle = mr_auth.login_subtitle || 'Welcome back! Please enter your details';
+        const registerSubtitle = mr_auth.register_subtitle || 'Create your account to get started';
+        const lostPasswordUrl = mr_auth.lost_password_url || '/wp-login.php?action=lostpassword';
+
+        // Build right panel styles
+        const rightPanelClass = hasCustomImage ? 'auth-modal-right' : 'auth-modal-right no-image';
+        const rightPanelStyle = hasCustomImage 
+            ? `background-image: url('${loginImage}'); background-size: cover; background-position: center; background-repeat: no-repeat;`
+            : '';
 
         const modalHTML = `
             <div class="auth-modal-backdrop"></div>
@@ -43,7 +71,7 @@ class AuthModal {
                             <div class="auth-tab-content active" data-content="login">
                                 <div class="auth-modal-header">
                                     <h2 class="auth-modal-title" id="auth-modal-title">Log In</h2>
-                                    <p class="auth-modal-subtitle">Welcome back! Please enter your details</p>
+                                    <p class="auth-modal-subtitle" data-login-text="${loginSubtitle}">${loginSubtitle}</p>
                                 </div>
 
                                 <form class="auth-form" id="login-form">
@@ -85,7 +113,7 @@ class AuthModal {
                                         </div>
                                     </div>
 
-                                    <a href="${mr_auth.lost_password_url}" class="auth-forgot-link">forgot password ?</a>
+                                    <a href="${lostPasswordUrl}" class="auth-forgot-link">forgot password ?</a>
 
                                     <button type="submit" class="auth-submit-btn">Log in</button>
 
@@ -99,7 +127,7 @@ class AuthModal {
                             <div class="auth-tab-content" data-content="register">
                                 <div class="auth-modal-header">
                                     <h2 class="auth-modal-title">Sign Up</h2>
-                                    <p class="auth-modal-subtitle">Create your account to get started</p>
+                                    <p class="auth-modal-subtitle" data-register-text="${registerSubtitle}">${registerSubtitle}</p>
                                 </div>
 
                                 <form class="auth-form" id="register-form">
@@ -164,8 +192,8 @@ class AuthModal {
                         </div>
                     </div>
 
-                    <!-- Right Side - Image -->
-                    <div class="auth-modal-right" style="background-image: url('${mr_auth.login_image}');"></div>
+                    <!-- Right Side - Image or Gradient -->
+                    <div class="${rightPanelClass}" style="${rightPanelStyle}"></div>
                 </div>
             </div>
         `;
@@ -176,7 +204,7 @@ class AuthModal {
     }
 
     bindEvents() {
-        // Open modal when clicking login button
+        // Open modal on login/register button clicks
         document.addEventListener('click', (e) => {
             if (e.target.closest('.btn-login') || e.target.closest('.mobile-account-link')) {
                 if (!document.body.classList.contains('logged-in')) {
@@ -186,7 +214,7 @@ class AuthModal {
             }
         });
 
-        // Close modal
+        // Close modal handlers
         this.backdrop?.addEventListener('click', () => this.close());
         document.querySelector('.auth-modal-close')?.addEventListener('click', () => this.close());
 
@@ -195,7 +223,7 @@ class AuthModal {
             tab.addEventListener('click', () => this.switchTab(tab.dataset.tab));
         });
 
-        // Switch links
+        // Switch between login/register forms
         document.querySelector('.switch-to-register')?.addEventListener('click', (e) => {
             e.preventDefault();
             this.switchTab('register');
@@ -217,7 +245,7 @@ class AuthModal {
             this.handleRegister(e.target);
         });
 
-        // Escape key to close
+        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.modal?.classList.contains('active')) {
                 this.close();
@@ -248,29 +276,31 @@ class AuthModal {
     switchTab(tab) {
         this.activeTab = tab;
 
-        // Update tabs
+        // Update tab buttons
         document.querySelectorAll('.auth-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.tab === tab);
         });
 
-        // Update content
+        // Update tab content
         document.querySelectorAll('.auth-tab-content').forEach(content => {
             content.classList.toggle('active', content.dataset.content === tab);
         });
 
-        // Update title
-        const title = this.modal.querySelector('.auth-modal-title');
-        const subtitle = this.modal.querySelector('.auth-modal-subtitle');
+        // Update title and subtitle
+        const activeContent = document.querySelector('.auth-tab-content.active');
+        const title = activeContent.querySelector('.auth-modal-title');
+        const subtitle = activeContent.querySelector('.auth-modal-subtitle');
         
         if (tab === 'login') {
             title.textContent = 'Log In';
-            subtitle.textContent = 'Welcome back! Please enter your details';
+            const loginText = subtitle.getAttribute('data-login-text') || 'Welcome back! Please enter your details';
+            subtitle.textContent = loginText;
         } else {
             title.textContent = 'Sign Up';
-            subtitle.textContent = 'Create your account to get started';
+            const registerText = subtitle.getAttribute('data-register-text') || 'Create your account to get started';
+            subtitle.textContent = registerText;
         }
 
-        // Clear any error messages
         this.clearMessages();
     }
 
@@ -307,6 +337,7 @@ class AuthModal {
                 this.showMessage('error', data.data.message);
             }
         } catch (error) {
+            console.error('Login error:', error);
             this.showMessage('error', 'An error occurred. Please try again.');
         } finally {
             this.setLoading(submitBtn, false);
@@ -346,6 +377,7 @@ class AuthModal {
                 this.showMessage('error', data.data.message);
             }
         } catch (error) {
+            console.error('Registration error:', error);
             this.showMessage('error', 'An error occurred. Please try again.');
         } finally {
             this.setLoading(submitBtn, false);
@@ -380,31 +412,33 @@ class AuthModal {
         if (isLoading) {
             button.classList.add('loading');
             button.disabled = true;
+            button.setAttribute('aria-busy', 'true');
         } else {
             button.classList.remove('loading');
             button.disabled = false;
+            button.setAttribute('aria-busy', 'false');
         }
     }
 
     open(tab = 'login') {
         this.switchTab(tab);
         
-        // Add 'first-open' class ONLY if this is the first time opening
+        // Add first-open animation class
         if (!this.hasOpenedBefore) {
             this.modal?.classList.add('first-open');
-            this.hasOpenedBefore = true; // Mark that modal has been opened
+            this.hasOpenedBefore = true;
             
-            // Remove 'first-open' class after animations complete (1 second)
             setTimeout(() => {
                 this.modal?.classList.remove('first-open');
             }, 1000);
         }
         
+        // Show modal
         this.modal?.classList.add('active');
         this.backdrop?.classList.add('active');
         document.body.style.overflow = 'hidden';
 
-        // Focus first input
+        // Focus first input for accessibility
         setTimeout(() => {
             const firstInput = this.modal?.querySelector('.auth-tab-content.active input');
             firstInput?.focus();
@@ -419,15 +453,19 @@ class AuthModal {
     }
 }
 
-// Initialize authentication modal
+// Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.authModal = new AuthModal();
-    
-    // Check if we should open the modal automatically (from redirect)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('show_login') === '1') {
-        window.authModal.open('login');
-        // Clean up URL without page reload
-        window.history.replaceState({}, document.title, window.location.pathname);
+    if (typeof mr_auth !== 'undefined') {
+        window.authModal = new AuthModal();
+        
+        // Handle URL parameter for showing login modal
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('show_login') === '1') {
+            window.authModal.open('login');
+            // Clean URL without page reload
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    } else {
+        console.error('Auth Modal: mr_auth object not found. Check enqueue.php localization.');
     }
 });
