@@ -2,9 +2,7 @@
 /**
  * Cart totals
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/cart/cart-totals.php.
- *
- * UPDATED: Fixed shipping display to show properly
+ * UPDATED: Clean shipping display without radio buttons
  *
  * @package Macedon_Ranges
  */
@@ -32,41 +30,53 @@ defined('ABSPATH') || exit;
 			<td data-title="<?php esc_attr_e('Subtotal', 'macedon-ranges'); ?>"><?php wc_cart_totals_subtotal_html(); ?></td>
 		</tr>
 
-		<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
+		<?php if (WC()->cart->needs_shipping()) : ?>
 
 			<?php do_action('woocommerce_cart_totals_before_shipping'); ?>
 
 			<tr class="woocommerce-shipping-totals shipping">
 				<th><?php esc_html_e('Shipping', 'macedon-ranges'); ?></th>
 				<td data-title="<?php esc_attr_e('Shipping', 'macedon-ranges'); ?>">
-					<?php wc_cart_totals_shipping_html(); ?>
+					<?php 
+					if (WC()->cart->show_shipping()) {
+						// Get chosen shipping methods
+						$packages = WC()->shipping()->get_packages();
+						$chosen_methods = WC()->session->get('chosen_shipping_methods', array());
+						
+						// Display only the cost of the selected method
+						foreach ($packages as $i => $package) {
+							$chosen_method = isset($chosen_methods[$i]) ? $chosen_methods[$i] : '';
+							$available_methods = $package['rates'];
+							
+							if ($available_methods && isset($available_methods[$chosen_method])) {
+								$method = $available_methods[$chosen_method];
+								echo wc_price($method->cost);
+								
+								// If you want to show the method name too:
+								// echo '<div class="shipping-method-name">' . esc_html($method->label) . '</div>';
+							} else {
+								// No method selected or available
+								echo wc_price(0);
+							}
+						}
+					} else {
+						echo wp_kses_post(esc_html__('Shipping options will be updated during checkout.', 'macedon-ranges'));
+					}
+					?>
 				</td>
 			</tr>
 
 			<?php do_action('woocommerce_cart_totals_after_shipping'); ?>
 
-		<?php elseif (WC()->cart->needs_shipping()) : ?>
-
-			<tr class="shipping">
-				<th><?php esc_html_e('Shipping', 'macedon-ranges'); ?></th>
-				<td data-title="<?php esc_attr_e('Shipping', 'macedon-ranges'); ?>">
-					<?php
-					/* translators: %s: shipping destination. */
-					echo wp_kses_post(sprintf(esc_html__('Shipping options will be updated during checkout.', 'macedon-ranges')));
-					?>
-				</td>
-			</tr>
-
 		<?php endif; ?>
 
 		<?php
-		// ALWAYS DISPLAY TAX (even if $0) - WITH BOLD STYLING AND NO ESTIMATED TEXT
+		// ALWAYS DISPLAY TAX (even if $0)
 		if (wc_tax_enabled()) {
 			$tax_total = WC()->cart->get_total_tax();
 
 			if (!WC()->cart->display_prices_including_tax()) {
 				if ('itemized' === get_option('woocommerce_tax_total_display')) {
-					// Show itemized taxes
 					$tax_totals = WC()->cart->get_tax_totals();
 					if (!empty($tax_totals)) {
 						foreach ($tax_totals as $code => $tax) {
@@ -78,7 +88,6 @@ defined('ABSPATH') || exit;
 							<?php
 						}
 					} else {
-						// No taxes, show $0.00
 						?>
 						<tr class="tax-total">
 							<th><?php esc_html_e('Tax', 'macedon-ranges'); ?></th>
@@ -87,7 +96,6 @@ defined('ABSPATH') || exit;
 						<?php
 					}
 				} else {
-					// Show total tax (or $0.00 if no tax)
 					?>
 					<tr class="tax-total">
 						<th><?php esc_html_e('Tax', 'macedon-ranges'); ?></th>
@@ -106,14 +114,11 @@ defined('ABSPATH') || exit;
 		?>
 
 		<?php
-		// ALWAYS DISPLAY COUPON DISCOUNT (even if $0 or no coupon applied)
+		// ALWAYS DISPLAY COUPON DISCOUNT (even if $0)
 		$coupons = WC()->cart->get_coupons();
-		$discount_total = WC()->cart->get_discount_total();
 		
 		if (!empty($coupons)) {
-			// Show actual coupons - simple display like other rows
 			foreach ($coupons as $code => $coupon) : 
-				// Get the discount amount
 				$discount_amount = WC()->cart->get_coupon_discount_amount($code);
 				?>
 				<tr class="cart-discount coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
@@ -124,7 +129,6 @@ defined('ABSPATH') || exit;
 				</tr>
 			<?php endforeach;
 		} else {
-			// No coupon applied, show $0.00
 			?>
 			<tr class="cart-discount no-coupon">
 				<th><?php esc_html_e('Coupon Discount', 'macedon-ranges'); ?></th>
@@ -161,3 +165,19 @@ defined('ABSPATH') || exit;
 	<?php do_action('woocommerce_after_cart_totals'); ?>
 
 </div>
+
+<style>
+/* Hide shipping calculator and radio buttons */
+.cart_totals .woocommerce-shipping-calculator,
+.cart_totals .shipping-calculator-button,
+.cart_totals .shipping-calculator-form,
+.cart_totals .woocommerce-shipping-methods {
+    display: none !important;
+}
+
+/* Hide the "Change address" link */
+.cart_totals .shipping-destination,
+.cart_totals .woocommerce-shipping-destination {
+    display: none !important;
+}
+</style>
