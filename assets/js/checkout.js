@@ -1,8 +1,8 @@
 /**
  * Checkout Page Enhancements
  * WITH COUPON TOGGLE & NOTIFICATIONS
- * FIXED: Prevents all form submissions for coupons, uses only AJAX
- * UPDATED: Shows discount amount in notification like cart page
+ * FIXED: Proper coupon validation with user feedback
+ * UPDATED: Shows discount amount in notification and proper error messages
  * 
  * @package aaapos-prime
  */
@@ -35,6 +35,9 @@
         
         // Add error state to input
         $input.addClass('validation-error').attr('aria-invalid', 'true');
+        
+        // Shake the input
+        shakeElement($input);
         
         // Create modern error message with icon - positioned absolutely
         const $error = $(`
@@ -93,12 +96,12 @@
             removeValidationError($input, $error);
         });
         
-        // Auto remove after 4 seconds
+        // Auto remove after 5 seconds
         setTimeout(() => {
             if ($error.parent().length) {
                 removeValidationError($input, $error);
             }
-        }, 4000);
+        }, 5000);
     }
 
     /**
@@ -188,7 +191,7 @@
 
     /**
      * Handle Coupon Apply/Remove with Toggle Button
-     * FIXED: Completely prevents form submission, uses only AJAX
+     * FIXED: Completely prevents form submission, uses only AJAX with proper validation
      */
     function handleCouponToggle() {
         // Remove any existing handlers first
@@ -216,18 +219,25 @@
             const couponCode = action === 'remove' ? $button.attr('data-coupon-code') : $input.val().trim();
             
             // Validate for apply
-            if (action === 'apply' && !couponCode) {
-                showModernValidationError($input, 'Please enter a coupon code to continue');
-                return false;
-            }
-            
-            // Show loading state
-            showButtonLoading($button);
-            
-            // Handle via AJAX
             if (action === 'apply') {
+                // Remove any existing errors first
+                $('.modern-validation-error').remove();
+                
+                if (!couponCode) {
+                    showModernValidationError($input, 'Please enter a coupon code to continue');
+                    return false;
+                }
+                
+                // Show loading state
+                showButtonLoading($button);
+                
+                // Apply via AJAX
                 applyCouponAjax(couponCode, $button, $input);
             } else if (action === 'remove') {
+                // Show loading state
+                showButtonLoading($button);
+                
+                // Remove via AJAX
                 removeCouponAjax(couponCode, $button);
             }
             
@@ -251,7 +261,7 @@
     }
     
     /**
-     * Apply coupon via AJAX
+     * Apply coupon via AJAX - WITH PROPER ERROR HANDLING
      */
     function applyCouponAjax(couponCode, $button, $input) {
         $.ajax({
@@ -263,42 +273,63 @@
                 coupon_code: couponCode
             },
             success: function(response) {
-                // Wait a bit for cart to update, then get discount
-                setTimeout(() => {
-                    const discountAmount = getDiscountAmount();
+                // Hide loading
+                hideButtonLoading($button);
+                
+                // Check if coupon was actually applied
+                if (response && !response.match(/error/i)) {
+                    // Wait a bit for cart to update, then get discount
+                    setTimeout(() => {
+                        const discountAmount = getDiscountAmount();
+                        
+                        // Show success notification with discount amount
+                        if (typeof window.createCouponNotification === 'function') {
+                            window.createCouponNotification(couponCode, discountAmount);
+                        }
+                        
+                        // Clear input
+                        if ($input) {
+                            $input.val('');
+                        }
+                        
+                        // Update checkout
+                        $(document.body).trigger('update_checkout');
+                    }, 500);
+                } else {
+                    // Extract error message from HTML response
+                    let errorMsg = 'This coupon code is invalid or has expired';
+                    const $response = $(response);
+                    const $errorNotice = $response.find('.woocommerce-error li, .woocommerce-error');
                     
-                    // Show notification with discount amount
-                    if (typeof window.createCouponNotification === 'function') {
-                        window.createCouponNotification(couponCode, discountAmount);
+                    if ($errorNotice.length) {
+                        errorMsg = $errorNotice.text().trim();
                     }
-                }, 500);
-                
-                // Clear input
-                if ($input) {
-                    $input.val('');
+                    
+                    // Show error
+                    showModernValidationError($input, errorMsg);
                 }
-                
-                // Update checkout
-                $(document.body).trigger('update_checkout');
             },
             error: function(xhr, status, error) {
+                // Hide loading
+                hideButtonLoading($button);
+                
                 // Try to get error message from response
                 let errorMsg = 'This coupon code is invalid or has expired';
+                
                 if (xhr.responseJSON && xhr.responseJSON.data) {
                     errorMsg = xhr.responseJSON.data;
+                } else if (xhr.responseText) {
+                    // Try to extract error from HTML
+                    const $response = $(xhr.responseText);
+                    const $errorNotice = $response.find('.woocommerce-error li, .woocommerce-error');
+                    
+                    if ($errorNotice.length) {
+                        errorMsg = $errorNotice.text().trim();
+                    }
                 }
                 
                 // Show modern validation error
                 showModernValidationError($input, errorMsg);
-                
-                // Hide loading immediately on error
-                hideButtonLoading($button);
-            },
-            complete: function() {
-                // Hide loading state
-                setTimeout(() => {
-                    hideButtonLoading($button);
-                }, 300);
             }
         });
     }

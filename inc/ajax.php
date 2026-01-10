@@ -509,13 +509,12 @@ function mr_render_cart_dropdown_items($max_items = 99)
 }
 
 /**
- * COUPON AJAX HANDLERS FOR CHECKOUT
- * These are not used anymore - WooCommerce native handlers are used instead
- * Keeping them for backward compatibility
+ * COUPON AJAX HANDLERS FOR CHECKOUT - FIXED VERSION
+ * These handlers now properly validate coupons and return appropriate error messages
  */
 
 /**
- * AJAX Handler: Apply coupon
+ * AJAX Handler: Apply coupon - WITH PROPER VALIDATION
  */
 function mr_ajax_apply_coupon()
 {
@@ -528,12 +527,42 @@ function mr_ajax_apply_coupon()
 
     // Get coupon code
     $coupon_code = isset($_POST["coupon_code"])
-        ? sanitize_text_field($_POST["coupon_code"])
+        ? wc_sanitize_coupon_code(wp_unslash($_POST["coupon_code"]))
         : "";
 
     if (empty($coupon_code)) {
         wp_send_json_error([
             "message" => __("Please enter a coupon code", "macedon-ranges"),
+        ]);
+    }
+
+    // Check if coupon exists
+    $coupon = new WC_Coupon($coupon_code);
+    
+    if (!$coupon || !$coupon->get_id()) {
+        wp_send_json_error([
+            "message" => sprintf(
+                __('Coupon "%s" does not exist!', "macedon-ranges"),
+                esc_html($coupon_code)
+            ),
+        ]);
+    }
+
+    // Validate coupon
+    $discounts = new WC_Discounts(WC()->cart);
+    $valid = $discounts->is_coupon_valid($coupon);
+    
+    if (is_wp_error($valid)) {
+        wp_send_json_error([
+            "message" => $valid->get_error_message(),
+        ]);
+    }
+
+    // Check if coupon is already applied
+    $applied_coupons = WC()->cart->get_applied_coupons();
+    if (in_array($coupon_code, $applied_coupons)) {
+        wp_send_json_error([
+            "message" => __("Coupon code already applied!", "macedon-ranges"),
         ]);
     }
 
@@ -544,12 +573,21 @@ function mr_ajax_apply_coupon()
         WC()->cart->calculate_totals();
 
         wp_send_json_success([
-            "message" => __("Coupon applied successfully", "macedon-ranges"),
+            "message" => __("Coupon code applied successfully.", "macedon-ranges"),
             "coupon_code" => $coupon_code,
         ]);
     } else {
+        // Get WooCommerce error messages
+        $error_messages = wc_get_notices('error');
+        $error_message = !empty($error_messages) 
+            ? strip_tags($error_messages[0]['notice']) 
+            : __("Failed to apply coupon. Please try again.", "macedon-ranges");
+        
+        // Clear notices so they don't show elsewhere
+        wc_clear_notices();
+        
         wp_send_json_error([
-            "message" => __("Failed to apply coupon", "macedon-ranges"),
+            "message" => $error_message,
         ]);
     }
 }
@@ -558,7 +596,7 @@ add_action("wp_ajax_apply_coupon_checkout", "mr_ajax_apply_coupon");
 add_action("wp_ajax_nopriv_apply_coupon_checkout", "mr_ajax_apply_coupon");
 
 /**
- * AJAX Handler: Remove coupon
+ * AJAX Handler: Remove coupon - WITH PROPER VALIDATION
  */
 function mr_ajax_remove_coupon()
 {
@@ -571,12 +609,20 @@ function mr_ajax_remove_coupon()
 
     // Get coupon code
     $coupon_code = isset($_POST["coupon_code"])
-        ? sanitize_text_field($_POST["coupon_code"])
+        ? wc_sanitize_coupon_code(wp_unslash($_POST["coupon_code"]))
         : "";
 
     if (empty($coupon_code)) {
         wp_send_json_error([
             "message" => __("Invalid coupon code", "macedon-ranges"),
+        ]);
+    }
+
+    // Check if coupon is actually applied
+    $applied_coupons = WC()->cart->get_applied_coupons();
+    if (!in_array($coupon_code, $applied_coupons)) {
+        wp_send_json_error([
+            "message" => __("This coupon is not applied to your cart", "macedon-ranges"),
         ]);
     }
 
