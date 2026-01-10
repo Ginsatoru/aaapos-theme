@@ -7,6 +7,7 @@
  * - Dependency management
  * - Performance optimization
  * - Resource hints
+ * - Auto-detection of production/development mode
  *
  * @package AAAPOS
  * @since 1.0.0
@@ -17,54 +18,94 @@ if (!defined("ABSPATH")) {
 }
 
 /**
+ * Check if we're in production mode (minified files exist)
+ * 
+ * @return bool True if production files exist
+ */
+function mr_is_production_mode() {
+    static $is_production = null;
+    
+    if ($is_production === null) {
+        $is_production = file_exists(get_template_directory() . '/assets/css/dist/main.min.css') && 
+                        file_exists(get_template_directory() . '/assets/js/dist/bundle.min.js');
+    }
+    
+    return $is_production;
+}
+
+/**
  * Enqueue theme styles
  */
 function mr_enqueue_styles()
 {
-    // CSS variables & base (highest priority)
-    wp_enqueue_style(
-        "mr-variables",
-        MR_THEME_URI . "/assets/css/variables.css",
-        [],
-        MR_THEME_VERSION,
-    );
+    $is_production = mr_is_production_mode();
 
-    wp_enqueue_style(
-        "mr-base",
-        MR_THEME_URI . "/assets/css/base.css",
-        ["mr-variables"],
-        MR_THEME_VERSION,
-    );
+    if ($is_production) {
+        // PRODUCTION MODE - Load single minified CSS file
+        wp_enqueue_style(
+            "mr-main",
+            MR_THEME_URI . "/assets/css/dist/main.min.css",
+            [],
+            MR_THEME_VERSION,
+        );
+    } else {
+        // DEVELOPMENT MODE - Load individual CSS files
+        
+        // CSS variables & base (highest priority)
+        wp_enqueue_style(
+            "mr-variables",
+            MR_THEME_URI . "/assets/css/variables.css",
+            [],
+            MR_THEME_VERSION,
+        );
 
-    // Layout system
-    wp_enqueue_style(
-        "mr-layout",
-        MR_THEME_URI . "/assets/css/layout.css",
-        ["mr-base"],
-        MR_THEME_VERSION,
-    );
+        wp_enqueue_style(
+            "mr-base",
+            MR_THEME_URI . "/assets/css/base.css",
+            ["mr-variables"],
+            MR_THEME_VERSION,
+        );
 
-    // Component styles
-    wp_enqueue_style(
-        "mr-components",
-        MR_THEME_URI . "/assets/css/main.css",
-        ["mr-layout"],
-        MR_THEME_VERSION,
-    );
+        // Layout system
+        wp_enqueue_style(
+            "mr-layout",
+            MR_THEME_URI . "/assets/css/layout.css",
+            ["mr-base"],
+            MR_THEME_VERSION,
+        );
 
-    // Feature styles
+        // Component styles
+        wp_enqueue_style(
+            "mr-components",
+            MR_THEME_URI . "/assets/css/main.css",
+            ["mr-layout"],
+            MR_THEME_VERSION,
+        );
+
+        // Animation styles
+        wp_enqueue_style(
+            "mr-animations",
+            MR_THEME_URI . "/assets/css/animations.css",
+            ["mr-components"],
+            MR_THEME_VERSION,
+        );
+
+        // Responsive styles (load last)
+        wp_enqueue_style(
+            "mr-responsive",
+            MR_THEME_URI . "/assets/css/responsive.css",
+            ["mr-animations"],
+            MR_THEME_VERSION,
+        );
+    }
+
+    // ALWAYS LOAD THESE (Both modes) - Not in main.css
+    
+    // Featured products (standalone)
     wp_enqueue_style(
         "mr-featured-products",
         MR_THEME_URI . "/assets/css/components/featured-products.css",
-        ["mr-components"],
-        MR_THEME_VERSION,
-    );
-
-    // Animation styles
-    wp_enqueue_style(
-        "mr-animations",
-        MR_THEME_URI . "/assets/css/animations.css",
-        ["mr-components"],
+        $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
 
@@ -72,7 +113,7 @@ function mr_enqueue_styles()
     wp_enqueue_style(
         "mr-search-results",
         MR_THEME_URI . "/assets/css/components/search-results.css",
-        ["mr-components"],
+        $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
 
@@ -80,23 +121,7 @@ function mr_enqueue_styles()
     wp_enqueue_style(
         "mr-search-no-results",
         MR_THEME_URI . "/assets/css/components/search-no-results.css",
-        ["mr-components"],
-        MR_THEME_VERSION,
-    );
-
-    // Special Deals styles
-    wp_enqueue_style(
-        "mr-deals-offers",
-        MR_THEME_URI . "/assets/css/components/deals-offers.css",
-        ["mr-components"],
-        MR_THEME_VERSION,
-    );
-
-    // Blog
-    wp_enqueue_style(
-        "mr-blog",
-        MR_THEME_URI . "/assets/css/components/blog.css",
-        ["mr-components"],
+        $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
 
@@ -105,46 +130,67 @@ function mr_enqueue_styles()
         "cart-confirm-modal",
         get_template_directory_uri() . "/assets/css/cart-confirm-modal.css",
         [],
-        filemtime(
-            get_template_directory() . "/assets/css/cart-confirm-modal.css",
-        ),
+        MR_THEME_VERSION,
     );
-
-    // Checkout styles & scripts - ONLY on checkout page
-    if (is_checkout() && !is_order_received_page()) {
-        wp_enqueue_script(
-            "aaapos-checkout",
-            get_template_directory_uri() . "/assets/js/checkout.js",
-            ["jquery", "wc-checkout"],
-            AAAPOS_VERSION,
-            true,
-        );
-    }
 
     // Breadcrumb component styles
     wp_enqueue_style(
         "mr-breadcrumb-shop",
         MR_THEME_URI . "/assets/css/components/breadcrumb-shop.css",
-        ["mr-components"],
+        $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
 
-    // Responsive styles (load last)
+    // Auth Modal CSS
     wp_enqueue_style(
-        "mr-responsive",
-        MR_THEME_URI . "/assets/css/responsive.css",
-        ["mr-animations"],
-        MR_THEME_VERSION,
-    );
-
-    // Enqueue checkout styles
-    wp_enqueue_style(
-        "checkout-main",
-        get_template_directory_uri() .
-            "/assets/css/components/cart/checkout-main.css",
+        "mr-auth-modal",
+        MR_THEME_URI . "/assets/css/auth-modal.css",
         [],
-        THEME_VERSION,
+        MR_THEME_VERSION,
     );
+
+    // Cart Notifications CSS
+    wp_enqueue_style(
+        "aaapos-cart-notifications",
+        MR_THEME_URI . "/assets/css/cart-notifications.css",
+        [],
+        MR_THEME_VERSION,
+    );
+
+    // Checkout styles - ONLY on checkout page
+    if (is_checkout()) {
+        wp_enqueue_style(
+            "checkout-main",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/checkout-main.css",
+            [],
+            MR_THEME_VERSION,
+        );
+
+        wp_enqueue_style(
+            "checkout-form",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/checkout-form.css",
+            ["checkout-main"],
+            MR_THEME_VERSION,
+        );
+        
+        wp_enqueue_style(
+            "checkout-review",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/checkout-review.css",
+            ["checkout-form"],
+            MR_THEME_VERSION,
+        );
+
+        wp_enqueue_style(
+            "aaapos-checkout-progress",
+            get_template_directory_uri() .
+                "/assets/css/components/cart/checkout-progress.css",
+            [],
+            MR_THEME_VERSION,
+        );
+    }
 
     // Order Received Page
     if (is_order_received_page()) {
@@ -153,66 +199,28 @@ function mr_enqueue_styles()
             get_template_directory_uri() .
                 "/assets/css/components/cart/order-received.css",
             [],
-            AAAPOS_VERSION,
+            MR_THEME_VERSION,
         );
     }
 
-    wp_enqueue_style(
-        "checkout-form",
-        get_template_directory_uri() .
-            "/assets/css/components/cart/checkout-form.css",
-        ["checkout-main"],
-        THEME_VERSION,
-    );
-    wp_enqueue_style(
-        "checkout-review",
-        get_template_directory_uri() .
-            "/assets/css/components/cart/checkout-review.css",
-        ["checkout-form"],
-        THEME_VERSION,
-    );
-
-    // In your woocommerce styles function
-    if (is_checkout() || is_cart()) {
-        wp_enqueue_style(
-            "aaapos-checkout-progress",
-            get_template_directory_uri() .
-                "/assets/css/components/cart/checkout-progress.css",
-            ["aaapos-woocommerce-base"],
-            AAAPOS_VERSION,
-            "all",
-        );
-    }
-
-    // Category cards styles - NUCLEAR PRIORITY
+    // Category cards styles
     wp_enqueue_style(
         "aaapos-categories",
         get_template_directory_uri() .
             "/assets/css/components/categories-shop.css",
-        ["aaapos-woocommerce-base"],
-        AAAPOS_VERSION . "." . time() . rand(1, 9999),
-        "all",
+        $is_production ? ["mr-main"] : ["mr-components"],
+        MR_THEME_VERSION,
     );
 
     // 404 Page styles
-    wp_enqueue_style(
-        "macedon-ranges-404",
-        get_template_directory_uri() . "/assets/css/404.css",
-        [],
-        "1.0.0",
-        "all",
-    );
-
-    add_action("wp_enqueue_scripts", "macedon_ranges_enqueue_404_styles");
-
-    // JavaScript
-    wp_enqueue_script(
-        "aaapos-category-filter-drag",
-        get_template_directory_uri() . "/assets/js/category-filter-drag.js",
-        [],
-        "1.0.0",
-        true,
-    );
+    if (is_404()) {
+        wp_enqueue_style(
+            "macedon-ranges-404",
+            get_template_directory_uri() . "/assets/css/404.css",
+            [],
+            MR_THEME_VERSION,
+        );
+    }
 
     // WooCommerce specific styles
     if (class_exists("WooCommerce")) {
@@ -220,15 +228,7 @@ function mr_enqueue_styles()
         wp_enqueue_style(
             "aaapos-quick-view",
             MR_THEME_URI . "/assets/css/quick-view.css",
-            ["mr-components"],
-            MR_THEME_VERSION,
-        );
-
-        // Cart Notifications styles
-        wp_enqueue_style(
-            "aaapos-cart-notifications",
-            MR_THEME_URI . "/assets/css/cart-notifications.css",
-            ["mr-components"],
+            [],
             MR_THEME_VERSION,
         );
     }
@@ -248,28 +248,6 @@ function mr_enqueue_styles()
 }
 add_action("wp_enqueue_scripts", "mr_enqueue_styles", 10);
 
-// ============================================
-// CART NOTIFICATIONS - Load on all pages with products
-// ============================================
-if (
-    is_shop() ||
-    is_product_category() ||
-    is_product_tag() ||
-    is_product() ||
-    is_search() ||
-    is_front_page() ||
-    is_page() ||
-    is_singular()
-) {
-    wp_enqueue_script(
-        "aaapos-cart-notifications",
-        MR_THEME_URI . "/assets/js/cart-notifications.js",
-        ["jquery"],
-        MR_THEME_VERSION,
-        true,
-    );
-}
-
 /**
  * Enqueue hero video script for single WebM video
  */
@@ -282,12 +260,12 @@ function mr_enqueue_hero_video_script()
     ) {
         $video_id = get_theme_mod("hero_video_webm", "");
 
-        if ($video_id) {
+        if ($video_id && !mr_is_production_mode()) {
             wp_enqueue_script(
                 "mr-hero-video",
                 get_template_directory_uri() . "/assets/js/hero-video.js",
                 ["jquery"],
-                "2.0.0",
+                MR_THEME_VERSION,
                 true,
             );
         }
@@ -300,222 +278,325 @@ add_action("wp_enqueue_scripts", "mr_enqueue_hero_video_script", 20);
  */
 function mr_enqueue_scripts()
 {
-    // Core theme JavaScript (defer, footer)
+    $is_production = mr_is_production_mode();
+
+    if ($is_production) {
+        // PRODUCTION MODE - Load single minified JS bundle
+        wp_enqueue_script(
+            "mr-bundle",
+            MR_THEME_URI . "/assets/js/dist/bundle.min.js",
+            ["jquery"],
+            MR_THEME_VERSION,
+            true,
+        );
+
+        // Localize the bundle with all necessary data
+        wp_localize_script("mr-bundle", "mrTheme", [
+            "ajaxUrl" => admin_url("admin-ajax.php"),
+            "nonce" => wp_create_nonce("mr_nonce"),
+            "homeUrl" => esc_url(home_url("/")),
+            "themeUrl" => MR_THEME_URI,
+            "isRTL" => is_rtl(),
+            "isMobile" => wp_is_mobile(),
+            "animationEnabled" => get_theme_mod("mr_enable_animations", true),
+            "animationSpeed" => get_theme_mod("mr_animation_speed", "normal"),
+            "i18n" => [
+                "loading" => esc_html__("Loading...", "aaapos-prime"),
+                "error" => esc_html__("An error occurred", "aaapos-prime"),
+                "close" => esc_html__("Close", "aaapos-prime"),
+                "search" => esc_html__("Search", "aaapos-prime"),
+                "noResults" => esc_html__("No results found", "aaapos-prime"),
+            ],
+        ]);
+
+        // Navigation localization
+        if (has_nav_menu("primary") || has_nav_menu("mobile")) {
+            wp_localize_script("mr-bundle", "mrNav", [
+                "ajax_url" => admin_url("admin-ajax.php"),
+                "nonce" => wp_create_nonce("mr_cart_nonce"),
+            ]);
+        }
+
+        // WooCommerce localizations
+        if (class_exists("WooCommerce")) {
+            wp_localize_script("mr-bundle", "mr_ajax", [
+                "url" => admin_url("admin-ajax.php"),
+                "ajax_url" => admin_url("admin-ajax.php"),
+                "wc_ajax_url" => WC_AJAX::get_endpoint("%%endpoint%%"),
+                "nonce" => wp_create_nonce("mr_nonce"),
+                "cart_nonce" => wp_create_nonce("mr_cart_nonce"),
+            ]);
+
+            // Quick View localization
+            if (
+                is_shop() ||
+                is_product_category() ||
+                is_product_tag() ||
+                is_search() ||
+                is_front_page()
+            ) {
+                wp_localize_script("mr-bundle", "aaaposQuickView", [
+                    "ajax_url" => admin_url("admin-ajax.php"),
+                    "nonce" => wp_create_nonce("woocommerce-cart"),
+                ]);
+            }
+        }
+
+    } else {
+        // DEVELOPMENT MODE - Load individual JS files
+        
+        // Core theme JavaScript (defer, footer)
+        wp_enqueue_script(
+            "mr-theme",
+            MR_THEME_URI . "/assets/js/theme.js",
+            [],
+            MR_THEME_VERSION,
+            true,
+        );
+
+        // Navigation
+        if (has_nav_menu("primary") || has_nav_menu("mobile")) {
+            wp_enqueue_script(
+                "mr-navigation",
+                MR_THEME_URI . "/assets/js/navigation.js",
+                ["mr-theme"],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            // Localize navigation script for AJAX
+            wp_localize_script("mr-navigation", "mrNav", [
+                "ajax_url" => admin_url("admin-ajax.php"),
+                "nonce" => wp_create_nonce("mr_cart_nonce"),
+            ]);
+        }
+
+        // Animations
+        wp_enqueue_script(
+            "mr-animations",
+            MR_THEME_URI . "/assets/js/animations.js",
+            ["mr-theme"],
+            MR_THEME_VERSION,
+            true,
+        );
+
+        // Slider (conditional - only on pages with sliders)
+        if (is_front_page() || is_page_template("page-templates/homepage.php")) {
+            wp_enqueue_script(
+                "mr-slider",
+                MR_THEME_URI . "/assets/js/slider.js",
+                ["mr-theme"],
+                MR_THEME_VERSION,
+                true,
+            );
+        }
+
+        // Modal (conditional)
+        if (is_search() || is_singular()) {
+            wp_enqueue_script(
+                "mr-modal",
+                MR_THEME_URI . "/assets/js/modal.js",
+                ["mr-theme"],
+                MR_THEME_VERSION,
+                true,
+            );
+        }
+
+        // Footer scripts (conditional)
+        if (
+            is_active_sidebar("footer-1") ||
+            is_active_sidebar("footer-2") ||
+            is_active_sidebar("footer-3")
+        ) {
+            wp_enqueue_script(
+                "mr-footer",
+                MR_THEME_URI . "/assets/js/footer.js",
+                ["mr-theme"],
+                MR_THEME_VERSION,
+                true,
+            );
+        }
+
+        // WooCommerce scripts (conditional)
+        if (class_exists("WooCommerce")) {
+            // Header scroll effects
+            wp_enqueue_script(
+                "mr-header-scroll",
+                MR_THEME_URI . "/assets/js/header-scroll.js",
+                ["mr-theme"],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            // WooCommerce enhancements
+            wp_enqueue_script(
+                "mr-woocommerce",
+                MR_THEME_URI . "/assets/js/woocommerce.js",
+                ["mr-animations", "jquery"],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            // Cart scripts
+            wp_enqueue_script(
+                "mr-cart",
+                MR_THEME_URI . "/assets/js/cart.js",
+                ["mr-woocommerce", "jquery"],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            // Quick View
+            if (
+                is_shop() ||
+                is_product_category() ||
+                is_product_tag() ||
+                is_search() ||
+                is_front_page()
+            ) {
+                wp_enqueue_script(
+                    "aaapos-quick-view",
+                    MR_THEME_URI . "/assets/js/quick-view.js",
+                    ["jquery"],
+                    MR_THEME_VERSION,
+                    true,
+                );
+
+                // Localize Quick View script
+                wp_localize_script("aaapos-quick-view", "aaaposQuickView", [
+                    "ajax_url" => admin_url("admin-ajax.php"),
+                    "nonce" => wp_create_nonce("woocommerce-cart"),
+                ]);
+            }
+
+            // SINGLE PRODUCT PAGE - Modern variation swatches
+            if (is_product()) {
+                wp_enqueue_script(
+                    "mr-variation-swatches",
+                    MR_THEME_URI . "/assets/js/variation-swatches.js",
+                    ["jquery", "wc-add-to-cart-variation"],
+                    MR_THEME_VERSION,
+                    true,
+                );
+
+                wp_enqueue_script(
+                    "mr-quantity-selector",
+                    MR_THEME_URI . "/assets/js/quantity-selector.js",
+                    ["jquery"],
+                    MR_THEME_VERSION,
+                    true,
+                );
+            }
+
+            // Shop column toggle
+            if (is_shop() || is_product_category() || is_product_tag()) {
+                wp_enqueue_script(
+                    "aaapos-shop-column-toggle",
+                    get_template_directory_uri() .
+                        "/assets/js/shop-column-toggle.js",
+                    ["jquery"],
+                    MR_THEME_VERSION,
+                    true,
+                );
+            }
+
+            // Category filter drag
+            wp_enqueue_script(
+                "aaapos-category-filter-drag",
+                get_template_directory_uri() . "/assets/js/category-filter-drag.js",
+                [],
+                MR_THEME_VERSION,
+                true,
+            );
+
+            // Localize for cart.js and woocommerce.js
+            wp_localize_script("mr-cart", "mr_ajax", [
+                "url" => admin_url("admin-ajax.php"),
+                "ajax_url" => admin_url("admin-ajax.php"),
+                "wc_ajax_url" => WC_AJAX::get_endpoint("%%endpoint%%"),
+                "nonce" => wp_create_nonce("mr_nonce"),
+                "cart_nonce" => wp_create_nonce("mr_cart_nonce"),
+            ]);
+        }
+
+        // Localize script for AJAX & global settings
+        wp_localize_script("mr-theme", "mrTheme", [
+            "ajaxUrl" => admin_url("admin-ajax.php"),
+            "nonce" => wp_create_nonce("mr_nonce"),
+            "homeUrl" => esc_url(home_url("/")),
+            "themeUrl" => MR_THEME_URI,
+            "isRTL" => is_rtl(),
+            "isMobile" => wp_is_mobile(),
+            "animationEnabled" => get_theme_mod("mr_enable_animations", true),
+            "animationSpeed" => get_theme_mod("mr_animation_speed", "normal"),
+            "i18n" => [
+                "loading" => esc_html__("Loading...", "aaapos-prime"),
+                "error" => esc_html__("An error occurred", "aaapos-prime"),
+                "close" => esc_html__("Close", "aaapos-prime"),
+                "search" => esc_html__("Search", "aaapos-prime"),
+                "noResults" => esc_html__("No results found", "aaapos-prime"),
+            ],
+        ]);
+    }
+
+    // ALWAYS LOAD THESE (Not in bundle) - Both dev and production
+    
+    // Cart Confirmation Modal - Standalone
     wp_enqueue_script(
-        "mr-theme",
-        MR_THEME_URI . "/assets/js/theme.js",
+        "cart-confirm-modal",
+        get_template_directory_uri() . "/assets/js/cart-confirm-modal.js",
         [],
         MR_THEME_VERSION,
         true,
     );
 
-    // Navigation
-    if (has_nav_menu("primary") || has_nav_menu("mobile")) {
-        wp_enqueue_script(
-            "mr-navigation",
-            MR_THEME_URI . "/assets/js/navigation.js",
-            ["mr-theme"],
-            MR_THEME_VERSION,
-            true,
-        );
-
-        // Localize navigation script for AJAX
-        wp_localize_script("mr-navigation", "mrNav", [
-            "ajax_url" => admin_url("admin-ajax.php"),
-            "nonce" => wp_create_nonce("mr_cart_nonce"),
-        ]);
-    }
-
-    // Animations
+    // Auth Modal - Standalone (needs localization)
     wp_enqueue_script(
-        "mr-animations",
-        MR_THEME_URI . "/assets/js/animations.js",
-        ["mr-theme"],
+        "mr-auth-modal",
+        get_template_directory_uri() . "/assets/js/auth-modal.js",
+        ["jquery"],
         MR_THEME_VERSION,
         true,
     );
 
-    // Slider (conditional - only on pages with sliders)
-    if (is_front_page() || is_page_template("page-templates/homepage.php")) {
-        wp_enqueue_script(
-            "mr-slider",
-            MR_THEME_URI . "/assets/js/slider.js",
-            ["mr-theme"],
-            MR_THEME_VERSION,
-            true,
-        );
-    }
+    // Localize auth modal (ALWAYS - both modes)
+    wp_localize_script("mr-auth-modal", "mr_auth", [
+        "ajax_url" => admin_url("admin-ajax.php"),
+        "nonce" => wp_create_nonce("mr_auth_nonce"),
+        "login_image" => get_template_directory_uri() . "/assets/images/login.png",
+        "lost_password_url" => wp_lostpassword_url(),
+    ]);
 
-    // Modal (conditional)
-    if (is_search() || is_singular()) {
-        wp_enqueue_script(
-            "mr-modal",
-            MR_THEME_URI . "/assets/js/modal.js",
-            ["mr-theme"],
-            MR_THEME_VERSION,
-            true,
-        );
-    }
-
-    // Footer scripts (conditional)
+    // Cart Notifications - Standalone
     if (
-        is_active_sidebar("footer-1") ||
-        is_active_sidebar("footer-2") ||
-        is_active_sidebar("footer-3")
+        is_shop() ||
+        is_product_category() ||
+        is_product_tag() ||
+        is_product() ||
+        is_search() ||
+        is_front_page() ||
+        is_page() ||
+        is_singular()
     ) {
         wp_enqueue_script(
-            "mr-footer",
-            MR_THEME_URI . "/assets/js/footer.js",
-            ["mr-theme"],
+            "aaapos-cart-notifications",
+            MR_THEME_URI . "/assets/js/cart-notifications.js",
+            ["jquery"],
             MR_THEME_VERSION,
             true,
         );
     }
 
-    // WooCommerce scripts (conditional)
-    if (class_exists("WooCommerce")) {
-        // Header scroll effects
+    // Checkout scripts - ONLY on checkout page (Not in bundle)
+    if (is_checkout() && !is_order_received_page()) {
         wp_enqueue_script(
-            "mr-header-scroll",
-            MR_THEME_URI . "/assets/js/header-scroll.js",
-            ["mr-theme"],
+            "aaapos-checkout",
+            get_template_directory_uri() . "/assets/js/checkout.js",
+            ["jquery", "wc-checkout"],
             MR_THEME_VERSION,
             true,
         );
-
-        // WooCommerce enhancements
-        wp_enqueue_script(
-            "mr-woocommerce",
-            MR_THEME_URI . "/assets/js/woocommerce.js",
-            ["mr-animations", "jquery"],
-            MR_THEME_VERSION,
-            true,
-        );
-
-        // Cart Confirmation Modal JS - Load BEFORE cart.js
-        wp_enqueue_script(
-            "cart-confirm-modal",
-            get_template_directory_uri() . "/assets/js/cart-confirm-modal.js",
-            [],
-            filemtime(
-                get_template_directory() . "/assets/js/cart-confirm-modal.js",
-            ),
-            true,
-        );
-
-        // Cart scripts - Depends on modal
-        wp_enqueue_script(
-            "mr-cart",
-            MR_THEME_URI . "/assets/js/cart.js",
-            ["mr-woocommerce", "jquery", "cart-confirm-modal"],
-            MR_THEME_VERSION,
-            true,
-        );
-
-        // ============================================
-        // QUICK VIEW - Load on shop, archive, search pages
-        // ============================================
-        if (
-            is_shop() ||
-            is_product_category() ||
-            is_product_tag() ||
-            is_search() ||
-            is_front_page()
-        ) {
-            wp_enqueue_script(
-                "aaapos-quick-view",
-                MR_THEME_URI . "/assets/js/quick-view.js",
-                ["jquery"],
-                MR_THEME_VERSION,
-                true,
-            );
-
-            // Localize Quick View script
-            wp_localize_script("aaapos-quick-view", "aaaposQuickView", [
-                "ajax_url" => admin_url("admin-ajax.php"),
-                "nonce" => wp_create_nonce("woocommerce-cart"),
-            ]);
-        }
-
-        // ============================================
-        // CART NOTIFICATIONS - Load on all pages with products
-        // ============================================
-        if (
-            is_shop() ||
-            is_product_category() ||
-            is_product_tag() ||
-            is_product() ||
-            is_search() ||
-            is_front_page()
-        ) {
-            wp_enqueue_script(
-                "aaapos-cart-notifications",
-                MR_THEME_URI . "/assets/js/cart-notifications.js",
-                ["jquery"],
-                MR_THEME_VERSION,
-                true,
-            );
-        }
-
-        // SINGLE PRODUCT PAGE - Modern variation swatches
-        if (is_product()) {
-            wp_enqueue_script(
-                "mr-variation-swatches",
-                MR_THEME_URI . "/assets/js/variation-swatches.js",
-                ["jquery", "wc-add-to-cart-variation"],
-                MR_THEME_VERSION,
-                true,
-            );
-
-            wp_enqueue_script(
-                "mr-quantity-selector",
-                MR_THEME_URI . "/assets/js/quantity-selector.js",
-                ["jquery"],
-                MR_THEME_VERSION,
-                true,
-            );
-        }
-
-        // Shop column toggle
-        if (is_shop() || is_product_category() || is_product_tag()) {
-            wp_enqueue_script(
-                "aaapos-shop-column-toggle",
-                get_template_directory_uri() .
-                    "/assets/js/shop-column-toggle.js",
-                ["jquery"],
-                "1.0.0",
-                true,
-            );
-        }
-
-        // Localize for cart.js and woocommerce.js
-        wp_localize_script("mr-cart", "mr_ajax", [
-            "url" => admin_url("admin-ajax.php"),
-            "ajax_url" => admin_url("admin-ajax.php"),
-            "wc_ajax_url" => WC_AJAX::get_endpoint("%%endpoint%%"),
-            "nonce" => wp_create_nonce("mr_nonce"),
-            "cart_nonce" => wp_create_nonce("mr_cart_nonce"),
-        ]);
     }
-
-    // Localize script for AJAX & global settings
-    wp_localize_script("mr-theme", "mrTheme", [
-        "ajaxUrl" => admin_url("admin-ajax.php"),
-        "nonce" => wp_create_nonce("mr_nonce"),
-        "homeUrl" => esc_url(home_url("/")),
-        "themeUrl" => MR_THEME_URI,
-        "isRTL" => is_rtl(),
-        "isMobile" => wp_is_mobile(),
-        "animationEnabled" => get_theme_mod("mr_enable_animations", true),
-        "animationSpeed" => get_theme_mod("mr_animation_speed", "normal"),
-        "i18n" => [
-            "loading" => esc_html__("Loading...", "aaapos-prime"),
-            "error" => esc_html__("An error occurred", "aaapos-prime"),
-            "close" => esc_html__("Close", "aaapos-prime"),
-            "search" => esc_html__("Search", "aaapos-prime"),
-            "noResults" => esc_html__("No results found", "aaapos-prime"),
-        ],
-    ]);
 
     // Comment reply script (conditional)
     if (is_singular() && comments_open() && get_option("thread_comments")) {
@@ -526,6 +607,7 @@ add_action("wp_enqueue_scripts", "mr_enqueue_scripts", 20);
 
 /**
  * Enqueue customizer live preview script
+ * NOTE: This should NEVER be in the bundle
  */
 function mr_customizer_live_preview()
 {
@@ -633,18 +715,33 @@ add_action("wp_enqueue_scripts", "mr_enqueue_google_fonts", 5);
  */
 function mr_preload_critical_assets()
 {
-    echo '<link rel="preload" href="' .
-        esc_url(MR_THEME_URI . "/assets/css/variables.css") .
-        '" as="style">' .
-        "\n";
-    echo '<link rel="preload" href="' .
-        esc_url(MR_THEME_URI . "/assets/css/base.css") .
-        '" as="style">' .
-        "\n";
-    echo '<link rel="preload" href="' .
-        esc_url(MR_THEME_URI . "/assets/js/theme.js") .
-        '" as="script">' .
-        "\n";
+    $is_production = mr_is_production_mode();
+
+    if ($is_production) {
+        // Production - preload minified bundle
+        echo '<link rel="preload" href="' .
+            esc_url(MR_THEME_URI . "/assets/css/dist/main.min.css") .
+            '" as="style">' .
+            "\n";
+        echo '<link rel="preload" href="' .
+            esc_url(MR_THEME_URI . "/assets/js/dist/bundle.min.js") .
+            '" as="script">' .
+            "\n";
+    } else {
+        // Development - preload individual files
+        echo '<link rel="preload" href="' .
+            esc_url(MR_THEME_URI . "/assets/css/variables.css") .
+            '" as="style">' .
+            "\n";
+        echo '<link rel="preload" href="' .
+            esc_url(MR_THEME_URI . "/assets/css/base.css") .
+            '" as="style">' .
+            "\n";
+        echo '<link rel="preload" href="' .
+            esc_url(MR_THEME_URI . "/assets/js/theme.js") .
+            '" as="script">' .
+            "\n";
+    }
 
     // Preload logo if set
     $custom_logo_id = get_theme_mod("custom_logo");
@@ -679,8 +776,9 @@ function mr_script_loader_tag($tag, $handle, $src)
     // Scripts that should be async
     $async_scripts = [];
 
-    // Scripts that should be deferred (most theme scripts)
+    // Scripts that should be deferred
     $defer_scripts = [
+        "mr-bundle", // Production bundle
         "mr-theme",
         "mr-navigation",
         "mr-animations",
@@ -690,11 +788,14 @@ function mr_script_loader_tag($tag, $handle, $src)
         "mr-woocommerce",
         "mr-cart",
         "cart-confirm-modal",
+        "mr-auth-modal",
         "mr-header-scroll",
         "mr-variation-swatches",
         "mr-quantity-selector",
         "aaapos-quick-view",
         "aaapos-cart-notifications",
+        "aaapos-shop-column-toggle",
+        "aaapos-category-filter-drag",
     ];
 
     if (in_array($handle, $async_scripts, true)) {
@@ -712,7 +813,6 @@ add_filter("script_loader_tag", "mr_script_loader_tag", 10, 3);
 /**
  * Enqueue WooCommerce Product Collection Block Styles
  */
-
 function aaapos_enqueue_woocommerce_blocks_styles()
 {
     // Only load on pages that have WooCommerce blocks
@@ -721,11 +821,8 @@ function aaapos_enqueue_woocommerce_blocks_styles()
             "aaapos-woocommerce-blocks",
             get_template_directory_uri() .
                 "/assets/css/woocommerce/woocommerce-blocks.css",
-            [], // No dependencies
-            filemtime(
-                get_template_directory() .
-                    "/assets/css/woocommerce/woocommerce-blocks.css",
-            ), // Cache busting
+            [],
+            MR_THEME_VERSION,
             "all",
         );
     }
@@ -734,4 +831,4 @@ add_action(
     "wp_enqueue_scripts",
     "aaapos_enqueue_woocommerce_blocks_styles",
     999,
-); // High priority to override WooCommerce
+);

@@ -32,7 +32,7 @@
 <div id="page" class="site">
     <!-- Skip to content link for accessibility -->
     <a class="skip-link sr-only" href="#main">
-        <?php esc_html_e("Skip to content", "macedon-ranges"); ?>
+        <?php esc_html_e("Skip to content", "aaapos"); ?>
     </a>
 
     <?php
@@ -68,13 +68,13 @@
                     <div class="mobile-search-wrapper">
                         <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url("/")); ?>">
                             <label for="mobile-search-input" class="sr-only">
-                                <?php esc_html_e("Search for:", "macedon-ranges"); ?>
+                                <?php esc_html_e("Search for:", "aaapos"); ?>
                             </label>
                             <input 
                                 type="search" 
                                 id="mobile-search-input"
                                 class="search-field" 
-                                placeholder="<?php esc_attr_e("Search products...", "macedon-ranges"); ?>" 
+                                placeholder="<?php esc_attr_e("Search products...", "aaapos"); ?>" 
                                 value="<?php echo get_search_query(); ?>" 
                                 name="s"
                             />
@@ -106,7 +106,7 @@
                                     </svg>
                                     <div class="mobile-account-info">
                                         <span class="mobile-account-name"><?php echo esc_html($username); ?></span>
-                                        <span class="mobile-account-status"><?php esc_html_e("View Account", "macedon-ranges"); ?></span>
+                                        <span class="mobile-account-status"><?php esc_html_e("View Account", "aaapos"); ?></span>
                                     </div>
                                     <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -119,7 +119,7 @@
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M16 11V7a4 4 0 0 0-8 0v4M5 9h14l1 12H4L5 9z"/>
                                             </svg>
-                                            <?php esc_html_e("My Orders", "macedon-ranges"); ?>
+                                            <?php esc_html_e("My Orders", "aaapos"); ?>
                                         </a>
                                     </li>
                                     <li>
@@ -128,7 +128,7 @@
                                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                                                 <circle cx="12" cy="10" r="3"/>
                                             </svg>
-                                            <?php esc_html_e("Addresses", "macedon-ranges"); ?>
+                                            <?php esc_html_e("Addresses", "aaapos"); ?>
                                         </a>
                                     </li>
                                     <li class="menu-divider"></li>
@@ -139,7 +139,7 @@
                                                 <polyline points="16 17 21 12 16 7"/>
                                                 <line x1="21" y1="12" x2="9" y2="12"/>
                                             </svg>
-                                            <?php esc_html_e("Logout", "macedon-ranges"); ?>
+                                            <?php esc_html_e("Logout", "aaapos"); ?>
                                         </a>
                                     </li>
                                 </ul>
@@ -150,8 +150,8 @@
                                         <circle cx="12" cy="7" r="4"/>
                                     </svg>
                                     <div class="mobile-account-info">
-                                        <span class="mobile-account-name"><?php esc_html_e("Sign In", "macedon-ranges"); ?></span>
-                                        <span class="mobile-account-status"><?php esc_html_e("Login or Register", "macedon-ranges"); ?></span>
+                                        <span class="mobile-account-name"><?php esc_html_e("Sign In", "aaapos"); ?></span>
+                                        <span class="mobile-account-status"><?php esc_html_e("Login or Register", "aaapos"); ?></span>
                                     </div>
                                     <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -176,12 +176,12 @@
                     } else {
                         echo '<div id="primary-menu-container" class="menu-container">';
                         echo '<ul id="primary-menu" class="nav-menu">';
-                        echo '<li><a href="' . esc_url(home_url("/")) . '">' . esc_html__("Home", "macedon-ranges") . "</a></li>";
+                        echo '<li><a href="' . esc_url(home_url("/")) . '">' . esc_html__("Home", "aaapos") . "</a></li>";
                         if (class_exists("WooCommerce")) {
-                            echo '<li><a href="' . esc_url(get_permalink(wc_get_page_id("shop"))) . '">' . esc_html__("Shop", "macedon-ranges") . "</a></li>";
+                            echo '<li><a href="' . esc_url(get_permalink(wc_get_page_id("shop"))) . '">' . esc_html__("Shop", "aaapos") . "</a></li>";
                         }
-                        echo '<li><a href="' . esc_url(home_url("/about")) . '">' . esc_html__("About", "macedon-ranges") . "</a></li>";
-                        echo '<li><a href="' . esc_url(home_url("/contact")) . '">' . esc_html__("Contact", "macedon-ranges") . "</a></li>";
+                        echo '<li><a href="' . esc_url(home_url("/about")) . '">' . esc_html__("About", "aaapos") . "</a></li>";
+                        echo '<li><a href="' . esc_url(home_url("/contact")) . '">' . esc_html__("Contact", "aaapos") . "</a></li>";
                         echo "</ul>";
                         echo "</div>";
                     }
@@ -195,13 +195,13 @@
                     <div class="header-search-bar" data-animate="zoom-in" data-animate-duration="normal" data-animate-delay="200">
                         <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url("/")); ?>">
                             <label for="header-search-input" class="sr-only">
-                                <?php esc_html_e("Search for:", "macedon-ranges"); ?>
+                                <?php esc_html_e("Search for:", "aaapos"); ?>
                             </label>
                             <input 
                                 type="search" 
                                 id="header-search-input"
                                 class="search-field" 
-                                placeholder="<?php esc_attr_e("Search...", "macedon-ranges"); ?>" 
+                                placeholder="<?php esc_attr_e("Search...", "aaapos"); ?>" 
                                 value="<?php echo get_search_query(); ?>" 
                                 name="s"
                             />
@@ -251,7 +251,7 @@
                                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                                                     <polyline points="9 22 9 12 15 12 15 22"/>
                                                 </svg>
-                                                <?php esc_html_e("Dashboard", "macedon-ranges"); ?>
+                                                <?php esc_html_e("Dashboard", "aaapos"); ?>
                                             </a>
                                         </li>
                                         <li>
@@ -259,7 +259,7 @@
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                     <path d="M16 11V7a4 4 0 0 0-8 0v4M5 9h14l1 12H4L5 9z"/>
                                                 </svg>
-                                                <?php esc_html_e("Orders", "macedon-ranges"); ?>
+                                                <?php esc_html_e("Orders", "aaapos"); ?>
                                             </a>
                                         </li>
                                         <li>
@@ -268,7 +268,7 @@
                                                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                                                     <circle cx="12" cy="10" r="3"/>
                                                 </svg>
-                                                <?php esc_html_e("Addresses", "macedon-ranges"); ?>
+                                                <?php esc_html_e("Addresses", "aaapos"); ?>
                                             </a>
                                         </li>
                                         <li>
@@ -277,7 +277,7 @@
                                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                                                 </svg>
-                                                <?php esc_html_e("Account Details", "macedon-ranges"); ?>
+                                                <?php esc_html_e("Account Details", "aaapos"); ?>
                                             </a>
                                         </li>
                                         <li class="account-dropdown-divider"></li>
@@ -288,7 +288,7 @@
                                                     <polyline points="16 17 21 12 16 7"/>
                                                     <line x1="21" y1="12" x2="9" y2="12"/>
                                                 </svg>
-                                                <?php esc_html_e("Logout", "macedon-ranges"); ?>
+                                                <?php esc_html_e("Logout", "aaapos"); ?>
                                             </a>
                                         </li>
                                     </ul>
@@ -302,7 +302,7 @@
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                         <circle cx="12" cy="7" r="4"/>
                                     </svg>
-                                    <span><?php esc_html_e("Login", "macedon-ranges"); ?></span>
+                                    <span><?php esc_html_e("Login", "aaapos"); ?></span>
                                 </a>
                             </div>
                         <?php endif; ?>
@@ -343,8 +343,8 @@
                             <!-- Cart Dropdown -->
                             <div class="cart-dropdown">
                                 <div class="cart-dropdown-header">
-                                    <h3><?php esc_html_e("Shopping Cart", "macedon-ranges"); ?></h3>
-                                    <span class="cart-item-count"><?php echo esc_html($cart_count); ?> <?php echo $cart_count === 1 ? esc_html__("item", "macedon-ranges") : esc_html__("items", "macedon-ranges"); ?></span>
+                                    <h3><?php esc_html_e("Shopping Cart", "aaapos"); ?></h3>
+                                    <span class="cart-item-count"><?php echo esc_html($cart_count); ?> <?php echo $cart_count === 1 ? esc_html__("item", "aaapos") : esc_html__("items", "aaapos"); ?></span>
                                 </div>
                                 <ul class="cart-dropdown-items">
                                     <?php if ($cart_count > 0):
@@ -375,21 +375,21 @@
                                         endforeach;
                                     else: ?>
                                         <li class="cart-dropdown-empty">
-                                            <p><?php esc_html_e("Your cart is empty.", "macedon-ranges"); ?></p>
+                                            <p><?php esc_html_e("Your cart is empty.", "aaapos"); ?></p>
                                         </li>
                                     <?php endif; ?>
                                 </ul>
                                 <div class="cart-dropdown-footer">
                                     <div class="cart-subtotal">
-                                        <span><?php esc_html_e("Subtotal:", "macedon-ranges"); ?></span>
+                                        <span><?php esc_html_e("Subtotal:", "aaapos"); ?></span>
                                         <strong class="cart-subtotal-amount"><?php echo WC()->cart->get_cart_subtotal(); ?></strong>
                                     </div>
                                     <div class="cart-dropdown-actions">
                                         <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="btn btn-secondary btn-block">
-                                            <?php esc_html_e("View Cart", "macedon-ranges"); ?>
+                                            <?php esc_html_e("View Cart", "aaapos"); ?>
                                         </a>
                                         <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="btn btn-primary btn-block">
-                                            <?php esc_html_e("Checkout", "macedon-ranges"); ?>
+                                            <?php esc_html_e("Checkout", "aaapos"); ?>
                                         </a>
                                     </div>
                                 </div>
