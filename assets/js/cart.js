@@ -3,6 +3,7 @@
  * UPDATED: Extended notification timing without fade effects
  * UPDATED: Fix empty cart display when removing items one by one
  * UPDATED: Coupon error messages show as notifications instead of inline
+ * cart.js
  */
 class CartManager {
   constructor() {

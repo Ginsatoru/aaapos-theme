@@ -2,7 +2,7 @@
 /**
  * Template part for displaying blog posts in grid layout
  * Used in index.php for blog page
- *
+ * content.php
  * @package Macedon_Ranges
  */
 

@@ -3,7 +3,7 @@
  * 
  * Adds plus/minus buttons to quantity inputs on single product pages
  * Works with both simple and variable products
- * 
+ * quantity-selector.js
  * @package AAAPOS_Prime
  * @version 1.0.0
  */
