@@ -1,7 +1,7 @@
 /* ==========================================================================
-   CHECKOUT PROGRESS STEPS
-   Modern progress indicator - ADJUSTED VERSION
-   Reduced margin-bottom, smaller step numbers
+   CHECKOUT PROGRESS STEPS - Modern progress indicator
+   @package Macedon_Ranges
+   @since 1.0.0
    ========================================================================== */
 
 .woocommerce-checkout-progress {
@@ -55,7 +55,7 @@
 }
 
 /* ==========================================================================
-   STEP NUMBER (Circle) - MADE SMALLER
+   STEP NUMBER (Circle)
    ========================================================================== */
 
 .step-number {
@@ -123,8 +123,7 @@
 }
 
 /* ==========================================================================
-   CART PAGE SPECIFIC - CENTER ONLY THE PROGRESS STEPS
-   DO NOT affect the two-column cart layout
+   CART PAGE SPECIFIC
    ========================================================================== */
 
 body.woocommerce-cart .woocommerce-checkout-progress {
@@ -141,14 +140,13 @@ body.woocommerce-cart .checkout-steps {
     margin: 0 auto;
 }
 
-/* CRITICAL: Do NOT center parent containers - this breaks the cart layout */
 body.woocommerce-cart .entry-content,
 body.woocommerce-cart .woocommerce {
     text-align: left;
 }
 
 /* ==========================================================================
-   CHECKOUT PAGE SPECIFIC - CRITICAL FIX
+   CHECKOUT PAGE SPECIFIC
    ========================================================================== */
 
 body.woocommerce-checkout .woocommerce-checkout-progress {
@@ -164,7 +162,6 @@ body.woocommerce-checkout .checkout-steps {
     margin: 0 auto;
 }
 
-/* Ensure checkout page doesn't have conflicting text alignment */
 body.woocommerce-checkout .entry-content {
     text-align: left;
 }
@@ -197,9 +194,14 @@ body.woocommerce-order-received .checkout-steps {
     }
     
     .checkout-steps {
-        gap: 0.75rem;
+        gap: 1rem;
         display: inline-flex;
         justify-content: center;
+        flex-wrap: nowrap;
+    }
+    
+    .checkout-step {
+        gap: 0.5rem;
     }
     
     .step-number {
@@ -209,32 +211,40 @@ body.woocommerce-order-received .checkout-steps {
     }
     
     .step-label {
-        font-size: 0.9375rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
     }
     
     .step-arrow {
         width: 20px;
         height: 20px;
+        margin: 0 0.25rem;
     }
 }
 
-/* Mobile devices */
+/* Mobile devices - Horizontal layout with proper spacing */
 @media (max-width: 640px) {
     .woocommerce-checkout-progress {
         margin-bottom: 1.25rem;
         padding-top: 1rem;
         text-align: center;
+        overflow-x: auto;
+        overflow-y: visible;
     }
     
     .checkout-steps {
-        gap: 0.5rem;
-        justify-content: center;
+        gap: 0.75rem;
+        justify-content: flex-start;
         width: auto;
         display: inline-flex;
+        flex-wrap: nowrap;
+        padding: 0 1rem;
+        min-width: min-content;
     }
     
     .checkout-step {
         gap: 0.5rem;
+        flex-shrink: 0;
     }
     
     .step-number {
@@ -244,43 +254,69 @@ body.woocommerce-order-received .checkout-steps {
     }
     
     .step-label {
-        font-size: 0.875rem;
+        font-size: 0.8125rem;
+        white-space: nowrap;
     }
     
     .step-arrow {
-        width: 18px;
-        height: 18px;
-        margin: 0 -0.25rem;
+        width: 16px;
+        height: 16px;
+        margin: 0 0.25rem;
+        flex-shrink: 0;
     }
 }
 
-/* Very small mobile */
+/* Very small mobile - Keep arrows visible */
 @media (max-width: 480px) {
     .woocommerce-checkout-progress {
         text-align: center;
         margin-bottom: 1rem;
+        overflow-x: auto;
+        overflow-y: visible;
     }
     
     .checkout-steps {
-        gap: 0.25rem;
-        justify-content: center;
+        gap: 0.5rem;
+        justify-content: flex-start;
         display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding: 0 0.5rem;
+        min-width: min-content;
     }
     
     .checkout-step {
         flex-direction: column;
-        gap: 0.375rem;
+        gap: 0.5rem;
         text-align: center;
+        flex-shrink: 0;
+        min-width: 70px;
     }
     
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 0.875rem;
+    }
+    
+    /* Keep arrows visible on mobile */
     .step-arrow {
-        display: none;
+        display: block !important;
+        width: 16px;
+        height: 16px;
+        margin: 0 0.25rem;
+        flex-shrink: 0;
+        align-self: center;
+        transform: rotate(0deg);
     }
     
     .step-label {
-        font-size: 0.75rem;
-        max-width: 90px;
+        font-size: 0.7rem;
+        max-width: 70px;
         line-height: 1.2;
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: center;
     }
 }
 
@@ -288,7 +324,6 @@ body.woocommerce-order-received .checkout-steps {
    ACCESSIBILITY
    ========================================================================== */
 
-/* Screen reader only text */
 .checkout-step .screen-reader-text {
     position: absolute;
     width: 1px;
