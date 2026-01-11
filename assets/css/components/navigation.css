@@ -1,63 +1,12 @@
 /**
- * Navigation Styles - Single Menu for Desktop & Mobile
- * No duplicate menus - just responsive CSS
- * UPDATED: All colors now use CSS variables with separate nav accent
+ * Navigation Base Styles
+ * PRODUCTION READY - Minimal base styles only
+ * All detailed styles are in header/_navigation.css
  */
 
-/* ==========================================================================
-   PRIMARY NAVIGATION BASE
-   ========================================================================== */
-
-.main-navigation {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.main-navigation .menu-container {
-    display: flex;
-    align-items: center;
-}
-
-.main-navigation .nav-menu {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 2rem;
-}
-
-.main-navigation .nav-menu li {
-    position: relative;
-    margin: 0;
-}
-
-.main-navigation .nav-menu a {
-    display: block;
-    padding: 0.5rem 0;
-    color: var(--color-nav-link);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.main-navigation .nav-menu a:hover,
-.main-navigation .nav-menu a:focus {
-    color: var(--color-nav-hover); /* UPDATED: Nav accent color */
-}
-
-.main-navigation .nav-menu .current-menu-item > a,
-.main-navigation .nav-menu .current_page_item > a {
-    color: var(--color-nav-active); /* UPDATED: Nav accent color */
-}
-
-/* ==========================================================================
-   MOBILE MENU TOGGLE (Hidden on Desktop)
-   ========================================================================== */
-
+/* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
-    display: none; /* Hidden by default (desktop) */
+    display: none;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
@@ -66,7 +15,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: var(--space-2);
+    padding: 8px;
     z-index: 1001;
     position: relative;
 }
@@ -81,7 +30,6 @@
     transform-origin: center;
 }
 
-/* Active state (menu open) */
 .mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
     transform: rotate(45deg) translate(7px, 7px);
 }
@@ -94,375 +42,25 @@
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
-/* ==========================================================================
-   DROPDOWN MENUS (Desktop)
-   ========================================================================== */
-
-.main-navigation .nav-menu .sub-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--color-white);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    min-width: 220px;
-    padding: 0.5rem 0;
-    margin-top: 0.5rem;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    list-style: none;
-}
-
-.main-navigation .nav-menu li:hover > .sub-menu,
-.main-navigation .nav-menu li:focus-within > .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.main-navigation .nav-menu .sub-menu li {
-    margin: 0;
-}
-
-.main-navigation .nav-menu .sub-menu a {
-    padding: 0.75rem 1.5rem;
-    white-space: nowrap;
-}
-
-.main-navigation .nav-menu .sub-menu a:hover {
-    background-color: var(--color-light);
-}
-
-/* Third level dropdowns */
-.main-navigation .nav-menu .sub-menu .sub-menu {
-    left: 100%;
-    top: 0;
-    margin-top: 0;
-    margin-left: 0.5rem;
-}
-
-/* Hide mobile-only elements on desktop */
-.mobile-search-wrapper,
-.mobile-account-section {
-    display: none;
-}
-
-/* ==========================================================================
-   MOBILE MENU OVERLAY
-   ========================================================================== */
-.mobile-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 998;
-}
-
-.mobile-menu-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* ==========================================================================
-   RESPONSIVE - TABLET & MOBILE
-   ========================================================================== */
-
 @media (max-width: 1023px) {
-    
-    /* Show mobile toggle button */
     .mobile-menu-toggle {
         display: flex;
     }
-    
-    /* Transform navigation into sidebar - FIXED: Start at top edge */
-    .main-navigation {
-        position: fixed;
-        top: 0 !important; /* CRITICAL: Start at absolute top */
-        right: -100%;
-        width: 320px;
-        max-width: 85vw;
-        height: 100vh !important; /* CRITICAL: Full viewport height */
-        background: var(--color-white);
-        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-        overflow-y: auto;
-        transition: right 0.3s ease;
-        z-index: 999;
-        margin: 0;
-        flex: 0;
-        padding: 80px 0 2rem !important; /* CRITICAL: Top padding equals header height */
-        display: block;
-    }
-    
-    /* Show sidebar when active */
-    .main-navigation.active {
-        right: 0;
-    }
-    
-    /* Mobile Search Bar in Sidebar */
-    .mobile-search-wrapper {
-        display: block;
-        padding: 0 2rem var(--space-1);
-        border-bottom: 1px solid var(--color-gray-200);
-        margin-bottom: var(--space-1);
-    }
-
-    .mobile-search-wrapper .search-form {
-        display: flex;
-        align-items: center;
-        position: relative;
-        width: 100%;
-    }
-
-    .mobile-search-wrapper .search-field {
-        width: 100%;
-        padding: 12px 45px 12px 16px;
-        border: 1px solid var(--color-gray-300);
-        border-radius: 25px;
-        font-size: 0.95rem;
-        background: var(--color-gray-50);
-    }
-
-    .mobile-search-wrapper .search-field:focus {
-        outline: none;
-        border-color: var(--color-nav-hover); /* UPDATED: Nav accent color */
-        background: var(--color-white);
-    }
-
-    .mobile-search-wrapper .search-submit {
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mobile-search-wrapper .search-submit svg {
-        width: 18px;
-        height: 18px;
-        color: var(--color-text);
-    }
-
-    /* Mobile Account Section in Sidebar */
-    .mobile-account-section {
-        display: block;
-        padding: 0 2rem var(--space-2);
-        border-bottom: 1px solid var(--color-gray-200);
-        margin-bottom: var(--space-2);
-    }
-
-    .mobile-account-link {
-        display: flex;
-        align-items: center;
-        gap: var(--space-3);
-        padding: var(--space-4);
-        background: var(--color-gray-50);
-        border-radius: var(--border-radius);
-        text-decoration: none;
-        color: var(--color-dark);
-        font-weight: 600;
-        transition: background 0.2s ease;
-    }
-
-    .mobile-account-link:hover {
-        background: var(--color-gray-100);
-    }
-
-    .mobile-account-link svg {
-        width: 24px;
-        height: 24px;
-        color: var(--brand-color); /* UPDATED: Brand color for account icon */
-    }
-
-    .mobile-account-info {
-        flex: 1;
-    }
-
-    .mobile-account-name {
-        display: block;
-        font-size: 0.95rem;
-        color: var(--color-dark);
-        margin-bottom: 2px;
-    }
-
-    .mobile-account-status {
-        display: block;
-        font-size: 0.8rem;
-        color: var(--color-text-light);
-        font-weight: 400;
-    }
-
-    /* Mobile Account Menu (for logged in users) */
-    .mobile-account-menu {
-        list-style: none;
-        margin: var(--space-4) 0 0;
-        padding: 0;
-    }
-
-    .mobile-account-menu li {
-        margin: 0;
-    }
-
-    .mobile-account-menu a {
-        display: flex;
-        align-items: center;
-        gap: var(--space-3);
-        padding: var(--space-3) var(--space-4);
-        color: var(--color-text);
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.2s ease;
-        border-radius: var(--border-radius);
-    }
-
-    .mobile-account-menu a:hover {
-        background: var(--color-gray-50);
-        color: var(--brand-color); /* UPDATED: Brand color on hover */
-    }
-
-    .mobile-account-menu svg {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-    }
-
-    .mobile-account-menu .menu-divider {
-        height: 1px;
-        background: var(--color-gray-200);
-        margin: var(--space-3) 0;
-    }
-    
-    /* Menu container inside sidebar */
-    .main-navigation .menu-container {
-        display: block;
-        width: 100%;
-        height: auto;
-        padding: 0 2rem;
-        position: static;
-        box-shadow: none;
-    }
-    
-    /* Stack menu items vertically */
-    .main-navigation .nav-menu {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        width: 100%;
-        height: auto;
-    }
-    
-    .main-navigation .nav-menu li {
-        width: 100%;
-        border-bottom: 1px solid var(--color-light);
-        height: auto;
-    }
-    
-    .main-navigation .nav-menu a {
-        padding: 1rem 0;
-        font-size: 1.05rem;
-        height: auto;
-        justify-content: flex-start;
-    }
-    
-    /* Mobile dropdowns - no positioning */
-    .main-navigation .nav-menu .sub-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        background: var(--color-light);
-        border-radius: 0;
-        padding-left: 1rem;
-        margin: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-    }
-    
-    /* Show submenu on parent click */
-    .main-navigation .nav-menu li.menu-item-has-children > a {
-        position: relative;
-        padding-right: 40px;
-    }
-    
-    .main-navigation .nav-menu li.menu-item-has-children > a::after {
-        content: '\25BC';
-        font-size: 0.7em;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: transform 0.3s ease;
-    }
-    
-    .main-navigation .nav-menu li.menu-item-has-children.active > a::after {
-        transform: translateY(-50%) rotate(180deg);
-    }
-    
-    .main-navigation .nav-menu li.menu-item-has-children.active > .sub-menu {
-        max-height: 500px;
-    }
-    
-    .main-navigation .nav-menu .sub-menu li {
-        border-bottom: none;
-    }
-    
-    .main-navigation .nav-menu .sub-menu a {
-        padding: 0.75rem 1rem;
-        font-size: 0.95rem;
-    }
 }
 
-/* Mobile specific - adjust padding for smaller header */
-@media (max-width: 767px) {
-    .main-navigation {
-        padding: 70px 0 2rem !important; /* Mobile header is 70px */
-    }
-}
-
-/* ==========================================================================
-   BODY STATES
-   ========================================================================== */
-body.mobile-menu-open {
-    overflow: hidden;
-}
-
-/* ==========================================================================
-   ACCESSIBILITY
-   ========================================================================== */
-
-.main-navigation .nav-menu a:focus {
-    outline: 2px solid var(--color-nav-hover); /* UPDATED: Nav accent color */
-    outline-offset: 2px;
-}
-
+/* Accessibility */
 .mobile-menu-toggle:focus {
-    outline: 2px solid var(--brand-color); /* UPDATED: Brand color */
+    outline: 2px solid var(--brand-color);
     outline-offset: 4px;
 }
 
-/* Skip to content link */
 .skip-link {
     position: absolute;
     left: -9999px;
     top: 0;
     z-index: 999999;
     padding: 1rem;
-    background: var(--brand-color); /* UPDATED: Brand color */
+    background: var(--brand-color);
     color: var(--color-white);
     text-decoration: none;
 }

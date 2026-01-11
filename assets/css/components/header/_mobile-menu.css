@@ -227,11 +227,12 @@
     margin: var(--space-3) 0;
   }
 
+  /* FIXED: Remove padding to allow full-width dropdowns */
   .main-navigation .menu-container {
     display: block;
     width: 100%;
     height: auto;
-    padding: 0 2rem;
+    padding: 0; /* Removed 2rem padding */
   }
 
   .nav-menu {
@@ -249,7 +250,7 @@
   }
 
   .nav-menu a {
-    padding: 1rem 0;
+    padding: 1rem 2rem; /* Added horizontal padding here instead */
     font-size: 1.05rem;
     height: auto;
     justify-content: flex-start;
@@ -260,7 +261,7 @@
     display: none;
   }
 
-  /* Mobile dropdowns */
+  /* Mobile dropdowns - FIXED: Full width background */
   .nav-menu .sub-menu {
     position: static;
     opacity: 1;
@@ -269,7 +270,7 @@
     box-shadow: none;
     background: var(--color-bg-secondary);
     border-radius: 0;
-    padding-left: 1rem;
+    padding: 0;
     margin: 0;
     max-height: 0;
     overflow: hidden;
@@ -278,21 +279,29 @@
 
   .nav-menu li.menu-item-has-children > a {
     position: relative;
-    padding-right: 40px;
+    padding-right: 3rem; /* More space for the arrow */
+  }
+
+  /* FIXED: Single smaller chevron icon for mobile */
+  .nav-menu li.menu-item-has-children > a .submenu-toggle,
+  .nav-menu li.menu-item-has-children > a .dropdown-icon {
+    display: none !important; /* Force hide WordPress default arrows */
   }
 
   .nav-menu li.menu-item-has-children > a::after {
-    content: "\25BC";
-    font-size: 0.7em;
+    content: "›";
+    font-size: 1.5rem; /* Smaller, cleaner arrow */
+    font-weight: 300;
     position: absolute;
-    right: 0;
+    right: 2rem;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) rotate(90deg);
     transition: transform 0.3s ease;
+    line-height: 1;
   }
 
   .nav-menu li.menu-item-has-children.active > a::after {
-    transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(-90deg);
   }
 
   .nav-menu li.menu-item-has-children.active > .sub-menu {
@@ -304,7 +313,17 @@
   }
 
   .nav-menu .sub-menu a {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 2rem 0.75rem 3rem; /* Left indent for submenu items */
     font-size: 0.95rem;
+  }
+
+  /* Nested submenu (3rd level) */
+  .nav-menu .sub-menu .sub-menu a {
+    padding-left: 4rem; /* Extra indent for 3rd level */
+  }
+
+  /* Remove any WordPress arrow for submenus too */
+  .nav-menu .sub-menu li.menu-item-has-children > a::after {
+    right: 2rem;
   }
 }

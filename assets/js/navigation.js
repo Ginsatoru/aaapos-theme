@@ -74,7 +74,17 @@
     });
 
     // ==========================================================================
-    // MOBILE SUBMENU TOGGLE
+    // REMOVE WORDPRESS DEFAULT SUBMENU ARROWS (Fix double icon issue)
+    // ==========================================================================
+    
+    const submenuToggles = document.querySelectorAll('.main-navigation .submenu-toggle');
+    submenuToggles.forEach(function(toggle) {
+      toggle.remove(); // Remove WordPress default arrow spans
+    });
+
+    // ==========================================================================
+    // MOBILE SUBMENU TOGGLE - Using CSS ::after arrows only
+    // User clicks the link area to toggle submenu on mobile
     // ==========================================================================
 
     const menuItemsWithChildren = document.querySelectorAll(
@@ -86,19 +96,32 @@
 
       if (link) {
         link.addEventListener("click", function (e) {
-          // Only prevent default on mobile
+          // Only prevent default and toggle on mobile
           if (window.innerWidth <= 1023) {
-            e.preventDefault();
+            // Check if click is on the arrow area (right 40px of the link)
+            const clickX = e.offsetX;
+            const linkWidth = this.offsetWidth;
+            const isArrowClick = clickX > linkWidth - 40;
 
-            // Toggle active class
-            item.classList.toggle("active");
+            // If clicking the arrow area OR if submenu is already open, toggle submenu
+            // If clicking the text and submenu is closed, allow navigation
+            if (isArrowClick || item.classList.contains("active")) {
+              e.preventDefault();
+              
+              // Toggle active class
+              item.classList.toggle("active");
 
-            // Close other open submenus
-            menuItemsWithChildren.forEach(function (otherItem) {
-              if (otherItem !== item) {
-                otherItem.classList.remove("active");
-              }
-            });
+              // Close other open submenus at the same level
+              const parentItem = item.parentElement;
+              const siblings = parentItem.querySelectorAll(':scope > .menu-item-has-children');
+              
+              siblings.forEach(function (sibling) {
+                if (sibling !== item) {
+                  sibling.classList.remove("active");
+                }
+              });
+            }
+            // else: let the link navigate normally
           }
         });
       }
