@@ -3,26 +3,18 @@
    Mobile & Tablet Adjustments
    ============================================ */
 
-/* ==========================================================================
-   MOBILE & TABLET (max-width: 1023px)
-   ========================================================================== */
-
-/* Mobile responsive for addresses */
 @media (max-width: 768px) {
-  /* Addresses grid - stack on mobile */
   .woocommerce-Addresses.col2-set,
   .u-columns.woocommerce-Addresses.col2-set.addresses {
     grid-template-columns: 1fr !important;
     gap: var(--space-5) !important;
   }
   
-  /* Edit address form - stack columns */
   body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper {
     grid-template-columns: 1fr !important;
     gap: var(--space-3) !important;
   }
   
-  /* Adjust title spacing for mobile */
   body.woocommerce-edit-address .woocommerce-MyAccount-content > h3,
   body.woocommerce-edit-address .entry-content > h3 {
     margin-top: var(--space-5) !important;
@@ -30,26 +22,22 @@
     font-size: var(--text-2xl) !important;
   }
   
-  /* Tighter form rows on mobile */
   body.woocommerce-edit-address .woocommerce-address-fields p.form-row,
   body.woocommerce-edit-address form p.form-row {
     margin-bottom: var(--space-3) !important;
   }
   
-  /* Reduce form wrapper padding on mobile */
   body.woocommerce-edit-address .woocommerce-address-fields,
   body.woocommerce-edit-address form.edit-address {
     padding: var(--space-4) var(--space-4) !important;
   }
   
-  /* Button spacing on mobile */
   body.woocommerce-edit-address .woocommerce-Button,
   body.woocommerce-edit-address button[name="save_address"] {
     margin-top: var(--space-5) !important;
     width: 100% !important;
   }
   
-  /* Forms - stack two columns on mobile */
   .woocommerce-address-fields__field-wrapper {
     grid-template-columns: 1fr !important;
   }
@@ -61,7 +49,7 @@
     padding: var(--space-5) !important;
   }
   
-  /* Orders table - mobile card layout */
+  /* Orders Table Mobile Layout */
   .woocommerce-orders-table thead {
     display: none !important;
   }
@@ -76,8 +64,10 @@
   .woocommerce-orders-table tbody td {
     display: flex !important;
     justify-content: space-between !important;
+    align-items: center !important;
     padding: var(--space-3) var(--space-4) !important;
     text-align: left !important;
+    min-height: 44px !important;
   }
 
   .woocommerce-orders-table tbody td::before {
@@ -87,18 +77,39 @@
     text-transform: uppercase !important;
     font-size: var(--text-xs) !important;
     letter-spacing: 0.5px !important;
+    flex-shrink: 0 !important;
   }
 
   .woocommerce-orders-table tbody td:first-child {
     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0 !important;
+    padding-top: var(--space-4) !important;
   }
 
   .woocommerce-orders-table tbody td:last-child {
     border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg) !important;
+    padding-bottom: var(--space-4) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* Fix for Actions column - remove ::before and center button */
+  .woocommerce-orders-table tbody td.woocommerce-orders-table__cell-order-actions::before {
+    display: none !important;
+  }
+
+  .woocommerce-orders-table tbody td.woocommerce-orders-table__cell-order-actions {
+    padding: var(--space-4) !important;
+  }
+
+  /* Ensure View button takes full width on mobile for better UX */
+  .woocommerce-orders-table tbody td.woocommerce-orders-table__cell-order-actions a {
+    width: 100% !important;
+    max-width: 200px !important;
     justify-content: center !important;
   }
   
-  /* Order details table - mobile card layout */
+  /* Order Details Table Mobile Layout */
   .woocommerce-table--order-details thead {
     display: none !important;
   }
@@ -126,45 +137,37 @@
   }
 }
 
-/* ==========================================================================
-   TABLET & BELOW (max-width: 1023px)
-   ========================================================================== */
-
 @media (max-width: 1023px) {
-  /* Stack layout on tablets */
   .woocommerce-MyAccount-wrapper {
     grid-template-columns: 1fr !important;
+    gap: var(--space-6) !important;
   }
   
-  /* Remove sticky positioning on sidebar */
   .woocommerce-MyAccount-navigation {
     position: static !important;
   }
 }
 
-/* ==========================================================================
-   MOBILE ONLY (max-width: 767px)
-   ========================================================================== */
-
 @media (max-width: 767px) {
-  /* Reduce content padding */
+  .woocommerce-MyAccount-wrapper {
+    gap: var(--space-5) !important;
+  }
+  
   .woocommerce-MyAccount-content {
     padding: var(--space-5) !important;
   }
   
-  /* Smaller headings */
   .woocommerce-MyAccount-content h2,
   .woocommerce-MyAccount-content h3 {
     font-size: var(--text-2xl) !important;
     margin-bottom: var(--space-4) !important;
   }
   
-  /* Dashboard cards - single column */
   .woocommerce-MyAccount-dashboard-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--space-4) !important;
   }
   
-  /* Dashboard greeting - smaller */
   .dashboard-greeting {
     font-size: var(--text-2xl) !important;
   }
@@ -174,8 +177,39 @@
     height: 28px !important;
   }
   
-  /* Dashboard card titles */
+  .dashboard-card {
+    padding: var(--space-4) !important;
+  }
+  
+  .dashboard-card__icon {
+    width: 40px !important;
+    height: 40px !important;
+    margin-bottom: var(--space-3) !important;
+  }
+  
   .dashboard-card__title {
-    font-size: var(--text-base) !important;
+    font-size: 0.8125rem !important;
+    margin-bottom: 2px !important;
+    line-height: 1.3 !important;
+  }
+  
+  .dashboard-card__description {
+    font-size: 0.6875rem !important;
+    line-height: 1.4 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .woocommerce-MyAccount-dashboard-grid {
+    gap: var(--space-3) !important;
+  }
+  
+  .dashboard-card {
+    padding: var(--space-3) !important;
+  }
+  
+  .dashboard-card__icon {
+    width: 36px !important;
+    height: 36px !important;
   }
 }

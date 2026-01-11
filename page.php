@@ -1,6 +1,7 @@
 <?php
 /**
  * The template for displaying all pages
+ * page.php
  */
 get_header();
 ?>

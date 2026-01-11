@@ -427,15 +427,24 @@ function aaapos_woocommerce_nuclear_styles()
     }
 
     // My Account page styles
-    if (is_account_page()) {
-        wp_enqueue_style(
-            "aaapos-woocommerce-myaccount",
-            get_template_directory_uri() .
-                "/assets/css/myaccount/myaccount-main.css",
-            ["aaapos-woocommerce-base"],
-            AAAPOS_VERSION . "." . time(),
-        );
-    }
+if (is_account_page()) {
+    wp_enqueue_style(
+        "aaapos-woocommerce-myaccount",
+        get_template_directory_uri() .
+            "/assets/css/myaccount/myaccount-main.css",
+        ["aaapos-woocommerce-base"],
+        AAAPOS_VERSION . "." . time(),
+    );
+    
+    // Enqueue responsive styles separately to ensure proper cascade
+    wp_enqueue_style(
+        "aaapos-myaccount-responsive",
+        get_template_directory_uri() .
+            "/assets/css/myaccount/myaccount-responsive.css",
+        ["aaapos-woocommerce-myaccount"],
+        AAAPOS_VERSION . "." . time(),
+    );
+}
 
     // Cart notifications CSS (toast notifications)
     wp_enqueue_style(
@@ -1052,18 +1061,10 @@ function aaapos_custom_dashboard_content()
     ?>
     <div class="woocommerce-MyAccount-dashboard-intro">
         <h2 class="dashboard-greeting">
-            <?php if (
-                file_exists(
-                    get_template_directory() .
-                        "/assets/images/icons/profile-icon.png",
-                )
-            ): ?>
-                <img src="<?php echo esc_url(
-                    get_template_directory_uri() .
-                        "/assets/images/icons/profile-icon.png",
-                ); ?>" 
-                     alt="Profile" class="greeting-icon">
-            <?php endif; ?>
+            <svg class="greeting-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
             Hello <span class="greeting-name"><?php echo esc_html(
                 $display_name,
             ); ?></span>

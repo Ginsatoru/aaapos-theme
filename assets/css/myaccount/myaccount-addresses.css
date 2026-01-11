@@ -47,8 +47,11 @@
   padding: var(--space-6) var(--space-6) 0 var(--space-6) !important;
   border: none !important;
   display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
   justify-content: space-between !important;
   align-items: center !important;
+  gap: var(--space-3) !important;
   margin: 0 0 var(--space-4) 0 !important;
 }
 
@@ -60,7 +63,8 @@
   margin: 0 !important;
   padding: 0 !important;
   font-family: var(--font-heading) !important;
-  flex: 1 !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
 }
 
 /* Edit button - on the right side */
@@ -83,6 +87,8 @@
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   font-family: var(--font-body);
+  position: relative !important;
+  float: none !important;
 }
 
 .woocommerce-Address-title .edit:hover,
@@ -120,6 +126,45 @@
 /* Remove default page text margin */
 .woocommerce-MyAccount-content > p {
   margin-bottom: var(--space-6) !important;
+}
+
+/* ==========================================================================
+   Mobile Responsive Adjustments for Address Cards
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Stack address cards vertically on mobile */
+  .woocommerce-Addresses.col2-set,
+  .u-columns.woocommerce-Addresses.col2-set.addresses {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Adjust header layout for mobile */
+  .woocommerce-Address header,
+  .woocommerce-Address-title {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: var(--space-3) !important;
+    padding: var(--space-5) var(--space-5) 0 var(--space-5) !important;
+  }
+
+  /* Title takes full width on mobile */
+  .woocommerce-Address-title h3 {
+    font-size: var(--text-lg) !important;
+    width: 100% !important;
+  }
+
+  /* Button takes full width on mobile for easier tapping */
+  .woocommerce-Address-title .edit,
+  .woocommerce-Address .edit {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Adjust address content padding */
+  .woocommerce-Address address {
+    padding: var(--space-4) var(--space-5) var(--space-5) var(--space-5) !important;
+  }
 }
 
 /* ==========================================================================

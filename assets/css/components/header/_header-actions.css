@@ -12,6 +12,18 @@
   /* REMOVED: margin-left: auto; - This was causing the problem! */
 }
 
+/* CRITICAL FIX: Force search button to always stay centered - override any conflicting styles */
+.header-search-bar .search-submit,
+.search-form .search-submit,
+button.search-submit,
+.site-header .search-submit {
+  margin: 0 !important;
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
 .header-action {
   color: var(--color-header-text);
   padding: var(--space-2);
@@ -181,10 +193,10 @@
 }
 
 .header-search-bar .search-submit {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
   background: none;
   border: none;
   cursor: pointer;
@@ -194,6 +206,7 @@
   justify-content: center;
   border-radius: 50%;
   transition: background 0.3s ease;
+  margin: 0 !important;
 }
 
 .header-search-bar .search-submit:hover {
@@ -335,4 +348,16 @@
 .header-search-bar input,
 .header-search-bar button {
   transform: none;
+}
+
+/* CRITICAL: Force search button positioning on ALL pages including My Account */
+body .header-search-bar .search-submit,
+body.woocommerce-account .header-search-bar .search-submit,
+body.woocommerce-account .search-form .search-submit {
+  margin: 0 !important;
+  padding: 6px !important;
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
