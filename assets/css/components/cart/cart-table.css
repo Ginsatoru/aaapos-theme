@@ -362,3 +362,17 @@ body.woocommerce-cart table.shop_table.cart td.product-subtotal {
   color: #212529;
   padding-right: 1.25rem; /* Reduced from 1.5rem */
 }
+
+/* ==========================================================================
+   FIX DUPLICATE QUANTITY BUTTONS
+   ========================================================================== */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button.qty-btn,
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button.minus.qty-btn,
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button.plus.qty-btn {
+  display: none !important;
+}
+
+/* Keep only the quantity-btn buttons */
+body.woocommerce-cart table.shop_table.cart td.product-quantity .quantity-wrapper button.quantity-btn {
+  display: flex !important;
+}

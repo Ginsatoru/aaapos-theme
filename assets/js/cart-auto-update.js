@@ -2,7 +2,7 @@
  * Auto-update Cart on Quantity Change
  * Automatically updates cart when quantity changes
  * UPDATED: Extended notification timing without page fade
- * 
+ * cart-auto-update.js
  * @package Macedon_Ranges
  */
 

@@ -14,9 +14,9 @@
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   /* Background image is set inline via PHP for correct path */
-  background-size: 100% auto; /* Try this - shows full width */
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-size: cover !important; /* FIXED: Force cover on all images */
+  background-position: center center !important; /* FIXED: Force center positioning */
+  background-repeat: no-repeat !important; /* FIXED: Force no-repeat */
   background-attachment: scroll;
   overflow: hidden;
 }

@@ -1,11 +1,12 @@
 /**
  * Quantity Selector Enhancement
  * 
- * Adds plus/minus buttons to quantity inputs on single product pages
- * Works with both simple and variable products
+ * Adds plus/minus buttons to quantity inputs on single product pages ONLY
+ * Cart page uses separate auto-update functionality
+ * 
  * quantity-selector.js
  * @package AAAPOS_Prime
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 (function($) {
@@ -13,15 +14,22 @@
 
     /**
      * Initialize Quantity Selectors
+     * ONLY runs on non-cart pages
      */
     function initQuantitySelectors() {
-        // Find all quantity inputs that don't already have buttons
-        $('.quantity:not(.buttons-added)').each(function() {
+        // CRITICAL: Skip entirely if on cart page
+        const isCartPage = $('body').hasClass('woocommerce-cart');
+        if (isCartPage) {
+            return;
+        }
+        
+        // Find all quantity inputs
+        $('.quantity').each(function() {
             const $qty = $(this);
             const $input = $qty.find('.qty');
             
-            // Skip if no input found
-            if ($input.length === 0) {
+            // Skip if no input found or already processed
+            if ($input.length === 0 || $qty.hasClass('buttons-added')) {
                 return;
             }
             
@@ -56,6 +64,7 @@
      */
     function handlePlusClick(e) {
         e.preventDefault();
+        e.stopPropagation();
         
         const $button = $(this);
         const $qty = $button.closest('.quantity');
@@ -79,6 +88,7 @@
      */
     function handleMinusClick(e) {
         e.preventDefault();
+        e.stopPropagation();
         
         const $button = $(this);
         const $qty = $button.closest('.quantity');
@@ -114,12 +124,8 @@
         }
         
         // Clamp between min and max
-        if (val < min) {
-            val = min;
-        }
-        if (val > max) {
-            val = max;
-        }
+        if (val < min) val = min;
+        if (val > max) val = max;
         
         // Update input
         $input.val(val);
@@ -129,34 +135,27 @@
      * Initialize on Document Ready
      */
     $(document).ready(function() {
-        // Initialize quantity selectors
-        initQuantitySelectors();
-        
-        // Event delegation for plus/minus buttons
-        $(document).on('click', '.quantity .plus', handlePlusClick);
-        $(document).on('click', '.quantity .minus', handleMinusClick);
-        
-        // Validate input on change
-        $(document).on('change', '.quantity .qty', validateQuantityInput);
-        
-        // Re-initialize after AJAX updates (for variations)
-        $(document.body).on('updated_cart_totals', initQuantitySelectors);
-        $(document.body).on('wc_fragments_loaded', initQuantitySelectors);
-        $(document.body).on('wc_fragments_refreshed', initQuantitySelectors);
-    });
-
-    /**
-     * Initialize after variation is selected
-     */
-    $(document).on('found_variation', function() {
-        setTimeout(initQuantitySelectors, 100);
-    });
-
-    /**
-     * Re-initialize when variations are reset
-     */
-    $(document).on('reset_data', function() {
-        setTimeout(initQuantitySelectors, 100);
+        // CRITICAL: Only initialize if NOT on cart page
+        if (!$('body').hasClass('woocommerce-cart')) {
+            initQuantitySelectors();
+            
+            // ONLY target .qty-btn buttons (our custom buttons)
+            // This ensures we don't conflict with cart page buttons
+            $(document).on('click.qtySelector', '.qty-btn.plus', handlePlusClick);
+            $(document).on('click.qtySelector', '.qty-btn.minus', handleMinusClick);
+            
+            // Validate input on change
+            $(document).on('change', '.quantity .qty', validateQuantityInput);
+            
+            // Re-initialize after AJAX updates (for variations on product page)
+            $(document.body).on('found_variation', function() {
+                setTimeout(initQuantitySelectors, 100);
+            });
+            
+            $(document).on('reset_data', function() {
+                setTimeout(initQuantitySelectors, 100);
+            });
+        }
     });
 
 })(jQuery);
