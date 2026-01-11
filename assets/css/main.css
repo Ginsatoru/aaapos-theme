@@ -56,7 +56,7 @@
   margin-top: var(--space-8);
 }
 
-/* Button styles */
+/* Button styles - SOLID COLORS ONLY */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -77,13 +77,15 @@
   transform: translateY(-1px);
 }
 
+/* Primary button - SOLID COLOR (No Gradient) */
 .btn--primary {
-  background: var(--gradient-button);
+  background: var(--brand-color); /* Solid color instead of gradient */
   color: var(--color-white);
   box-shadow: var(--shadow);
 }
 
 .btn--primary:hover {
+  background: var(--brand-color-hover); /* Solid hover color */
   box-shadow: var(--shadow-lg);
   color: var(--color-white);
 }

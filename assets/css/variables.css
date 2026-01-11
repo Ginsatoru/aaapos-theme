@@ -6,6 +6,7 @@
    
    The theme uses ONE brand color that controls all accent elements.
    Text and neutral colors are fixed for consistency.
+   NO GRADIENTS - Only solid colors
    
    @package aaapos-prime
    @since 1.0.0
@@ -76,7 +77,7 @@
   --color-light: #f9fafb;
 
   /* ==========================================================================
-     BUTTON COLORS (Use brand color)
+     BUTTON COLORS (Use brand color - SOLID ONLY)
      ========================================================================== */
   --color-button-primary-bg: var(--brand-color);
   --color-button-primary-text: #ffffff;
@@ -177,13 +178,14 @@
   --color-gray-900: #111827;
 
   /* ==========================================================================
-     GRADIENTS (Use brand color)
+     GRADIENTS - REMOVED (Not used anymore)
+     These are kept as fallback but map to solid colors
      ========================================================================== */
-  --gradient-primary: linear-gradient(90deg, var(--brand-color-dark), var(--brand-color), var(--brand-color-hover));
-  --gradient-topbar: linear-gradient(90deg, var(--brand-color), var(--brand-color-hover));
-  --gradient-hero: linear-gradient(135deg, rgba(var(--brand-color-rgb), 0.95), rgba(var(--brand-color-rgb), 0.8));
-  --gradient-button: linear-gradient(135deg, var(--brand-color), var(--brand-color-hover));
-  --gradient-light: linear-gradient(180deg, var(--color-white), var(--color-bg-secondary));
+  --gradient-primary: var(--brand-color);
+  --gradient-topbar: var(--brand-color);
+  --gradient-hero: var(--brand-color);
+  --gradient-button: var(--brand-color);
+  --gradient-light: var(--color-white);
 
   /* ==========================================================================
      TYPOGRAPHY

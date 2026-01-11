@@ -208,6 +208,16 @@ img {
   border-radius: var(--border-radius-xl);
 }
 
+/* EXCEPTION: Hero images should NOT have border radius */
+.hero-section img,
+.hero-slide img,
+.hero-slide-image,
+.hero-static-image,
+.video-fallback-image,
+.hero-video-container img {
+  border-radius: 0 !important;
+}
+
 figure {
   margin: var(--space-6) 0;
 }

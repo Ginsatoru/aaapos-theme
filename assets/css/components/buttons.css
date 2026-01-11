@@ -4,6 +4,7 @@
    
    All button styles using CSS custom properties.
    Colors controlled via: Customizer > Brand Color
+   SOLID COLORS ONLY - No gradients
    
    @package aaapos-prime
    @since 1.0.0
@@ -86,18 +87,18 @@
 }
 
 /* ==========================================================================
-   BUTTON VARIANTS
+   BUTTON VARIANTS - SOLID COLORS ONLY
    ========================================================================== */
 
-/* Primary Button - Main CTA */
+/* Primary Button - Main CTA (SOLID COLOR) */
 .btn--primary {
-  background: var(--brand-color);
+  background: var(--brand-color); /* Solid color */
   color: var(--color-white);
   box-shadow: var(--shadow);
 }
 
 .btn--primary:hover {
-  background: var(--brand-color-hover);
+  background: var(--brand-color-hover); /* Solid hover color */
   color: var(--color-white);
   box-shadow: var(--shadow-lg);
 }
@@ -106,40 +107,40 @@
   box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.3);
 }
 
-/* Primary Gradient Button */
+/* Primary Gradient Button - REMOVED, now uses solid color */
 .btn--primary-gradient {
-  background: linear-gradient(135deg, var(--brand-color), var(--brand-color-hover));
+  background: var(--brand-color); /* Solid color instead of gradient */
   color: var(--color-white);
   box-shadow: var(--shadow);
 }
 
 .btn--primary-gradient:hover {
+  background: var(--brand-color-hover); /* Solid hover color */
   box-shadow: var(--shadow-lg);
-  filter: brightness(1.1);
 }
 
-/* Secondary Button */
+/* Secondary Button (SOLID COLOR) */
 .btn--secondary {
-  background: var(--brand-color);
+  background: var(--brand-color); /* Solid color */
   color: var(--color-white);
   box-shadow: var(--shadow);
 }
 
 .btn--secondary:hover {
-  background: var(--brand-color-hover);
+  background: var(--brand-color-hover); /* Solid hover color */
   color: var(--color-white);
   box-shadow: var(--shadow-lg);
 }
 
-/* Accent Button */
+/* Accent Button (SOLID COLOR) */
 .btn--accent {
-  background: var(--brand-color);
+  background: var(--brand-color); /* Solid color */
   color: var(--color-white);
   box-shadow: var(--shadow);
 }
 
 .btn--accent:hover {
-  background: var(--brand-color-hover);
+  background: var(--brand-color-hover); /* Solid hover color */
   color: var(--color-white);
   box-shadow: var(--shadow-lg);
 }
@@ -449,7 +450,7 @@
 }
 
 /* ==========================================================================
-   WOOCOMMERCE BUTTON OVERRIDES
+   WOOCOMMERCE BUTTON OVERRIDES - SOLID COLORS ONLY
    ========================================================================== */
 
 /* Add to cart buttons */
@@ -457,7 +458,7 @@
 .product_type_simple,
 .product_type_variable,
 .single_add_to_cart_button {
-  background: var(--brand-color) !important;
+  background: var(--brand-color) !important; /* Solid color */
   color: var(--color-white) !important;
   border: none !important;
   padding: var(--space-3) var(--space-6) !important;
@@ -470,7 +471,7 @@
 .product_type_simple:hover,
 .product_type_variable:hover,
 .single_add_to_cart_button:hover {
-  background: var(--brand-color-hover) !important;
+  background: var(--brand-color-hover) !important; /* Solid hover color */
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
@@ -493,7 +494,7 @@
 /* Checkout & Place Order buttons */
 .wc-proceed-to-checkout .checkout-button,
 #place_order {
-  background: var(--brand-color) !important;
+  background: var(--brand-color) !important; /* Solid color */
   color: var(--color-white) !important;
   font-size: var(--text-lg) !important;
   padding: var(--space-4) var(--space-8) !important;
@@ -501,7 +502,7 @@
 
 .wc-proceed-to-checkout .checkout-button:hover,
 #place_order:hover {
-  background: var(--brand-color-hover) !important;
+  background: var(--brand-color-hover) !important; /* Solid hover color */
 }
 
 /* ==========================================================================
