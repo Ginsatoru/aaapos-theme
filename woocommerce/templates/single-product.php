@@ -1,7 +1,7 @@
 <?php
 /**
  * The Template for displaying all single products
- * 
+ * single-product.php
  * Modern single product layout with 71% centered container
  * Fully supports variable products with enhanced variation selectors
  * 

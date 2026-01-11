@@ -1,3 +1,29 @@
+/**
+ * Single Product Page Layout Styles
+ * Handles container width, grid system, breadcrumb, and sale badge visibility
+ * 
+ * @package AAAPOS_Prime
+ * @version 1.0.1
+ * 
+ * Location: assets/css/components/product/product-layout.css
+ */
+
+/* ============================================
+   SALE BADGE - HIDE ON SINGLE PRODUCT PAGE
+   Keep visible on shop/archive pages only
+   ============================================ */
+
+.single-product div.product .onsale,
+.single-product-page .onsale,
+.single-product .onsale {
+  display: none !important;
+}
+
+/* Keep visible on shop/archive pages */
+.woocommerce ul.products li.product .onsale {
+  display: block !important;
+}
+
 /* ============================================
    PRODUCT LAYOUT
    Container, Grid System, Breadcrumb
@@ -99,7 +125,7 @@
 
 .single-product div.product {
   display: grid !important;
-  grid-template-columns: 48% 48% !important;
+  grid-template-columns: 52% 44% !important; /* Changed from 48% 48% */
   gap: 4% !important;
   align-items: start !important; /* KEY FIX: prevents stretching */
   position: relative !important;
@@ -110,6 +136,7 @@
   grid-row: 1 !important;
   order: 1 !important;
   align-self: start !important; /* KEY FIX: prevents column stretching */
+  width: 100% !important;
 }
 
 .single-product .summary.entry-summary {
