@@ -1,0 +1,181 @@
+/* ============================================
+   My Account Responsive Styles
+   Mobile & Tablet Adjustments
+   ============================================ */
+
+/* ==========================================================================
+   MOBILE & TABLET (max-width: 1023px)
+   ========================================================================== */
+
+/* Mobile responsive for addresses */
+@media (max-width: 768px) {
+  /* Addresses grid - stack on mobile */
+  .woocommerce-Addresses.col2-set,
+  .u-columns.woocommerce-Addresses.col2-set.addresses {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-5) !important;
+  }
+  
+  /* Edit address form - stack columns */
+  body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-3) !important;
+  }
+  
+  /* Adjust title spacing for mobile */
+  body.woocommerce-edit-address .woocommerce-MyAccount-content > h3,
+  body.woocommerce-edit-address .entry-content > h3 {
+    margin-top: var(--space-5) !important;
+    padding-top: var(--space-4) !important;
+    font-size: var(--text-2xl) !important;
+  }
+  
+  /* Tighter form rows on mobile */
+  body.woocommerce-edit-address .woocommerce-address-fields p.form-row,
+  body.woocommerce-edit-address form p.form-row {
+    margin-bottom: var(--space-3) !important;
+  }
+  
+  /* Reduce form wrapper padding on mobile */
+  body.woocommerce-edit-address .woocommerce-address-fields,
+  body.woocommerce-edit-address form.edit-address {
+    padding: var(--space-4) var(--space-4) !important;
+  }
+  
+  /* Button spacing on mobile */
+  body.woocommerce-edit-address .woocommerce-Button,
+  body.woocommerce-edit-address button[name="save_address"] {
+    margin-top: var(--space-5) !important;
+    width: 100% !important;
+  }
+  
+  /* Forms - stack two columns on mobile */
+  .woocommerce-address-fields__field-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .woocommerce-EditAccountForm,
+  .woocommerce-address-fields,
+  .edit-account,
+  form.woocommerce-form {
+    padding: var(--space-5) !important;
+  }
+  
+  /* Orders table - mobile card layout */
+  .woocommerce-orders-table thead {
+    display: none !important;
+  }
+
+  .woocommerce-orders-table tbody tr {
+    display: block !important;
+    margin-bottom: var(--space-4) !important;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .woocommerce-orders-table tbody td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: var(--space-3) var(--space-4) !important;
+    text-align: left !important;
+  }
+
+  .woocommerce-orders-table tbody td::before {
+    content: attr(data-title) !important;
+    font-weight: var(--font-semibold) !important;
+    color: var(--color-text-dark) !important;
+    text-transform: uppercase !important;
+    font-size: var(--text-xs) !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .woocommerce-orders-table tbody td:first-child {
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0 !important;
+  }
+
+  .woocommerce-orders-table tbody td:last-child {
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg) !important;
+    justify-content: center !important;
+  }
+  
+  /* Order details table - mobile card layout */
+  .woocommerce-table--order-details thead {
+    display: none !important;
+  }
+  
+  .woocommerce-table--order-details tbody tr,
+  .woocommerce-table--order-details tfoot tr {
+    display: block !important;
+    padding: var(--space-4) 0 !important;
+  }
+  
+  .woocommerce-table--order-details tbody td,
+  .woocommerce-table--order-details tfoot th,
+  .woocommerce-table--order-details tfoot td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: var(--space-2) var(--space-4) !important;
+    text-align: left !important;
+  }
+  
+  .woocommerce-table--order-details tbody td::before,
+  .woocommerce-table--order-details tfoot th::before {
+    content: attr(data-title) !important;
+    font-weight: var(--font-semibold) !important;
+    color: var(--color-text-dark) !important;
+  }
+}
+
+/* ==========================================================================
+   TABLET & BELOW (max-width: 1023px)
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  /* Stack layout on tablets */
+  .woocommerce-MyAccount-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Remove sticky positioning on sidebar */
+  .woocommerce-MyAccount-navigation {
+    position: static !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE ONLY (max-width: 767px)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  /* Reduce content padding */
+  .woocommerce-MyAccount-content {
+    padding: var(--space-5) !important;
+  }
+  
+  /* Smaller headings */
+  .woocommerce-MyAccount-content h2,
+  .woocommerce-MyAccount-content h3 {
+    font-size: var(--text-2xl) !important;
+    margin-bottom: var(--space-4) !important;
+  }
+  
+  /* Dashboard cards - single column */
+  .woocommerce-MyAccount-dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Dashboard greeting - smaller */
+  .dashboard-greeting {
+    font-size: var(--text-2xl) !important;
+  }
+  
+  .greeting-icon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  /* Dashboard card titles */
+  .dashboard-card__title {
+    font-size: var(--text-base) !important;
+  }
+}

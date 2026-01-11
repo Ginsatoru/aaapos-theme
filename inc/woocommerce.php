@@ -431,7 +431,7 @@ function aaapos_woocommerce_nuclear_styles()
         wp_enqueue_style(
             "aaapos-woocommerce-myaccount",
             get_template_directory_uri() .
-                "/assets/css/woocommerce-myaccount.css",
+                "/assets/css/myaccount/myaccount-main.css",
             ["aaapos-woocommerce-base"],
             AAAPOS_VERSION . "." . time(),
         );
