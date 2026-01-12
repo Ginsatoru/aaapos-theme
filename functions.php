@@ -66,6 +66,9 @@ function aaapos_load_theme_files()
 }
 add_action("after_setup_theme", "aaapos_load_theme_files", 1);
 
+// Remove "Clear" button from single product variations
+add_filter('woocommerce_reset_variations_link', '__return_empty_string');
+
 /**
  * Theme Setup
  *

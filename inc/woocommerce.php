@@ -23,7 +23,6 @@ function aaapos_woocommerce_setup()
     add_theme_support("wc-product-gallery-slider");
 }
 add_action("after_setup_theme", "aaapos_woocommerce_setup");
-
 /**
  * Reorganize single product layout
  */
@@ -66,6 +65,17 @@ function aaapos_get_shop_header_bg_image()
 
     // If even fallback doesn't exist, return empty
     return "";
+}
+
+// Move stock status to product meta
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_stock', 10);
+
+add_action('woocommerce_product_meta_end', 'custom_add_stock_to_meta');
+function custom_add_stock_to_meta() {
+    global $product;
+    if ($product) {
+        echo wc_get_stock_html($product);
+    }
 }
 
 /**

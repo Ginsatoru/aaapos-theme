@@ -1,4 +1,4 @@
-/* ============================================
+/* === RESET VARIATIONS (CLEAR BUTTON) -/* ============================================
    MODERN PRODUCT DETAILS - FULLY DYNAMIC
    All colors use CSS variables from customizer
    NO HARDCODED COLORS
@@ -212,7 +212,7 @@
 }
 
 /* ============================================
-   SIZE SELECTOR - MODERN CHIP STYLE
+   SIZE SELECTOR - MODERN CHIP STYLE (UPDATED)
    ============================================ */
 
 .single-product .variations select[id*="size"],
@@ -231,9 +231,9 @@
 .single-product .size-button {
   min-width: 50px !important;
   padding: 0.35rem 0.875rem !important;
-  border: 2px solid var(--color-border, #e5e7eb) !important;
+  border: none !important;
   border-radius: 6px !important;
-  background: var(--color-white, #ffffff) !important;
+  background: var(--color-bg-secondary, #d1d5db) !important;
   color: var(--color-text, #374151) !important;
   font-size: 0.875rem !important;
   font-weight: 600 !important;
@@ -244,13 +244,11 @@
 }
 
 .single-product .size-button:hover {
-  border-color: var(--color-primary, var(--brand-color)) !important;
-  background: rgba(var(--color-primary-rgb, var(--brand-color-rgb)), 0.05) !important;
-  transform: translateY(-2px) !important;
+  background: var(--color-primary, var(--brand-color)) !important;
+  color: var(--color-white, #ffffff) !important;
 }
 
 .single-product .size-button.selected {
-  border-color: var(--color-primary, var(--brand-color)) !important;
   background: var(--color-primary, var(--brand-color)) !important;
   color: var(--color-white, #ffffff) !important;
 }
@@ -299,13 +297,19 @@
   box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, var(--brand-color-rgb)), 0.1) !important;
 }
 
-/* === RESET VARIATIONS === */
-.single-product .reset_variations {
+/* === RESET VARIATIONS (CLEAR BUTTON) - FIXED WIDTH === */
+.single-product .reset_variations,
+.single-product .variations .value .reset_variations,
+.single-product a.reset_variations {
   display: inline-flex !important;
+  width: auto !important;
+  max-width: fit-content !important;
   align-items: center !important;
   gap: 0.375rem !important;
-  margin-top: 0.5rem !important;
-  padding: 0.5rem 1rem !important;
+  margin: 0.75rem 0 !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+  padding: 0.375rem 1rem !important;
   font-size: 0.875rem !important;
   font-weight: 500 !important;
   color: var(--color-text-light, #6b7280) !important;
@@ -316,7 +320,9 @@
   transition: all 0.2s ease !important;
 }
 
-.single-product .reset_variations:hover {
+.single-product .reset_variations:hover,
+.single-product .variations .value .reset_variations:hover,
+.single-product a.reset_variations:hover {
   color: var(--color-primary, var(--brand-color)) !important;
   border-color: var(--color-primary, var(--brand-color)) !important;
   background: rgba(var(--color-primary-rgb, var(--brand-color-rgb)), 0.05) !important;
