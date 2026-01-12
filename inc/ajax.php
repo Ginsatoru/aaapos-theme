@@ -1,7 +1,35 @@
 <?php
 /**
  * AJAX handlers
+ * UPDATED: Added add-to-cart redirect handler to prevent POST resubmission
  */
+
+/**
+ * CRITICAL FIX: Redirect after add-to-cart on single product page
+ * This prevents the "confirm form resubmission" browser warning
+ */
+add_action('template_redirect', 'aaapos_redirect_after_add_to_cart');
+function aaapos_redirect_after_add_to_cart() {
+    // Only on single product pages
+    if (!is_product()) {
+        return;
+    }
+    
+    // Check if add-to-cart was just processed
+    if (isset($_POST['add-to-cart']) && is_numeric($_POST['add-to-cart'])) {
+        $product_id = absint($_POST['add-to-cart']);
+        
+        // Get the current product URL
+        $redirect_url = get_permalink($product_id);
+        
+        // Add success parameter to show notification
+        $redirect_url = add_query_arg('added-to-cart', $product_id, $redirect_url);
+        
+        // Perform redirect (PRG pattern)
+        wp_safe_redirect($redirect_url);
+        exit;
+    }
+}
 
 /**
  * Get Quick View Product Content - OPTION B (WooCommerce Standard)

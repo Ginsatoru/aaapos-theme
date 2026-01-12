@@ -2,11 +2,10 @@
 /**
  * The Template for displaying all single products
  * single-product.php
- * Modern single product layout with 71% centered container
- * Fully supports variable products with enhanced variation selectors
+ * FIXED: Prevents "confirm form resubmission" warning on page refresh
  * 
  * @package AAAPOS_Prime
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 if (!defined('ABSPATH')) {

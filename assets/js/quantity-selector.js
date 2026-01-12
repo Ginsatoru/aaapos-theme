@@ -6,7 +6,7 @@
  * 
  * quantity-selector.js
  * @package AAAPOS_Prime
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 (function($) {
@@ -24,9 +24,9 @@
         }
         
         // Find all quantity inputs
-        $('.quantity').each(function() {
+        $('.quantity:not(.buttons-added)').each(function() {
             const $qty = $(this);
-            const $input = $qty.find('.qty');
+            const $input = $qty.find('input.qty, input[type="number"]');
             
             // Skip if no input found or already processed
             if ($input.length === 0 || $qty.hasClass('buttons-added')) {
@@ -38,16 +38,22 @@
             const max = parseFloat($input.attr('max')) || 999;
             const step = parseFloat($input.attr('step')) || 1;
             
-            // Wrap input if not already wrapped
+            // Create wrapper if it doesn't exist
             if (!$input.parent().hasClass('quantity-wrapper')) {
                 $input.wrap('<div class="quantity-wrapper"></div>');
             }
             
-            // Add minus button
-            $input.before('<button type="button" class="minus qty-btn" aria-label="Decrease quantity">−</button>');
+            const $wrapper = $input.parent('.quantity-wrapper');
             
-            // Add plus button
-            $input.after('<button type="button" class="plus qty-btn" aria-label="Increase quantity">+</button>');
+            // Add minus button (before input)
+            if ($wrapper.find('.minus').length === 0) {
+                $wrapper.prepend('<button type="button" class="minus qty-btn" aria-label="Decrease quantity">−</button>');
+            }
+            
+            // Add plus button (after input)
+            if ($wrapper.find('.plus').length === 0) {
+                $wrapper.append('<button type="button" class="plus qty-btn" aria-label="Increase quantity">+</button>');
+            }
             
             // Mark as processed
             $qty.addClass('buttons-added');
@@ -68,7 +74,7 @@
         
         const $button = $(this);
         const $qty = $button.closest('.quantity');
-        const $input = $qty.find('.qty');
+        const $input = $qty.find('input.qty, input[type="number"]');
         
         const currentVal = parseFloat($input.val()) || 0;
         const max = parseFloat($qty.data('max')) || 999;
@@ -92,7 +98,7 @@
         
         const $button = $(this);
         const $qty = $button.closest('.quantity');
-        const $input = $qty.find('.qty');
+        const $input = $qty.find('input.qty, input[type="number"]');
         
         const currentVal = parseFloat($input.val()) || 0;
         const min = parseFloat($qty.data('min')) || 1;
@@ -137,24 +143,46 @@
     $(document).ready(function() {
         // CRITICAL: Only initialize if NOT on cart page
         if (!$('body').hasClass('woocommerce-cart')) {
+            // Initial setup
             initQuantitySelectors();
             
-            // ONLY target .qty-btn buttons (our custom buttons)
-            // This ensures we don't conflict with cart page buttons
-            $(document).on('click.qtySelector', '.qty-btn.plus', handlePlusClick);
-            $(document).on('click.qtySelector', '.qty-btn.minus', handleMinusClick);
+            // Event delegation for dynamically added buttons
+            $(document).on('click', '.qty-btn.plus', handlePlusClick);
+            $(document).on('click', '.qty-btn.minus', handleMinusClick);
             
             // Validate input on change
-            $(document).on('change', '.quantity .qty', validateQuantityInput);
+            $(document).on('change', '.quantity input.qty, .quantity input[type="number"]', validateQuantityInput);
             
             // Re-initialize after AJAX updates (for variations on product page)
             $(document.body).on('found_variation', function() {
                 setTimeout(initQuantitySelectors, 100);
             });
             
-            $(document).on('reset_data', function() {
+            $(document.body).on('reset_data', function() {
                 setTimeout(initQuantitySelectors, 100);
             });
+            
+            // Also check after DOM updates
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.addedNodes.length) {
+                        $(mutation.addedNodes).find('.quantity').each(function() {
+                            if (!$(this).hasClass('buttons-added')) {
+                                initQuantitySelectors();
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Observe the product form for changes
+            const $productForm = $('form.cart');
+            if ($productForm.length) {
+                observer.observe($productForm[0], {
+                    childList: true,
+                    subtree: true
+                });
+            }
         }
     });
 

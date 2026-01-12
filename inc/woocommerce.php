@@ -25,6 +25,17 @@ function aaapos_woocommerce_setup()
 add_action("after_setup_theme", "aaapos_woocommerce_setup");
 
 /**
+ * Reorganize single product layout
+ */
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30);
+
+add_action('woocommerce_single_product_summary', function() {
+    echo '<div class="product-purchase-group">';
+    woocommerce_template_single_add_to_cart();
+    echo '</div>';
+}, 31);
+
+/**
  * Get Shop Header Background Image with Fallback
  * Returns customizer image if set, otherwise returns default fallback
  *

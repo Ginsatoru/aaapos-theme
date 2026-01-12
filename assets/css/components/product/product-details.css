@@ -230,7 +230,7 @@
 
 .single-product .size-button {
   min-width: 50px !important;
-  padding: 0.5rem 0.875rem !important;
+  padding: 0.35rem 0.875rem !important;
   border: 2px solid var(--color-border, #e5e7eb) !important;
   border-radius: 6px !important;
   background: var(--color-white, #ffffff) !important;
