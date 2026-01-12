@@ -3,7 +3,7 @@
  * Handles container width, grid system, breadcrumb, and sale badge visibility
  * 
  * @package AAAPOS_Prime
- * @version 1.0.1
+ * @version 1.0.2
  * 
  * Location: assets/css/components/product/product-layout.css
  */
@@ -47,10 +47,10 @@
   min-height: 100vh;
 }
 
-/* === 71% CONTAINER - CENTERED === */
+/* === 72% CONTAINER - CENTERED (OPTIMAL WIDTH) === */
 .single-product div.product {
-  max-width: 71% !important;
-  width: 71% !important;
+  max-width: 72% !important;
+  width: 72% !important;
   margin: 0 auto !important;
   padding: 0 2rem !important;
 }
@@ -79,8 +79,8 @@
 
 /* === BREADCRUMB - ALIGNED === */
 .single-product .woocommerce-breadcrumb {
-  max-width: 71% !important;
-  width: 71% !important;
+  max-width: 72% !important;
+  width: 72% !important;
   margin: 0 auto 1rem auto !important;
   padding: 0.625rem 2rem !important;
   font-size: 0.8125rem !important;
@@ -125,9 +125,9 @@
 
 .single-product div.product {
   display: grid !important;
-  grid-template-columns: 52% 44% !important; /* Changed from 48% 48% */
+  grid-template-columns: 48% 48% !important;
   gap: 4% !important;
-  align-items: start !important; /* KEY FIX: prevents stretching */
+  align-items: start !important;
   position: relative !important;
 }
 
@@ -135,8 +135,7 @@
   grid-column: 1 !important;
   grid-row: 1 !important;
   order: 1 !important;
-  align-self: start !important; /* KEY FIX: prevents column stretching */
-  width: 100% !important;
+  align-self: start !important;
 }
 
 .single-product .summary.entry-summary {

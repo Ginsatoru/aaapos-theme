@@ -1,6 +1,7 @@
 /* ============================================
    WooCommerce Main Styles - Entry Point
    Modular Architecture for Easy Maintenance
+   woocommerce.css
    ============================================ */
 
 /* Import all WooCommerce modules */
@@ -8,6 +9,7 @@
 @import url('woocommerce-product-grid.css');
 @import url('woocommerce-components.css');
 @import url('woocommerce-blocks.css');
+@import url('woocommerce-notices.css');
 
 /* ============================================
    GLOBAL WOOCOMMERCE OVERRIDES

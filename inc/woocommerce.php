@@ -320,50 +320,45 @@ function aaapos_custom_single_rating()
     $gradient_id = "half-fill-single-" . $product->get_id();
     ?>
     <div class="woocommerce-product-rating">
-        <div class="rating-stars-wrapper">
-            <div class="rating-stars" aria-label="<?php echo esc_attr(
-                sprintf(
-                    __("Rated %s out of 5", "aaapos-prime"),
-                    number_format($average_rating, 2),
-                ),
-            ); ?>">
-                <?php for ($i = 1; $i <= 5; $i++) {
-                    if ($i <= floor($average_rating)) {
-                        // Full star
-                        echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                    } elseif (
-                        $i == ceil($average_rating) &&
-                        $average_rating - floor($average_rating) >= 0.5
-                    ) {
-                        // Half star
-                        echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><defs><linearGradient id="' .
-                            esc_attr($gradient_id) .
-                            '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
-                            esc_attr($gradient_id) .
-                            ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                    } else {
-                        // Empty star
-                        echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                    }
-                } ?>
-            </div>
-            <span class="rating-text">
-                <strong><?php echo esc_html(
-                    number_format($average_rating, 1),
-                ); ?></strong> 
-                <?php printf(
-                    _n(
-                        "(%s review)",
-                        "(%s reviews)",
-                        $review_count,
-                        "aaapos-prime",
-                    ),
-                    '<span class="count">' .
-                        esc_html($review_count) .
-                        "</span>",
-                ); ?>
-            </span>
+        <div class="rating-stars" aria-label="<?php echo esc_attr(
+            sprintf(
+                __("Rated %s out of 5", "aaapos-prime"),
+                number_format($average_rating, 2),
+            ),
+        ); ?>">
+            <?php for ($i = 1; $i <= 5; $i++) {
+                if ($i <= floor($average_rating)) {
+                    // Full star
+                    echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                } elseif (
+                    $i == ceil($average_rating) &&
+                    $average_rating - floor($average_rating) >= 0.5
+                ) {
+                    // Half star
+                    echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><defs><linearGradient id="' .
+                        esc_attr($gradient_id) .
+                        '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
+                        esc_attr($gradient_id) .
+                        ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                } else {
+                    // Empty star
+                    echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                }
+            } ?>
         </div>
+        
+        <span class="rating-text">
+            <strong><?php echo esc_html(number_format($average_rating, 1)); ?></strong>
+        </span>
+        
+        <?php if ($review_count > 0): ?>
+            <a href="#reviews" class="woocommerce-review-link" rel="nofollow">
+                <?php printf(
+                    _n('(%s review)', '(%s reviews)', $review_count, 'aaapos-prime'),
+                    '<span class="count">' . esc_html($review_count) . '</span>'
+                ); ?>
+            </a>
+        <?php endif; ?>
     </div>
     <?php
 }
