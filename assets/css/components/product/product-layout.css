@@ -3,9 +3,11 @@
  * Handles container width, grid system, breadcrumb, and sale badge visibility
  * product-layout.css
  * @package AAAPOS_Prime
- * @version 1.0.2
+ * @version 1.0.3
  * 
  * Location: assets/css/components/product/product-layout.css
+ * 
+ * FIXED: Responsive width that works on all desktop sizes (laptop to 24" monitors)
  */
 
 /* ============================================
@@ -47,40 +49,63 @@
   min-height: 100vh;
 }
 
-/* === 72% CONTAINER - CENTERED (OPTIMAL WIDTH) === */
+/* === RESPONSIVE CONTAINER - WORKS ON ALL DESKTOP SIZES === */
 .single-product div.product {
-  max-width: 72% !important;
-  width: 72% !important;
+  max-width: 92% !important;
+  width: 100% !important;
   margin: 0 auto !important;
   padding: 0 2rem !important;
 }
 
-@media (max-width: 1600px) {
+/* Large Desktop (1920px+) - Keep current 24" monitor size */
+@media (min-width: 1920px) {
+  .single-product div.product {
+    max-width: 72% !important;
+  }
+}
+
+/* Standard Desktop (1600px - 1919px) - Keep current size */
+@media (min-width: 1600px) and (max-width: 1919px) {
   .single-product div.product {
     max-width: 80% !important;
-    width: 80% !important;
   }
 }
 
-@media (max-width: 1200px) {
+/* Medium Desktop (1200px - 1599px) - Laptops - BIGGER */
+@media (min-width: 1200px) and (max-width: 1599px) {
   .single-product div.product {
     max-width: 90% !important;
-    width: 90% !important;
   }
 }
 
-@media (max-width: 768px) {
+/* Small Laptop (1024px - 1199px) - BIGGER */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .single-product div.product {
+    max-width: 92% !important;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
   .single-product div.product {
     max-width: 95% !important;
-    width: 95% !important;
+    padding: 0 1.5rem !important;
+  }
+}
+
+/* Mobile (max 767px) */
+@media (max-width: 767px) {
+  .single-product div.product {
+    max-width: 100% !important;
+    width: 100% !important;
     padding: 0 1rem !important;
   }
 }
 
-/* === BREADCRUMB - ALIGNED === */
+/* === BREADCRUMB - ALIGNED WITH PRODUCT CONTAINER === */
 .single-product .woocommerce-breadcrumb {
-  max-width: 72% !important;
-  width: 72% !important;
+  max-width: 92% !important;
+  width: 100% !important;
   margin: 0 auto 1rem auto !important;
   padding: 0.625rem 2rem !important;
   font-size: 0.8125rem !important;
@@ -97,24 +122,47 @@
   color: var(--color-primary, #0ea5e9);
 }
 
-@media (max-width: 1600px) {
+/* Large Desktop (1920px+) - Keep current 24" monitor size */
+@media (min-width: 1920px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 72% !important;
+  }
+}
+
+/* Standard Desktop (1600px - 1919px) - Keep current size */
+@media (min-width: 1600px) and (max-width: 1919px) {
   .single-product .woocommerce-breadcrumb {
     max-width: 80% !important;
-    width: 80% !important;
   }
 }
 
-@media (max-width: 1200px) {
+/* Medium Desktop (1200px - 1599px) - Laptops - BIGGER */
+@media (min-width: 1200px) and (max-width: 1599px) {
   .single-product .woocommerce-breadcrumb {
     max-width: 90% !important;
-    width: 90% !important;
   }
 }
 
-@media (max-width: 768px) {
+/* Small Laptop (1024px - 1199px) - BIGGER */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 92% !important;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
   .single-product .woocommerce-breadcrumb {
     max-width: 95% !important;
-    width: 95% !important;
+    padding: 0.625rem 1.5rem !important;
+  }
+}
+
+/* Mobile (max 767px) */
+@media (max-width: 767px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 100% !important;
+    width: 100% !important;
     padding: 0.625rem 1rem !important;
   }
 }

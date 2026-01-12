@@ -74,7 +74,7 @@ add_action('woocommerce_product_meta_end', 'custom_add_stock_to_meta');
 function custom_add_stock_to_meta() {
     global $product;
     if ($product) {
-        echo wc_get_stock_html($product);
+        echo '<span class="stock-wrapper">STATUS: ' . wc_get_stock_html($product) . '</span>';
     }
 }
 
