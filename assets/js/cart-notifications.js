@@ -3,7 +3,7 @@
  * Tick → Expand → Collapse → Slide
  * FULL ROW LAYOUT (COMPACT + GROUPED)
  * NOW WITH COUPON SUPPORT + SINGLE PRODUCT PAGE
- * @version 2.6.0 - SIMPLIFIED SINGLE PRODUCT INTEGRATION
+ * @version 2.7.0 - FIXED PRODUCT NAME EXTRACTION
  */
 
 (function ($) {
@@ -79,12 +79,8 @@
           <div class="aaapos-cart-icon aaapos-cart-icon--coupon">${couponSVG}</div>
 
           <div class="aaapos-cart-text">
-            <div class="aaapos-cart-title">
-              <strong>${escapeHtml(couponCode.toUpperCase())}</strong>
-            </div>
-            <div class="aaapos-cart-desc">
-              ${discountAmount ? 'Discount: ' + discountAmount : 'coupon applied'}
-            </div>
+            <span class="aaapos-cart-product-name"><strong>${escapeHtml(couponCode.toUpperCase())}</strong></span>
+            <span class="aaapos-cart-status">${discountAmount ? 'Discount: ' + discountAmount : 'coupon applied'}</span>
           </div>
 
           <div class="aaapos-cart-actions">
@@ -145,21 +141,35 @@
     $('.aaapos-cart-notification').remove();
   }
 
+  /**
+   * FIXED: Get Product Name - Prioritize single product page title
+   */
   function getProductName(button) {
-    // Try to get from product card first
-    const $card = button.closest('.product, li.product');
-    const $title = $card.find('.woocommerce-loop-product__title, h2, h3');
-    
-    if ($title.length) {
-      return $title.text().trim();
+    // Check if we're on a single product page first
+    if ($('body').hasClass('single-product')) {
+      // Try to get the main product title on single product page
+      const $singleProductTitle = $('.product_title.entry-title').first();
+      if ($singleProductTitle.length) {
+        return $singleProductTitle.text().trim();
+      }
+      
+      // Fallback to summary title
+      const $summaryTitle = $('.summary .product_title').first();
+      if ($summaryTitle.length) {
+        return $summaryTitle.text().trim();
+      }
     }
     
-    // Fallback: try to get from single product page
-    const $productTitle = $('.product_title, .entry-title').first();
-    if ($productTitle.length) {
-      return $productTitle.text().trim();
+    // For shop/archive pages - get from product card
+    const $card = $(button).closest('.product, li.product, .type-product');
+    if ($card.length) {
+      const $title = $card.find('.woocommerce-loop-product__title').first();
+      if ($title.length) {
+        return $title.text().trim();
+      }
     }
     
+    // Last resort fallback
     return 'Product';
   }
 

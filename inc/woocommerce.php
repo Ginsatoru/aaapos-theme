@@ -50,7 +50,7 @@ function aaapos_single_product_ajax_add_to_cart() {
     wp_enqueue_script(
         'aaapos-single-ajax-add-to-cart',
         get_template_directory_uri() . '/assets/js/single-product-ajax.js',
-        ['jquery', 'wc-add-to-cart'],
+        ['jquery', 'wc-add-to-cart', 'wc-add-to-cart-variation'], // Added variation dependency
         AAAPOS_VERSION,
         true
     );

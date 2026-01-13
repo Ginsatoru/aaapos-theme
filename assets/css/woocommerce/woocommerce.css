@@ -40,6 +40,25 @@
   display: none !important;
 }
 
+/* ============================================
+   HIDE WOOCOMMERCE INFO/MESSAGE ICONS
+   ============================================ */
+
+/* Hide info and message icons globally */
+.woocommerce-info::before,
+.woocommerce-info::after,
+.woocommerce-message::before,
+.woocommerce-message::after,
+.woocommerce-error::before,
+.woocommerce-error::after {
+  display: none !important;
+  content: "" !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 /* No Products Found Message */
 .woocommerce-info,
 .woocommerce-no-products-found {
