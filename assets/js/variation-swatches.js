@@ -1,6 +1,7 @@
 /**
  * Custom Variation Swatches for WooCommerce
  * Converts color and size dropdowns into modern UI elements
+ * FIXED: Size buttons reset on page refresh (no persistent selection)
  * 
  * @package AAAPOS_Prime
  * Location: assets/js/variation-swatches.js
@@ -11,8 +12,38 @@
 
     // Initialize when document is ready
     $(document).ready(function() {
+        // CRITICAL FIX: Reset all variation selects on page load
+        // This prevents WooCommerce from restoring previous selections
+        resetVariationsOnLoad();
+        
+        // Then initialize swatches
         initVariationSwatches();
     });
+
+    /**
+     * Reset all variation selections on page load
+     * This ensures no variations appear selected unless explicitly in URL
+     */
+    function resetVariationsOnLoad() {
+        // Check if there are variation parameters in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let hasVariationInUrl = false;
+        
+        // Check for any attribute_ parameters
+        for (let param of urlParams.keys()) {
+            if (param.startsWith('attribute_')) {
+                hasVariationInUrl = true;
+                break;
+            }
+        }
+        
+        // If no variations in URL, reset all selects to empty
+        if (!hasVariationInUrl) {
+            $('.variations select').each(function() {
+                $(this).val('').trigger('change');
+            });
+        }
+    }
 
     function initVariationSwatches() {
         // Convert Color Variations to Swatches
@@ -72,9 +103,9 @@
             // Insert swatches and hide select
             $select.hide().after($swatchContainer);
             
-            // Set initial selection
+            // Only set initial selection if value exists and is valid
             const initialValue = $select.val();
-            if (initialValue) {
+            if (initialValue && initialValue !== '') {
                 $swatchContainer.find(`[data-value="${initialValue}"]`).addClass('selected');
             }
         });
@@ -128,20 +159,12 @@
                 $buttonContainer.append($button);
             });
             
-            // Add size chart link if needed
-            const $sizeChartLink = $('<a href="#" class="size-chart-link">View Size Chart</a>');
-            $sizeChartLink.on('click', function(e) {
-                e.preventDefault();
-                // You can add modal functionality here
-                alert('Size chart would open here. Connect this to your size chart modal.');
-            });
-            
             // Insert buttons and hide select
             $select.hide().after($buttonContainer);
             
-            // Set initial selection
+            // Only set initial selection if value exists and is valid
             const initialValue = $select.val();
-            if (initialValue) {
+            if (initialValue && initialValue !== '') {
                 $buttonContainer.find(`[data-value="${initialValue}"]`).addClass('selected');
             }
         });
@@ -216,7 +239,7 @@
         $('.size-buttons .size-button').each(function() {
             const $button = $(this);
             const value = $button.data('value');
-            const $select = $button.parent().next('select');
+            const $select = $button.parent().prev('select');
             const $option = $select.find(`option[value="${value}"]`);
             
             if ($option.is(':disabled')) {

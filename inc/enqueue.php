@@ -232,6 +232,22 @@ function mr_enqueue_styles()
             MR_THEME_VERSION,
         );
     }
+    // Variation Alert styles
+    wp_enqueue_style(
+    'aaapos-variation-alert',
+    get_template_directory_uri() . '/assets/css/variation-alert.css',
+    array(),
+    '1.0.0'
+);
+
+
+wp_enqueue_script(
+    'aaapos-variation-alert',
+    get_template_directory_uri() . '/assets/js/variation-alert.js',
+    array('jquery'),
+    '1.0.0',
+    true
+);
 
     // Main theme stylesheet (for theme metadata)
     wp_enqueue_style("mr-style", get_stylesheet_uri(), [], MR_THEME_VERSION);

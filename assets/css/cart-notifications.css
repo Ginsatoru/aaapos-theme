@@ -132,6 +132,29 @@
   flex: 1;
 }
 
+/* Product Name */
+.aaapos-cart-product-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status text */
+.aaapos-cart-status {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  white-space: nowrap;
+}
+
+/* Remove old title and description styles */
+.aaapos-cart-title,
+.aaapos-cart-desc {
+  display: none;
+}
+
 /* Title */
 .aaapos-cart-title {
   font-size: 0.85rem;

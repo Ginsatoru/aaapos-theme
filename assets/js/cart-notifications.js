@@ -2,8 +2,8 @@
  * AAAPOS – WooCommerce Animated Cart Notification
  * Tick → Expand → Collapse → Slide
  * FULL ROW LAYOUT (COMPACT + GROUPED)
- * NOW WITH COUPON SUPPORT
- * @version 2.4.0 - WITH CHECKOUT INTEGRATION
+ * NOW WITH COUPON SUPPORT + SINGLE PRODUCT PAGE
+ * @version 2.6.0 - SIMPLIFIED SINGLE PRODUCT INTEGRATION
  */
 
 (function ($) {
@@ -45,12 +45,8 @@
           <div class="aaapos-cart-icon">${checkmarkSVG}</div>
 
           <div class="aaapos-cart-text">
-            <div class="aaapos-cart-title">
-              <strong>${escapeHtml(productName)}</strong>
-            </div>
-            <div class="aaapos-cart-desc">
-              added to cart
-            </div>
+            <span class="aaapos-cart-product-name">${escapeHtml(productName)}</span>
+            <span class="aaapos-cart-status">added to cart</span>
           </div>
 
           <div class="aaapos-cart-actions">
@@ -150,9 +146,21 @@
   }
 
   function getProductName(button) {
+    // Try to get from product card first
     const $card = button.closest('.product, li.product');
     const $title = $card.find('.woocommerce-loop-product__title, h2, h3');
-    return $title.length ? $title.text().trim() : 'Product';
+    
+    if ($title.length) {
+      return $title.text().trim();
+    }
+    
+    // Fallback: try to get from single product page
+    const $productTitle = $('.product_title, .entry-title').first();
+    if ($productTitle.length) {
+      return $productTitle.text().trim();
+    }
+    
+    return 'Product';
   }
 
   function getCartUrl() {
@@ -177,14 +185,10 @@
    * Extract coupon info from WooCommerce message
    */
   function extractCouponInfo(message) {
-    // Try to extract coupon code from message
-    // Example: "Coupon code applied successfully."
     const couponInput = $('input[name="coupon_code"]').val();
     
-    // Try to find discount amount in cart totals
     let discountAmount = '';
     
-    // Look for the coupon discount in the updated cart
     setTimeout(() => {
       const $couponRow = $('.cart-discount');
       if ($couponRow.length) {
@@ -208,24 +212,24 @@
   // ==========================================================================
 
   /**
-   * Listen for "Add to Cart" events
+   * Listen for "Add to Cart" events (both shop pages and single product)
    */
   $(document.body).on('added_to_cart', function (e, fragments, hash, button) {
     if (isMyAccountPage()) return;
-    createNotification(getProductName($(button)));
+    
+    const productName = getProductName($(button));
+    createNotification(productName);
   });
 
   /**
    * Listen for Coupon Apply Events (Method 1: Cart Update)
    */
   $(document.body).on('updated_cart_totals', function() {
-    // Check if there's a success message for coupon
     const $successMessage = $('.woocommerce-message');
     
     if ($successMessage.length && $successMessage.text().toLowerCase().includes('coupon')) {
       const couponInfo = extractCouponInfo($successMessage.text());
       
-      // Small delay to get the discount amount
       setTimeout(() => {
         const $couponDiscount = $('.cart-discount .amount').first();
         const discountAmount = $couponDiscount.length ? $couponDiscount.text() : '';
@@ -239,12 +243,10 @@
    * Listen for Coupon Apply Events (Method 2: Form Submission)
    */
   $(document).on('submit', 'form.woocommerce-cart-form', function(e) {
-    // Check if apply coupon button was clicked
     if ($(document.activeElement).attr('name') === 'apply_coupon') {
       const couponCode = $('input[name="coupon_code"]').val();
       
       if (couponCode) {
-        // Store the coupon code for later use
         sessionStorage.setItem('pending_coupon', couponCode);
       }
     }
@@ -254,19 +256,16 @@
    * Listen for AJAX complete to catch coupon application
    */
   $(document).ajaxComplete(function(event, xhr, settings) {
-    // Check if this is a coupon-related AJAX call
     if (settings.url && settings.url.includes('apply_coupon')) {
       const pendingCoupon = sessionStorage.getItem('pending_coupon');
       
       if (pendingCoupon) {
         sessionStorage.removeItem('pending_coupon');
         
-        // Wait for cart to update
         setTimeout(() => {
           const $couponDiscount = $('.cart-discount .amount').first();
           const discountAmount = $couponDiscount.length ? $couponDiscount.text() : '';
           
-          // Check if coupon was successful (no error messages)
           if ($('.woocommerce-error').length === 0) {
             createCouponNotification(pendingCoupon, discountAmount);
           }
@@ -282,7 +281,6 @@
     const couponCode = $(this).closest('form').find('input[name="coupon_code"]').val();
     
     if (couponCode) {
-      // Monitor for success
       const checkInterval = setInterval(function() {
         const $successMessage = $('.woocommerce-message');
         
@@ -298,7 +296,6 @@
         }
       }, 100);
       
-      // Stop checking after 3 seconds
       setTimeout(() => clearInterval(checkInterval), 3000);
     }
   });

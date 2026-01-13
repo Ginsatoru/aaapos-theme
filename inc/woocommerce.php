@@ -35,6 +35,29 @@ add_action('woocommerce_single_product_summary', function() {
 }, 31);
 
 /**
+ * Enable AJAX Add to Cart on Single Product Pages
+ */
+add_filter('woocommerce_add_to_cart_redirect', '__return_false');
+
+/**
+ * Enqueue AJAX Add to Cart script for single products
+ */
+function aaapos_single_product_ajax_add_to_cart() {
+    if (!is_product()) {
+        return;
+    }
+    
+    wp_enqueue_script(
+        'aaapos-single-ajax-add-to-cart',
+        get_template_directory_uri() . '/assets/js/single-product-ajax.js',
+        ['jquery', 'wc-add-to-cart'],
+        AAAPOS_VERSION,
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'aaapos_single_product_ajax_add_to_cart', 100);
+
+/**
  * Get Shop Header Background Image with Fallback
  * Returns customizer image if set, otherwise returns default fallback
  *

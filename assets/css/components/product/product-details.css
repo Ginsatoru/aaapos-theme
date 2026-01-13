@@ -1,4 +1,4 @@
-/* === RESET VARIATIONS (CLEAR BUTTON) -/* ============================================
+/* ============================================
    MODERN PRODUCT DETAILS - FULLY DYNAMIC
    All colors use CSS variables from customizer
    NO HARDCODED COLORS
@@ -185,30 +185,55 @@
 /* Custom Color Swatches Container */
 .single-product .color-swatches {
   display: flex !important;
-  gap: 0.75rem !important;
+  gap: 0.5rem !important;
   flex-wrap: wrap !important;
   align-items: center !important;
+  margin-left: 0.4rem !important;
 }
 
-.single-product .color-swatch {
-  width: 40px !important;
-  height: 40px !important;
+.single-product .color-swatch,
+.single-product .color-swatches .color-swatch,
+.variations .color-swatch {
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 50% !important;
-  border: 3px solid transparent !important;
+  border: 2px solid transparent !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   position: relative !important;
   overflow: hidden !important;
 }
 
-.single-product .color-swatch:hover {
+.single-product .color-swatch:hover,
+.single-product .color-swatches .color-swatch:hover,
+.variations .color-swatch:hover,
+div.color-swatch:hover,
+.color-swatches div.color-swatch:hover {
   transform: scale(1.1) !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  z-index: 2 !important;
 }
 
-.single-product .color-swatch.selected {
-  border-color: var(--color-primary, var(--brand-color)) !important;
-  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, var(--brand-color-rgb)), 0.2) !important;
+/* Prevent hover on selected to avoid double effect */
+.single-product .color-swatch.selected:hover,
+.single-product .color-swatches .color-swatch.selected:hover,
+.variations .color-swatch.selected:hover,
+div.color-swatch.selected:hover,
+.color-swatches div.color-swatch.selected:hover {
+  transform: scale(1.1) !important;
+  box-shadow: none !important;
+}
+
+/* FIXED: Maximum specificity to override any brand color border */
+.single-product .color-swatch.selected,
+.single-product .color-swatches .color-swatch.selected,
+.variations .color-swatch.selected,
+div.color-swatch.selected,
+.color-swatches div.color-swatch.selected {
+  border: 2px solid rgba(0, 0, 0, 0.6) !important;
+  box-shadow: none !important;
+  transform: scale(1.05) !important;
 }
 
 /* ============================================
@@ -367,4 +392,22 @@
     min-width: 50px !important;
     padding: 0.625rem 1rem !important;
   }
+}
+
+/* Disabled color swatch styles */
+.color-swatch.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.color-swatch.disabled::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 2px;
+    height: 100%;
+    background-color: #ef4444;
 }
