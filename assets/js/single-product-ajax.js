@@ -1,10 +1,9 @@
 /**
  * AJAX Add to Cart for Single Product Pages
- * Prevents page refresh and enables cart notification
- * FULLY WORKING FOR SIMPLE AND VARIABLE PRODUCTS
+ * FIXED VERSION - Cart count now updates properly
  * 
  * @package AAAPOS_Prime
- * @version 2.2.0 - COMPLETE FIX FOR VARIABLE PRODUCTS
+ * @version 2.3.0 - CART COUNT UPDATE FIX
  */
 
 (function($) {
@@ -42,7 +41,21 @@
             
             // If no variation selected, let WooCommerce show the error
             if (!variationId || variationId === '0' || variationId === '') {
+                // Trigger WooCommerce validation
+                $button.removeClass('loading');
                 return true; // Allow default form submission (shows error)
+            }
+            
+            // Additional check: make sure all required attributes are selected
+            let allSelected = true;
+            $form.find('.variations select').each(function() {
+                if ($(this).prop('required') && !$(this).val()) {
+                    allSelected = false;
+                }
+            });
+            
+            if (!allSelected) {
+                return true; // Let WooCommerce show error
             }
         }
         
@@ -58,17 +71,39 @@
         const originalText = $button.html();
         $button.html('Adding...');
         
-        // Prepare form data
-        const formData = $form.serialize();
+        // Prepare form data - USE CORRECT ENDPOINT
+        const formData = new FormData($form[0]);
         
-        // Send AJAX request
+        // Get product ID
+        const productId = $form.find('input[name="product_id"]').val() || 
+                         $form.find('button[name="add-to-cart"]').val();
+        
+        // Build data object for WooCommerce AJAX endpoint
+        const data = {
+            product_id: productId,
+            quantity: $form.find('input[name="quantity"]').val() || 1
+        };
+        
+        // Add variation data if variable product
+        if (isVariableProduct) {
+            data.variation_id = $form.find('input[name="variation_id"]').val();
+            
+            // Add variation attributes
+            $form.find('select[name^="attribute_"]').each(function() {
+                const attrName = $(this).attr('name');
+                data[attrName] = $(this).val();
+            });
+        }
+        
+        // Send AJAX request using WooCommerce's proper endpoint
         $.ajax({
             type: 'POST',
-            url: wc_add_to_cart_params.ajax_url,
-            data: formData + '&action=woocommerce_ajax_add_to_cart',
+            url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+            data: data,
             dataType: 'json',
             success: function(response) {
                 if (!response) {
+                    resetButton();
                     return;
                 }
                 
@@ -78,69 +113,54 @@
                         window.location = response.product_url;
                     } else {
                         alert(response.message || 'An error occurred');
-                        $button.html(originalText).removeClass('loading').prop('disabled', false);
+                        resetButton();
                     }
                     return;
                 }
                 
-                // Success! Update cart fragments
+                // SUCCESS! Now properly update cart fragments
                 if (response.fragments) {
-                    // Method 1: Direct replacement
+                    // Update each fragment on the page
                     $.each(response.fragments, function(key, value) {
-                        var $element = $(key);
-                        if ($element.length) {
-                            $element.replaceWith(value);
-                        }
+                        $(key).replaceWith(value);
                     });
                     
-                    // Method 2: Store in sessionStorage for WooCommerce
+                    // Store fragments in sessionStorage for persistence
                     try {
                         sessionStorage.setItem('wc_fragments', JSON.stringify(response.fragments));
-                        sessionStorage.setItem('wc_cart_hash', response.cart_hash);
+                        sessionStorage.setItem('wc_cart_hash', response.cart_hash || '');
                     } catch(e) {
-                        // sessionStorage not available
+                        console.log('sessionStorage not available');
                     }
                 }
                 
-                // Trigger WooCommerce events in correct order
-                $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $button]);
-                $(document.body).trigger('wc_fragment_refresh');
+                // Trigger WooCommerce fragment refresh event
                 $(document.body).trigger('wc_fragments_refreshed');
+                
+                // Trigger added_to_cart event for notifications
+                $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $button]);
                 
                 // Show success state
                 $button.html('Added!').removeClass('loading').addClass('added');
                 
                 // Reset button after 2 seconds
                 setTimeout(function() {
-                    $button.html(originalText).removeClass('added').prop('disabled', false);
-                    $form.data('processing', false); // Reset processing flag
+                    resetButton();
                 }, 2000);
-                
-                // Optional: Reset variations after adding (uncomment if needed)
-                /*
-                if (isVariableProduct) {
-                    setTimeout(function() {
-                        $form.find('.variations select').val('').trigger('change');
-                        $('.color-swatches .color-swatch').removeClass('selected');
-                        $('.size-buttons .size-button').removeClass('selected');
-                        $form.data('processing', false);
-                    }, 2500);
-                }
-                */
             },
             error: function(xhr, status, error) {
                 console.error('AJAX Error:', status, error);
-                
-                // Reset processing flag
-                $form.data('processing', false);
-                
-                // Reset button
-                $button.html(originalText).removeClass('loading').prop('disabled', false);
+                resetButton();
                 
                 // Fallback: submit form normally
                 $form.off('submit').submit();
             }
         });
+        
+        function resetButton() {
+            $button.html(originalText).removeClass('loading added').prop('disabled', false);
+            $form.data('processing', false);
+        }
         
         return false;
     });

@@ -565,3 +565,153 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
     height: 28px !important;
   }
 }
+
+/**
+ * Variation Swatches Styles
+ * Add this to your main CSS or create a new file: assets/css/variation-swatches.css
+ */
+
+/* Color Swatches Container */
+.color-swatches {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+/* Individual Color Swatch */
+.color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Selected Color Swatch */
+.color-swatch.selected {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #3b82f6;
+    transform: scale(1.1);
+}
+
+/* Disabled Color Swatch */
+.color-swatch.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.color-swatch.disabled::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ef4444;
+    transform: rotate(-45deg);
+}
+
+.color-swatch.disabled:hover {
+    transform: none;
+}
+
+/* Size Buttons Container */
+.size-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+/* Individual Size Button */
+.size-button {
+    padding: 10px 20px;
+    border: 2px solid #e5e7eb;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    color: #1f2937;
+    min-width: 60px;
+}
+
+.size-button:hover:not(:disabled) {
+    border-color: #3b82f6;
+    color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+/* Selected Size Button */
+.size-button.selected {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Disabled Size Button */
+.size-button:disabled,
+.size-button.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    position: relative;
+    background: #f3f4f6;
+}
+
+.size-button:disabled::after,
+.size-button.disabled::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    background: #ef4444;
+    transform: translateY(-50%) rotate(-15deg);
+}
+
+.size-button:disabled:hover,
+.size-button.disabled:hover {
+    transform: none;
+    border-color: #e5e7eb;
+    box-shadow: none;
+}
+
+/* Variation Label */
+.variations label {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Hide original select dropdowns */
+.variations select {
+    display: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .color-swatch {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .size-button {
+        padding: 8px 16px;
+        font-size: 13px;
+        min-width: 50px;
+    }
+}
