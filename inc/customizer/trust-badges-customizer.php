@@ -163,5 +163,46 @@ function aaapos_trust_badges_customizer($wp_customize) {
         'type'        => 'text',
         'priority'    => 20,
     ));
+
+    // ========================================
+// PRODUCT SHARE BUTTONS SECTION
+// ========================================
+
+$wp_customize->add_section('aaapos_product_share', array(
+    'title'       => __('Product Share Buttons', 'aaapos'),
+    'description' => __('Configure social sharing buttons on single product pages', 'aaapos'),
+    'priority'    => 162,
+    'panel'       => 'woocommerce',
+));
+
+// Enable/Disable Product Share Buttons
+$wp_customize->add_setting('show_product_share', array(
+    'default'           => true,
+    'sanitize_callback' => 'absint',
+    'transport'         => 'refresh',
+));
+
+$wp_customize->add_control('show_product_share', array(
+    'label'       => __('Show Product Share Buttons', 'aaapos'),
+    'description' => __('Display social sharing buttons on single product pages', 'aaapos'),
+    'section'     => 'aaapos_product_share',
+    'type'        => 'checkbox',
+    'priority'    => 10,
+));
+
+// Share Section Title
+$wp_customize->add_setting('product_share_title', array(
+    'default'           => __('Share this post', 'aaapos'),
+    'sanitize_callback' => 'sanitize_text_field',
+    'transport'         => 'refresh',
+));
+
+$wp_customize->add_control('product_share_title', array(
+    'label'       => __('Share Title Text', 'aaapos'),
+    'description' => __('Text shown before share buttons', 'aaapos'),
+    'section'     => 'aaapos_product_share',
+    'type'        => 'text',
+    'priority'    => 20,
+));
 }
 add_action('customize_register', 'aaapos_trust_badges_customizer');

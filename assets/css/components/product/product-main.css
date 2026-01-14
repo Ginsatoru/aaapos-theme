@@ -46,6 +46,9 @@
 /* 7. Product share */
 @import 'product-share.css';
 
+/* 8. Product navigation */
+@import 'product-navigation.css';
+
 /**
  * Usage:
  * Enqueue this file in inc/enqueue.php:

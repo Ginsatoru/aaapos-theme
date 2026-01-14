@@ -466,6 +466,11 @@ add_action('woocommerce_single_product_summary', 'aaapos_display_secure_payment_
 function aaapos_display_product_share_buttons() {
     global $product;
     
+    // Check if feature is enabled in customizer
+    if (!get_theme_mod('show_product_share', true)) {
+        return;
+    }
+    
     if (!$product) {
         return;
     }
@@ -488,9 +493,12 @@ function aaapos_display_product_share_buttons() {
     $telegram_url = 'https://t.me/share/url?url=' . $encoded_url . '&text=' . $encoded_title;
     $email_url = 'mailto:?subject=' . $encoded_title . '&body=' . $encoded_url;
     
+    // Get customizable title
+    $share_title = get_theme_mod('product_share_title', __('Share this post', 'aaapos'));
+    
     ?>
     <div class="product-share-section">
-        <span class="product-share-title"><?php esc_html_e('Share this post', 'aaapos'); ?></span>
+        <span class="product-share-title"><?php echo esc_html($share_title); ?></span>
         
         <div class="product-share-buttons">
             <!-- Facebook -->
@@ -580,6 +588,128 @@ function aaapos_display_product_share_buttons() {
 
 // Hook it after secure payment badges (priority 47)
 add_action('woocommerce_single_product_summary', 'aaapos_display_product_share_buttons', 47);
+
+/**
+ * Display Product Navigation (Previous/Next + Return to Shop)
+ * Shows navigation buttons INLINE with product title on same row
+ * WITH HOVER TOOLTIPS - Shop label and product preview cards
+ * 
+ * UPDATED: Added product image, title, and price in hover tooltips
+ * 
+ * @since 1.0.2
+ */
+
+// Remove default product title
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_title', 5);
+
+// Add custom title with navigation wrapper
+add_action('woocommerce_single_product_summary', 'aaapos_product_title_with_navigation', 5);
+
+function aaapos_product_title_with_navigation() {
+    global $post;
+    
+    // Get adjacent products (in same category for better relevance)
+    $prev_post = get_previous_post(true, '', 'product_cat');
+    $next_post = get_next_post(true, '', 'product_cat');
+    
+    // Get shop page URL
+    $shop_url = get_permalink(wc_get_page_id('shop'));
+    
+    ?>
+    <div class="product-title-nav-wrapper">
+        
+        <!-- Product Title (Left side) -->
+        <h1 class="product_title entry-title"><?php echo esc_html(get_the_title()); ?></h1>
+        
+        <!-- Navigation Buttons (Right side) -->
+        <div class="product-navigation">
+            <div class="product-nav-buttons">
+                
+                <!-- Previous Product Button -->
+                <?php if ($prev_post) : 
+                    $prev_product = wc_get_product($prev_post->ID);
+                    $prev_image = get_the_post_thumbnail_url($prev_post->ID, 'thumbnail');
+                    $prev_title = get_the_title($prev_post->ID);
+                    $prev_price = $prev_product ? $prev_product->get_price_html() : '';
+                ?>
+                    <a href="<?php echo esc_url(get_permalink($prev_post->ID)); ?>" 
+                       class="product-nav-btn product-nav-prev"
+                       aria-label="<?php esc_attr_e('Previous product', 'aaapos'); ?>">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                        <!-- Product Preview Card -->
+                        <div class="product-nav-preview">
+                            <?php if ($prev_image) : ?>
+                                <img src="<?php echo esc_url($prev_image); ?>" 
+                                     alt="<?php echo esc_attr($prev_title); ?>" 
+                                     class="product-nav-preview-img">
+                            <?php endif; ?>
+                            <div class="product-nav-preview-title"><?php echo esc_html($prev_title); ?></div>
+                            <div class="product-nav-preview-price"><?php echo wp_kses_post($prev_price); ?></div>
+                        </div>
+                    </a>
+                <?php else : ?>
+                    <span class="product-nav-btn product-nav-prev disabled" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </span>
+                <?php endif; ?>
+                
+                <!-- Products Grid Button (Return to shop) -->
+                <a href="<?php echo esc_url($shop_url); ?>" 
+                   class="product-nav-btn product-nav-grid"
+                   aria-label="<?php esc_attr_e('View all products', 'aaapos'); ?>">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                </a>
+                
+                <!-- Next Product Button -->
+                <?php if ($next_post) : 
+                    $next_product = wc_get_product($next_post->ID);
+                    $next_image = get_the_post_thumbnail_url($next_post->ID, 'thumbnail');
+                    $next_title = get_the_title($next_post->ID);
+                    $next_price = $next_product ? $next_product->get_price_html() : '';
+                ?>
+                    <a href="<?php echo esc_url(get_permalink($next_post->ID)); ?>" 
+                       class="product-nav-btn product-nav-next"
+                       aria-label="<?php esc_attr_e('Next product', 'aaapos'); ?>">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                        <!-- Product Preview Card -->
+                        <div class="product-nav-preview">
+                            <?php if ($next_image) : ?>
+                                <img src="<?php echo esc_url($next_image); ?>" 
+                                     alt="<?php echo esc_attr($next_title); ?>" 
+                                     class="product-nav-preview-img">
+                            <?php endif; ?>
+                            <div class="product-nav-preview-title"><?php echo esc_html($next_title); ?></div>
+                            <div class="product-nav-preview-price"><?php echo wp_kses_post($next_price); ?></div>
+                        </div>
+                    </a>
+                <?php else : ?>
+                    <span class="product-nav-btn product-nav-next disabled" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </span>
+                <?php endif; ?>
+                
+            </div>
+        </div>
+        
+    </div>
+    <?php
+}
+
+// Add custom title with navigation wrapper
+add_action('woocommerce_single_product_summary', 'aaapos_product_title_with_navigation', 5);
 
 /**
  * REPLACE TEXT RATINGS WITH STAR ICONS
