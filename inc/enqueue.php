@@ -525,6 +525,16 @@ function mr_enqueue_scripts()
                 true,
             );
 
+            // Product Share - ONLY on single product pages
+if (is_product()) {
+    wp_enqueue_script(
+        'aaapos-product-share',
+        get_template_directory_uri() . '/assets/js/product-share.js',
+        array('jquery'),
+        MR_THEME_VERSION,
+        true
+    );
+}
             // Localize for cart.js and woocommerce.js
             wp_localize_script("mr-cart", "mr_ajax", [
                 "url" => admin_url("admin-ajax.php"),

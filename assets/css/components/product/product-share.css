@@ -1,0 +1,186 @@
+/* ============================================
+   PRODUCT SOCIAL SHARE BUTTONS
+   Displays share buttons below secure payments
+   ============================================ */
+
+.single-product .product-share-section {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  margin: 1rem 0 0 0 !important;
+  padding: 0.875rem 1rem !important;
+  background: #f3f4f6 !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+}
+
+.single-product .product-share-title {
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  flex-shrink: 0 !important;
+  text-align: center !important;
+}
+
+.single-product .product-share-buttons {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
+}
+
+.single-product .share-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  border: none !important;
+  color: #6b7280 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+  position: relative !important;
+}
+
+/* CRITICAL: Target SVG with maximum specificity */
+.single-product .product-share-buttons .share-button svg,
+.single-product .share-button svg,
+body.single-product .share-button svg,
+.woocommerce .single-product .share-button svg {
+  width: 22px !important;
+  height: 22px !important;
+  fill: currentColor !important;
+  display: block !important;
+  flex-shrink: 0 !important;
+}
+
+/* ============================================
+   TOOLTIP STYLES
+   ============================================ */
+
+.single-product .share-button::after {
+  content: attr(data-tooltip) !important;
+  position: absolute !important;
+  bottom: calc(100% + 8px) !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(-4px) !important;
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  padding: 6px 12px !important;
+  border-radius: 16px !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: all 0.2s ease !important;
+  z-index: 1000 !important;
+}
+
+/* Show tooltip on hover */
+.single-product .share-button:hover::after {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+/* Hover States */
+.single-product .share-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 50% !important;
+}
+
+.single-product .share-button--facebook:hover {
+  background: #1877F2 !important;
+  border-color: #1877F2 !important;
+  color: #ffffff !important;
+}
+
+.single-product .share-button--twitter:hover {
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.single-product .share-button--pinterest:hover {
+  background: #E60023 !important;
+  border-color: #E60023 !important;
+  color: #ffffff !important;
+}
+
+.single-product .share-button--whatsapp:hover {
+  background: #25D366 !important;
+  border-color: #25D366 !important;
+  color: #ffffff !important;
+}
+
+.single-product .share-button--telegram:hover {
+  background: #0088cc !important;
+  border-color: #0088cc !important;
+  color: #ffffff !important;
+}
+
+.single-product .share-button--email:hover {
+  background: #374151 !important;
+  border-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+.single-product .share-button--copy:hover {
+  background: #0ea5e9 !important;
+  border-color: #0ea5e9 !important;
+  color: #ffffff !important;
+}
+
+/* Copied state animation */
+.single-product .share-button--copy.copied {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+/* Update tooltip text when copied */
+.single-product .share-button--copy.copied::after {
+  content: 'Copied!' !important;
+  background: #10b981 !important;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .single-product .product-share-section {
+    gap: 0.75rem !important;
+    padding: 0.75rem 0.875rem !important;
+  }
+  
+  .single-product .product-share-title {
+    font-size: 0.8125rem !important;
+  }
+  
+  .single-product .share-button {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  
+  /* Mobile SVG sizes with extra specificity */
+  .single-product .product-share-buttons .share-button svg,
+  .single-product .share-button svg,
+  body.single-product .share-button svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  
+  /* Adjust tooltip position on mobile */
+  .single-product .share-button::after {
+    font-size: 0.6875rem !important;
+    padding: 5px 10px !important;
+  }
+}
