@@ -12,7 +12,7 @@
      * WooCommerce Enhancements
      */
     class MRWooCommerce {
-        constructor() {
+        constructor() { 
             this.init();
         }
 

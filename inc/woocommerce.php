@@ -58,6 +58,64 @@ function aaapos_single_product_ajax_add_to_cart() {
 add_action('wp_enqueue_scripts', 'aaapos_single_product_ajax_add_to_cart', 100);
 
 /**
+ * AJAX Handler: Add to Cart for Single Product Page (Simple + Variable)
+ */
+add_action('wp_ajax_woocommerce_ajax_add_to_cart', 'aaapos_ajax_add_to_cart_handler');
+add_action('wp_ajax_nopriv_woocommerce_ajax_add_to_cart', 'aaapos_ajax_add_to_cart_handler');
+
+function aaapos_ajax_add_to_cart_handler() {
+    // Check if WooCommerce is active
+    if (!function_exists('WC')) {
+        wp_send_json_error(array('message' => 'WooCommerce not active'));
+        return;
+    }
+    
+    // Get product ID
+    $product_id = apply_filters('woocommerce_add_to_cart_product_id', absint($_POST['product_id']));
+    $quantity = empty($_POST['quantity']) ? 1 : wc_stock_amount($_POST['quantity']);
+    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+    
+    // Get variation attributes if variable product
+    $variation = array();
+    if ($variation_id) {
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, 'attribute_') === 0) {
+                $variation[$key] = sanitize_text_field($value);
+            }
+        }
+    }
+    
+    // Validate
+    $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity);
+    
+    if (!$passed_validation) {
+        wp_send_json_error(array(
+            'error' => true,
+            'product_url' => get_permalink($product_id)
+        ));
+    }
+    
+    // Add to cart
+    $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation);
+    
+    if (!$cart_item_key) {
+        wp_send_json_error(array(
+            'error' => true,
+            'product_url' => get_permalink($product_id)
+        ));
+    }
+    
+    // Success! Trigger the WooCommerce action
+    do_action('woocommerce_ajax_added_to_cart', $product_id);
+    
+    // Get the standard WooCommerce fragments and send response
+    WC_AJAX::get_refreshed_fragments();
+    
+    // This will automatically send JSON and exit
+    die();
+}
+
+/**
  * Get Shop Header Background Image with Fallback
  * Returns customizer image if set, otherwise returns default fallback
  *
