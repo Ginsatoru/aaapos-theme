@@ -1,7 +1,7 @@
 <?php
 /**
  * AJAX handlers
- * UPDATED: Added add-to-cart redirect handler to prevent POST resubmission
+ * UPDATED: Fixed quick view to properly support variable products with variations
  */
 
 /**
@@ -32,7 +32,8 @@ function aaapos_redirect_after_add_to_cart() {
 }
 
 /**
- * Get Quick View Product Content - OPTION B (WooCommerce Standard)
+ * Get Quick View Product Content - FIXED VERSION
+ * Now properly supports both simple and variable products
  */
 function aaapos_get_quick_view_product()
 {
@@ -55,6 +56,9 @@ function aaapos_get_quick_view_product()
     if (!$product) {
         wp_send_json_error(["message" => "Product not found"]);
     }
+
+    // Setup postdata for proper WooCommerce context
+    setup_postdata($post);
 
     // Start output buffering
     ob_start();
@@ -158,9 +162,25 @@ endif; ?>
                 </div>
             <?php endif; ?>
             
-            <!-- Add to Cart Form -->
+            <!-- Add to Cart Form - FIXED: Now properly handles variations -->
             <div class="quick-view-add-to-cart">
-                <?php woocommerce_template_single_add_to_cart(); ?>
+                <?php 
+                // For variable products, we need to include the variation form
+                if ($product->is_type('variable')) {
+                    // Load the variation form template
+                    wc_get_template(
+                        'single-product/add-to-cart/variable.php',
+                        array(
+                            'available_variations' => $product->get_available_variations(),
+                            'attributes'           => $product->get_variation_attributes(),
+                            'selected_attributes'  => $product->get_default_attributes()
+                        )
+                    );
+                } else {
+                    // For simple products, use the standard template
+                    woocommerce_template_single_add_to_cart();
+                }
+                ?>
             </div>
             
             <!-- View Full Details Link -->
@@ -179,6 +199,9 @@ endif; ?>
     
     <?php
     $html = ob_get_clean();
+    
+    // Reset postdata
+    wp_reset_postdata();
 
     wp_send_json_success(["html" => $html]);
 }

@@ -39,26 +39,10 @@ add_action('woocommerce_single_product_summary', function() {
  */
 add_filter('woocommerce_add_to_cart_redirect', '__return_false');
 
-/**
- * Enqueue AJAX Add to Cart script for single products
- */
-function aaapos_single_product_ajax_add_to_cart() {
-    if (!is_product()) {
-        return;
-    }
-    
-    wp_enqueue_script(
-        'aaapos-single-ajax-add-to-cart',
-        get_template_directory_uri() . '/assets/js/single-product-ajax.js',
-        ['jquery', 'wc-add-to-cart', 'wc-add-to-cart-variation'], // Added variation dependency
-        AAAPOS_VERSION,
-        true
-    );
-}
-add_action('wp_enqueue_scripts', 'aaapos_single_product_ajax_add_to_cart', 100);
 
 /**
  * AJAX Handler: Add to Cart for Single Product Page (Simple + Variable)
+ * This handles AJAX add-to-cart from single product pages
  */
 add_action('wp_ajax_woocommerce_ajax_add_to_cart', 'aaapos_ajax_add_to_cart_handler');
 add_action('wp_ajax_nopriv_woocommerce_ajax_add_to_cart', 'aaapos_ajax_add_to_cart_handler');
@@ -89,30 +73,129 @@ function aaapos_ajax_add_to_cart_handler() {
     $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity);
     
     if (!$passed_validation) {
+        $error_notices = wc_get_notices('error');
+        wc_clear_notices();
+        
         wp_send_json_error(array(
             'error' => true,
+            'message' => !empty($error_notices) ? strip_tags($error_notices[0]['notice']) : 'Validation failed',
             'product_url' => get_permalink($product_id)
         ));
+        return;
     }
     
     // Add to cart
     $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation);
     
     if (!$cart_item_key) {
+        $error_notices = wc_get_notices('error');
+        wc_clear_notices();
+        
         wp_send_json_error(array(
             'error' => true,
+            'message' => !empty($error_notices) ? strip_tags($error_notices[0]['notice']) : 'Could not add to cart',
             'product_url' => get_permalink($product_id)
         ));
+        return;
     }
     
-    // Success! Trigger the WooCommerce action
+    // Success! Trigger action
     do_action('woocommerce_ajax_added_to_cart', $product_id);
     
-    // Get the standard WooCommerce fragments and send response
-    WC_AJAX::get_refreshed_fragments();
+    // Calculate cart totals
+    WC()->cart->calculate_totals();
     
-    // This will automatically send JSON and exit
-    die();
+    // Get updated cart count
+    $cart_count = WC()->cart->get_cart_contents_count();
+    $cart_style = get_theme_mod('cart_icon_style', 'icon-count');
+    
+    // Build fragments array
+    $fragments = array();
+    
+    // Fragment 1: Cart count badge
+    ob_start();
+    ?>
+    <span class="cart-count"<?php echo $cart_count === 0 ? ' style="display:none;"' : ''; ?>>
+        <?php echo esc_html($cart_count); ?>
+    </span>
+    <?php
+    $fragments['.cart-count'] = ob_get_clean();
+    
+    // Fragment 2: Cart item count in dropdown header
+    ob_start();
+    ?>
+    <span class="cart-item-count">
+        <?php 
+        echo esc_html($cart_count) . ' ';
+        echo $cart_count === 1 ? esc_html__('item', 'aaapos') : esc_html__('items', 'aaapos'); 
+        ?>
+    </span>
+    <?php
+    $fragments['.cart-item-count'] = ob_get_clean();
+    
+    // Fragment 3: Cart subtotal
+    ob_start();
+    ?>
+    <strong class="cart-subtotal-amount"><?php echo WC()->cart->get_cart_subtotal(); ?></strong>
+    <?php
+    $fragments['.cart-subtotal-amount'] = ob_get_clean();
+    
+    // Fragment 4: Cart total (if using icon-total style)
+    if ($cart_style === 'icon-total') {
+        ob_start();
+        ?>
+        <span class="cart-total">
+            <?php echo WC()->cart->get_cart_subtotal(); ?>
+        </span>
+        <?php
+        $fragments['.cart-total'] = ob_get_clean();
+    }
+    
+    // Fragment 5: Full cart dropdown items list
+    ob_start();
+    if ($cart_count > 0):
+        $cart_items = WC()->cart->get_cart();
+        foreach ($cart_items as $cart_item_key_loop => $cart_item):
+            $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key_loop);
+            if ($_product && $_product->exists() && $cart_item['quantity'] > 0): ?>
+        <li class="cart-dropdown-item">
+            <a href="<?php echo esc_url($_product->get_permalink($cart_item)); ?>" class="cart-item-image">
+                <?php echo wp_kses_post($_product->get_image('thumbnail')); ?>
+            </a>
+            <div class="cart-item-details">
+                <a href="<?php echo esc_url($_product->get_permalink($cart_item)); ?>" class="cart-item-name">
+                    <?php echo wp_kses_post($_product->get_name()); ?>
+                </a>
+                <div class="cart-item-meta">
+                    <span class="cart-item-quantity"><?php echo esc_html($cart_item['quantity']); ?> × </span>
+                    <span class="cart-item-price"><?php echo WC()->cart->get_product_price($_product); ?></span>
+                </div>
+            </div>
+            <button type="button" class="cart-item-remove" data-cart-item-key="<?php echo esc_attr($cart_item_key_loop); ?>" aria-label="<?php esc_attr_e('Remove item', 'aaapos'); ?>">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+            </button>
+        </li>
+        <?php endif;
+        endforeach;
+    else: ?>
+        <li class="cart-dropdown-empty">
+            <p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
+        </li>
+    <?php endif;
+    $fragments['.cart-dropdown-items'] = ob_get_clean();
+    
+    // Apply WooCommerce filter to allow other plugins to add fragments
+    $fragments = apply_filters('woocommerce_add_to_cart_fragments', $fragments);
+    
+    $data = array(
+        'fragments' => $fragments,
+        'cart_hash' => WC()->cart->get_cart_hash(),
+        'cart_item_key' => $cart_item_key
+    );
+    
+    wp_send_json_success($data);
 }
 
 /**

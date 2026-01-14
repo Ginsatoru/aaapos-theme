@@ -353,7 +353,7 @@ function mr_enqueue_scripts()
             ) {
                 wp_localize_script("mr-bundle", "aaaposQuickView", [
                     "ajax_url" => admin_url("admin-ajax.php"),
-                    "nonce" => wp_create_nonce("woocommerce-cart"),
+                    "nonce" => wp_create_nonce("aaapos_quick_view_nonce"),
                 ]);
             }
         }
@@ -481,7 +481,7 @@ function mr_enqueue_scripts()
                 // Localize Quick View script
                 wp_localize_script("aaapos-quick-view", "aaaposQuickView", [
                     "ajax_url" => admin_url("admin-ajax.php"),
-                    "nonce" => wp_create_nonce("woocommerce-cart"),
+                    "nonce" => wp_create_nonce("aaapos_quick_view_nonce"),
                 ]);
             }
 
