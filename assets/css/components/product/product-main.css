@@ -37,6 +37,12 @@
 /* 5. Secondary Sections - Tabs, Related Products */
 @import 'product-tabs-related.css';
 
+/* 5. product cart activity */
+@import 'product-cart-activity.css';
+
+/* 56. Product Trust Badges */
+@import 'product-trust-badges.css';
+
 /**
  * Usage:
  * Enqueue this file in inc/enqueue.php:

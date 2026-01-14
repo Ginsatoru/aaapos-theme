@@ -50,6 +50,7 @@ function aaapos_load_theme_files()
         "inc/customizer/homepage-sections.php",
         "inc/customizer/woocommerce.php",
         "inc/customizer/header-dropdown-customizer.php",
+        "inc/customizer/trust-badges-customizer.php",
     ];
 
     foreach ($includes as $file) {

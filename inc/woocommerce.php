@@ -243,6 +243,222 @@ function custom_add_stock_to_meta() {
 }
 
 /**
+ * Display Cart Activity Message
+ * Shows how many people have added this product to their cart
+ * Displays as a full-width bar below the purchase group
+ */
+function aaapos_display_cart_activity() {
+    global $product;
+    
+    if (!$product) {
+        return;
+    }
+    
+    // Get product ID
+    $product_id = $product->get_id();
+    
+    // Get or generate cart activity count
+    $cart_count = get_post_meta($product_id, '_cart_activity_count', true);
+    
+    // If no count exists, generate a realistic number based on product data
+    if (empty($cart_count)) {
+        $rating_count = $product->get_rating_count();
+        $review_count = $product->get_review_count();
+        $total_sales = (int) get_post_meta($product_id, 'total_sales', true);
+        
+        // Calculate a realistic number
+        if ($total_sales > 0) {
+            $cart_count = max(5, min(150, floor($total_sales * 0.2) + wp_rand(5, 20)));
+        } else {
+            $cart_count = wp_rand(8, 35);
+        }
+        
+        // Store it for consistency
+        update_post_meta($product_id, '_cart_activity_count', $cart_count);
+    }
+    
+    // Display the message
+    ?>
+    <div class="product-cart-activity">
+        <svg class="product-cart-activity__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="21" r="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="21" r="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="product-cart-activity__text">
+            <span class="product-cart-activity__count"><?php echo esc_html($cart_count); ?></span>
+            <?php esc_html_e(' people have added this product to their cart', 'aaapos'); ?>
+        </span>
+    </div>
+    <?php
+}
+
+// Add new hook to display after the entire purchase group
+add_action('woocommerce_after_add_to_cart_form', 'aaapos_display_cart_activity', 10);
+
+/**
+ * Increment cart activity count when product is added to cart
+ */
+function aaapos_track_cart_activity($cart_item_key, $product_id) {
+    $current_count = (int) get_post_meta($product_id, '_cart_activity_count', true);
+    $new_count = max(1, $current_count + 1);
+    update_post_meta($product_id, '_cart_activity_count', $new_count);
+}
+add_action('woocommerce_add_to_cart', 'aaapos_track_cart_activity', 10, 2);
+
+/**
+ * Display Product Trust Badges / Benefits
+ * Shows shipping, returns, and other trust signals below product meta
+ * Now customizable via WordPress Customizer
+ */
+function aaapos_display_product_trust_badges() {
+    
+    // Check if trust badges are enabled
+    if (!get_theme_mod('show_trust_badges', true)) {
+        return;
+    }
+    
+    // Get badge texts from customizer
+    $badge_1_text = get_theme_mod('trust_badge_1_text', __('Free shipping on all orders over $100', 'aaapos'));
+    $badge_2_text = get_theme_mod('trust_badge_2_text', __('14 days easy refund & returns', 'aaapos'));
+    $badge_3_text = get_theme_mod('trust_badge_3_text', __('Product taxes and customs duties included', 'aaapos'));
+    
+    $badge_1_enable = get_theme_mod('trust_badge_1_enable', true);
+    $badge_2_enable = get_theme_mod('trust_badge_2_enable', true);
+    $badge_3_enable = get_theme_mod('trust_badge_3_enable', true);
+    
+    ?>
+    <div class="product-trust-badges">
+        
+        <?php if ($badge_1_enable && !empty($badge_1_text)): ?>
+        <div class="trust-badge-item">
+            <svg class="trust-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="trust-badge-text"><?php echo esc_html($badge_1_text); ?></span>
+        </div>
+        <?php endif; ?>
+        
+        <?php if ($badge_2_enable && !empty($badge_2_text)): ?>
+        <div class="trust-badge-item">
+            <svg class="trust-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="trust-badge-text"><?php echo esc_html($badge_2_text); ?></span>
+        </div>
+        <?php endif; ?>
+        
+        <?php if ($badge_3_enable && !empty($badge_3_text)): ?>
+        <div class="trust-badge-item">
+            <svg class="trust-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="trust-badge-text"><?php echo esc_html($badge_3_text); ?></span>
+        </div>
+        <?php endif; ?>
+        
+    </div>
+    <?php
+}
+
+// Hook after product meta section
+add_action('woocommerce_single_product_summary', 'aaapos_display_product_trust_badges', 45);
+
+/**
+ * Display Secure Payment Badges
+ * Shows payment method icons below trust badges
+ * Uses the same payment icons as footer for consistency
+ */
+function aaapos_display_secure_payment_badges() {
+    
+    // Check if secure payments are enabled
+    if (!get_theme_mod('show_secure_payments', true)) {
+        return;
+    }
+    
+    // Get title from customizer
+    $title = get_theme_mod('secure_payments_title', __('Secure payments:', 'aaapos'));
+    
+    // Payment cards mapping
+    $payment_cards = array(
+        'visa' => array(
+            'setting' => 'payment_icon_visa',
+            'show' => 'payment_show_visa',
+            'fallback' => 'https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg'
+        ),
+        'mastercard' => array(
+            'setting' => 'payment_icon_mastercard',
+            'show' => 'payment_show_mastercard',
+            'fallback' => 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg'
+        ),
+        'amex' => array(
+            'setting' => 'payment_icon_amex',
+            'show' => 'payment_show_amex',
+            'fallback' => 'https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg'
+        ),
+        'paypal' => array(
+            'setting' => 'payment_icon_paypal',
+            'show' => 'payment_show_paypal',
+            'fallback' => 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg'
+        ),
+        'discover' => array(
+            'setting' => 'payment_icon_discover',
+            'show' => 'payment_show_discover',
+            'fallback' => 'https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg'
+        ),
+    );
+    
+    // Build array of payment icons to display
+    $payment_icons = array();
+    
+    foreach ($payment_cards as $card => $data) {
+        // Check if this card is enabled in footer settings
+        if (!get_theme_mod($data['show'], true)) {
+            continue;
+        }
+        
+        // Get the uploaded icon (media ID)
+        $icon_id = get_theme_mod($data['setting']);
+        
+        if ($icon_id) {
+            // Get the uploaded image URL
+            $icon_url = wp_get_attachment_image_src($icon_id, 'full');
+            if ($icon_url) {
+                $payment_icons[] = $icon_url[0];
+            } else {
+                // If uploaded image not found, use fallback
+                $payment_icons[] = $data['fallback'];
+            }
+        } else {
+            // No uploaded image, use fallback
+            $payment_icons[] = $data['fallback'];
+        }
+    }
+    
+    // If no icons, don't display anything
+    if (empty($payment_icons)) {
+        return;
+    }
+    
+    ?>
+    <div class="product-secure-payments">
+        <span class="secure-payments-title"><?php echo esc_html($title); ?></span>
+        <div class="payment-icons-wrapper">
+            <?php foreach ($payment_icons as $icon_url): ?>
+                <img src="<?php echo esc_url($icon_url); ?>" alt="<?php esc_attr_e('Payment method', 'aaapos'); ?>" class="payment-icon">
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+}
+
+// Hook it after trust badges
+add_action('woocommerce_single_product_summary', 'aaapos_display_secure_payment_badges', 46);
+
+/**
  * REPLACE TEXT RATINGS WITH STAR ICONS
  * This removes the default WooCommerce rating HTML completely
  */
