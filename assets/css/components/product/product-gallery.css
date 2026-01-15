@@ -3,11 +3,11 @@
  * 
  * FIX: Main image now properly fills container without excessive whitespace
  * FIX: FlexSlider thumbnails now properly fill full width aligned with parent container
- * FIX: Smaller thumbnails with reduced gaps for compact layout
+ * FIX: SMALLER thumbnails with reduced gaps for compact layout
  * Layout: Main image above, thumbnails in row below
  * 
  * @package AAAPOS_Prime
- * @version 1.0.5
+ * @version 1.0.6
  * Location: assets/css/components/product/product-gallery.css
  */
 
@@ -101,13 +101,13 @@
 
 /* ============================================
    THUMBNAIL IMAGES - FLEXSLIDER COMPACT LAYOUT
-   KEY FIX: Proper width calculation for full alignment
+   KEY FIX: SMALLER thumbnails for more compact appearance
    ============================================ */
 
 .flex-control-thumbs {
     display: flex !important;
     flex-wrap: wrap !important;
-    gap: 12px !important; /* Reduced gap for compact look */
+    gap: 8px !important; /* REDUCED: Smaller gap for more compact look */
     margin: 0 !important;
     list-style: none !important;
     padding: 0 !important;
@@ -115,7 +115,7 @@
 }
 
 .flex-control-thumbs li {
-    width: calc(25% - 9px) !important; /* 4 items: (100% - 3*12px) / 4 = calc(25% - 9px) */
+    width: calc(25% - 6px) !important; /* 4 items: (100% - 3*8px) / 4 = calc(25% - 6px) */
     margin: 0 !important; /* Remove all margins - using gap instead */
     list-style: none !important;
     flex-shrink: 0 !important;
@@ -124,11 +124,11 @@
 
 .flex-control-thumbs li img {
     width: 100% !important;
-    height: 80px !important; /* Smaller compact size */
+    height: 60px !important; /* REDUCED: Much smaller compact size (was 80px) */
     max-width: 100% !important;
     object-fit: cover !important;
     border: 2px solid #e0e0e0 !important;
-    border-radius: 6px !important;
+    border-radius: 4px !important; /* REDUCED: Smaller border radius */
     cursor: pointer !important;
     opacity: 0.7 !important;
     transition: all 0.3s ease !important;
@@ -138,13 +138,13 @@
 .flex-control-thumbs li:hover img {
     opacity: 1 !important;
     border-color: var(--color-primary, #0ea5e9) !important;
-    transform: translateY(-3px) !important;
+    transform: translateY(-2px) !important; /* REDUCED: Smaller hover lift */
 }
 
 .flex-control-thumbs li img.flex-active {
     opacity: 1 !important;
     border-color: var(--color-primary, #0ea5e9) !important;
-    box-shadow: 0 0 0 3px rgba(0, 113, 161, 0.15) !important;
+    box-shadow: 0 0 0 2px rgba(0, 113, 161, 0.15) !important; /* REDUCED: Smaller shadow */
 }
 
 /* ============================================
@@ -165,6 +165,10 @@
     .woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
         max-height: 500px !important;
     }
+    
+    .flex-control-thumbs li img {
+        height: 55px !important; /* Slightly smaller on tablets */
+    }
 }
 
 /* Tablets - 3 thumbnails per row */
@@ -175,15 +179,15 @@
     }
     
     .flex-control-thumbs {
-        gap: 10px !important; /* Slightly smaller gap on tablets */
+        gap: 6px !important; /* Smaller gap on tablets */
     }
     
     .flex-control-thumbs li {
-        width: calc(33.333% - 6.67px) !important; /* 3 items: (100% - 2*10px) / 3 */
+        width: calc(33.333% - 4px) !important; /* 3 items: (100% - 2*6px) / 3 */
     }
     
     .flex-control-thumbs li img {
-        height: 70px !important; /* Smaller on tablets */
+        height: 50px !important; /* REDUCED: Smaller on tablets (was 70px) */
     }
 }
 
@@ -195,15 +199,16 @@
     }
     
     .flex-control-thumbs {
-        gap: 8px !important; /* Even smaller gap on mobile */
+        gap: 6px !important; /* Small gap on mobile */
     }
     
     .flex-control-thumbs li {
-        width: calc(50% - 4px) !important; /* 2 items: (100% - 8px) / 2 */
+        width: calc(50% - 3px) !important; /* 2 items: (100% - 6px) / 2 */
     }
     
     .flex-control-thumbs li img {
-        height: 65px !important; /* Smaller on mobile */
+        height: 50px !important; /* REDUCED: Smaller on mobile (was 65px) */
+        border-radius: 3px !important; /* Smaller radius on mobile */
     }
 }
 
@@ -230,18 +235,18 @@
 
 /* Override any inline styles from WooCommerce/FlexSlider */
 .flex-control-thumbs li[style] {
-    width: calc(25% - 9px) !important;
+    width: calc(25% - 6px) !important;
     margin: 0 !important;
 }
 
 @media (max-width: 768px) {
     .flex-control-thumbs li[style] {
-        width: calc(33.333% - 6.67px) !important;
+        width: calc(33.333% - 4px) !important;
     }
 }
 
 @media (max-width: 480px) {
     .flex-control-thumbs li[style] {
-        width: calc(50% - 4px) !important;
+        width: calc(50% - 3px) !important;
     }
 }

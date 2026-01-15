@@ -2,7 +2,8 @@
 /**
  * Product Categories Section with Scroll Animations
  * 
- * Displays product categories by slug or shows top categories
+ * Displays product categories by checkbox selection or shows top categories
+ * UPDATED: Now uses selected_categories from checkbox control
  * 
  * @package Macedon_Ranges
  */
@@ -10,20 +11,24 @@
 // Get customizer settings
 $title = get_theme_mod('categories_title', 'Shop by Category');
 $subtitle = get_theme_mod('categories_subtitle', 'Quality feed and supplies for all your pets and livestock needs');
-$categories_slugs = get_theme_mod('categories_slugs', '');
+$selected_categories = get_theme_mod('selected_categories', '');
 $categories_count = get_theme_mod('categories_count', 6);
 
 // Get product categories
-if (!empty($categories_slugs)) {
-    // Get categories by slugs
-    $slugs = array_map('trim', explode(',', $categories_slugs));
-    $categories = [];
+if (!empty($selected_categories)) {
+    // Get categories by selected IDs
+    $category_ids = array_map('intval', explode(',', $selected_categories));
+    $category_ids = array_filter($category_ids); // Remove empty values
     
-    foreach ($slugs as $slug) {
-        $term = get_term_by('slug', $slug, 'product_cat');
-        if ($term && !is_wp_error($term)) {
-            $categories[] = $term;
-        }
+    if (!empty($category_ids)) {
+        $categories = get_terms(array(
+            'taxonomy'   => 'product_cat',
+            'include'    => $category_ids,
+            'hide_empty' => false,
+            'orderby'    => 'include', // Maintain the order from checkbox selection
+        ));
+    } else {
+        $categories = [];
     }
 } else {
     // Fallback: Get top categories by product count
@@ -110,7 +115,7 @@ if (empty($categories) || is_wp_error($categories)) {
                     </div>
                 </a>
             <?php 
-                $delay += 100; // Increment delay for stagger effect
+                $delay += 100;
             endforeach; ?>
         </div>
     </div>

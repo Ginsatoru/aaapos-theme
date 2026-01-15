@@ -158,3 +158,14 @@
     height: 36px;
   }
 }
+
+/* Profile image styling */
+.dashboard-greeting .greeting-icon-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.75rem;
+    border: 1px solid rgb(190, 190, 190);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

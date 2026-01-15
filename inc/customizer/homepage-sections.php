@@ -1,6 +1,7 @@
 <?php
 /**
  * Homepage sections customizer settings
+ * UPDATED: Uses checkbox selection for categories instead of slug input
  */
 function mr_homepage_sections_customizer($wp_customize)
 {
@@ -72,7 +73,7 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     // ===================================
-    // PRODUCT CATEGORIES BY SLUG
+    // PRODUCT CATEGORIES - CHECKBOX SELECTION
     // ===================================
 
     $wp_customize->add_setting("show_categories", [
@@ -115,25 +116,49 @@ function mr_homepage_sections_customizer($wp_customize)
         "priority" => 55,
     ]);
 
-    // Category Slugs Input
-    $wp_customize->add_setting("categories_slugs", [
+    // NEW: Category Checkboxes Control
+    // Get all product categories for checkbox options
+    $product_categories = get_terms([
+        'taxonomy' => 'product_cat',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+    ]);
+    
+    $category_choices = [];
+    if (!empty($product_categories) && !is_wp_error($product_categories)) {
+        foreach ($product_categories as $category) {
+            $category_choices[$category->term_id] = $category->name . ' (' . $category->count . ' products)';
+        }
+    }
+
+    $wp_customize->add_setting("selected_categories", [
         "default" => "",
-        "sanitize_callback" => "sanitize_text_field",
+        "sanitize_callback" => "aaapos_sanitize_category_checkboxes",
         "transport" => "refresh",
     ]);
 
-    $wp_customize->add_control("categories_slugs", [
-        "label" => __("Category Slugs", "macedon-ranges"),
-        "description" => __(
-            "Enter category slugs separated by commas. Example: dog-food, cat-food, bird-supplies, horse-feed. Leave empty to show all categories.",
-            "macedon-ranges",
-        ),
-        "section" => "mr_homepage_sections",
-        "type" => "textarea",
-        "priority" => 56,
-    ]);
+    // Register the custom control
+    if (class_exists('AAAPOS_Checkbox_Multiple_Control')) {
+        $wp_customize->add_control(
+            new AAAPOS_Checkbox_Multiple_Control(
+                $wp_customize,
+                "selected_categories",
+                [
+                    "label" => __("Select Categories to Display", "macedon-ranges"),
+                    "description" => __(
+                        "Choose which categories to show on the homepage. Leave all unchecked to show top categories by product count.",
+                        "macedon-ranges"
+                    ),
+                    "section" => "mr_homepage_sections",
+                    "choices" => $category_choices,
+                    "priority" => 56,
+                ]
+            )
+        );
+    }
 
-    // Fallback: Number of categories (used when slugs is empty)
+    // Fallback: Number of categories (used when no categories selected)
     $wp_customize->add_setting("categories_count", [
         "default" => 6,
         "sanitize_callback" => "absint",
@@ -142,8 +167,12 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("categories_count", [
         "label" => __(
-            "Number of Categories (if no slugs specified)",
+            "Number of Categories (if none selected)",
             "macedon-ranges",
+        ),
+        "description" => __(
+            "This will show the top categories by product count when no specific categories are selected above.",
+            "macedon-ranges"
         ),
         "section" => "mr_homepage_sections",
         "type" => "number",
@@ -480,5 +509,41 @@ if (!function_exists("aaapos_sanitize_float")) {
     function aaapos_sanitize_float($input)
     {
         return floatval($input);
+    }
+}
+
+/**
+ * Sanitize Category Checkboxes
+ * Ensures only valid category IDs are saved
+ */
+if (!function_exists("aaapos_sanitize_category_checkboxes")) {
+    function aaapos_sanitize_category_checkboxes($input)
+    {
+        // Handle empty input
+        if (empty($input)) {
+            return '';
+        }
+        
+        // Convert comma-separated string to array
+        $values = is_array($input) ? $input : explode(',', $input);
+        
+        // Sanitize each value as integer
+        $sanitized = array_map('absint', $values);
+        
+        // Remove zeros and duplicates
+        $sanitized = array_filter($sanitized);
+        $sanitized = array_unique($sanitized);
+        
+        // Verify these are valid category IDs
+        $valid_categories = [];
+        foreach ($sanitized as $cat_id) {
+            $term = get_term($cat_id, 'product_cat');
+            if ($term && !is_wp_error($term)) {
+                $valid_categories[] = $cat_id;
+            }
+        }
+        
+        // Return as comma-separated string
+        return implode(',', $valid_categories);
     }
 }

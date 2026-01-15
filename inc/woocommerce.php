@@ -2019,16 +2019,22 @@ function aaapos_custom_dashboard_content()
         : $current_user->display_name;
     ?>
     <div class="woocommerce-MyAccount-dashboard-intro">
-        <h2 class="dashboard-greeting">
-            <svg class="greeting-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Hello <span class="greeting-name"><?php echo esc_html(
-                $display_name,
-            ); ?></span>
-        </h2>
-    </div>
+    <h2 class="dashboard-greeting">
+        <?php
+        // Get user's Gravatar or profile image
+        $user_id = get_current_user_id();
+        $user_email = $current_user->user_email;
+        
+        // Try to get Gravatar
+        $avatar = get_avatar($user_id, 48, '', $current_user->display_name, array('class' => 'greeting-icon-img'));
+    
+        echo $avatar;
+        ?>
+        Hello <span class="greeting-name"><?php echo esc_html(
+            $display_name,
+        ); ?></span>
+    </h2>
+</div>
 
     <div class="woocommerce-MyAccount-dashboard-grid">
         
