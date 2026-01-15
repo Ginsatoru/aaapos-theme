@@ -2,10 +2,12 @@
  * Product Gallery Styles - Fixed Image Sizing & Centering
  * 
  * FIX: Main image now properly fills container without excessive whitespace
+ * FIX: FlexSlider thumbnails now properly fill full width aligned with parent container
+ * FIX: Smaller thumbnails with reduced gaps for compact layout
  * Layout: Main image above, thumbnails in row below
  * 
  * @package AAAPOS_Prime
- * @version 1.0.2
+ * @version 1.0.5
  * Location: assets/css/components/product/product-gallery.css
  */
 
@@ -58,7 +60,7 @@
     height: auto !important;
     max-width: 100% !important;
     max-height: 600px !important;
-    object-fit: cover !important; /* Changed from 'contain' to 'cover' */
+    object-fit: cover !important;
     object-position: center !important;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -70,51 +72,6 @@
 .woocommerce-product-gallery__image:first-child a img.wp-post-image {
     width: 100% !important;
     height: auto !important;
-}
-
-/* ============================================
-   THUMBNAIL IMAGES - ROW LAYOUT
-   ============================================ */
-
-/* All thumbnails after the first image */
-.woocommerce-product-gallery__image:not(:first-child) {
-    display: inline-block;
-    width: calc(25% - 12px);
-    margin: 0 16px 0 0;
-    vertical-align: top;
-}
-
-/* Remove margin from every 4th thumbnail */
-.woocommerce-product-gallery__image:nth-child(5n+1) {
-    margin-right: 0;
-}
-
-/* Thumbnail image styling */
-.woocommerce-product-gallery__image:not(:first-child) a {
-    display: block;
-    width: 100%;
-}
-
-.woocommerce-product-gallery__image:not(:first-child) img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Thumbnail hover effect */
-.woocommerce-product-gallery__image:not(:first-child):hover img {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Active thumbnail styling */
-.woocommerce-product-gallery__image:not(:first-child).flex-active-slide img,
-.woocommerce-product-gallery__image:not(:first-child).active img {
-    box-shadow: 0 0 0 3px rgba(0, 113, 161, 0.15);
 }
 
 /* ============================================
@@ -142,41 +99,52 @@
     padding: 0;
 }
 
+/* ============================================
+   THUMBNAIL IMAGES - FLEXSLIDER COMPACT LAYOUT
+   KEY FIX: Proper width calculation for full alignment
+   ============================================ */
+
 .flex-control-thumbs {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -8px;
-    list-style: none;
-    padding: 0;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important; /* Reduced gap for compact look */
+    margin: 0 !important;
+    list-style: none !important;
+    padding: 0 !important;
+    width: 100% !important;
 }
 
 .flex-control-thumbs li {
-    width: calc(25% - 16px);
-    margin: 0 8px 0 8px;
-    list-style: none;
+    width: calc(25% - 9px) !important; /* 4 items: (100% - 3*12px) / 4 = calc(25% - 9px) */
+    margin: 0 !important; /* Remove all margins - using gap instead */
+    list-style: none !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
 }
 
 .flex-control-thumbs li img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: all 0.3s ease;
+    width: 100% !important;
+    height: 80px !important; /* Smaller compact size */
+    max-width: 100% !important;
+    object-fit: cover !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    opacity: 0.7 !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
 }
 
 .flex-control-thumbs li:hover img {
-    opacity: 1;
-    border-color: var(--color-primary);
-    transform: translateY(-3px);
+    opacity: 1 !important;
+    border-color: var(--color-primary, #0ea5e9) !important;
+    transform: translateY(-3px) !important;
 }
 
 .flex-control-thumbs li img.flex-active {
-    opacity: 1;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(0, 113, 161, 0.15);
+    opacity: 1 !important;
+    border-color: var(--color-primary, #0ea5e9) !important;
+    box-shadow: 0 0 0 3px rgba(0, 113, 161, 0.15) !important;
 }
 
 /* ============================================
@@ -199,39 +167,43 @@
     }
 }
 
-/* Tablets */
+/* Tablets - 3 thumbnails per row */
 @media (max-width: 768px) {
     .woocommerce-product-gallery__image:first-child img,
     .woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
         max-height: 400px !important;
     }
     
-    .woocommerce-product-gallery__image:not(:first-child),
-    .flex-control-thumbs li {
-        width: calc(33.333% - 12px);
+    .flex-control-thumbs {
+        gap: 10px !important; /* Slightly smaller gap on tablets */
     }
     
-    .woocommerce-product-gallery__image:not(:first-child) img,
+    .flex-control-thumbs li {
+        width: calc(33.333% - 6.67px) !important; /* 3 items: (100% - 2*10px) / 3 */
+    }
+    
     .flex-control-thumbs li img {
-        height: 90px;
+        height: 70px !important; /* Smaller on tablets */
     }
 }
 
-/* Mobile */
+/* Mobile - 2 thumbnails per row */
 @media (max-width: 480px) {
     .woocommerce-product-gallery__image:first-child img,
     .woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
         max-height: 350px !important;
     }
     
-    .woocommerce-product-gallery__image:not(:first-child),
-    .flex-control-thumbs li {
-        width: calc(50% - 12px);
+    .flex-control-thumbs {
+        gap: 8px !important; /* Even smaller gap on mobile */
     }
     
-    .woocommerce-product-gallery__image:not(:first-child) img,
+    .flex-control-thumbs li {
+        width: calc(50% - 4px) !important; /* 2 items: (100% - 8px) / 2 */
+    }
+    
     .flex-control-thumbs li img {
-        height: 80px;
+        height: 65px !important; /* Smaller on mobile */
     }
 }
 
@@ -254,4 +226,22 @@
 /* Fix for variable products with image swatches */
 .woocommerce-product-gallery--with-images .woocommerce-product-gallery__wrapper {
     width: 100%;
+}
+
+/* Override any inline styles from WooCommerce/FlexSlider */
+.flex-control-thumbs li[style] {
+    width: calc(25% - 9px) !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .flex-control-thumbs li[style] {
+        width: calc(33.333% - 6.67px) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .flex-control-thumbs li[style] {
+        width: calc(50% - 4px) !important;
+    }
 }
