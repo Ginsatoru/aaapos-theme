@@ -1,27 +1,54 @@
 /**
  * Single Product Page Layout Styles
- * Handles container width, grid system, breadcrumb, and sale badge visibility
+ * Handles container width, grid system, breadcrumb, and sale badge
  * product-layout.css
  * @package AAAPOS_Prime
- * @version 1.0.3
+ * @version 1.0.4
  * 
  * Location: assets/css/components/product/product-layout.css
  * 
- * FIXED: Responsive width that works on all desktop sizes (laptop to 24" monitors)
+ * UPDATED: Sale badge now visible on single product pages
  */
 
 /* ============================================
-   SALE BADGE - HIDE ON SINGLE PRODUCT PAGE
-   Keep visible on shop/archive pages only
+   SALE BADGE - STYLING FOR SINGLE PRODUCT PAGE
+   Shows "SALE" text with percentage off
    ============================================ */
 
-.single-product div.product .onsale,
-.single-product-page .onsale,
-.single-product .onsale {
-  display: none !important;
+.single-product div.product .onsale {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-/* Keep visible on shop/archive pages */
+.single-product div.product .onsale .sale-text {
+  background: #fff;
+  color: var(--color-primary, #0ea5e9);
+  padding: 10px 18px;
+  font-size: 13px;
+  border-radius: 18px;
+  letter-spacing: 0.5px;
+}
+
+.single-product div.product .onsale .sale-percentage {
+  background: #fff;
+  color: var(--color-primary, #0ea5e9);
+  padding: 8px 18px;
+  font-size: 16px;
+  border-radius: 18px;
+}
+
+/* Keep visible on shop/archive pages with default styling */
 .woocommerce ul.products li.product .onsale {
   display: block !important;
 }
@@ -99,6 +126,23 @@
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 1rem !important;
+  }
+  
+  .single-product div.product .onsale {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .single-product div.product .onsale .sale-text {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 10px;
+  }
+  
+  .single-product div.product .onsale .sale-percentage {
+    font-size: 14px;
+    padding: 3px 8px;
+    border-radius: 10px;
   }
 }
 
@@ -184,6 +228,7 @@
   grid-row: 1 !important;
   order: 1 !important;
   align-self: start !important;
+  position: relative !important;
 }
 
 .single-product .summary.entry-summary {
