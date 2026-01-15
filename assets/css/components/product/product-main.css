@@ -49,6 +49,15 @@
 /* 8. Product navigation */
 @import 'product-navigation.css';
 
+/* 10. Product layout */
+@import 'product-reviews-layout.css';
+
+/* 11. Product forms */
+@import 'product-reviews-form.css';
+
+/* 9. Product summary */
+@import 'product-reviews-summary.css';
+
 /**
  * Usage:
  * Enqueue this file in inc/enqueue.php:

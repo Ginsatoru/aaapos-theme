@@ -1,0 +1,164 @@
+/* ============================================
+   LEFT COLUMN - Rating Summary + Review Form
+   ============================================ */
+
+.reviews-left-column {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    position: sticky !important;
+    top: 2rem !important;
+}/**
+ * Product Reviews Layout & Structure
+ * Location: assets/css/components/product/product-reviews-layout.css
+ * 
+ * @package AAAPOS_Prime
+ * @version 2.0.1
+ */
+
+/* ============================================
+   MAIN REVIEWS SECTION - BLACK BACKGROUND
+   ============================================ */
+
+#reviews {
+    background: #000 !important;
+    padding: 3rem !important;
+    border-radius: 16px;
+    margin-top: 2rem;
+}
+
+/* Remove gray background from reviews tab panel */
+.woocommerce-tabs .panel#tab-reviews {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Keep other tab panels with default styling */
+.woocommerce-tabs .panel:not(#tab-reviews) {
+    background: #f9fafb;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+#reviews h2 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    margin-bottom: 2rem !important;
+}
+
+/* ============================================
+   TWO COLUMNS LAYOUT
+   Left: Rating Summary + Form | Right: Reviews List
+   ============================================ */
+
+.woocommerce-Reviews,
+#reviews.woocommerce-Reviews {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem !important;
+    align-items: start !important;
+    margin-bottom: 0 !important;
+}
+
+/* ============================================
+   LEFT COLUMN - Rating Summary + Review Form
+   ============================================ */
+
+.reviews-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 2rem;
+}
+
+/* Rating Summary Box (Top of left column) */
+.reviews-rating-summary {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 2.5rem;
+}
+
+/* Review Form (Bottom of left column) */
+#review_form_wrapper {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 2.5rem;
+}
+
+/* ============================================
+   RIGHT COLUMN - Reviews List
+   ============================================ */
+
+#comments {
+    order: 2 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .woocommerce-Reviews {
+        grid-template-columns: 350px 1fr;
+        gap: 1.5rem;
+    }
+    
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 991px) {
+    #reviews {
+        padding: 2rem !important;
+    }
+    
+    /* Stack to single column on tablet */
+    .woocommerce-Reviews {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .reviews-left-column {
+        position: relative;
+        top: auto;
+        max-width: 100%;
+    }
+    
+    /* Form comes after reviews on mobile */
+    #review_form_wrapper {
+        order: 3;
+    }
+    
+    #comments {
+        order: 1;
+    }
+    
+    .reviews-rating-summary {
+        order: 2;
+    }
+}
+
+@media (max-width: 767px) {
+    #reviews {
+        padding: 1.5rem !important;
+    }
+    
+    .woocommerce-Reviews {
+        gap: 1.5rem;
+    }
+    
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 1.5rem;
+    }
+    
+    .reviews-left-column {
+        gap: 1.5rem;
+    }
+}

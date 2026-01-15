@@ -458,6 +458,316 @@ function aaapos_display_secure_payment_badges() {
 // Hook it after trust badges
 add_action('woocommerce_single_product_summary', 'aaapos_display_secure_payment_badges', 46);
 
+
+/**
+ * Custom Review Layout - Works WITH WooCommerce Tabs
+ * Replace the previous code in: inc/woocommerce.php
+ * 
+ * @package AAAPOS_Prime
+ * @version 2.0.4
+ */
+
+/**
+ * Modify the reviews tab content
+ */
+add_filter('woocommerce_product_tabs', 'aaapos_customize_reviews_tab', 98);
+
+function aaapos_customize_reviews_tab($tabs) {
+    if (isset($tabs['reviews'])) {
+        // Replace the callback for reviews tab
+        $tabs['reviews']['callback'] = 'aaapos_custom_reviews_tab_content';
+    }
+    return $tabs;
+}
+
+/**
+ * Custom reviews tab content
+ */
+function aaapos_custom_reviews_tab_content() {
+    global $product;
+    
+    if (!comments_open()) {
+        return;
+    }
+    
+    $rating_count = $product->get_rating_count();
+    $average_rating = $product->get_average_rating();
+    $review_count = $product->get_review_count();
+    
+    ?>
+    <div id="reviews" class="woocommerce-Reviews">
+        <div class="reviews-left-column">
+            
+            <!-- RATING SUMMARY BOX -->
+            <div class="reviews-rating-summary">
+                <div class="summary-rating-left">
+                    <div class="summary-rating-number"><?php echo number_format($average_rating, 2); ?></div>
+                    
+                    <div class="summary-stars-display">
+                        <?php
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= floor($average_rating)) {
+                                echo '<span class="star filled">★</span>';
+                            } elseif ($i - 0.5 <= $average_rating) {
+                                echo '<span class="star half">★</span>';
+                            } else {
+                                echo '<span class="star empty">★</span>';
+                            }
+                        }
+                        ?>
+                    </div>
+                    
+                    <div class="summary-rating-count">
+                        (<?php echo $rating_count; ?> <?php echo _n('Rating', 'Ratings', $rating_count, 'aaapos'); ?>)
+                    </div>
+                </div>
+                
+                <?php if ($rating_count > 0) : ?>
+                <div class="rating-breakdown">
+                    <?php for ($i = 5; $i >= 1; $i--) : 
+                        $count = $product->get_rating_count($i);
+                        $percentage = ($count / $rating_count) * 100;
+                    ?>
+                    <div class="rating-breakdown-item">
+                        <span class="stars-label"><?php echo $i; ?> ★</span>
+                        <div class="rating-breakdown-bar">
+                            <div class="rating-breakdown-bar-fill" style="width: <?php echo $percentage; ?>%;"></div>
+                        </div>
+                        <span class="percentage"><?php echo round($percentage); ?>%</span>
+                    </div>
+                    <?php endfor; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+            
+            <!-- REVIEW FORM -->
+            <div id="review_form_wrapper">
+                <div id="review_form">
+                    <?php
+                    $commenter = wp_get_current_commenter();
+                    
+                    $comment_form = array(
+                        'title_reply'          => esc_html__('Add a review', 'aaapos'),
+                        'title_reply_to'       => esc_html__('Leave a Reply to %s', 'aaapos'),
+                        'title_reply_before'   => '<h3 id="reply-title" class="comment-reply-title">',
+                        'title_reply_after'    => '</h3>',
+                        'comment_notes_before' => '<p class="comment-notes">' . esc_html__('Your email address will not be published. Required fields are marked', 'aaapos') . ' <span class="required">*</span></p>',
+                        'comment_notes_after'  => '',
+                        'label_submit'         => esc_html__('Submit', 'aaapos'),
+                        'logged_in_as'         => '',
+                        'comment_field'        => '',
+                        'submit_button'        => '<button type="submit" class="submit">%4$s</button>',
+                        'submit_field'         => '<div class="form-submit">%1$s %2$s</div>',
+                    );
+                    
+                    $account_page_url = wc_get_page_permalink('myaccount');
+                    if ($account_page_url) {
+                        $comment_form['must_log_in'] = '<p class="must-log-in">' . sprintf(esc_html__('You must be %1$slogged in%2$s to post a review.', 'aaapos'), '<a href="' . esc_url($account_page_url) . '">', '</a>') . '</p>';
+                    }
+                    
+                    comment_form(apply_filters('woocommerce_product_review_comment_form_args', $comment_form));
+                    ?>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- RIGHT COLUMN - REVIEWS LIST -->
+        <div id="comments">
+            <h2 class="woocommerce-Reviews-title">
+                <?php
+                if ($review_count && wc_review_ratings_enabled()) {
+                    printf(esc_html(_n('%1$s review for %2$s', '%1$s reviews for %2$s', $review_count, 'aaapos')), esc_html($review_count), '<span>' . get_the_title() . '</span>');
+                } else {
+                    esc_html_e('Reviews', 'aaapos');
+                }
+                ?>
+            </h2>
+            
+            <?php
+            // Get product reviews
+            $comments = get_comments(array(
+                'post_id' => $product->get_id(),
+                'status'  => 'approve',
+                'type'    => 'review',
+            ));
+            
+            if ($comments) : ?>
+                <ol class="commentlist">
+                    <?php wp_list_comments(apply_filters('woocommerce_product_review_list_args', array(
+                        'callback' => 'aaapos_custom_review_callback',
+                        'style'    => 'ol',
+                        'per_page' => -1,
+                    )), $comments); ?>
+                </ol>
+                
+                <?php
+                if (get_comment_pages_count() > 1 && get_option('page_comments')) :
+                    echo '<nav class="woocommerce-pagination">';
+                    paginate_comments_links(apply_filters('woocommerce_comment_pagination_args', array(
+                        'prev_text' => '&larr;',
+                        'next_text' => '&rarr;',
+                        'type'      => 'list',
+                    )));
+                    echo '</nav>';
+                endif;
+                ?>
+            <?php else : ?>
+                <p class="woocommerce-noreviews"><?php esc_html_e('There are no reviews yet.', 'aaapos'); ?></p>
+            <?php endif; ?>
+        </div>
+        
+    </div>
+    <?php
+}
+
+/**
+ * Custom review callback - Restructured layout
+ */
+function aaapos_custom_review_callback($comment, $args, $depth) {
+    $GLOBALS['comment'] = $comment;
+    
+    $rating = intval(get_comment_meta($comment->comment_ID, 'rating', true));
+    $verified = wc_review_is_from_verified_owner($comment->comment_ID);
+    
+    ?>
+    <li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+        <div id="comment-<?php comment_ID(); ?>" class="comment_container">
+            <?php
+            echo get_avatar($comment, apply_filters('woocommerce_review_gravatar_size', '60'), '', '', array('class' => 'avatar'));
+            ?>
+            <div class="comment-text">
+                
+                <!-- Top row: Name/Verified + Stars -->
+                <div class="review-header-row">
+                    <div class="review-meta-left">
+                        <strong class="woocommerce-review__author"><?php comment_author(); ?></strong>
+                        
+                        <?php if ($verified) : ?>
+                            <em class="woocommerce-review__verified verified">
+                                <?php esc_html_e('(verified owner)', 'aaapos'); ?>
+                            </em>
+                        <?php endif; ?>
+                        
+                        <time class="woocommerce-review__published-date" datetime="<?php echo get_comment_date('c'); ?>">
+                            <?php echo get_comment_date(wc_date_format()); ?>
+                        </time>
+                    </div>
+                    
+                    <?php if ($rating && wc_review_ratings_enabled()) : ?>
+                        <div class="review-stars-right">
+                            <?php
+                            echo '<div class="star-rating" role="img" aria-label="' . sprintf(esc_attr__('Rated %d out of 5', 'aaapos'), $rating) . '">';
+                            for ($i = 1; $i <= 5; $i++) {
+                                if ($i <= $rating) {
+                                    echo '<span class="star filled">★</span>';
+                                } else {
+                                    echo '<span class="star empty">★</span>';
+                                }
+                            }
+                            echo '</div>';
+                            ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- Review text -->
+                <div class="description">
+                    <?php comment_text(); ?>
+                </div>
+                
+            </div>
+        </div>
+    </li>
+    <?php
+}
+
+/**
+ * Customize comment form fields
+ */
+add_filter('comment_form_default_fields', 'aaapos_custom_comment_fields');
+
+function aaapos_custom_comment_fields($fields) {
+    $commenter = wp_get_current_commenter();
+    
+    $fields['author'] = '<div class="comment-form-author">
+        <label for="author">' . esc_html__('Name', 'aaapos') . ' <span class="required">*</span></label>
+        <input id="author" name="author" type="text" value="' . esc_attr($commenter['comment_author']) . '" required placeholder="' . esc_attr__('Enter your name', 'aaapos') . '" />
+    </div>';
+    
+    $fields['email'] = '<div class="comment-form-email">
+        <label for="email">' . esc_html__('Email', 'aaapos') . ' <span class="required">*</span></label>
+        <input id="email" name="email" type="email" value="' . esc_attr($commenter['comment_author_email']) . '" required placeholder="' . esc_attr__('Enter your email', 'aaapos') . '" />
+    </div>';
+    
+    $fields['cookies'] = '<div class="comment-form-cookies-consent">
+        <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" />
+        <label for="wp-comment-cookies-consent">' . esc_html__('Save my name, email, and website in this browser for the next time I comment.', 'aaapos') . '</label>
+    </div>';
+    
+    unset($fields['url']);
+    
+    return $fields;
+}
+
+/**
+ * Add rating field and comment field
+ */
+add_filter('woocommerce_product_review_comment_form_args', 'aaapos_add_rating_and_comment_field');
+
+function aaapos_add_rating_and_comment_field($comment_form) {
+    $comment_form['comment_field'] = '<div class="comment-form-rating">
+        <label for="rating">' . esc_html__('Your rating', 'aaapos') . ' <span class="required">*</span></label>
+        <div class="stars-rating-input">
+            <input type="radio" id="rating-5" name="rating" value="5" required />
+            <label for="rating-5" title="' . esc_attr__('5 stars', 'aaapos') . '">★</label>
+            
+            <input type="radio" id="rating-4" name="rating" value="4" />
+            <label for="rating-4" title="' . esc_attr__('4 stars', 'aaapos') . '">★</label>
+            
+            <input type="radio" id="rating-3" name="rating" value="3" />
+            <label for="rating-3" title="' . esc_attr__('3 stars', 'aaapos') . '">★</label>
+            
+            <input type="radio" id="rating-2" name="rating" value="2" />
+            <label for="rating-2" title="' . esc_attr__('2 stars', 'aaapos') . '">★</label>
+            
+            <input type="radio" id="rating-1" name="rating" value="1" />
+            <label for="rating-1" title="' . esc_attr__('1 star', 'aaapos') . '">★</label>
+        </div>
+    </div>
+    
+    <div class="comment-form-comment">
+        <label for="comment">' . esc_html__('Your review', 'aaapos') . ' <span class="required">*</span></label>
+        <textarea id="comment" name="comment" cols="45" rows="8" required placeholder="' . esc_attr__('Share your experience with this product...', 'aaapos') . '"></textarea>
+    </div>
+    
+    <div class="comment-form-captcha">
+        <label for="captcha">6 + 10 = ?</label>
+        <input id="captcha" name="captcha" type="text" required placeholder="' . esc_attr__('Enter answer', 'aaapos') . '" />
+    </div>';
+    
+    return $comment_form;
+}
+
+/**
+ * Hide default rating select field
+ */
+add_action('wp_head', 'aaapos_hide_default_rating_field');
+
+function aaapos_hide_default_rating_field() {
+    if (!is_product()) {
+        return;
+    }
+    ?>
+    <style>
+        .comment-form-rating select,
+        .comment-form-rating .stars {
+            display: none !important;
+        }
+    </style>
+    <?php
+}
+
 /**
  * Display Social Share Buttons on Single Product Page
  * Shows Facebook, X (Twitter), Pinterest, WhatsApp, Telegram, Email, and Copy Link buttons
