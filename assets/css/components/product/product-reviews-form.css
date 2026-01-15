@@ -1,9 +1,9 @@
 /**
- * Product Reviews Form Styling - FIXED VERSION
+ * Product Reviews Form Styling - LIGHT GRAY VERSION
  * Location: assets/css/components/product/product-reviews-form.css
  * 
  * @package AAAPOS_Prime
- * @version 2.0.1
+ * @version 2.0.2
  */
 
 /* ============================================
@@ -14,7 +14,7 @@
 #reply-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #fff !important;
+    color: #1a1a1a !important;
     margin-bottom: 0.5rem;
 }
 
@@ -22,7 +22,7 @@
 .comment-notes,
 .email-notes {
     font-size: 0.875rem;
-    color: #9ca3af !important;
+    color: #6b7280 !important;
     margin-bottom: 1.5rem;
     line-height: 1.5;
 }
@@ -46,7 +46,7 @@
 .comment-form-rating label {
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #fff !important;
+    color: #1a1a1a !important;
 }
 
 /* Hide default WooCommerce rating */
@@ -69,7 +69,7 @@
 
 .stars-rating-input label {
     font-size: 2rem;
-    color: #374151;
+    color: #d1d5db;
     cursor: pointer;
     transition: all 0.2s ease;
     line-height: 1;
@@ -108,7 +108,7 @@
 .comment-form-comment label {
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #fff !important;
+    color: #1a1a1a !important;
     margin-bottom: 0.75rem;
 }
 
@@ -116,12 +116,12 @@
     width: 100%;
     min-height: 150px;
     padding: 1rem;
-    border: 1px solid #374151;
+    border: 1px solid #d1d5db;
     border-radius: 20px;
     font-size: 0.9375rem;
     line-height: 1.6;
-    color: #fff;
-    background: #0a0a0a;
+    color: #1a1a1a;
+    background: #fafafa;
     resize: vertical;
     transition: all 0.2s ease;
     font-family: inherit;
@@ -130,11 +130,11 @@
 .comment-form-comment textarea:focus {
     outline: none;
     border-color: #0ea5e9;
-    background: #111;
+    background: #ffffff;
 }
 
 .comment-form-comment textarea::placeholder {
-    color: #6b7280;
+    color: #9ca3af;
 }
 
 /* Required asterisk */
@@ -159,7 +159,7 @@
 .comment-form-captcha label {
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #fff !important;
+    color: #1a1a1a !important;
     margin-bottom: 0.75rem;
 }
 
@@ -168,11 +168,11 @@
 .comment-form-captcha input {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 1px solid #374151 !important;
+    border: 1px solid #d1d5db !important;
     border-radius: 20px;
     font-size: 0.9375rem;
-    color: #fff !important;
-    background: #0a0a0a !important;
+    color: #1a1a1a !important;
+    background: #fafafa !important;
     transition: all 0.2s ease;
 }
 
@@ -181,13 +181,13 @@
 .comment-form-captcha input:focus {
     outline: none;
     border-color: #0ea5e9 !important;
-    background: #111 !important;
+    background: #ffffff !important;
 }
 
 .comment-form-author input::placeholder,
 .comment-form-email input::placeholder,
 .comment-form-captcha input::placeholder {
-    color: #6b7280 !important;
+    color: #9ca3af !important;
 }
 
 /* Stack fields vertically - no row layout for left column */
@@ -215,13 +215,13 @@
     cursor: pointer;
     accent-color: #0ea5e9;
     border-radius: 4px;
-    background: #0a0a0a;
-    border: 1px solid #374151;
+    background: #fafafa;
+    border: 1px solid #d1d5db;
 }
 
 .comment-form-cookies-consent label {
     font-size: 0.875rem;
-    color: #d1d5db;
+    color: #4b5563;
     line-height: 1.5;
     cursor: pointer;
     margin: 0;
@@ -241,7 +241,7 @@
     align-items: center;
     justify-content: center;
     padding: 0.75rem 2rem;
-    background: #0ea5e9;
+    background: var(--color-primary);
     color: #fff;
     border: none;
     border-radius: 50px;
@@ -254,7 +254,7 @@
 
 .form-submit input[type="submit"]:hover,
 .form-submit button:hover {
-    background: #0284c7;
+    background: black;
 }
 
 .form-submit input[type="submit"]:active,

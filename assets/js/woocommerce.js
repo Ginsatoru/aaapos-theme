@@ -1,6 +1,6 @@
 /**
  * WooCommerce Enhanced Functionality
- * woocommerce.js - PRODUCTION VERSION
+ * woocommerce.js - FIXED VERSION - NO TAB SCROLLING
  * 
  * @package Macedon_Ranges
  */
@@ -280,25 +280,61 @@
         }
 
         /**
-         * Product Tabs Enhancement
+         * Product Tabs Enhancement - FIXED: NO AUTO-SCROLL
+         * Prevents the annoying upward scroll when clicking tabs
          */
         initProductTabs() {
             const $tabs = $('.woocommerce-tabs');
             if (!$tabs.length) return;
 
+            // Store original scroll position
+            let scrollBeforeClick = 0;
+
             $tabs.find('.tabs li a').on('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                
+                // Save current scroll position BEFORE any changes
+                scrollBeforeClick = $(window).scrollTop();
                 
                 const $this = $(this);
                 const target = $this.attr('href');
                 
+                // Update active states
                 $this.closest('li').addClass('active').siblings().removeClass('active');
                 $(target).show().addClass('active').siblings('.woocommerce-Tabs-panel').hide().removeClass('active');
                 
-                if (window.innerWidth < 768) {
-                    $('html, body').animate({
-                        scrollTop: $tabs.offset().top - 100
-                    }, 300);
+                // Update ARIA attributes for accessibility
+                $this.attr('aria-selected', 'true').attr('tabindex', '0');
+                $this.closest('li').siblings().find('a').attr('aria-selected', 'false').attr('tabindex', '-1');
+                
+                // CRITICAL FIX: Restore scroll position immediately
+                setTimeout(function() {
+                    $(window).scrollTop(scrollBeforeClick);
+                }, 0);
+                
+                return false;
+            });
+
+            // Prevent hash changes from scrolling
+            if (window.location.hash && window.location.hash.indexOf('tab-') !== -1) {
+                const savedScroll = $(window).scrollTop();
+                setTimeout(function() {
+                    $(window).scrollTop(savedScroll);
+                }, 1);
+            }
+
+            // Handle hashchange events (prevent auto-scroll)
+            $(window).on('hashchange', function(e) {
+                const hash = window.location.hash;
+                if (hash && hash.indexOf('tab-') !== -1) {
+                    const currentScroll = $(window).scrollTop();
+                    const $targetTab = $('.tabs li a[href="' + hash + '"]');
+                    if ($targetTab.length) {
+                        $targetTab.trigger('click');
+                        $(window).scrollTop(currentScroll);
+                    }
+                    return false;
                 }
             });
         }

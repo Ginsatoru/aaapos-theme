@@ -3,11 +3,11 @@
  * Handles container width, grid system, breadcrumb, and sale badge
  * product-layout.css
  * @package AAAPOS_Prime
- * @version 1.0.4
+ * @version 1.0.5
  * 
  * Location: assets/css/components/product/product-layout.css
  * 
- * UPDATED: Sale badge now visible on single product pages
+ * FIXED: Related products overflow issue resolved
  */
 
 /* ============================================
@@ -72,15 +72,15 @@
 .single-product .site-main,
 .single-product #main {
   background: var(--color-white) !important;
-  padding: 1.5rem 0 3rem 0 !important;
-  min-height: 100vh;
+  padding: 1.5rem 0 8rem 0 !important; /* INCREASED: Much more space at bottom */
+  min-height: auto !important; /* CHANGED: Was 100vh - causing overflow */
 }
 
 /* === RESPONSIVE CONTAINER - WORKS ON ALL DESKTOP SIZES === */
 .single-product div.product {
   max-width: 92% !important;
   width: 100% !important;
-  margin: 0 auto !important;
+  margin: 0 auto 3rem auto !important; /* ADDED: Bottom margin for spacing */
   padding: 0 2rem !important;
 }
 
@@ -126,6 +126,7 @@
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 1rem !important;
+    margin: 0 auto 2rem auto !important;
   }
   
   .single-product div.product .onsale {
@@ -241,17 +242,38 @@
 .single-product .woocommerce-tabs {
   grid-column: 1 / -1 !important;
   order: 3 !important;
+  margin-top: 3rem !important; /* ADDED: Spacing before tabs */
 }
 
 .single-product .related.products,
 .single-product .upsells.products {
   grid-column: 1 / -1 !important;
   order: 4 !important;
+  margin-top: 4rem !important; /* INCREASED: More spacing before related products */
+  margin-bottom: 6rem !important; /* INCREASED: Much more spacing after related products */
+}
+
+/* ADDED: Ensure related products container is properly contained */
+.single-product .related.products ul.products,
+.single-product .upsells.products ul.products {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.5rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* ============================================
    RESPONSIVE LAYOUT
    ============================================ */
+
+@media (max-width: 1199px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
 
 @media (max-width: 991px) {
   .single-product div.product {
@@ -271,7 +293,29 @@
 
   .single-product .site-main,
   .single-product #main {
-    padding: 1.25rem 0 2.5rem 0 !important;
+    padding: 1.25rem 0 6rem 0 !important; /* INCREASED: Much more space at bottom on mobile */
+  }
+  
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .single-product .woocommerce-tabs {
+    margin-top: 2rem !important;
+  }
+  
+  .single-product .related.products,
+  .single-product .upsells.products {
+    margin-top: 3rem !important;
+    margin-bottom: 5rem !important; /* INCREASED: Much more space on mobile */
   }
 }
 

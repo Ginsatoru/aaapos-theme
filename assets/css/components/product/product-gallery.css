@@ -107,7 +107,6 @@
 
 /* Thumbnail hover effect */
 .woocommerce-product-gallery__image:not(:first-child):hover img {
-    border-color: #0071a1;
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -115,7 +114,6 @@
 /* Active thumbnail styling */
 .woocommerce-product-gallery__image:not(:first-child).flex-active-slide img,
 .woocommerce-product-gallery__image:not(:first-child).active img {
-    border-color: #0071a1;
     box-shadow: 0 0 0 3px rgba(0, 113, 161, 0.15);
 }
 
@@ -171,13 +169,13 @@
 
 .flex-control-thumbs li:hover img {
     opacity: 1;
-    border-color: #0071a1;
+    border-color: var(--color-primary);
     transform: translateY(-3px);
 }
 
 .flex-control-thumbs li img.flex-active {
     opacity: 1;
-    border-color: #0071a1;
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(0, 113, 161, 0.15);
 }
 

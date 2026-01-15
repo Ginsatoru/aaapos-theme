@@ -16,11 +16,15 @@
 /* === TABS NAVIGATION === */
 .single-product .woocommerce-tabs .tabs {
   display: flex !important;
-  gap: 0.4375rem !important;
+  gap: 0.75rem !important;
   margin: 0 0 1.5rem 0 !important;
   padding: 0 !important;
   list-style: none !important;
-  border-bottom: 2px solid var(--color-border, #e5e7eb) !important;
+  border-bottom: none !important;
+  background: #f5f5f5 !important;
+  padding: 0.5rem !important;
+  border-radius: 12px !important;
+  width: fit-content !important;
 }
 
 .single-product .woocommerce-tabs .tabs li {
@@ -30,31 +34,34 @@
 
 .single-product .woocommerce-tabs .tabs li a {
   display: block !important;
-  padding: 0.875rem 1.25rem !important;
+  padding: 0.5rem 1.5rem !important;
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
   color: var(--color-text-light, #6b7280) !important;
   text-decoration: none !important;
-  border-bottom: 3px solid transparent !important;
+  border-radius: 50px !important;
   transition: all 0.2s ease !important;
-  margin-bottom: -2px !important;
+  background: transparent !important;
+  border: none !important;
 }
 
 .single-product .woocommerce-tabs .tabs li a:hover {
   color: var(--color-primary, #0ea5e9) !important;
+  background: rgba(14, 165, 233, 0.08) !important;
 }
 
 .single-product .woocommerce-tabs .tabs li.active a {
   color: var(--color-primary, #0ea5e9) !important;
-  border-bottom-color: var(--color-primary, #0ea5e9) !important;
+  background: #ffffff !important;
+  border: 1px solid var(--color-border, #e5e7eb) !important;
 }
 
 /* === TAB PANELS === */
 .single-product .woocommerce-tabs .panel {
   padding: 1.5rem !important;
   padding-bottom: 1rem !important; /* REDUCED: Less padding at bottom */
-  background: var(--color-bg-secondary, #f9fafb) !important;
-  border-radius: 10px !important;
+  background: #f5f5f5 !important;
+  border-radius: 16px !important;
   line-height: 1.6 !important;
   font-size: 0.9375rem !important;
   margin-bottom: 0 !important; /* ADDED: Remove any default margin */
@@ -131,16 +138,25 @@
   /* Tabs - Stack vertically on mobile */
   .single-product .woocommerce-tabs .tabs {
     flex-direction: column !important;
-    border-bottom: none !important;
+    width: 100% !important;
+    background: transparent !important;
+    padding: 0 !important;
+    gap: 0.5rem !important;
   }
 
   .single-product .woocommerce-tabs .tabs li {
-    border-bottom: 1px solid var(--color-border, #e5e7eb) !important;
+    width: 100% !important;
   }
 
   .single-product .woocommerce-tabs .tabs li a {
-    padding: 0.75rem 1rem !important;
-    border-bottom: none !important;
+    width: 100% !important;
+    padding: 0.625rem 1rem !important;
+    border-radius: 50px !important;
+    background: #f5f5f5 !important;
+  }
+
+  .single-product .woocommerce-tabs .tabs li.active a {
+    background: #ffffff !important;
   }
 
   .single-product .woocommerce-tabs .panel {

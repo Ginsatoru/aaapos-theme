@@ -1,9 +1,9 @@
 /**
- * Product Reviews Summary & Review Cards
+ * Product Reviews Summary & Review Cards - LIGHT GRAY VERSION
  * Location: assets/css/components/product/product-reviews-summary.css
  * 
  * @package AAAPOS_Prime
- * @version 2.0.2
+ * @version 2.0.4
  */
 
 /* ============================================
@@ -30,7 +30,7 @@
 .summary-rating-number {
     font-size: 4rem;
     font-weight: 700;
-    color: #fff;
+    color: #1a1a1a;
     line-height: 1;
     margin-bottom: 0.5rem;
 }
@@ -50,13 +50,13 @@
 }
 
 .summary-stars-display .star.empty {
-    color: #374151;
+    color: #d1d5db;
 }
 
 /* Rating count text */
 .summary-rating-count {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: #6b7280;
     margin-bottom: 0;
 }
 
@@ -78,7 +78,7 @@
 
 .rating-breakdown-item .stars-label {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: #6b7280;
     min-width: 35px;
     text-align: left;
 }
@@ -86,7 +86,7 @@
 .rating-breakdown-bar {
     flex: 1;
     height: 8px;
-    background: #374151;
+    background: #e5e7eb;
     border-radius: 4px;
     overflow: hidden;
 }
@@ -100,7 +100,7 @@
 
 .rating-breakdown-item .percentage {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: #6b7280;
     min-width: 40px;
     text-align: right;
 }
@@ -112,12 +112,12 @@
 #comments h2 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #fff;
+    color: #1a1a1a;
     margin-bottom: 1.5rem;
 }
 
 /* ============================================
-   INDIVIDUAL REVIEW CARDS - NEW DESIGN
+   INDIVIDUAL REVIEW CARDS - LIGHT GRAY VERSION
    Targeting actual WooCommerce structure
    ============================================ */
 
@@ -141,27 +141,24 @@
 
 /* Review card container - THIS IS THE KEY ELEMENT */
 .commentlist .comment_container {
-    background: #f5f5f5 !important;
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
     border-radius: 20px !important;
     padding: 2rem !important;
-    transition: all 0.2s ease;
+    transition: none;
     display: flex;
     gap: 1rem;
     align-items: flex-start;
 }
 
-.commentlist .review:hover .comment_container,
-.commentlist .comment:hover .comment_container {
-    background: #ececec !important;
-}
-
-/* Avatar */
+/* Avatar - SMALLER SIZE */
 .commentlist .avatar {
-    width: 56px !important;
-    height: 56px !important;
+    width: 40px !important;
+    height: 40px !important;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+    border: 2px solid #e5e7eb;
 }
 
 /* Comment text area */
@@ -170,7 +167,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    position: relative; /* Add relative positioning for absolute star positioning */
+    position: relative;
 }
 
 /* ============================================
@@ -225,8 +222,8 @@
 .commentlist .meta {
     position: relative;
     margin: 0 0 1rem 0 !important;
-    padding-right: 120px; /* Space for stars on the right */
-    display: block; /* Changed from flex to block for inline elements */
+    padding-right: 120px;
+    display: block;
 }
 
 /* First line: Name + Verified badge inline */
@@ -246,9 +243,9 @@
     display: inline !important;
     margin-left: 0.5rem;
     vertical-align: middle;
-    line-height: 1.0625rem; /* Match name line-height */
+    line-height: 1.0625rem;
     position: relative;
-    top: -2px; /* Move entire verified text up */
+    top: -2px;
 }
 
 .commentlist .woocommerce-review__verified::before {
@@ -275,7 +272,7 @@
 /* Published date - Now on second line below name */
 .commentlist .woocommerce-review__published-date {
     font-size: 0.8125rem !important;
-    color: #9ca3af !important;
+    color: #6b7280 !important;
     font-weight: 400;
     display: block !important;
     margin-top: 0.25rem;
@@ -299,7 +296,8 @@
    ============================================ */
 
 .woocommerce-noreviews {
-    background: #f5f5f5;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
     border-radius: 20px;
     padding: 3rem 2rem;
     text-align: center;
@@ -323,7 +321,7 @@
     
     .summary-rating-left {
         padding-bottom: 1.5rem;
-        border-bottom: 1px solid #374151;
+        border-bottom: 1px solid #e5e7eb;
     }
     
     .commentlist .comment_container {
@@ -332,8 +330,8 @@
     }
     
     .commentlist .avatar {
-        width: 48px !important;
-        height: 48px !important;
+        width: 36px !important;
+        height: 36px !important;
     }
     
     /* Stack name and stars vertically on mobile */
@@ -342,9 +340,9 @@
     }
     
     .commentlist .star-rating {
-        position: relative;
-        top: auto;
-        right: auto;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
         margin-top: 0.5rem !important;
     }
 }
