@@ -459,7 +459,7 @@ body.quick-view-open {
    ============================================ */
 
 .quick-view-add-to-cart {
-  padding-top: 0.5rem;
+  padding-top: 1rem;
 }
 
 .quick-view-product-info .cart {
@@ -573,13 +573,13 @@ body.quick-view-open {
 .quick-view-product-info .single_add_to_cart_button {
   flex: 1;
   min-width: 150px;
-  height: 32px !important;
-  padding: 0 1.25rem !important;
+  height: 48px !important; /* UPDATED: Increased from 32px to 48px */
+  padding: 0 1.5rem !important; /* UPDATED: Increased horizontal padding */
   background: var(--color-primary, var(--brand-color, #0ea5e9)) !important;
   color: var(--color-white, #ffffff) !important;
   border: none !important;
   border-radius: 50px !important;
-  font-size: 0.875rem !important;
+  font-size: 0.9375rem !important; /* UPDATED: Slightly larger font */
   font-weight: 700 !important;
   text-transform: none !important;
   letter-spacing: 0.3px !important;
@@ -595,8 +595,8 @@ body.quick-view-open {
 .quick-view-product-info .single_add_to_cart_button::before {
   content: "" !important;
   display: inline-block !important;
-  width: 16px !important;
-  height: 16px !important;
+  width: 18px !important; /* UPDATED: Increased icon size from 16px to 18px */
+  height: 18px !important; /* UPDATED: Increased icon size from 16px to 18px */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1'%3E%3C/circle%3E%3Ccircle cx='20' cy='21' r='1'%3E%3C/circle%3E%3Cpath d='M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6'%3E%3C/path%3E%3C/svg%3E") !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
@@ -626,30 +626,60 @@ body.quick-view-open {
   opacity: 0.5 !important;
 }
 
-/* View Full Details Link */
-.quick-view-full-details {
+/* Also update quantity wrapper to match the new button height */
+.quick-view-product-info .quantity .quantity-wrapper {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--color-primary, #0ea5e9);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9375rem;
+  border: none;
+  border-radius: 50px;
+  overflow: visible;
+  background: transparent;
   transition: all 0.2s ease;
-  padding: 0.5rem 0;
+  height: 48px; /* UPDATED: Match the button height */
+  gap: 0.375rem;
 }
 
-.quick-view-full-details:hover {
-  color: var(--color-primary-dark, #0284c7);
-  gap: 0.75rem;
+/* Update quantity buttons to better align with taller add to cart button */
+.quick-view-product-info .quantity-wrapper button.minus,
+.quick-view-product-info .quantity-wrapper .qty-btn.minus,
+.quick-view-product-info .quantity-wrapper button.plus,
+.quick-view-product-info .quantity-wrapper .qty-btn.plus {
+  width: 36px !important; /* UPDATED: Increased from 32px to 36px */
+  height: 36px !important; /* UPDATED: Increased from 32px to 36px */
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: var(--color-bg-secondary, #f3f4f6) !important;
+  box-shadow: none !important;
+  color: var(--color-text, #374151) !important;
+  font-size: 1.125rem !important; /* UPDATED: Slightly larger font */
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.quick-view-full-details svg {
-  transition: transform 0.2s ease;
-}
-
-.quick-view-full-details:hover svg {
-  transform: translateX(3px);
+/* Quantity Input */
+.quick-view-product-info .quantity-wrapper input.qty,
+.quick-view-product-info .quantity-wrapper input.input-text.qty,
+.quick-view-product-info .quantity-wrapper input[type="number"].qty {
+  width: 65px !important; /* UPDATED: Increased from 60px to 65px */
+  min-width: 65px !important;
+  max-width: 65px !important;
+  height: 36px !important; /* UPDATED: Increased from 32px to 36px */
+  padding: 0 !important;
+  border: 1px solid var(--color-border, #e5e7eb) !important;
+  border-radius: 50px !important;
+  background: var(--color-white, #ffffff) !important;
+  box-shadow: none !important;
+  font-size: 0.9375rem !important; /* UPDATED: Slightly larger font */
+  font-weight: 600 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+  text-align: center !important;
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
 }
 
 /* ============================================
