@@ -1,8 +1,9 @@
 /* ==========================================================================
    CART EMPTY STATE - Centered, Professional Design
+   MOBILE OPTIMIZED: Bigger icon, border moved up
    
    @package Macedon_Ranges
-   @since 1.0.0
+   @since 1.0.1
    ========================================================================== */
 
 /* ==========================================================================
@@ -149,18 +150,21 @@ body.woocommerce-cart .cart-empty-button svg {
 }
 
 /* ==========================================================================
-   RESPONSIVE ADJUSTMENTS
+   RESPONSIVE ADJUSTMENTS - MOBILE OPTIMIZED
    ========================================================================== */
 @media (max-width: 768px) {
   body.woocommerce-cart .woocommerce:has(.cart-empty-wrapper) {
     flex-direction: column !important;
   }
 
+  /* REMOVE THE GRAY BORDER LINE ON MOBILE */
   body.woocommerce-cart .woocommerce:has(.cart-empty-wrapper) .woocommerce-cart-form {
     margin-left: 0 !important;
     margin-right: 0 !important;
     width: 100% !important;
     padding: 3rem 0 !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
   }
 
   body.woocommerce-cart .cart-empty-wrapper {
@@ -168,15 +172,18 @@ body.woocommerce-cart .cart-empty-button svg {
     padding: 3rem 1.5rem;
   }
 
+  /* MOBILE: BIGGER CART ICON */
   body.woocommerce-cart .cart-empty-icon {
-    width: 140px;
-    height: 140px;
-    margin-bottom: 2rem;
+    width: 200px !important;
+    height: 200px !important;
+    margin-bottom: 2rem !important;
+    padding-right: 0 !important;
+    margin-top: 0 !important;
   }
 
   body.woocommerce-cart .cart-empty-icon svg {
-    width: 140px;
-    height: 140px;
+    width: 180px !important;
+    height: 180px !important;
   }
 
   body.woocommerce-cart .cart-empty-title {
@@ -195,11 +202,14 @@ body.woocommerce-cart .cart-empty-button svg {
 }
 
 @media (max-width: 480px) {
+  /* REMOVE THE GRAY BORDER LINE ON SMALL MOBILE TOO */
   body.woocommerce-cart .woocommerce:has(.cart-empty-wrapper) .woocommerce-cart-form {
     margin-left: 0 !important;
     margin-right: 0 !important;
     width: 100% !important;
     padding: 2.5rem 0 !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
   }
 
   body.woocommerce-cart .cart-empty-wrapper {
@@ -207,14 +217,16 @@ body.woocommerce-cart .cart-empty-button svg {
     padding: 2.5rem 1rem;
   }
 
+  /* SMALLER MOBILE: STILL BIG ICON */
   body.woocommerce-cart .cart-empty-icon {
-    width: 120px;
-    height: 120px;
+    width: 180px !important;
+    height: 180px !important;
+    margin-bottom: 1.5rem !important;
   }
 
   body.woocommerce-cart .cart-empty-icon svg {
-    width: 120px;
-    height: 120px;
+    width: 160px !important;
+    height: 160px !important;
   }
 
   body.woocommerce-cart .cart-empty-title {
@@ -228,7 +240,7 @@ body.woocommerce-cart .cart-empty-button svg {
 
 /* ==========================================================================
    RECOMMENDED PRODUCTS SECTION - EMPTY CART
-   FULL WIDTH TO VIEWPORT EDGES (RED LINES)
+   MOBILE: BORDER LINE MOVED UP
    ========================================================================== */
 
 body.woocommerce-cart .cart-empty-recommended {
@@ -322,9 +334,10 @@ body.woocommerce-cart .cart-empty-recommended ul.products li.product {
 }
 
 @media (max-width: 767px) {
+  /* MOBILE: MOVE BORDER LINE UP */
   body.woocommerce-cart .cart-empty-recommended {
-    margin: 3rem 0 0 0;
-    padding: 2rem 0 2.5rem 0;
+    margin: 2rem 0 0 0 !important;
+    padding: 2.5rem 0 2.5rem 0 !important;
   }
   
   body.woocommerce-cart .cart-empty-recommended-inner {
@@ -341,11 +354,21 @@ body.woocommerce-cart .cart-empty-recommended ul.products li.product {
 }
 
 @media (max-width: 480px) {
+  /* SMALLER MOBILE: BORDER EVEN CLOSER */
   body.woocommerce-cart .cart-empty-recommended {
-    padding: 2rem 0 2rem 0;
+    margin: 1.5rem 0 0 0 !important;
+    padding: 2rem 0 2rem 0 !important;
   }
   
   body.woocommerce-cart .cart-empty-recommended-inner {
     padding: 0 0.75rem;
+  }
+  
+  body.woocommerce-cart .cart-empty-recommended__title {
+    font-size: 1.5rem;
+  }
+  
+  body.woocommerce-cart .cart-empty-recommended__subtitle {
+    font-size: 0.9375rem;
   }
 }
