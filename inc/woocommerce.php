@@ -1619,26 +1619,29 @@ add_filter('woocommerce_enable_order_notes_field', function($enabled) {
 }, 10, 1);
 
 /**
- * Enqueue Quick View Assets (FIXED - Separate function)
+ * Enqueue Quick View Assets (FIXED - Works everywhere)
  */
 function aaapos_enqueue_quick_view_assets()
 {
-    // Only load on shop/archive pages AND if enabled in customizer
+    // Only load if enabled in customizer
     if (!get_theme_mod("show_quick_view", true)) {
         return;
     }
 
+    // FIXED: Load on ALL pages where Quick View might appear
+    // Including: shop, archives, search, cart (suggested products), and SINGLE PRODUCT (related products)
     if (
         !is_shop() &&
         !is_product_category() &&
         !is_product_tag() &&
         !is_search() &&
-        !is_cart()
+        !is_cart() &&
+        !is_product() // ADDED THIS - Critical for related products!
     ) {
         return;
     }
 
-    // Quick View Button CSS - Check if file exists first
+    // Quick View Button CSS
     $quick_view_button_css =
         get_template_directory() . "/assets/css/quick-view-button.css";
     if (file_exists($quick_view_button_css)) {
@@ -1674,10 +1677,10 @@ function aaapos_enqueue_quick_view_assets()
             true,
         );
 
-        // Localize script with AJAX data
+        // FIXED: Always localize with the correct nonce
         wp_localize_script("aaapos-quick-view-js", "aaaposQuickView", [
             "ajax_url" => admin_url("admin-ajax.php"),
-            "nonce" => wp_create_nonce("woocommerce-cart"),
+            "nonce" => wp_create_nonce("aaapos_quick_view_nonce"),
         ]);
     }
 }

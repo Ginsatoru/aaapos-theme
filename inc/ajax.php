@@ -31,14 +31,16 @@ function aaapos_redirect_after_add_to_cart() {
     }
 }
 
+
+
 /**
  * Get Quick View Product Content - FIXED VERSION
- * Now properly supports both simple and variable products
+ * Now properly validates nonce and supports both simple and variable products
  */
 function aaapos_get_quick_view_product()
 {
-    // Security check
-    check_ajax_referer("woocommerce-cart", "security");
+    // FIXED: Security check with correct nonce name
+    check_ajax_referer('aaapos_quick_view_nonce', 'security');
 
     $product_id = isset($_POST["product_id"])
         ? absint($_POST["product_id"])
