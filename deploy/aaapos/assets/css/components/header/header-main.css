@@ -1,0 +1,368 @@
+/* ==========================================================================
+   Header Main - Import File with Animations
+   ==========================================================================
+   
+   This file imports all header component styles.
+   Include only this file in your functions.php
+   
+   @package aaapos-prime
+   @since 1.0.0
+   ========================================================================== */
+
+/* Import all header components */
+@import '_topbar.css';
+@import '_logo.css';
+@import '_navigation.css';
+@import '_mobile-menu.css';
+@import '_header-actions.css';
+@import '_dropdowns.css';
+
+/* ==========================================================================
+   MAIN HEADER CONTAINER
+   ========================================================================== */
+
+.site-header {
+  background: rgba(255, 255, 255, 0.98);
+  background-color: var(--color-header-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 80px;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .site-header {
+    height: 90px;
+  }
+  
+  /* Only add top spacing when topbar is active AND body has the class */
+  body.has-topbar .site-header {
+    top: 45px;
+  }
+}
+
+.site-header.is-sticky {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: var(--color-header-bg);
+}
+
+body.scrolled .top-bar {
+  transform: translateY(-100%);
+}
+
+body.scrolled .site-header {
+  top: 0;
+}
+
+.site-header .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  max-width: none;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  gap: var(--space-6);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 27px 0 33px;
+}
+
+@media (min-width: 768px) {
+  .header-inner {
+    padding: 0 22px 0 39px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-inner {
+    padding: 0 43px 0 49px;
+  }
+  
+  /* Fix for menu alignment */
+  .main-navigation {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-menu > li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Clean hover effect for desktop menu items */
+  .nav-menu > li > a {
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: var(--space-2) var(--space-4);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: var(--color-nav-link);
+    font-weight: var(--font-semibold);
+    font-size: 0.95rem;
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+  }
+
+  /* The animated bar */
+  .nav-menu > li > a::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: 25px; /* Position at bottom of menu item */
+    left: var(--space-4);
+    right: var(--space-4);
+    height: 3px;
+    background-color: #A6A6A6;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+
+  /* Hover effect - lift up */
+  .nav-menu > li > a:hover {
+    transform: translateY(-3px);
+    color: var(--color-nav-hover);
+  }
+
+  .nav-menu > li > a:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* Current page state */
+  .nav-menu > li.current-menu-item > a::before,
+  .nav-menu > li.current_page_item > a::before {
+    transform: scaleY(1);
+    background-color: var(--color-nav-active);
+  }
+
+  .nav-menu .current-menu-item > a,
+  .nav-menu .current_page_item > a {
+    color: var(--color-nav-active);
+  }
+
+  /* Remove old underline effect */
+  .nav-menu > li > a::after {
+    display: none;
+  }
+  
+  /* Make sure header actions stay aligned */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+/* ==========================================================================
+   HEADER ELEMENT ANIMATIONS
+   ========================================================================== */
+
+/* Logo Animation */
+.site-branding[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translate3d(-30px, 0, 0);
+}
+
+.site-branding[data-animate].animated {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Navigation Menu Animation - Stagger effect for menu items */
+@media (min-width: 1024px) {
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  /* Stagger animation for menu items on page load */
+  .nav-menu > li {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+    animation: navItemFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  .nav-menu > li:nth-child(1) { animation-delay: 0.2s; }
+  .nav-menu > li:nth-child(2) { animation-delay: 0.25s; }
+  .nav-menu > li:nth-child(3) { animation-delay: 0.3s; }
+  .nav-menu > li:nth-child(4) { animation-delay: 0.35s; }
+  .nav-menu > li:nth-child(5) { animation-delay: 0.3s; }
+  .nav-menu > li:nth-child(6) { animation-delay: 0.35s; }
+  .nav-menu > li:nth-child(7) { animation-delay: 0.4s; }
+  .nav-menu > li:nth-child(8) { animation-delay: 0.45s; }
+}
+
+@keyframes navItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Search Bar Animation */
+.header-search-bar[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: scale3d(0.95, 0.95, 0.95);
+}
+
+.header-search-bar[data-animate].animated {
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+}
+
+/* Account and Cart Animations */
+.header-account-wrapper[data-animate]:not(.animated),
+.header-cart-wrapper[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translate3d(30px, 0, 0);
+}
+
+.header-account-wrapper[data-animate].animated,
+.header-cart-wrapper[data-animate].animated {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Mobile Menu Toggle Animation */
+.mobile-menu-toggle[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translate3d(30px, 0, 0);
+}
+
+.mobile-menu-toggle[data-animate].animated {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Ensure smooth animation performance */
+.site-branding,
+.header-search-bar,
+.header-account-wrapper,
+.header-cart-wrapper,
+.mobile-menu-toggle {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ==========================================================================
+   BODY STATES
+   ========================================================================== */
+
+body.menu-open {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999999;
+  padding: 1rem;
+  background: var(--brand-color);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ==========================================================================
+   HIGH CONTRAST & REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .site-header {
+    border-bottom-width: 2px;
+  }
+
+  .nav-menu > li > a:hover {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    transform: none;
+  }
+  
+  .nav-menu > li > a::before {
+    height: 3px;
+    background-color: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .nav-menu a,
+  .header-action,
+  .top-bar-item,
+  .social-link,
+  .cart-dropdown,
+  .account-dropdown,
+  .nav-menu .sub-menu,
+  .main-navigation {
+    transition: none;
+  }
+
+  .nav-menu > li > a {
+    transition: none;
+  }
+
+  .nav-menu > li > a:hover {
+    transform: none;
+  }
+
+  .nav-menu > li > a::before {
+    transition: none;
+  }
+  
+  /* Disable load animations for reduced motion */
+  .site-branding[data-animate]:not(.animated),
+  .header-search-bar[data-animate]:not(.animated),
+  .header-account-wrapper[data-animate]:not(.animated),
+  .header-cart-wrapper[data-animate]:not(.animated),
+  .mobile-menu-toggle[data-animate]:not(.animated) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .nav-menu > li {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

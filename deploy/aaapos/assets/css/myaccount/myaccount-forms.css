@@ -1,0 +1,249 @@
+/* ============================================
+   My Account Forms - Inputs, Selects, Buttons
+   ============================================ */
+
+/* ==========================================================================
+   Modern WooCommerce Form Styling - INPUT FIELDS ONLY
+   ========================================================================== */
+
+/* Form wrapper */
+.woocommerce-EditAccountForm,
+.woocommerce-address-fields,
+.edit-account,
+form.woocommerce-form {
+  background: var(--color-white) !important;
+  padding: var(--space-6) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: none !important;
+}
+
+/* Form rows - remove default WooCommerce styling */
+.woocommerce-form-row,
+.form-row {
+  margin-bottom: var(--space-5) !important;
+  padding: 0 !important;
+}
+
+.woocommerce-form-row:last-child,
+.form-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Form labels - modern typography */
+.woocommerce-form-row label,
+.form-row label {
+  display: block !important;
+  font-size: var(--text-sm) !important;
+  font-weight: var(--font-semibold) !important;
+  color: var(--color-text-dark) !important;
+  margin-bottom: var(--space-2) !important;
+  font-family: var(--font-body) !important;
+}
+
+/* Required asterisk */
+.woocommerce-form-row label .required,
+.form-row label .required {
+  color: #EF4444 !important;
+  margin-left: 2px !important;
+}
+
+/* Text inputs - clean modern style */
+.woocommerce-Input,
+.woocommerce-form-row input[type="text"],
+.woocommerce-form-row input[type="email"],
+.woocommerce-form-row input[type="tel"],
+.woocommerce-form-row input[type="password"],
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="tel"],
+.form-row input[type="password"],
+.woocommerce-form-row select,
+.form-row select,
+.woocommerce-form-row textarea,
+.form-row textarea,
+.woocommerce-EditAccountForm input[type="text"],
+.woocommerce-EditAccountForm input[type="email"],
+.woocommerce-EditAccountForm input[type="password"] {
+  width: 100% !important;
+  padding: var(--space-3) var(--space-4) !important;
+  font-size: var(--text-base) !important;
+  color: var(--color-text) !important;
+  background: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  transition: all 0.2s ease !important;
+  font-family: var(--font-body) !important;
+  line-height: 1.5 !important;
+}
+
+/* Input focus state */
+.woocommerce-Input:focus,
+.woocommerce-form-row input:focus,
+.form-row input:focus,
+.woocommerce-form-row select:focus,
+.form-row select:focus,
+.woocommerce-form-row textarea:focus,
+.form-row textarea:focus,
+.woocommerce-EditAccountForm input:focus {
+  outline: none !important;
+  border-color: var(--color-primary) !important;
+  background: var(--color-white) !important;
+  box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1) !important;
+}
+
+/* Textarea specific */
+.woocommerce-form-row textarea,
+.form-row textarea {
+  min-height: 120px !important;
+  resize: vertical !important;
+}
+
+/* Select dropdown - modern styling */
+.woocommerce-form-row select,
+.form-row select {
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right var(--space-4) center !important;
+  background-size: 12px !important;
+  padding-right: var(--space-8) !important;
+  cursor: pointer !important;
+}
+
+/* Checkboxes and radio buttons */
+.woocommerce-form-row input[type="checkbox"],
+.form-row input[type="checkbox"],
+.woocommerce-form-row input[type="radio"],
+.form-row input[type="radio"] {
+  width: auto !important;
+  margin-right: var(--space-2) !important;
+  cursor: pointer !important;
+  accent-color: var(--color-primary) !important;
+}
+
+/* Checkbox/Radio label inline */
+.woocommerce-form-row.woocommerce-form-row--wide label,
+.form-row.form-row-wide label {
+  display: inline !important;
+  margin-bottom: 0 !important;
+  font-weight: var(--font-normal) !important;
+  cursor: pointer !important;
+}
+
+/* Two-column layout for forms */
+.woocommerce-address-fields__field-wrapper {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: var(--space-5) !important;
+}
+
+.woocommerce-address-fields__field-wrapper .form-row-wide {
+  grid-column: 1 / -1 !important;
+}
+
+/* Fieldset styling */
+fieldset {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 0 var(--space-5) 0 !important;
+}
+
+fieldset legend {
+  font-size: var(--text-lg) !important;
+  font-weight: var(--font-bold) !important;
+  color: var(--color-text-dark) !important;
+  margin-bottom: var(--space-4) !important;
+  font-family: var(--font-heading) !important;
+}
+
+/* Password strength meter */
+.woocommerce-password-strength {
+  margin-top: var(--space-2) !important;
+  padding: var(--space-2) var(--space-3) !important;
+  border-radius: var(--border-radius) !important;
+  font-size: var(--text-sm) !important;
+  text-align: center !important;
+}
+
+.woocommerce-password-strength.strong {
+  background: #D1FAE5 !important;
+  color: #065F46 !important;
+}
+
+.woocommerce-password-strength.good {
+  background: #DBEAFE !important;
+  color: #1E40AF !important;
+}
+
+.woocommerce-password-strength.short,
+.woocommerce-password-strength.bad {
+  background: #FEE2E2 !important;
+  color: #991B1B !important;
+}
+
+/* Clear floats */
+.woocommerce-form-row::after,
+.form-row::after {
+  content: "" !important;
+  display: table !important;
+  clear: both !important;
+}
+
+/* ==========================================================================
+   Save Changes Button Styling
+   ========================================================================== */
+
+/* Save Changes button - modern clean style */
+.woocommerce-Button,
+.woocommerce-form button[type="submit"],
+.woocommerce-form input[type="submit"],
+button[name="save_account_details"],
+button[name="save_address"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--space-2) !important;
+  padding: var(--space-3) var(--space-6) !important;
+  background: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  border: none !important;
+  border-radius: var(--border-radius) !important;
+  font-size: var(--text-base) !important;
+  font-weight: var(--font-semibold) !important;
+  font-family: var(--font-body) !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin-top: var(--space-4) !important;
+}
+
+/* Button hover - subtle color change only */
+.woocommerce-Button:hover,
+.woocommerce-form button[type="submit"]:hover,
+.woocommerce-form input[type="submit"]:hover,
+button[name="save_account_details"]:hover,
+button[name="save_address"]:hover {
+  background: var(--color-primary-dark) !important;
+}
+
+/* Button active state */
+.woocommerce-Button:active,
+.woocommerce-form button[type="submit"]:active,
+.woocommerce-form input[type="submit"]:active,
+button[name="save_account_details"]:active,
+button[name="save_address"]:active {
+  background: var(--color-primary-dark) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Button focus state for accessibility */
+.woocommerce-Button:focus,
+.woocommerce-form button[type="submit"]:focus,
+.woocommerce-form input[type="submit"]:focus,
+button[name="save_account_details"]:focus,
+button[name="save_address"]:focus {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
+}

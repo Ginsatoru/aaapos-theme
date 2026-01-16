@@ -1,0 +1,36 @@
+# Development files
+node_modules/
+package-lock.json
+.prettierrc
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.phpintel/
+
+# Logs
+*.log
+npm-debug.log*
+error_log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Source maps (if you generate them)
+*.map
+
+# Build artifacts (if you have a build process)
+.sass-cache/
+*.css.map
+*.js.map

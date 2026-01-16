@@ -1,0 +1,198 @@
+/* ============================================
+   My Account Layout - Grid & Container Styles
+   ============================================ */
+
+/* === My Account Page Container === */
+.woocommerce-account {
+  margin-top: -110px !important;
+  background: var(--color-bg-secondary);
+  padding: var(--space-8) 0;
+  min-height: calc(100vh - var(--header-total-height));
+}
+
+.woocommerce-account .container {
+  margin-bottom: 50px;
+  max-width: 1400px;
+}
+
+/* === My Account Layout - 29% / 71% Split === */
+.woocommerce-MyAccount-wrapper {
+  display: grid;
+  grid-template-columns: 29% 71%;
+  align-items: start;
+}
+
+@media (max-width: 1023px) {
+  .woocommerce-MyAccount-wrapper {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* ========================================
+   MAIN CONTENT (RIGHT COLUMN - 71%)
+   ======================================== */
+
+.woocommerce-MyAccount-content {
+  background: var(--color-white);
+  border-radius: var(--border-radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow);
+  min-height: 500px;
+}
+
+@media (max-width: 767px) {
+  .woocommerce-MyAccount-content {
+    padding: var(--space-5);
+  }
+}
+
+/* === Page Headers === */
+.woocommerce-MyAccount-content h2,
+.woocommerce-MyAccount-content h3 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  font-family: var(--font-heading);
+}
+
+@media (max-width: 767px) {
+  .woocommerce-MyAccount-content h2,
+  .woocommerce-MyAccount-content h3 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+  }
+}
+
+.woocommerce-MyAccount-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Clean Centered Empty State for WooCommerce My Account
+   ========================================================================== */
+
+/* Remove card styling from empty state messages */
+.woocommerce-MyAccount-content .woocommerce-message,
+.woocommerce-MyAccount-content .woocommerce-info {
+  background: transparent !important;
+  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  box-shadow: none !important;
+  padding: var(--space-12) var(--space-6) !important;
+  margin: 0 !important;
+
+  /* Vertical column layout, centered */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 0 !important;
+
+  /* Minimum height for better centering */
+  min-height: 400px !important;
+}
+
+/* Icon at the top */
+.woocommerce-MyAccount-content .woocommerce-message::before,
+.woocommerce-MyAccount-content .woocommerce-info::before {
+  display: block !important;
+  position: static !important;
+  margin: 0 0 var(--space-4) 0 !important;
+  font-size: 3rem !important;
+  line-height: 1 !important;
+  color: var(--color-text-light) !important;
+  order: -2 !important;
+}
+
+/* Title/message text in the middle */
+.woocommerce-MyAccount-content .woocommerce-message,
+.woocommerce-MyAccount-content .woocommerce-info {
+  font-size: var(--text-lg) !important;
+  color: var(--color-text) !important;
+  font-weight: var(--font-normal) !important;
+  line-height: 1.5 !important;
+}
+
+/* Modern button at the bottom - close to title */
+.woocommerce-MyAccount-content .woocommerce-message .button,
+.woocommerce-MyAccount-content .woocommerce-info .button,
+.woocommerce-MyAccount-content .woocommerce-message a.button,
+.woocommerce-MyAccount-content .woocommerce-info a.button {
+  /* Spacing - closer to title */
+  margin: var(--space-5) 0 0 0 !important;
+
+  /* Modern styling matching sidebar buttons */
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: var(--space-2) !important;
+  padding: var(--space-3) var(--space-6) !important;
+
+  /* Colors */
+  background: var(--color-primary) !important;
+  color: var(--color-white) !important;
+
+  /* Typography */
+  font-size: var(--text-sm) !important;
+  font-weight: var(--font-semibold) !important;
+  font-family: var(--font-body) !important;
+  text-decoration: none !important;
+
+  /* Border and shape */
+  border: none !important;
+  border-radius: var(--border-radius) !important;
+
+  /* Shadow */
+  box-shadow: var(--shadow-sm) !important;
+
+  /* Smooth transitions */
+  transition: all 0.2s ease !important;
+
+  /* Order */
+  order: 1 !important;
+}
+
+/* Button hover state */
+.woocommerce-MyAccount-content .woocommerce-message .button:hover,
+.woocommerce-MyAccount-content .woocommerce-info .button:hover,
+.woocommerce-MyAccount-content .woocommerce-message a.button:hover,
+.woocommerce-MyAccount-content .woocommerce-info a.button:hover {
+  background: var(--color-primary-dark) !important;
+  box-shadow: var(--shadow) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Button active/focus state */
+.woocommerce-MyAccount-content .woocommerce-message .button:active,
+.woocommerce-MyAccount-content .woocommerce-info .button:active,
+.woocommerce-MyAccount-content .woocommerce-message a.button:active,
+.woocommerce-MyAccount-content .woocommerce-info a.button:active {
+  transform: translateY(0) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Ensure the content area has proper layout */
+.woocommerce-account-downloads .woocommerce-MyAccount-content,
+.woocommerce-account-orders .woocommerce-MyAccount-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Remove any list-style icon if present */
+.woocommerce-MyAccount-content .woocommerce-message,
+.woocommerce-MyAccount-content .woocommerce-info {
+  list-style: none !important;
+}
+
+/* Remove default WooCommerce info/message icon positioning */
+.woocommerce-info::before,
+.woocommerce-message::before {
+  top: auto !important;
+  left: auto !important;
+}

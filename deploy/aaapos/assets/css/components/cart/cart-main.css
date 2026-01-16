@@ -1,0 +1,344 @@
+/* ==========================================================================
+   CART MAIN - Entry Point & Layout (Modern Redesign - Compact)
+   UPDATED: Removed applied coupons display box styling
+   UPDATED: Bigger suggested products section with centered alignment
+   UPDATED: Empty cart breakout styling (71% width)
+   
+   @package Macedon_Ranges
+   @since 1.0.0
+   ========================================================================== */
+
+/* Import cart component files */
+@import 'cart-table.css';
+@import 'cart-sidebar.css';
+@import 'cart-responsive.css';
+@import 'checkout-progress.css';
+@import 'cart-empty.css';
+
+/* ==========================================================================
+   CART PAGE ROOT - Very specific selectors to avoid navbar conflicts
+   ========================================================================== */
+body.woocommerce-cart {
+  background: #F8F9FA;
+}
+
+/* Override spacing ONLY within the main content area, not header */
+body.woocommerce-cart #main.site-main .content-area {
+  padding: 0;
+  margin: 0;
+}
+
+body.woocommerce-cart #main.site-main {
+  padding: 0;
+  margin: 0;
+}
+
+body.woocommerce-cart #main.site-main article.page {
+  padding: 0;
+  margin: 0;
+}
+
+/* Cart page container - smaller bottom padding */
+body.woocommerce-cart #main.site-main .container {
+  max-width: 1410px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  padding-bottom: var(--space-6); /* Reduced from space-8 */
+}
+
+/* ==========================================================================
+   BREADCRUMB POSITIONING - Match Shop Page (Left Side, Above Header)
+   ========================================================================== */
+body.woocommerce-cart .woocommerce-breadcrumb {
+  margin-bottom: var(--space-6, 1.5rem) !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+  margin-top: var(--space-4, 1rem) !important;
+}
+
+/* Remove any center alignment from breadcrumb */
+body.woocommerce-cart nav.woocommerce-breadcrumb {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+/* ==========================================================================
+   PAGE HEADER - Compact
+   ========================================================================== */
+body.woocommerce-cart #main.site-main .entry-header {
+  margin-bottom: -25px !important;
+  text-align: center;
+  margin-bottom: 1.5rem; /* Reduced from 2rem */
+  margin-top: 0;
+  padding: 0.5rem 0 0 0;
+  background: transparent;
+}
+
+body.woocommerce-cart #main.site-main .entry-header .entry-title,
+body.woocommerce-cart #main.site-main article .entry-title {
+  font-size: 2.5rem; /* Reduced from 3rem */
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: var(--space-6); /* Reduced from space-3 */
+  font-family: var(--font-heading);
+  letter-spacing: -0.3px; /* Reduced from -0.5px */
+}
+
+/* ==========================================================================
+   TWO COLUMN GRID LAYOUT - More compact
+   ========================================================================== */
+@media (min-width: 1024px) {
+  /* Target the woocommerce wrapper that contains both form and collaterals */
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce {
+    display: grid;
+    grid-template-columns: 1fr 380px; /* Reduced from 1fr 420px */
+    gap: 1.5rem; /* Reduced from 2rem */
+    align-items: start;
+  }
+  
+  /* Cart form takes left column - now wider */
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce > form.woocommerce-cart-form {
+    grid-column: 1;
+  }
+  
+  /* Cart totals takes right column - now narrower */
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce > .cart-collaterals {
+    grid-column: 2;
+  }
+}
+
+/* ==========================================================================
+   CART FORM WRAPPER - Clean white card (No shadow) - More compact
+   ========================================================================== */
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form {
+  background: var(--color-white);
+  border-radius: 12px; /* Reduced from 15px */
+  overflow: hidden;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+/* ==========================================================================
+   EMPTY CART - CENTERED BREAKOUT (71% WIDTH)
+   ========================================================================== */
+body.woocommerce-cart .cart-empty-wrapper {
+  width: 71% !important;
+  max-width: 1000px !important;
+  margin: 0 auto 2rem !important;
+  position: relative !important;
+}
+
+/* Responsive widths for empty cart */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-empty-wrapper {
+    width: 88% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body.woocommerce-cart .cart-empty-wrapper {
+    width: 95% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.woocommerce-cart .cart-empty-wrapper {
+    width: 98% !important;
+  }
+}
+
+/* ==========================================================================
+   REMOVED: Applied Coupons Display - No longer needed
+   User sees coupon only in the input field and order summary
+   ========================================================================== */
+
+/* ==========================================================================
+   RESPONSIVE BREADCRUMB ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 768px) {
+  body.woocommerce-cart .woocommerce-breadcrumb {
+    margin-top: var(--space-3, 0.75rem) !important;
+    margin-bottom: var(--space-4, 1rem) !important;
+  }
+}
+
+/* ==========================================================================
+   SUGGESTED PRODUCTS - FULL WIDTH BREAKOUT (RESPONSIVE)
+   ========================================================================== */
+
+/* Make suggested products span both grid columns and break out */
+@media (min-width: 1024px) {
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce .cart-suggested-products-wrapper {
+    grid-column: 1 / -1 !important;
+    position: relative !important;
+    width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    margin-top: 4rem !important;
+    padding-top: 3rem !important;
+  }
+  
+  /* Border line - responsive width */
+  body.woocommerce-cart #main.site-main .entry-content .woocommerce .cart-suggested-products-wrapper::before {
+    content: '';
+    display: block;
+    width: 100%;
+    max-width: 1350px;
+    height: 1px;
+    background: #E5E7EB;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 2rem;
+    box-sizing: border-box;
+  }
+}
+
+/* On mobile, no grid so just breakout */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper {
+    position: relative !important;
+    width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    margin-top: 3rem !important;
+    padding-top: 2.5rem !important;
+  }
+  
+  /* Border line - responsive width */
+  body.woocommerce-cart .cart-suggested-products-wrapper::before {
+    content: '';
+    display: block;
+    width: 100%;
+    max-width: calc(100% - 4rem);
+    height: 1px;
+    background: #E5E7EB;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  /* Adjust border width for mobile */
+  body.woocommerce-cart .cart-suggested-products-wrapper::before {
+    max-width: calc(100% - 2rem);
+  }
+}
+
+/* Inner container - RESPONSIVE to screen size */
+body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+  width: 100% !important;
+  max-width: 1350px !important;
+  margin: 0 auto !important;
+  padding: 0 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Product grid within suggested products - force full width */
+body.woocommerce-cart .cart-suggested-products ul.products {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Ensure product cards take full grid column width */
+body.woocommerce-cart .cart-suggested-products ul.products li.product {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ensure header is centered */
+body.woocommerce-cart .cart-suggested-products__header {
+  text-align: center !important;
+  margin-bottom: 2.5rem !important;
+}
+
+body.woocommerce-cart .cart-suggested-products__title,
+body.woocommerce-cart .cart-suggested-products__subtitle {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Tablet - responsive padding */
+@media (max-width: 1023px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    padding: 0 1.5rem !important;
+  }
+}
+
+/* Mobile - responsive padding */
+@media (max-width: 767px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    padding: 0 1rem !important;
+  }
+  
+  body.woocommerce-cart .cart-suggested-products__header {
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* Small Mobile - responsive padding */
+@media (max-width: 480px) {
+  body.woocommerce-cart .cart-suggested-products-wrapper .cart-suggested-products {
+    padding: 0 1rem !important;
+  }
+}
+
+/* ==========================================================================
+   CHECKOUT PAGE PROGRESS STYLES (Ensure they load)
+   ========================================================================== */
+body.woocommerce-checkout .woocommerce-checkout-progress {
+    width: 100%;
+    margin: 0 auto 2rem auto;
+    padding: 2rem 0 0 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+body.woocommerce-checkout .checkout-steps {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   HIDE INLINE COUPON ERROR MESSAGES
+   These will be shown as notifications instead via cart.js
+   ========================================================================== */
+
+/* Hide WooCommerce error/info messages in coupon area */
+body.woocommerce-cart .woocommerce-error,
+body.woocommerce-cart .woocommerce-message,
+body.woocommerce-cart .woocommerce-info {
+  display: none !important;
+}
+
+/* Exception: Keep notices that are NOT coupon-related (if any) */
+body.woocommerce-cart .woocommerce-notices-wrapper .woocommerce-error:not([class*="coupon"]),
+body.woocommerce-cart .woocommerce-notices-wrapper .woocommerce-message:not([class*="coupon"]) {
+  /* You can adjust this if you want to show other types of notices */
+  display: none !important;
+}
+
+/* Ensure the coupon input error styling is removed */
+body.woocommerce-cart .coupon input[type="text"].error {
+  border-color: #ddd;
+}
+
+/* Add a subtle red border on empty coupon submission (optional) */
+body.woocommerce-cart .coupon input[type="text"]:invalid {
+  border-color: #e74c3c;
+}

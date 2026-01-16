@@ -1,0 +1,233 @@
+/**
+ * Single Product Page Styles - Master Import File
+ * 
+ * This file imports all product page components in the correct order.
+ * Modular structure for easy maintenance and debugging.
+ * 
+ * @package AAAPOS_Prime
+ * @version 1.0.0
+ * 
+ * File Structure:
+ * ├── product-layout.css           - Container, grid system, breadcrumb
+ * ├── product-gallery.css          - Images, thumbnails (FIXED stretching)
+ * ├── product-details.css          - Title, price, rating, variations
+ * ├── product-actions.css          - Quantity, add to cart, stock, meta
+ * └── product-tabs-related.css     - Tabs, related products
+ * 
+ * Location: assets/css/components/product/product-main.css
+ */
+
+/* ============================================
+   IMPORT PRODUCT COMPONENTS
+   Order matters - load foundation styles first
+   ============================================ */
+
+/* 1. Layout Foundation - Container & Grid */
+@import 'product-layout.css';
+
+/* 2. Product Gallery - Images & Thumbnails (FIXED) */
+@import 'product-gallery.css';
+
+/* 3. Product Details - Title, Price, Description, Variations */
+@import 'product-details.css';
+
+/* 4. Product Actions - Quantity, Cart, Stock, Meta */
+@import 'product-actions.css';
+
+/* 5. Secondary Sections - Tabs, Related Products */
+@import 'product-tabs-related.css';
+
+/* 5. product cart activity */
+@import 'product-cart-activity.css';
+
+/* 6. Product Trust Badges */
+@import 'product-trust-badges.css';
+
+/* 7. Product share */
+@import 'product-share.css';
+
+/* 8. Product navigation */
+@import 'product-navigation.css';
+
+/* 10. Product layout */
+@import 'product-reviews-layout.css';
+
+/* 11. Product forms */
+@import 'product-reviews-form.css';
+
+/* 12. Product summary */
+@import 'product-reviews-summary.css';
+
+/* 13. Product responsive */
+@import 'product-responsive.css';
+
+
+/**
+ * Usage:
+ * Enqueue this file in inc/enqueue.php:
+ * 
+ * if (is_product()) {
+ *     wp_enqueue_style(
+ *         'product-styles',
+ *         get_template_directory_uri() . '/assets/css/components/product/product-main.css',
+ *         array(),
+ *         filemtime(get_template_directory() . '/assets/css/components/product/product-main.css')
+ *     );
+ * }
+ * 
+ * Quick Reference:
+ * - Container width issues? → product-layout.css
+ * - Image stretching? → product-gallery.css
+ * - Price styling? → product-details.css
+ * - Add to cart button? → product-actions.css
+ * - Tabs not working? → product-tabs-related.css
+ */
+
+ /**
+ * Variation Swatches Styles
+ */
+
+/* Color Swatches Container */
+.color-swatches {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+/* Individual Color Swatch */
+.color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Selected Color Swatch */
+.color-swatch.selected {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #3b82f6;
+    transform: scale(1.1);
+}
+
+/* Disabled Color Swatch */
+.color-swatch.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.color-swatch.disabled::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ef4444;
+    transform: rotate(-45deg);
+}
+
+.color-swatch.disabled:hover {
+    transform: none;
+}
+
+/* Size Buttons Container */
+.size-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+/* Individual Size Button */
+.size-button {
+    padding: 10px 20px;
+    border: 2px solid #e5e7eb;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    color: #1f2937;
+    min-width: 60px;
+}
+
+.size-button:hover:not(:disabled) {
+    border-color: #3b82f6;
+    color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+/* Selected Size Button */
+.size-button.selected {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Disabled Size Button */
+.size-button:disabled,
+.size-button.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    position: relative;
+    background: #f3f4f6;
+}
+
+.size-button:disabled::after,
+.size-button.disabled::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    background: #ef4444;
+    transform: translateY(-50%) rotate(-15deg);
+}
+
+.size-button:disabled:hover,
+.size-button.disabled:hover {
+    transform: none;
+    border-color: #e5e7eb;
+    box-shadow: none;
+}
+
+/* Variation Label */
+.variations label {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Hide original select dropdowns */
+.variations select {
+    display: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .color-swatch {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .size-button {
+        padding: 8px 16px;
+        font-size: 13px;
+        min-width: 50px;
+    }
+}

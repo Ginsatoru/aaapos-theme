@@ -68,21 +68,6 @@ function aaapos_load_theme_files()
 }
 add_action("after_setup_theme", "aaapos_load_theme_files", 1);
 
-// code for off the site display while maintenance
-// add_action('template_redirect', function () {
-//     if (
-//         ! is_user_logged_in()
-//         && ! is_admin()
-//         && ! wp_doing_ajax()
-//     ) {
-//         wp_die(
-//             '<h1>Site Under Maintenance</h1><p>We are preparing the website.</p>',
-//             'Maintenance',
-//             array('response' => 503)
-//         );
-//     }
-// });
-
 // Remove "Clear" button from single product variations
 add_filter('woocommerce_reset_variations_link', '__return_empty_string');
 

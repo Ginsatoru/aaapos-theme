@@ -1,0 +1,369 @@
+/* ===================================
+   PRODUCT CATEGORIES SECTION ONLY
+   categories.css
+   Isolated styles with high specificity
+   FIXED: Smooth hover without transform conflicts
+   UPDATED: All colors now use CSS variables
+   =================================== */
+
+/* Section styling */
+section.product-categories.section {
+  padding: var(--space-20) 0 !important;
+  background: var(--bg-secondary) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+section.product-categories .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+/* Section Header - Override layout.css */
+section.product-categories .section-header {
+  text-align: center !important;
+  margin-bottom: var(--space-16) !important;
+}
+
+section.product-categories .section-title {
+  font-family: var(--font-heading) !important;
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl)) !important;
+  font-weight: var(--font-bold) !important;
+  color: var(--color-dark) !important;
+  margin: 0 0 var(--space-4) !important;
+  line-height: 1.2 !important;
+}
+
+section.product-categories .section-subtitle {
+  font-family: var(--font-body) !important;
+  font-size: var(--text-lg) !important;
+  color: var(--color-text-light) !important;
+  margin: 0 !important;
+  max-width: 700px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  line-height: 1.6 !important;
+}
+
+/* Categories Grid */
+section.product-categories .categories-grid {
+  display: grid !important;
+  grid-template-columns: repeat(1, 1fr) !important;
+  gap: var(--space-6) !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+}
+
+@media (min-width: 640px) {
+  section.product-categories .categories-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  section.product-categories .categories-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--space-8) !important;
+  }
+}
+
+/* ===================================
+   CATEGORY CARD - FIXED: Use box-shadow for lift, not transform
+   This prevents conflict with scroll animation transforms
+   =================================== */
+
+section.product-categories .category-card {
+  position: relative !important;
+  border-radius: 12px !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+  overflow: hidden !important;
+  height: 240px !important;
+  text-decoration: none !important;
+  /* CRITICAL FIX: Use box-shadow for lift effect instead of transform */
+  box-shadow: var(--shadow-md) !important;
+  transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              filter 0.3s ease !important;
+  display: block !important;
+  width: 100% !important;
+  /* Remove will-change to prevent interference */
+  will-change: auto !important;
+}
+
+/* FIXED HOVER: Only shadow lift, NO transform on card */
+section.product-categories .category-card:hover {
+  /* Use deeper shadow for lift effect - smooth and no conflicts */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+  filter: brightness(1.02) !important;
+  border-radius: 12px !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+  /* REMOVED: transform: translateY(-8px) - this was causing the conflict */
+}
+
+/* Category Image - Can still scale independently */
+section.product-categories .category-card__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Image zoom works independently - smooth */
+section.product-categories .category-card:hover .category-card__image {
+  transform: scale(1.1) !important;
+}
+
+/* Overlay - MUST cover full card for gradient */
+section.product-categories .category-card__overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.7) 100%
+  ) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important; /* Push content to bottom */
+  align-items: flex-start !important;
+  padding: 0 !important; /* Remove padding from overlay */
+  color: var(--color-white) !important;
+  transition: background 0.4s ease !important;
+  z-index: 2 !important;
+  border-radius: 0 !important;
+}
+
+section.product-categories .category-card:hover .category-card__overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.5) 40%,
+    rgba(0, 0, 0, 0.8) 100%
+  ) !important;
+}
+
+/* Content - This is where padding goes, pushed to bottom by flexbox */
+section.product-categories .category-card__content {
+  position: relative !important;
+  z-index: 3 !important;
+  width: 100% !important;
+  padding: var(--space-6) !important; /* Padding HERE, not on overlay */
+  margin: 0 !important;
+  transform: translateY(0) !important;
+  transition: transform 0.3s ease !important;
+  display: block !important;
+}
+
+/* Content slides up slightly on hover */
+section.product-categories .category-card:hover .category-card__content {
+  transform: translateY(-6px) !important;
+}
+
+section.product-categories .category-card__name {
+  font-family: var(--font-heading) !important;
+  font-size: clamp(
+    var(--text-xl),
+    3vw,
+    var(--text-2xl)
+  ) !important;
+  font-weight: var(--font-bold) !important;
+  margin: 0 0 var(--space-2) !important;
+  color: var(--color-white) !important;
+  line-height: 1.2 !important;
+}
+
+section.product-categories .category-card__description {
+  font-family: var(--font-body) !important;
+  font-size: var(--text-base) !important;
+  color: var(--color-white) !important;
+  opacity: 0.9 !important;
+  margin: 0 0 var(--space-1) !important;
+  line-height: 1.4 !important;
+}
+
+/* Product Count - NOW USES BRAND COLOR */
+section.product-categories .category-card__count {
+  font-family: var(--font-body) !important;
+  font-size: var(--text-sm) !important;
+  color: var(--color-white) !important;;
+  margin: 0 !important; /* Remove bottom margin */
+  display: block !important;
+}
+
+/* Shop Now Button - ALWAYS VISIBLE with brand color */
+section.product-categories.section
+  .category-card
+  .category-card__content
+  .category-card__button,
+section.product-categories .category-card .category-card__button,
+section.product-categories .categories-grid .category-card__button,
+.product-categories .category-card__button,
+a.category-card .category-card__button,
+span.category-card__button,
+section.product-categories .category-card__content .category-card__button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 24px !important;
+  background: var(--brand-color) !important; /* Brand color background */
+  background-color: var(--brand-color) !important;
+  background-image: none !important;
+  color: var(--color-white) !important;
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  border-style: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  line-height: 1 !important;
+  min-width: 90px !important;
+  height: auto !important;
+  min-height: 36px !important;
+  margin-top: var(--space-3) !important;
+  position: relative !important;
+  /* ALWAYS VISIBLE */
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+/* Button hover state - slightly darker and lifts up */
+section.product-categories.section .category-card:hover .category-card__button,
+section.product-categories .category-card:hover .category-card__button,
+section.product-categories
+  .categories-grid
+  .category-card:hover
+  .category-card__button,
+.product-categories .category-card:hover .category-card__button,
+a.category-card:hover .category-card__button,
+a.category-card:hover span.category-card__button,
+section.product-categories .category-card:hover .category-card__content .category-card__button,
+section.product-categories .category-card__button:hover,
+section.product-categories .category-card__content .category-card__button:hover {
+  background: var(--brand-color-hover) !important;
+  background-color: var(--brand-color-hover) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* No Categories Message */
+section.product-categories .no-categories {
+  text-align: center !important;
+  font-size: var(--text-lg) !important;
+  color: var(--color-text-light) !important;
+  padding: var(--space-16) var(--space-5) !important;
+  font-style: italic;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
+  section.product-categories.section {
+    padding: var(--space-16) 0 !important;
+  }
+
+  section.product-categories .section-header {
+    margin-bottom: var(--space-12) !important;
+  }
+
+  section.product-categories .category-card {
+    height: 220px !important;
+  }
+
+  section.product-categories .category-card__content {
+    padding: var(--space-5) !important;
+  }
+
+  section.product-categories .category-card__name {
+    font-size: var(--text-base) !important;
+  }
+
+  section.product-categories .category-card__description {
+    font-size: var(--text-xs) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section.product-categories.section {
+    padding: var(--space-12) 0 !important;
+  }
+
+  section.product-categories .category-card {
+    height: 200px !important;
+  }
+
+  section.product-categories .category-card__content {
+    padding: var(--space-4) !important;
+  }
+
+  section.product-categories .category-card__name {
+    font-size: var(--text-sm) !important;
+    margin-bottom: var(--space-1) !important;
+  }
+
+  section.product-categories .category-card__description {
+    font-size: var(--text-xs) !important;
+    margin-bottom: var(--space-1) !important;
+  }
+
+  section.product-categories .category-card__count {
+    font-size: 10px !important;
+    margin-bottom: var(--space-3) !important;
+  }
+
+  section.product-categories .category-card__button {
+    padding: 6px 16px !important;
+    font-size: 10px !important;
+    min-height: 28px !important;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  section.product-categories .category-card,
+  section.product-categories .category-card__image,
+  section.product-categories .category-card__overlay,
+  section.product-categories .category-card__button,
+  section.product-categories .category-card__content {
+    transition: none !important;
+  }
+
+  section.product-categories .category-card:hover {
+    box-shadow: var(--shadow-md) !important;
+    filter: none !important;
+  }
+
+  section.product-categories .category-card:hover .category-card__image {
+    transform: none !important;
+  }
+
+  section.product-categories .category-card:hover .category-card__button {
+    transform: none !important;
+  }
+
+  section.product-categories .category-card:hover .category-card__content {
+    transform: none !important;
+  }
+}

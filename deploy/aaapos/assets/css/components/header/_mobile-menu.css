@@ -1,0 +1,343 @@
+/* ==========================================================================
+   Mobile Menu (Sidebar)
+   ========================================================================== */
+
+.mobile-menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: var(--space-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
+
+.mobile-menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background: var(--color-header-text);
+  transition: all 0.3s ease;
+  transform-origin: center;
+  border-radius: 2px;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 998;
+}
+
+.mobile-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile Navigation Sidebar */
+@media (max-width: 1023px) {
+  .main-navigation {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    background: var(--color-bg-primary);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    z-index: 999;
+    margin: 0;
+    flex: 0;
+    padding: 80px 0 2rem;
+  }
+
+  .main-navigation.active {
+    right: 0;
+  }
+
+  /* Mobile Search Bar in Sidebar */
+  .mobile-search-wrapper {
+    display: block;
+    padding: 0 2rem var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+  }
+
+  .mobile-search-wrapper .search-form {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+
+  .mobile-search-wrapper .search-field {
+    width: 100%;
+    padding: 12px 45px 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-full);
+    font-size: 0.95rem;
+    background: var(--color-bg-secondary);
+    color: var(--color-text);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-search-wrapper .search-field:focus {
+    outline: none;
+    border-color: var(--brand-color);
+    background: var(--color-bg-primary);
+  }
+
+  .mobile-search-wrapper .search-submit {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  /* Search icon styles when input is focused - Applied via JS class */
+  .mobile-search-wrapper .search-form.search-focused .search-submit {
+    background: #6c757d;
+    border-radius: 50%;
+  }
+
+  .mobile-search-wrapper .search-submit svg {
+    width: 18px;
+    height: 18px;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+
+  /* Change icon color to white when background is gray */
+  .mobile-search-wrapper .search-form.search-focused .search-submit svg {
+    color: #ffffff;
+  }
+
+  /* Mobile Account Section in Sidebar */
+  .mobile-account-section {
+    display: block;
+    padding: 0 2rem var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+  }
+
+  .mobile-account-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: var(--color-text-dark);
+    font-weight: var(--font-semibold);
+    transition: background 0.2s ease;
+  }
+
+  .mobile-account-link:hover {
+    background: var(--color-bg-tertiary);
+  }
+
+  .mobile-account-link svg {
+    width: 24px;
+    height: 24px;
+    color: var(--brand-color);
+  }
+
+  .mobile-account-info {
+    flex: 1;
+  }
+
+  .mobile-account-name {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--color-text-dark);
+    margin-bottom: 2px;
+  }
+
+  .mobile-account-status {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    font-weight: var(--font-normal);
+  }
+
+  /* Mobile Account Menu (for logged in users) */
+  .mobile-account-menu {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+  }
+
+  .mobile-account-menu li {
+    margin: 0;
+  }
+
+  .mobile-account-menu a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border-radius: var(--border-radius);
+  }
+
+  .mobile-account-menu a:hover {
+    background: var(--color-bg-secondary);
+    color: var(--brand-color);
+  }
+
+  .mobile-account-menu svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .mobile-account-menu .menu-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: var(--space-3) 0;
+  }
+
+  /* Menu Container */
+  .main-navigation .menu-container {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .nav-menu > li {
+    width: 100%;
+    border-bottom: 1px solid var(--color-border-light);
+    height: auto;
+  }
+
+  .nav-menu a {
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    height: auto;
+    justify-content: flex-start;
+    color: var(--color-text);
+  }
+
+  .nav-menu > li > a::after {
+    display: none;
+  }
+
+  /* Mobile Dropdowns */
+  .nav-menu .sub-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    background: var(--color-bg-secondary);
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .nav-menu li.menu-item-has-children > a {
+    position: relative;
+    padding-right: 3rem;
+  }
+
+  /* Single chevron icon for mobile */
+  .nav-menu li.menu-item-has-children > a .submenu-toggle,
+  .nav-menu li.menu-item-has-children > a .dropdown-icon {
+    display: none !important;
+  }
+
+  .nav-menu li.menu-item-has-children > a::after {
+    content: "›";
+    font-size: 1.5rem;
+    font-weight: 300;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transition: transform 0.3s ease;
+    line-height: 1;
+  }
+
+  .nav-menu li.menu-item-has-children.active > a::after {
+    transform: translateY(-50%) rotate(-90deg);
+  }
+
+  .nav-menu li.menu-item-has-children.active > .sub-menu {
+    max-height: 500px;
+  }
+
+  .nav-menu .sub-menu li {
+    border-bottom: none;
+  }
+
+  .nav-menu .sub-menu a {
+    padding: 0.75rem 2rem 0.75rem 3rem;
+    font-size: 0.95rem;
+  }
+
+  /* Nested submenu (3rd level) */
+  .nav-menu .sub-menu .sub-menu a {
+    padding-left: 4rem;
+  }
+
+  .nav-menu .sub-menu li.menu-item-has-children > a::after {
+    right: 2rem;
+  }
+}

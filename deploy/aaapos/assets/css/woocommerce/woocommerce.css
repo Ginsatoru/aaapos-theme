@@ -1,0 +1,72 @@
+/* ============================================
+   WooCommerce Main Styles - Entry Point
+   Modular Architecture for Easy Maintenance
+   woocommerce.css
+   ============================================ */
+
+/* Import all WooCommerce modules */
+@import url('woocommerce-layout.css');
+@import url('woocommerce-product-grid.css');
+@import url('woocommerce-components.css');
+@import url('woocommerce-blocks.css');
+@import url('woocommerce-notices.css');
+
+/* ============================================
+   GLOBAL WOOCOMMERCE OVERRIDES
+   ============================================ */
+
+/* Clearfix & Reset */
+.woocommerce ul.products::before,
+.woocommerce ul.products::after,
+.woocommerce-page ul.products::before,
+.woocommerce-page ul.products::after {
+  display: none !important;
+  content: none !important;
+}
+
+.woocommerce ul.products li.product::before,
+.woocommerce ul.products li.product::after,
+.woocommerce-page ul.products li.product::before,
+.woocommerce-page ul.products li.product::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Hide Default WooCommerce Star Rating Everywhere */
+.woocommerce .star-rating,
+.woocommerce-page .star-rating,
+.woocommerce-product-rating .star-rating,
+.star-rating {
+  display: none !important;
+}
+
+/* ============================================
+   HIDE WOOCOMMERCE INFO/MESSAGE ICONS
+   ============================================ */
+
+/* Hide info and message icons globally */
+.woocommerce-info::before,
+.woocommerce-info::after,
+.woocommerce-message::before,
+.woocommerce-message::after,
+.woocommerce-error::before,
+.woocommerce-error::after {
+  display: none !important;
+  content: "" !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* No Products Found Message */
+.woocommerce-info,
+.woocommerce-no-products-found {
+  text-align: center;
+  padding: 3rem;
+  background: var(--color-bg-secondary);
+  border-radius: 16px;
+  color: var(--color-text-light);
+  font-size: var(--text-lg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}

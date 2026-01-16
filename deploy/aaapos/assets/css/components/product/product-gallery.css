@@ -1,0 +1,252 @@
+/**
+ * Product Gallery Styles - Fixed Image Sizing & Centering
+ * 
+ * FIX: Main image now properly fills container without excessive whitespace
+ * FIX: FlexSlider thumbnails now properly fill full width aligned with parent container
+ * FIX: SMALLER thumbnails with reduced gaps for compact layout
+ * Layout: Main image above, thumbnails in row below
+ * 
+ * @package AAAPOS_Prime
+ * @version 1.0.6
+ * Location: assets/css/components/product/product-gallery.css
+ */
+
+/* ============================================
+   GALLERY CONTAINER
+   ============================================ */
+
+.woocommerce div.product div.images {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.woocommerce-product-gallery {
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* ============================================
+   MAIN PRODUCT IMAGE - FIXED SIZING
+   ============================================ */
+
+.woocommerce-product-gallery__wrapper {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.woocommerce-product-gallery__image {
+    margin: 0;
+    padding: 0;
+}
+
+/* First image (main display image) - KEY FIX */
+.woocommerce-product-gallery__image:first-child {
+    width: 100%;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.woocommerce-product-gallery__image:first-child a {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+/* CRITICAL FIX: Proper image sizing and centering */
+.woocommerce-product-gallery__image:first-child img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 600px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+}
+
+/* Remove any default WooCommerce sizing */
+.woocommerce-product-gallery__image:first-child a img.wp-post-image {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* ============================================
+   FLEXSLIDER OVERRIDES (WooCommerce default)
+   ============================================ */
+
+.flex-viewport {
+    margin-bottom: 1rem;
+    max-height: none !important;
+}
+
+/* Main image in flexslider */
+.woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 600px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.flex-control-nav {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================
+   THUMBNAIL IMAGES - FLEXSLIDER COMPACT LAYOUT
+   KEY FIX: SMALLER thumbnails for more compact appearance
+   ============================================ */
+
+.flex-control-thumbs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important; /* REDUCED: Smaller gap for more compact look */
+    margin: 0 !important;
+    list-style: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.flex-control-thumbs li {
+    width: calc(25% - 6px) !important; /* 4 items: (100% - 3*8px) / 4 = calc(25% - 6px) */
+    margin: 0 !important; /* Remove all margins - using gap instead */
+    list-style: none !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+}
+
+.flex-control-thumbs li img {
+    width: 100% !important;
+    height: 60px !important; /* REDUCED: Much smaller compact size (was 80px) */
+    max-width: 100% !important;
+    object-fit: cover !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 4px !important; /* REDUCED: Smaller border radius */
+    cursor: pointer !important;
+    opacity: 0.7 !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+}
+
+.flex-control-thumbs li:hover img {
+    opacity: 1 !important;
+    border-color: var(--color-primary, #0ea5e9) !important;
+    transform: translateY(-2px) !important; /* REDUCED: Smaller hover lift */
+}
+
+.flex-control-thumbs li img.flex-active {
+    opacity: 1 !important;
+    border-color: var(--color-primary, #0ea5e9) !important;
+    box-shadow: 0 0 0 2px rgba(0, 113, 161, 0.15) !important; /* REDUCED: Smaller shadow */
+}
+
+/* ============================================
+   ZOOM TRIGGER BUTTON
+   ============================================ */
+
+.woocommerce-product-gallery__trigger {
+    display: none !important; /* Hidden as zoom is disabled */
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Large tablets */
+@media (max-width: 1024px) {
+    .woocommerce-product-gallery__image:first-child img,
+    .woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
+        max-height: 500px !important;
+    }
+    
+    .flex-control-thumbs li img {
+        height: 55px !important; /* Slightly smaller on tablets */
+    }
+}
+
+/* Tablets - 3 thumbnails per row */
+@media (max-width: 768px) {
+    .woocommerce-product-gallery__image:first-child img,
+    .woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
+        max-height: 400px !important;
+    }
+    
+    .flex-control-thumbs {
+        gap: 6px !important; /* Smaller gap on tablets */
+    }
+    
+    .flex-control-thumbs li {
+        width: calc(33.333% - 4px) !important; /* 3 items: (100% - 2*6px) / 3 */
+    }
+    
+    .flex-control-thumbs li img {
+        height: 50px !important; /* REDUCED: Smaller on tablets (was 70px) */
+    }
+}
+
+/* Mobile - 2 thumbnails per row */
+@media (max-width: 480px) {
+    .woocommerce-product-gallery__image:first-child img,
+    .woocommerce-product-gallery .flex-viewport .woocommerce-product-gallery__image img {
+        max-height: 350px !important;
+    }
+    
+    .flex-control-thumbs {
+        gap: 6px !important; /* Small gap on mobile */
+    }
+    
+    .flex-control-thumbs li {
+        width: calc(50% - 3px) !important; /* 2 items: (100% - 6px) / 2 */
+    }
+    
+    .flex-control-thumbs li img {
+        height: 50px !important; /* REDUCED: Smaller on mobile (was 65px) */
+        border-radius: 3px !important; /* Smaller radius on mobile */
+    }
+}
+
+/* ============================================
+   ADDITIONAL FIXES FOR WOOCOMMERCE DEFAULTS
+   ============================================ */
+
+/* Remove any default WooCommerce image constraints */
+.single-product div.product div.images img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Ensure proper aspect ratio */
+.woocommerce-product-gallery__wrapper > .woocommerce-product-gallery__image:first-child {
+    aspect-ratio: auto !important;
+}
+
+/* Fix for variable products with image swatches */
+.woocommerce-product-gallery--with-images .woocommerce-product-gallery__wrapper {
+    width: 100%;
+}
+
+/* Override any inline styles from WooCommerce/FlexSlider */
+.flex-control-thumbs li[style] {
+    width: calc(25% - 6px) !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .flex-control-thumbs li[style] {
+        width: calc(33.333% - 4px) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .flex-control-thumbs li[style] {
+        width: calc(50% - 3px) !important;
+    }
+}

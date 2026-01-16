@@ -1,0 +1,245 @@
+/* ============================================
+   PRODUCT TRUST BADGES
+   Simple list below product meta - NO backgrounds
+   product-trust-badges.css
+   ============================================ */
+
+.single-product .product-trust-badges {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.625rem !important;
+  margin: 1.5rem 0 0 0 !important;
+  padding: 0 0 0 1.25rem !important; /* Added left padding */
+}
+
+.single-product .trust-badge-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.single-product .trust-badge-icon {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  flex-shrink: 0 !important;
+  color: #6b7280 !important;
+  stroke: currentColor !important;
+}
+
+.single-product .trust-badge-text {
+  font-size: 0.9375rem !important;
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .single-product .product-trust-badges {
+    margin: 1.25rem 0 0 0 !important;
+    gap: 0.5rem !important;
+    padding: 0 0 0 1rem !important; /* Slightly less padding on mobile */
+  }
+  
+  .single-product .trust-badge-icon {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+  }
+  
+  .single-product .trust-badge-text {
+    font-size: 0.8125rem !important;
+  }
+}
+
+/* ============================================
+   PRODUCT SECURE PAYMENT BADGES
+   Shows payment method icons below trust badges
+   FIXED: All payment icons now have consistent size
+   ============================================ */
+
+.single-product .product-secure-payments {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  margin: 1.5rem 0 0 1.25rem !important;
+  padding: 0 !important;
+}
+
+.single-product .secure-payments-title {
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  flex-shrink: 0 !important;
+}
+
+.single-product .payment-icons-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.875rem !important;
+  flex-wrap: wrap !important;
+}
+
+/* FIXED: Set consistent dimensions for all payment icons */
+.single-product .payment-icon {
+  height: 40px !important;
+  width: auto !important;
+  max-width: 70px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .single-product .product-secure-payments {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin: 1.25rem 0 0 1rem !important;
+    gap: 0.75rem !important;
+  }
+  
+  .single-product .secure-payments-title {
+    font-size: 0.8125rem !important;
+  }
+  
+  .single-product .payment-icons-wrapper {
+    gap: 0.75rem !important;
+  }
+  
+  /* Slightly smaller on mobile but still consistent */
+  .single-product .payment-icon {
+    height: 36px !important;
+    max-width: 60px !important;
+  }
+}/* ============================================
+   PRODUCT TRUST BADGES
+   Simple list below product meta - NO backgrounds
+   product-trust-badges.css
+   ============================================ */
+
+.single-product .product-trust-badges {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.625rem !important;
+  margin: 1.5rem 0 0 0 !important;
+  padding: 0 0 0 1.25rem !important; /* Added left padding */
+}
+
+.single-product .trust-badge-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.single-product .trust-badge-icon {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  flex-shrink: 0 !important;
+  color: #6b7280 !important;
+  stroke: currentColor !important;
+}
+
+.single-product .trust-badge-text {
+  font-size: 0.9375rem !important;
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .single-product .product-trust-badges {
+    margin: 1.25rem 0 0 0 !important;
+    gap: 0.5rem !important;
+    padding: 0 0 0 1rem !important; /* Slightly less padding on mobile */
+  }
+  
+  .single-product .trust-badge-icon {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+  }
+  
+  .single-product .trust-badge-text {
+    font-size: 0.8125rem !important;
+  }
+}
+
+/* ============================================
+   PRODUCT SECURE PAYMENT BADGES
+   Shows payment method icons below trust badges
+   FIXED: All payment icons now have consistent size
+   ============================================ */
+
+.single-product .product-secure-payments {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  margin: 1.5rem 0 0 1.25rem !important;
+  padding: 0 !important;
+}
+
+.single-product .secure-payments-title {
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  flex-shrink: 0 !important;
+}
+
+.single-product .payment-icons-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.875rem !important;
+  flex-wrap: wrap !important;
+}
+
+/* FIXED: Set consistent dimensions for all payment icons */
+.single-product .payment-icon {
+  height: 40px !important;
+  width: auto !important;
+  max-width: 70px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .single-product .product-secure-payments {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin: 1.25rem 0 0 1rem !important;
+    gap: 0.75rem !important;
+  }
+  
+  .single-product .secure-payments-title {
+    font-size: 0.8125rem !important;
+  }
+  
+  .single-product .payment-icons-wrapper {
+    gap: 0.75rem !important;
+  }
+  
+  /* Slightly smaller on mobile but still consistent */
+  .single-product .payment-icon {
+    height: 36px !important;
+    max-width: 60px !important;
+  }
+}

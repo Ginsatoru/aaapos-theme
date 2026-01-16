@@ -1,0 +1,37 @@
+
+## Customization
+
+### Colors
+- Primary: #0ea5e9 (Sky Blue)
+- Secondary: #06b6d4 (Cyan)  
+- Accent: #f59e0b (Amber)
+- Dark: #1f2937 (Gray 800)
+- Light: #f3f4f6 (Gray 100)
+
+### Typography
+- Headings: Montserrat
+- Body: Inter
+- Accent: Playfair Display (hero titles)
+
+## WooCommerce Features
+
+- Custom product cards with hover effects
+- Quick view functionality
+- AJAX add to cart
+- Custom shop layout
+- Enhanced product gallery
+
+## Browser Support
+
+- Chrome (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Edge (last 2 versions)
+
+## License
+
+This theme is licensed under the GPL v2 or later.
+
+## Support
+
+For support and documentation, please visit the theme repository.

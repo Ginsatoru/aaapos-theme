@@ -1,0 +1,50 @@
+/* ============================================
+   WooCommerce My Account - Main Import File
+   Modern, Clean Design - Using Theme Variables
+   
+   myaccount-main.css
+   ============================================ */
+
+/* Import all my account component styles */
+@import 'myaccount-layout.css';
+@import 'myaccount-sidebar.css';
+@import 'myaccount-dashboard.css';
+@import 'myaccount-orders.css';
+@import 'myaccount-addresses.css';
+@import 'myaccount-forms.css';
+
+/* ============================================
+   Global My Account Styles
+   ============================================ */
+
+fieldset {
+  border: none;
+}
+
+.entry-title {
+  display: none;
+}
+
+/* Hide default WooCommerce paragraphs */
+.woocommerce-MyAccount-content > p {
+  display: none;
+}
+
+.woocommerce-MyAccount-content p {
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  margin-bottom: var(--space-4);
+  font-family: var(--font-body);
+}
+
+/* Dashboard intro sections visible */
+.woocommerce-MyAccount-dashboard-intro,
+.woocommerce-MyAccount-dashboard-intro p {
+  display: block;
+}
+
+.woocommerce-MyAccount-dashboard-intro {
+  margin-bottom: var(--space-8);
+  margin-top: -8px;
+}

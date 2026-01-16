@@ -1,0 +1,215 @@
+/* ============================================
+   My Account Responsive Styles
+   Mobile & Tablet Adjustments
+   ============================================ */
+
+@media (max-width: 768px) {
+  .woocommerce-Addresses.col2-set,
+  .u-columns.woocommerce-Addresses.col2-set.addresses {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-5) !important;
+  }
+  
+  body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-3) !important;
+  }
+  
+  body.woocommerce-edit-address .woocommerce-MyAccount-content > h3,
+  body.woocommerce-edit-address .entry-content > h3 {
+    margin-top: var(--space-5) !important;
+    padding-top: var(--space-4) !important;
+    font-size: var(--text-2xl) !important;
+  }
+  
+  body.woocommerce-edit-address .woocommerce-address-fields p.form-row,
+  body.woocommerce-edit-address form p.form-row {
+    margin-bottom: var(--space-3) !important;
+  }
+  
+  body.woocommerce-edit-address .woocommerce-address-fields,
+  body.woocommerce-edit-address form.edit-address {
+    padding: var(--space-4) var(--space-4) !important;
+  }
+  
+  body.woocommerce-edit-address .woocommerce-Button,
+  body.woocommerce-edit-address button[name="save_address"] {
+    margin-top: var(--space-5) !important;
+    width: 100% !important;
+  }
+  
+  .woocommerce-address-fields__field-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .woocommerce-EditAccountForm,
+  .woocommerce-address-fields,
+  .edit-account,
+  form.woocommerce-form {
+    padding: var(--space-5) !important;
+  }
+  
+  /* Orders Table Mobile Layout */
+  .woocommerce-orders-table thead {
+    display: none !important;
+  }
+
+  .woocommerce-orders-table tbody tr {
+    display: block !important;
+    margin-bottom: var(--space-4) !important;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .woocommerce-orders-table tbody td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: var(--space-3) var(--space-4) !important;
+    text-align: left !important;
+    min-height: 44px !important;
+  }
+
+  .woocommerce-orders-table tbody td::before {
+    content: attr(data-title) !important;
+    font-weight: var(--font-semibold) !important;
+    color: var(--color-text-dark) !important;
+    text-transform: uppercase !important;
+    font-size: var(--text-xs) !important;
+    letter-spacing: 0.5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .woocommerce-orders-table tbody td:first-child {
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0 !important;
+    padding-top: var(--space-4) !important;
+  }
+
+  .woocommerce-orders-table tbody td:last-child {
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg) !important;
+    padding-bottom: var(--space-4) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* Fix for Actions column - remove ::before and center button */
+  .woocommerce-orders-table tbody td.woocommerce-orders-table__cell-order-actions::before {
+    display: none !important;
+  }
+
+  .woocommerce-orders-table tbody td.woocommerce-orders-table__cell-order-actions {
+    padding: var(--space-4) !important;
+  }
+
+  /* Ensure View button takes full width on mobile for better UX */
+  .woocommerce-orders-table tbody td.woocommerce-orders-table__cell-order-actions a {
+    width: 100% !important;
+    max-width: 200px !important;
+    justify-content: center !important;
+  }
+  
+  /* Order Details Table Mobile Layout */
+  .woocommerce-table--order-details thead {
+    display: none !important;
+  }
+  
+  .woocommerce-table--order-details tbody tr,
+  .woocommerce-table--order-details tfoot tr {
+    display: block !important;
+    padding: var(--space-4) 0 !important;
+  }
+  
+  .woocommerce-table--order-details tbody td,
+  .woocommerce-table--order-details tfoot th,
+  .woocommerce-table--order-details tfoot td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: var(--space-2) var(--space-4) !important;
+    text-align: left !important;
+  }
+  
+  .woocommerce-table--order-details tbody td::before,
+  .woocommerce-table--order-details tfoot th::before {
+    content: attr(data-title) !important;
+    font-weight: var(--font-semibold) !important;
+    color: var(--color-text-dark) !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .woocommerce-MyAccount-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-6) !important;
+  }
+  
+  .woocommerce-MyAccount-navigation {
+    position: static !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .woocommerce-MyAccount-wrapper {
+    gap: var(--space-5) !important;
+  }
+  
+  .woocommerce-MyAccount-content {
+    padding: var(--space-5) !important;
+  }
+  
+  .woocommerce-MyAccount-content h2,
+  .woocommerce-MyAccount-content h3 {
+    font-size: var(--text-2xl) !important;
+    margin-bottom: var(--space-4) !important;
+  }
+  
+  .woocommerce-MyAccount-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--space-4) !important;
+  }
+  
+  .dashboard-greeting {
+    font-size: var(--text-2xl) !important;
+  }
+  
+  .greeting-icon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  .dashboard-card {
+    padding: var(--space-4) !important;
+  }
+  
+  .dashboard-card__icon {
+    width: 40px !important;
+    height: 40px !important;
+    margin-bottom: var(--space-3) !important;
+  }
+  
+  .dashboard-card__title {
+    font-size: 0.8125rem !important;
+    margin-bottom: 2px !important;
+    line-height: 1.3 !important;
+  }
+  
+  .dashboard-card__description {
+    font-size: 0.6875rem !important;
+    line-height: 1.4 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .woocommerce-MyAccount-dashboard-grid {
+    gap: var(--space-3) !important;
+  }
+  
+  .dashboard-card {
+    padding: var(--space-3) !important;
+  }
+  
+  .dashboard-card__icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}

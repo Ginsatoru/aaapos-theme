@@ -1,0 +1,401 @@
+/* Form Styles forms.css */
+/* UPDATED: All colors now use CSS variables */
+
+.form-group {
+    margin-bottom: var(--space-4);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.form-control {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--color-gray-300);
+    border-radius: var(--border-radius);
+    font-size: var(--text-base);
+    transition: var(--transition);
+    background: var(--color-white);
+    color: var(--color-text);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--brand-color); /* UPDATED: Brand color */
+    box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1); /* UPDATED: Brand color shadow */
+}
+
+.form-control::placeholder {
+    color: var(--color-text-lighter);
+}
+
+.form-control:disabled {
+    background: var(--color-gray-100);
+    color: var(--color-text-light);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Form Sizes */
+.form-control--sm {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+}
+
+.form-control--lg {
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-lg);
+}
+
+/* Form States */
+.form-control.error {
+    border-color: var(--color-danger); /* UPDATED: Semantic color */
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-control.success {
+    border-color: var(--color-success); /* UPDATED: Semantic color */
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.form-control.warning {
+    border-color: var(--color-warning); /* UPDATED: Semantic color */
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+/* Form Help Text */
+.form-help {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+}
+
+.form-help.error {
+    color: var(--color-danger);
+}
+
+.form-help.success {
+    color: var(--color-success);
+}
+
+.form-help.warning {
+    color: var(--color-warning);
+}
+
+/* Checkboxes and Radio Buttons */
+.form-check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    cursor: pointer;
+}
+
+.form-check-input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.form-check-input[type="checkbox"] {
+    border-radius: var(--border-radius);
+}
+
+.form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+
+.form-check-label {
+    font-weight: normal;
+    color: var(--color-text);
+    user-select: none;
+}
+
+.form-check-input:checked {
+    background-color: var(--brand-color); /* UPDATED: Brand color */
+    border-color: var(--brand-color); /* UPDATED: Brand color */
+}
+
+.form-check-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1); /* UPDATED: Brand color shadow */
+}
+
+/* Form Groups */
+.form-group--horizontal {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.form-group--horizontal .form-label {
+    margin-bottom: 0;
+    min-width: 120px;
+}
+
+/* Select Styles */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right var(--space-3) center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: var(--space-10);
+}
+
+/* Textarea Styles */
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Field Groups */
+.field-group {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.field-group .form-control {
+    flex: 1;
+}
+
+/* Search Form */
+.search-form {
+    position: relative;
+    max-width: 400px;
+}
+
+.search-form .form-control {
+    padding-right: 50px;
+}
+
+.search-form button {
+    position: absolute;
+    right: var(--space-2);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--brand-color); /* UPDATED: Brand color */
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.search-form button:hover {
+    background: var(--brand-color-hover); /* UPDATED: Brand color hover */
+}
+
+/* Newsletter Form */
+.newsletter-form .form-group {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.newsletter-form .form-control {
+    flex: 1;
+}
+
+.newsletter-form button {
+    background: var(--brand-color); /* UPDATED: Brand color */
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: var(--space-3) var(--space-5);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.newsletter-form button:hover {
+    background: var(--brand-color-hover); /* UPDATED: Brand color hover */
+}
+
+.newsletter-form .form-checkbox {
+    margin-bottom: 0;
+}
+
+/* Quantity Input */
+.quantity-enhanced {
+    display: inline-flex;
+    align-items: center;
+    border: 2px solid var(--color-gray-300);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.quantity-enhanced .qty {
+    border: none;
+    text-align: center;
+    width: 60px;
+    padding: var(--space-2);
+    margin: 0;
+    background: var(--color-white);
+}
+
+.quantity-btn {
+    background: var(--color-gray-100);
+    border: none;
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.quantity-btn:hover {
+    background: var(--color-gray-200);
+}
+
+.quantity-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity-minus {
+    border-right: 1px solid var(--color-gray-300);
+}
+
+.quantity-plus {
+    border-left: 1px solid var(--color-gray-300);
+}
+
+/* WooCommerce Form Styles */
+.woocommerce-form {
+    max-width: 500px;
+}
+
+.woocommerce-form .form-row {
+    margin-bottom: var(--space-4);
+}
+
+.woocommerce-form label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.woocommerce-form .required {
+    color: var(--color-danger); /* UPDATED: Semantic color */
+}
+
+.woocommerce-form .input-text {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--color-gray-300);
+    border-radius: var(--border-radius);
+    font-size: var(--text-base);
+    transition: var(--transition);
+}
+
+.woocommerce-form .input-text:focus {
+    outline: none;
+    border-color: var(--brand-color); /* UPDATED: Brand color */
+    box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1); /* UPDATED: Brand color shadow */
+}
+
+.woocommerce-form .select2-container {
+    width: 100% !important;
+}
+
+.woocommerce-form .select2-selection {
+    border: 2px solid var(--color-gray-300) !important;
+    border-radius: var(--border-radius) !important;
+    height: auto !important;
+    padding: var(--space-3) var(--space-4) !important;
+}
+
+.woocommerce-form .select2-selection:focus {
+    outline: none;
+    border-color: var(--brand-color) !important; /* UPDATED: Brand color */
+    box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1) !important; /* UPDATED: Brand color shadow */
+}
+
+/* Form Validation */
+.form-control:invalid {
+    border-color: var(--color-danger); /* UPDATED: Semantic color */
+}
+
+.form-control:valid {
+    border-color: var(--color-success); /* UPDATED: Semantic color */
+}
+
+.field-error {
+    display: none;
+    color: var(--color-danger);
+    font-size: var(--text-sm);
+    margin-top: var(--space-2);
+}
+
+.form-control.error + .field-error {
+    display: block;
+}
+
+/* Responsive Forms */
+@media (max-width: 768px) {
+    .form-group--horizontal {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-2);
+    }
+
+    .form-group--horizontal .form-label {
+        min-width: auto;
+        margin-bottom: var(--space-2);
+    }
+
+    .newsletter-form .form-group {
+        flex-direction: column;
+    }
+
+    .field-group {
+        flex-direction: column;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .form-control {
+        background: var(--color-gray-800);
+        border-color: var(--color-gray-600);
+        color: var(--color-text);
+    }
+
+    .form-control:focus {
+        background: var(--color-gray-900);
+        border-color: var(--brand-color); /* UPDATED: Brand color */
+    }
+
+    .form-control::placeholder {
+        color: var(--color-gray-500);
+    }
+
+    .quantity-enhanced {
+        border-color: var(--color-gray-600);
+    }
+
+    .quantity-enhanced .qty {
+        background: var(--color-gray-800);
+        color: var(--color-text);
+    }
+
+    .quantity-btn {
+        background: var(--color-gray-700);
+        color: var(--color-text);
+    }
+
+    .quantity-btn:hover {
+        background: var(--color-gray-600);
+    }
+}

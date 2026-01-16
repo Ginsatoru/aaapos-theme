@@ -1,0 +1,333 @@
+/**
+ * Single Product Page Layout Styles
+ * Handles container width, grid system, breadcrumb, and sale badge
+ * product-layout.css
+ * @package AAAPOS_Prime
+ * @version 1.0.5
+ * 
+ * Location: assets/css/components/product/product-layout.css
+ * 
+ * FIXED: Related products overflow issue resolved
+ */
+
+/* ============================================
+   SALE BADGE - STYLING FOR SINGLE PRODUCT PAGE
+   Shows "SALE" text with percentage off
+   ============================================ */
+
+.single-product div.product .onsale {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.single-product div.product .onsale .sale-text {
+  background: #fff;
+  color: var(--color-primary, #0ea5e9);
+  padding: 10px 18px;
+  font-size: 13px;
+  border-radius: 18px;
+  letter-spacing: 0.5px;
+}
+
+.single-product div.product .onsale .sale-percentage {
+  background: #fff;
+  color: var(--color-primary, #0ea5e9);
+  padding: 8px 18px;
+  font-size: 16px;
+  border-radius: 18px;
+}
+
+/* Keep visible on shop/archive pages with default styling */
+.woocommerce ul.products li.product .onsale {
+  display: block !important;
+}
+
+/* ============================================
+   PRODUCT LAYOUT
+   Container, Grid System, Breadcrumb
+   ============================================ */
+
+/* === CRITICAL: FORCE FULL-WIDTH MAIN CONTAINER === */
+.single-product #primary,
+.single-product .site-main,
+.single-product main {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* === PRODUCT PAGE WRAPPER === */
+.single-product .site-main,
+.single-product #main {
+  background: var(--color-white) !important;
+  padding: 1.5rem 0 8rem 0 !important; /* INCREASED: Much more space at bottom */
+  min-height: auto !important; /* CHANGED: Was 100vh - causing overflow */
+}
+
+/* === RESPONSIVE CONTAINER - WORKS ON ALL DESKTOP SIZES === */
+.single-product div.product {
+  max-width: 92% !important;
+  width: 100% !important;
+  margin: 0 auto 3rem auto !important; /* ADDED: Bottom margin for spacing */
+  padding: 0 2rem !important;
+}
+
+/* Large Desktop (1920px+) - Keep current 24" monitor size */
+@media (min-width: 1920px) {
+  .single-product div.product {
+    max-width: 72% !important;
+  }
+}
+
+/* Standard Desktop (1600px - 1919px) - Keep current size */
+@media (min-width: 1600px) and (max-width: 1919px) {
+  .single-product div.product {
+    max-width: 80% !important;
+  }
+}
+
+/* Medium Desktop (1200px - 1599px) - Laptops - BIGGER */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .single-product div.product {
+    max-width: 90% !important;
+  }
+}
+
+/* Small Laptop (1024px - 1199px) - BIGGER */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .single-product div.product {
+    max-width: 92% !important;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .single-product div.product {
+    max-width: 95% !important;
+    padding: 0 1.5rem !important;
+  }
+}
+
+/* Mobile (max 767px) */
+@media (max-width: 767px) {
+  .single-product div.product {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 1rem !important;
+    margin: 0 auto 2rem auto !important;
+  }
+  
+  .single-product div.product .onsale {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .single-product div.product .onsale .sale-text {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 10px;
+  }
+  
+  .single-product div.product .onsale .sale-percentage {
+    font-size: 14px;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+}
+
+/* === BREADCRUMB - ALIGNED WITH PRODUCT CONTAINER === */
+.single-product .woocommerce-breadcrumb {
+  max-width: 92% !important;
+  width: 100% !important;
+  margin: 0 auto 1rem auto !important;
+  padding: 0.625rem 2rem !important;
+  font-size: 0.8125rem !important;
+  color: var(--color-text-light, #6b7280);
+}
+
+.single-product .woocommerce-breadcrumb a {
+  color: var(--color-text-light, #6b7280);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.single-product .woocommerce-breadcrumb a:hover {
+  color: var(--color-primary, #0ea5e9);
+}
+
+/* Large Desktop (1920px+) - Keep current 24" monitor size */
+@media (min-width: 1920px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 72% !important;
+  }
+}
+
+/* Standard Desktop (1600px - 1919px) - Keep current size */
+@media (min-width: 1600px) and (max-width: 1919px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 80% !important;
+  }
+}
+
+/* Medium Desktop (1200px - 1599px) - Laptops - BIGGER */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 90% !important;
+  }
+}
+
+/* Small Laptop (1024px - 1199px) - BIGGER */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 92% !important;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 95% !important;
+    padding: 0.625rem 1.5rem !important;
+  }
+}
+
+/* Mobile (max 767px) */
+@media (max-width: 767px) {
+  .single-product .woocommerce-breadcrumb {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0.625rem 1rem !important;
+  }
+}
+
+/* ============================================
+   TWO COLUMN GRID LAYOUT
+   ============================================ */
+
+.single-product div.product {
+  display: grid !important;
+  grid-template-columns: 48% 48% !important;
+  gap: 4% !important;
+  align-items: start !important;
+  position: relative !important;
+}
+
+.single-product .woocommerce-product-gallery {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  order: 1 !important;
+  align-self: start !important;
+  position: relative !important;
+}
+
+.single-product .summary.entry-summary {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  order: 2 !important;
+  align-self: start !important;
+}
+
+.single-product .woocommerce-tabs {
+  grid-column: 1 / -1 !important;
+  order: 3 !important;
+  margin-top: 3rem !important; /* ADDED: Spacing before tabs */
+}
+
+.single-product .related.products,
+.single-product .upsells.products {
+  grid-column: 1 / -1 !important;
+  order: 4 !important;
+  margin-top: 4rem !important; /* INCREASED: More spacing before related products */
+  margin-bottom: 6rem !important; /* INCREASED: Much more spacing after related products */
+}
+
+/* ADDED: Ensure related products container is properly contained */
+.single-product .related.products ul.products,
+.single-product .upsells.products ul.products {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.5rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT
+   ============================================ */
+
+@media (max-width: 1199px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .single-product div.product {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  .single-product .woocommerce-product-gallery {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+  
+  .single-product .summary.entry-summary {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  .single-product .site-main,
+  .single-product #main {
+    padding: 1.25rem 0 6rem 0 !important; /* INCREASED: Much more space at bottom on mobile */
+  }
+  
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .single-product .woocommerce-tabs {
+    margin-top: 2rem !important;
+  }
+  
+  .single-product .related.products,
+  .single-product .upsells.products {
+    margin-top: 3rem !important;
+    margin-bottom: 5rem !important; /* INCREASED: Much more space on mobile */
+  }
+}
+
+/* === UTILITY CLASSES === */
+.single-product .screen-reader-text {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

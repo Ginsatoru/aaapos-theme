@@ -1,0 +1,337 @@
+/* ==========================================================================
+   CHECKOUT PROGRESS STEPS - Modern progress indicator
+   @package Macedon_Ranges
+   @since 1.0.0
+   ========================================================================== */
+
+.woocommerce-checkout-progress {
+    width: 100%;
+    margin: 0 auto 2rem auto;
+    padding: 2rem 0 0 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    grid-column: 1 / -1;
+}
+
+.checkout-steps {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   INDIVIDUAL STEP
+   ========================================================================== */
+
+.checkout-step {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+}
+
+/* Clickable (completed) steps */
+.checkout-step.clickable {
+    cursor: pointer;
+}
+
+.checkout-step.clickable:hover .step-number {
+    background: var(--brand-color, #0ea5e9);
+    color: white;
+    border-color: var(--brand-color, #0ea5e9);
+}
+
+.checkout-step.clickable:hover .step-label {
+    color: var(--brand-color, #0ea5e9);
+}
+
+/* ==========================================================================
+   STEP NUMBER (Circle)
+   ========================================================================== */
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #E5E7EB;
+    color: #9CA3AF;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+/* Completed step number */
+.checkout-step.completed .step-number {
+    background: #E5E7EB;
+    color: #6B7280;
+    border-color: transparent;
+}
+
+/* Active step number */
+.checkout-step.active .step-number {
+    background: var(--color-text-dark, #1F2937);
+    color: #FFFFFF;
+    border-color: var(--color-text-dark, #1F2937);
+}
+
+/* ==========================================================================
+   STEP LABEL (Text)
+   ========================================================================== */
+
+.step-label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #9CA3AF;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Completed step label */
+.checkout-step.completed .step-label {
+    color: #6B7280;
+}
+
+/* Active step label */
+.checkout-step.active .step-label {
+    color: var(--color-text-dark, #1F2937);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   ARROW SEPARATOR
+   ========================================================================== */
+
+.step-arrow {
+    width: 24px;
+    height: 24px;
+    color: #D1D5DB;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   CART PAGE SPECIFIC
+   ========================================================================== */
+
+body.woocommerce-cart .woocommerce-checkout-progress {
+    margin-top: 0;
+    margin-bottom: -1.90rem;
+    text-align: center;
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+body.woocommerce-cart .checkout-steps {
+    display: inline-flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+body.woocommerce-cart .entry-content,
+body.woocommerce-cart .woocommerce {
+    text-align: left;
+}
+
+/* ==========================================================================
+   CHECKOUT PAGE SPECIFIC
+   ========================================================================== */
+
+body.woocommerce-checkout .woocommerce-checkout-progress {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    width: 100%;
+}
+
+body.woocommerce-checkout .checkout-steps {
+    display: inline-flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+body.woocommerce-checkout .entry-content {
+    text-align: left;
+}
+
+/* ==========================================================================
+   ORDER RECEIVED PAGE SPECIFIC
+   ========================================================================== */
+
+body.woocommerce-order-received .woocommerce-checkout-progress {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+body.woocommerce-order-received .checkout-steps {
+    display: inline-flex;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Tablets and smaller */
+@media (max-width: 768px) {
+    .woocommerce-checkout-progress {
+        margin-bottom: 1.5rem;
+        padding-top: 1.5rem;
+        text-align: center;
+    }
+    
+    .checkout-steps {
+        gap: 1rem;
+        display: inline-flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+    
+    .checkout-step {
+        gap: 0.5rem;
+    }
+    
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9375rem;
+    }
+    
+    .step-label {
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
+    
+    .step-arrow {
+        width: 20px;
+        height: 20px;
+        margin: 0 0.25rem;
+    }
+}
+
+/* Mobile devices - Horizontal layout with proper spacing */
+@media (max-width: 640px) {
+    .woocommerce-checkout-progress {
+        margin-bottom: 1.25rem;
+        padding-top: 1rem;
+        text-align: center;
+        overflow-x: auto;
+        overflow-y: visible;
+    }
+    
+    .checkout-steps {
+        gap: 0.75rem;
+        justify-content: flex-start;
+        width: auto;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        padding: 0 1rem;
+        min-width: min-content;
+    }
+    
+    .checkout-step {
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+    
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 0.875rem;
+    }
+    
+    .step-label {
+        font-size: 0.8125rem;
+        white-space: nowrap;
+    }
+    
+    .step-arrow {
+        width: 16px;
+        height: 16px;
+        margin: 0 0.25rem;
+        flex-shrink: 0;
+    }
+}
+
+/* Very small mobile - Keep arrows visible */
+@media (max-width: 480px) {
+    .woocommerce-checkout-progress {
+        text-align: center;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+        overflow-y: visible;
+    }
+    
+    .checkout-steps {
+        gap: 0.5rem;
+        justify-content: flex-start;
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding: 0 0.5rem;
+        min-width: min-content;
+    }
+    
+    .checkout-step {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+        flex-shrink: 0;
+        min-width: 70px;
+    }
+    
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 0.875rem;
+    }
+    
+    /* Keep arrows visible on mobile */
+    .step-arrow {
+        display: block !important;
+        width: 16px;
+        height: 16px;
+        margin: 0 0.25rem;
+        flex-shrink: 0;
+        align-self: center;
+        transform: rotate(0deg);
+    }
+    
+    .step-label {
+        font-size: 0.7rem;
+        max-width: 70px;
+        line-height: 1.2;
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+.checkout-step .screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

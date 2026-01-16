@@ -1,0 +1,112 @@
+/* style.css */
+
+/*
+Theme Name: AAAPOS
+Theme URI: https://macedonrangesproduce.com
+Author: Your Name
+Author URI: https://yourwebsite.com
+Description: A modern, light-themed WooCommerce-ready theme for Macedon Ranges Produce Store. Features a clean white design, responsive navigation, customizable header, and full e-commerce integration.
+Version: 1.0.0
+License: GPL v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: macedon-ranges
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
+Tags: e-commerce, woocommerce, light-theme, custom-colors, custom-logo, custom-menu, featured-images, footer-widgets, full-width-template, sticky-post, threaded-comments, translation-ready, blog, grid-layout, wide-blocks, block-styles, block-patterns, accessibility-ready
+*/
+
+/*
+----------------------------------------------------------------------
+THEME INFORMATION
+----------------------------------------------------------------------
+Theme: Macedon Ranges Produce Store
+Version: 1.0.0
+Design: Modern Light Theme
+Framework: Custom CSS with WordPress & WooCommerce Integration
+
+----------------------------------------------------------------------
+TABLE OF CONTENTS
+----------------------------------------------------------------------
+1. CSS Variables (variables.css)
+2. Reset & Base Styles (base.css)
+3. Layout System (layout.css)
+4. Components:
+   - Header (header.css)
+   - Navigation (navigation.css)
+   - Hero Section (hero.css)
+   - Buttons (buttons.css)
+   - Cards (cards.css)
+   - Forms (form.css)
+   - Modals (modal.css)
+   - Footer (footer.css)
+   - Testimonials (testimonials.css)
+5. WooCommerce (woocommerce.css)
+6. Animations (animations.css)
+7. Responsive (responsive.css)
+
+----------------------------------------------------------------------
+MAIN STYLESHEET NOTES
+----------------------------------------------------------------------
+This file only contains theme metadata for WordPress recognition.
+All actual styles are organized in the assets/css/ directory for
+better maintainability and performance.
+
+The theme uses a light color scheme with:
+- Primary Color: #0ea5e9 (Sky Blue)
+- Background: #ffffff (White)
+- Text: #374151 (Gray)
+- Accent: #06b6d4 (Cyan)
+
+----------------------------------------------------------------------
+BROWSER SUPPORT
+----------------------------------------------------------------------
+- Chrome (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Edge (last 2 versions)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+----------------------------------------------------------------------
+CUSTOMIZATION
+----------------------------------------------------------------------
+All colors, spacing, and layout options can be customized through:
+1. WordPress Customizer (Appearance > Customize)
+2. CSS Variables in assets/css/variables.css
+3. Component-specific CSS files
+
+----------------------------------------------------------------------
+WOOCOMMERCE INTEGRATION
+----------------------------------------------------------------------
+This theme is fully WooCommerce compatible with:
+- Custom product layouts
+- Cart & checkout styling
+- Product categories
+- Quick view functionality
+- Responsive shopping experience
+
+----------------------------------------------------------------------
+*/
+
+/* 
+This file intentionally left minimal - styles are in assets/css/ 
+WordPress requires this file to recognize the theme.
+*/
+
+/* Critical base styles for theme recognition */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    color: #374151;
+}
+
+/* Ensure theme loads properly */
+.site {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-main {
+    flex: 1;
+}

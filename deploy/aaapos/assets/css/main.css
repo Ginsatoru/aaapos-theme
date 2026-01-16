@@ -1,0 +1,405 @@
+/**
+ * Main CSS Entry Point - PRODUCTION BUILD
+ * This file imports ALL component styles for the minified build
+ * 
+ * Build command: postcss assets/css/main.css -o assets/css/dist/main.min.css
+ * 
+ * @package AAAPOS
+ */
+
+/* ============================================
+   FOUNDATION - Variables & Base (LOAD FIRST)
+   ============================================ */
+@import 'variables.css';
+@import 'base.css';
+@import 'layout.css';
+@import 'animations.css';
+@import 'responsive.css';
+
+/* ============================================
+   GLOBAL COMPONENTS
+   ============================================ */
+@import 'components/buttons.css';
+@import 'components/cards.css';
+@import 'components/forms.css';
+@import 'components/modal.css';
+@import 'components/navigation.css';
+
+/* ============================================
+   HEADER COMPONENTS (ALL FILES)
+   ============================================ */
+@import 'components/header/header-main.css';
+@import 'components/header/_topbar.css';
+@import 'components/header/_logo.css';
+@import 'components/header/_navigation.css';
+@import 'components/header/_header-actions.css';
+@import 'components/header/_dropdowns.css';
+@import 'components/header/_mobile-menu.css';
+
+/* ============================================
+   HOMEPAGE SECTIONS
+   ============================================ */
+@import 'components/hero.css';
+@import 'components/categories.css';
+@import 'components/deals-offers.css';
+@import 'components/testimonials.css';
+
+/* ============================================
+   PAGE TEMPLATES
+   ============================================ */
+@import 'components/about.css';
+@import 'components/blog.css';
+@import 'components/contact.css';
+
+/* ============================================
+   WOOCOMMERCE - SHOP & ARCHIVE PAGES
+   ============================================ */
+@import 'components/categories-shop.css';
+@import 'components/category-filter.css';
+@import 'woocommerce/woocommerce.css';
+@import 'woocommerce/woocommerce-layout.css';
+@import 'woocommerce/woocommerce-components.css';
+@import 'woocommerce/woocommerce-notices.css';
+@import 'woocommerce/woocommerce-product-grid.css';
+
+/* ============================================
+   WOOCOMMERCE - PRODUCT PAGES ⭐ CRITICAL!
+   THIS WAS MISSING - Now includes ALL product styles
+   ============================================ */
+@import 'components/product/product-main.css';
+
+/* ============================================
+   WOOCOMMERCE - CART & CHECKOUT
+   ============================================ */
+@import 'components/cart/cart-main.css';
+@import 'components/cart/cart-table.css';
+@import 'components/cart/cart-sidebar.css';
+@import 'components/cart/cart-empty.css';
+@import 'components/cart/cart-responsive.css';
+
+/* Note: Checkout-specific styles are loaded separately via enqueue.php */
+
+/* ============================================
+   MY ACCOUNT PAGES
+   ============================================ */
+@import 'myaccount/myaccount-main.css';
+@import 'myaccount/myaccount-layout.css';
+@import 'myaccount/myaccount-sidebar.css';
+@import 'myaccount/myaccount-dashboard.css';
+@import 'myaccount/myaccount-orders.css';
+@import 'myaccount/myaccount-addresses.css';
+@import 'myaccount/myaccount-forms.css';
+@import 'myaccount/myaccount-responsive.css';
+
+/* ============================================
+   FOOTER
+   ============================================ */
+@import 'components/footer.css';
+
+/* ============================================
+   CUSTOM INLINE STYLES (Keep your existing code)
+   ============================================ */
+
+/* Section styles */
+.section {
+  padding: var(--space-12) 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: var(--text-4xl);
+  }
+}
+
+.section-description {
+  font-size: var(--text-lg);
+  color: var(--color-text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section-footer {
+  text-align: center;
+  margin-top: var(--space-8);
+}
+
+/* Button styles - SOLID COLORS ONLY */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Primary button - SOLID COLOR (No Gradient) */
+.btn--primary {
+  background: var(--brand-color);
+  color: var(--color-white);
+  box-shadow: var(--shadow);
+}
+
+.btn--primary:hover {
+  background: var(--brand-color-hover);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-white);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn--outline:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Added to cart message */
+.added-to-cart-message {
+  position: fixed;
+  top: 100px;
+  right: var(--space-4);
+  background: var(--color-white);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-tooltip);
+  transform: translateX(400px);
+  transition: var(--transition);
+}
+
+.added-to-cart-message.show {
+  transform: translateX(0);
+}
+
+.message-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Quick view modal */
+.quick-view-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.quick-view-content {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.quick-view-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: var(--color-white);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  z-index: 1;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.quick-view-close:hover {
+  background: var(--color-gray-100);
+  transform: scale(1.1);
+}
+
+.quick-view-product {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  padding: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .quick-view-product {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.quick-view-product .product-images img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.quick-view-product .product-summary h2 {
+  margin-bottom: var(--space-4);
+}
+
+.quick-view-product .price {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-4);
+}
+
+.quick-view-product .description {
+  margin-bottom: var(--space-6);
+  line-height: 1.6;
+}
+
+.quick-view-product .add-to-cart {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.quick-view-product .quantity {
+  margin-bottom: 0;
+}
+
+.quick-view-product .single_add_to_cart_button {
+  padding: var(--space-3) var(--space-6);
+}
+
+/* ===================================================================
+   FORCE LIGHT MODE - OVERRIDE ANY DARK BACKGROUNDS
+   =================================================================== */
+
+/* Ensure all sections have light backgrounds by default */
+section,
+.section,
+.featured-products,
+.featured-products-section,
+.product-categories,
+.product-categories-section,
+.shop-by-category,
+.deals-offers,
+.deals-section,
+.blog-preview,
+.blog-preview-section,
+.testimonials-section,
+.newsletter-section,
+.hero-section,
+.content-area,
+main,
+.site-main {
+  background-color: var(--color-white) !important;
+  background: var(--color-white) !important;
+}
+
+/* Allow specific light gray backgrounds for alternating sections */
+section.bg-light,
+.section.bg-light {
+  background-color: var(--color-gray-50) !important;
+  background: var(--color-gray-50) !important;
+}
+
+section.bg-gray,
+.section.bg-gray {
+  background-color: var(--color-gray-100) !important;
+  background: var(--color-gray-100) !important;
+}
+
+/* Ensure all text remains readable on light backgrounds */
+.section-title,
+.section-header h1,
+.section-header h2,
+.section-header h3,
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-dark) !important;
+}
+
+.section-description,
+.section-subtitle,
+.section-header p,
+p {
+  color: var(--color-text) !important;
+}
+
+/* Category card text should remain white on overlay */
+.category-card__overlay .category-card__name,
+.category-card__overlay .category-card__count {
+  color: var(--color-white) !important;
+}
+
+/* Ensure cards stay white */
+.product-card,
+.category-card,
+.blog-card,
+.testimonial-card,
+.card {
+  background: var(--color-white) !important;
+}
+
+/* Override any dark theme classes that might exist */
+.dark,
+.dark-mode,
+.theme-dark,
+.bg-dark,
+.bg-black {
+  background-color: var(--color-white) !important;
+  background: var(--color-white) !important;
+  color: var(--color-text) !important;
+}
+
+/* ============================================
+   UTILITY PAGES
+   Note: 404.css, quick-view.css, auth-modal.css,
+   cart-notifications.css, etc. are loaded separately 
+   via enqueue.php for performance optimization
+   ============================================ */
+
+   /* EMERGENCY FIX - Product Title Visibility */
+.single-product .product_title,
+.single-product h1.product_title,
+h1.product_title {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+}

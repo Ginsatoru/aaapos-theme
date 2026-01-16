@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Logo / Site Branding
+   ==========================================================================
+   
+   ⚠️ LOGO SIZE FIX: Forces consistent sizing across all pages
+   
+   @package aaapos-prime
+   @since 1.0.0
+   ========================================================================== */
+
+.site-branding {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.site-logo,
+.custom-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: var(--font-extrabold);
+  font-size: var(--text-xl);
+  color: var(--color-text-dark);
+  height: 100%;
+}
+
+/* ==========================================================================
+   LOGO SIZE FIX - Applied to ALL pages
+   ========================================================================== */
+
+.site-logo img,
+.custom-logo,
+.custom-logo-link img {
+  height: 50px !important;
+  width: auto !important;
+  max-width: 200px !important;
+  object-fit: contain !important;
+  border-radius: 0;
+}
+
+@media (min-width: 768px) {
+  .site-logo img,
+  .custom-logo,
+  .custom-logo-link img {
+    height: 50px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-logo img,
+  .custom-logo,
+  .custom-logo-link img {
+    height: 40px !important;
+  }
+}
+
+/* ==========================================================================
+   WOOCOMMERCE PAGE SPECIFIC FIX
+   Target shop pages, product archives, single products
+   ========================================================================== */
+
+.woocommerce .site-logo img,
+.woocommerce .custom-logo,
+.woocommerce .custom-logo-link img,
+.woocommerce-page .site-logo img,
+.woocommerce-page .custom-logo,
+.woocommerce-page .custom-logo-link img,
+.post-type-archive-product .site-logo img,
+.post-type-archive-product .custom-logo,
+.post-type-archive-product .custom-logo-link img,
+.tax-product_cat .site-logo img,
+.tax-product_cat .custom-logo,
+.tax-product_cat .custom-logo-link img,
+.single-product .site-logo img,
+.single-product .custom-logo,
+.single-product .custom-logo-link img {
+  height: 50px !important;
+  width: auto !important;
+  max-width: 200px !important;
+  object-fit: contain !important;
+}
+
+/* ==========================================================================
+   INNER PAGES (Non-Homepage) GENERAL FIX
+   ========================================================================== */
+
+body:not(.home) .site-logo img,
+body:not(.home) .custom-logo,
+body:not(.home) .custom-logo-link img {
+  height: 50px !important;
+  width: auto !important;
+  max-width: 200px !important;
+  object-fit: contain !important;
+}
+
+/* Text-based logo fallback */
+.site-logo h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: var(--font-extrabold);
+}

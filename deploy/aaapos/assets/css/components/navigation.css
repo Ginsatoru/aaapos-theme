@@ -1,0 +1,70 @@
+/**
+ * Navigation Base Styles
+ * PRODUCTION READY - Minimal base styles only
+ * All detailed styles are in header/_navigation.css
+ */
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+    position: relative;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-text);
+    transition: all 0.3s ease;
+    border-radius: 2px;
+    transform-origin: center;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+@media (max-width: 1023px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+}
+
+/* Accessibility */
+.mobile-menu-toggle:focus {
+    outline: 2px solid var(--brand-color);
+    outline-offset: 4px;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 999999;
+    padding: 1rem;
+    background: var(--brand-color);
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 0;
+}

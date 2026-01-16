@@ -1,34 +1,35 @@
 /* ============================================
-   PRODUCT SOCIAL SHARE BUTTONS
-   Displays share buttons below secure payments
+   PRODUCT SOCIAL SHARE BUTTONS - CLEAN VERSION
+   No background, no border on container
    ============================================ */
 
 .single-product .product-share-section {
   display: flex !important;
-  flex-direction: row !important;
+  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 1rem !important;
-  margin: 1rem 0 0 0 !important;
-  padding: 0.875rem 1rem !important;
-  background: #f3f4f6 !important;
-  border-radius: 8px !important;
+  gap: 0.75rem !important;
+  margin: 1.5rem 0 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
   width: 100% !important;
 }
 
 .single-product .product-share-title {
   font-size: 0.875rem !important;
-  color: #374151 !important;
-  font-weight: 500 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+  font-weight: 600 !important;
   flex-shrink: 0 !important;
   text-align: center !important;
+  margin: 0 !important;
 }
 
 .single-product .product-share-buttons {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.5rem !important;
+  gap: 0.75rem !important;
   flex-wrap: wrap !important;
 }
 
@@ -36,12 +37,12 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 44px !important;
+  height: 44px !important;
   border-radius: 50% !important;
-  background: transparent !important;
-  border: none !important;
-  color: #6b7280 !important;
+  background: var(--color-white, #ffffff) !important;
+  border: 2px solid var(--color-border, #e5e7eb) !important;
+  color: var(--color-text, #6b7280) !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   padding: 0 !important;
@@ -54,8 +55,8 @@
 .single-product .share-button svg,
 body.single-product .share-button svg,
 .woocommerce .single-product .share-button svg {
-  width: 22px !important;
-  height: 22px !important;
+  width: 20px !important;
+  height: 20px !important;
   fill: currentColor !important;
   display: block !important;
   flex-shrink: 0 !important;
@@ -71,10 +72,10 @@ body.single-product .share-button svg,
   bottom: calc(100% + 8px) !important;
   left: 50% !important;
   transform: translateX(-50%) translateY(-4px) !important;
-  background: var(--color-primary) !important;
+  background: var(--color-text-dark, #1f2937) !important;
   color: #ffffff !important;
   padding: 6px 12px !important;
-  border-radius: 16px !important;
+  border-radius: 6px !important;
   font-size: 0.75rem !important;
   font-weight: 500 !important;
   white-space: nowrap !important;
@@ -92,11 +93,10 @@ body.single-product .share-button svg,
   transform: translateX(-50%) translateY(0) !important;
 }
 
-/* Hover States */
+/* Hover States - Brand Colors */
 .single-product .share-button:hover {
   transform: translateY(-2px) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 50% !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 .single-product .share-button--facebook:hover {
@@ -136,8 +136,8 @@ body.single-product .share-button svg,
 }
 
 .single-product .share-button--copy:hover {
-  background: #0ea5e9 !important;
-  border-color: #0ea5e9 !important;
+  background: var(--color-primary, #0ea5e9) !important;
+  border-color: var(--color-primary, #0ea5e9) !important;
   color: #ffffff !important;
 }
 
@@ -152,35 +152,4 @@ body.single-product .share-button svg,
 .single-product .share-button--copy.copied::after {
   content: 'Copied!' !important;
   background: #10b981 !important;
-}
-
-/* Responsive */
-@media (max-width: 767px) {
-  .single-product .product-share-section {
-    gap: 0.75rem !important;
-    padding: 0.75rem 0.875rem !important;
-  }
-  
-  .single-product .product-share-title {
-    font-size: 0.8125rem !important;
-  }
-  
-  .single-product .share-button {
-    width: 44px !important;
-    height: 44px !important;
-  }
-  
-  /* Mobile SVG sizes with extra specificity */
-  .single-product .product-share-buttons .share-button svg,
-  .single-product .share-button svg,
-  body.single-product .share-button svg {
-    width: 24px !important;
-    height: 24px !important;
-  }
-  
-  /* Adjust tooltip position on mobile */
-  .single-product .share-button::after {
-    font-size: 0.6875rem !important;
-    padding: 5px 10px !important;
-  }
 }

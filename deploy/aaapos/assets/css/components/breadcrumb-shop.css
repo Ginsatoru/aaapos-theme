@@ -1,0 +1,589 @@
+/* ===================================
+   WOOCOMMERCE BREADCRUMB - ARROW STYLE DESIGN (FULLY RESPONSIVE)
+   Modern arrow-style breadcrumbs with home icon
+   Works on ALL WooCommerce pages
+   UPDATED: Cart page breadcrumb moved UP closer to header
+   =================================== */
+
+/* Main breadcrumb container */
+.woocommerce-breadcrumb {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text, #8093A7);
+    margin-bottom: var(--space-8, 2rem);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+/* ===================================
+   CART PAGE BREADCRUMB - MOVE UP ONLY (NOT RIGHT)
+   This ensures breadcrumb moves UP but stays LEFT aligned
+   =================================== */
+
+/* Cart page breadcrumb wrapper - MOVED UP, LOCKED LEFT */
+.cart-breadcrumb-wrapper {
+    margin-top: -125px !important; /* Move up */
+    margin-left: 0 !important; /* Force left alignment */
+    margin-right: auto !important; /* Push to left */
+    margin-bottom: var(--space-6, 1.5rem) !important;
+    width: 100%;
+    display: block;
+    position: relative; /* Ensure positioning context */
+    left: 0 !important; /* Lock to left */
+}
+
+.cart-breadcrumb-wrapper .woocommerce-breadcrumb {
+    justify-content: flex-start !important; /* Align items to left */
+    margin-bottom: 0;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+/* Cart page specific - FORCE left alignment */
+.woocommerce-cart .cart-breadcrumb-wrapper {
+    text-align: left !important;
+}
+
+/* Alternative selectors - MOVE UP, STAY LEFT */
+body.woocommerce-cart .woocommerce-breadcrumb {
+    margin-top: -125px !important; /* Move up */
+    margin-left: 0 !important; /* Lock left */
+    margin-right: auto !important; /* Force left */
+    margin-bottom: 2rem !important;
+    justify-content: flex-start !important; /* Content left aligned */
+}
+
+/* Ensure container doesn't shift */
+body.woocommerce-cart .content-area,
+body.woocommerce-cart article,
+body.woocommerce-cart .site-main {
+    text-align: left !important;
+    margin-left: 0 !important;
+}
+
+/* Force breadcrumb to start from left edge of container */
+body.woocommerce-cart nav.woocommerce-breadcrumb {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+/* ===================================
+   RESPONSIVE - MOVE UP ONLY
+   =================================== */
+
+/* Large tablets and small desktops (1024px and below) */
+@media (max-width: 1024px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -120px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -120px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+}
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -80px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: var(--space-4, 1rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -80px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+/* Mobile devices (640px and below) */
+@media (max-width: 640px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -50px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: var(--space-3, 0.75rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -50px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -30px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -30px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+}
+
+/* Extra small mobile devices (360px and below) */
+@media (max-width: 360px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -20px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -20px !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+}
+
+/* ===================================
+   FINAL SAFETY - PREVENT ANY RIGHT SHIFT
+   =================================== */
+
+/* Override any container centering on cart page */
+body.woocommerce-cart .woocommerce {
+    text-align: left !important;
+}
+
+body.woocommerce-cart .woocommerce > * {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+/* Ensure breadcrumb items start from left */
+.woocommerce-breadcrumb a:first-child,
+body.woocommerce-cart .woocommerce-breadcrumb a:first-child {
+    margin-left: 0 !important;
+}
+
+/* Hide default separators completely */
+.woocommerce-breadcrumb .breadcrumb-separator {
+    display: none !important;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Breadcrumb items (links and text) - Arrow Style - APPLIES TO ALL ITEMS */
+.woocommerce-breadcrumb a,
+.woocommerce-breadcrumb .breadcrumb-current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 0.5rem);
+    height: 36px; /* Smaller size */
+    background: #F3F5FA;
+    text-align: center;
+    padding: 0 28px 0 40px; /* Reduced padding */
+    position: relative;
+    margin: 0 8px 0 0; /* Spacing between items */
+    font-size: 13px; /* Smaller font */
+    text-decoration: none;
+    color: var(--color-text, #8093A7);
+    transition: background-color 0s, color 0s; /* Instant change - synchronized with arrow */
+    white-space: nowrap;
+}
+
+/* Arrow cutout on left (before each item) - APPLIES TO ALL */
+.woocommerce-breadcrumb a:before,
+.woocommerce-breadcrumb .breadcrumb-current:before {
+    content: "";
+    border-top: 18px solid transparent; /* Adjusted for smaller height */
+    border-bottom: 18px solid transparent;
+    border-left: 18px solid #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    transition: none;
+}
+
+/* Arrow pointing right (after each item) - APPLIES TO ALL */
+.woocommerce-breadcrumb a:after,
+.woocommerce-breadcrumb .breadcrumb-current:after {
+    content: "";
+    border-top: 18px solid transparent; /* Adjusted for smaller height */
+    border-bottom: 18px solid transparent;
+    border-left: 18px solid #F3F5FA;
+    position: absolute;
+    right: -17px; /* Overlap by 1px to eliminate gap */
+    top: 0;
+    z-index: 11; /* Higher than hover z-index to stay visible */
+    transition: border-left-color 0s; /* Instant change - no delay */
+}
+
+/* First item (Home icon) - Rounded left edge, no left arrow */
+.woocommerce-breadcrumb a:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    padding-left: 28px;
+}
+
+.woocommerce-breadcrumb a:first-child:before {
+    display: none;
+}
+
+/* Last item (current page) - Rounded right edge, no right arrow, darker text */
+.woocommerce-breadcrumb .breadcrumb-current {
+    padding-right: 28px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: #374151;
+    font-weight: 600;
+    margin-right: 0; /* Remove right margin on last item */
+}
+
+.woocommerce-breadcrumb .breadcrumb-current:after {
+    display: none;
+}
+
+/* Home Icon Styling */
+.woocommerce-breadcrumb .breadcrumb-home-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    min-height: 15px;
+    color: var(--color-text, #8093A7);
+    transition: color 0s, stroke 0s; /* Instant change */
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+/* Hover effects - Beautiful blue (only for links, not last item) */
+.woocommerce-breadcrumb a:hover {
+    background-color: var(--brand-color, #357DFD);
+    color: var(--color-white, #ffffff) !important; /* Force white text on hover */
+    z-index: 9; /* Lower than arrows to prevent covering them */
+}
+
+.woocommerce-breadcrumb a:hover:after {
+    border-left-color: var(--brand-color, #357DFD); /* Arrow matches background */
+    z-index: 11; /* Keep arrow visible above everything */
+}
+
+.woocommerce-breadcrumb a:hover .breadcrumb-home-icon {
+    color: var(--color-white, #ffffff);
+    stroke: var(--color-white, #ffffff);
+}
+
+/* ===================================
+   RESPONSIVE BREAKPOINTS
+   =================================== */
+
+/* Large tablets and small desktops (1024px and below) */
+@media (max-width: 1024px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -80px !important; /* Less negative on tablets */
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -80px !important;
+    }
+    
+    .woocommerce-breadcrumb a,
+    .woocommerce-breadcrumb .breadcrumb-current {
+        height: 34px;
+        padding: 0 24px 0 36px;
+        font-size: 12px;
+        margin: 0 7px 0 0;
+    }
+
+    .woocommerce-breadcrumb a:before,
+    .woocommerce-breadcrumb .breadcrumb-current:before {
+        border-top: 17px solid transparent;
+        border-bottom: 17px solid transparent;
+        border-left: 17px solid #fff;
+    }
+
+    .woocommerce-breadcrumb a:after,
+    .woocommerce-breadcrumb .breadcrumb-current:after {
+        border-top: 17px solid transparent;
+        border-bottom: 17px solid transparent;
+        border-left: 17px solid #F3F5FA;
+        right: -16px;
+    }
+
+    .woocommerce-breadcrumb a:first-child {
+        padding-left: 24px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-current {
+        padding-right: 24px;
+        margin-right: 0;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-home-icon {
+        width: 14px;
+        height: 14px;
+        min-width: 14px;
+        min-height: 14px;
+    }
+}
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -50px !important; /* Even less on mobile */
+        margin-bottom: var(--space-4, 1rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -50px !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .woocommerce-breadcrumb {
+        margin-bottom: var(--space-6, 1.5rem);
+    }
+
+    .woocommerce-breadcrumb a,
+    .woocommerce-breadcrumb .breadcrumb-current {
+        height: 32px;
+        padding: 0 22px 0 34px;
+        font-size: 12px;
+        margin: 0 6px 0 0;
+    }
+
+    .woocommerce-breadcrumb a:before,
+    .woocommerce-breadcrumb .breadcrumb-current:before {
+        border-top: 16px solid transparent;
+        border-bottom: 16px solid transparent;
+        border-left: 16px solid #fff;
+    }
+
+    .woocommerce-breadcrumb a:after,
+    .woocommerce-breadcrumb .breadcrumb-current:after {
+        border-top: 16px solid transparent;
+        border-bottom: 16px solid transparent;
+        border-left: 16px solid #F3F5FA;
+        right: -15px;
+    }
+
+    .woocommerce-breadcrumb a:first-child {
+        padding-left: 22px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-current {
+        padding-right: 22px;
+        margin-right: 0;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-home-icon {
+        width: 13px;
+        height: 13px;
+        min-width: 13px;
+        min-height: 13px;
+    }
+}
+
+/* Mobile devices (640px and below) */
+@media (max-width: 640px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -30px !important;
+        margin-bottom: var(--space-3, 0.75rem) !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -30px !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .woocommerce-breadcrumb {
+        font-size: 11px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: var(--space-4, 1rem);
+    }
+
+    .woocommerce-breadcrumb a,
+    .woocommerce-breadcrumb .breadcrumb-current {
+        height: 30px;
+        padding: 0 20px 0 32px;
+        font-size: 11px;
+        margin: 0 5px 0 0;
+    }
+
+    .woocommerce-breadcrumb a:before,
+    .woocommerce-breadcrumb .breadcrumb-current:before {
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-left: 15px solid #fff;
+    }
+
+    .woocommerce-breadcrumb a:after,
+    .woocommerce-breadcrumb .breadcrumb-current:after {
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-left: 15px solid #F3F5FA;
+        right: -14px;
+    }
+
+    .woocommerce-breadcrumb a:first-child {
+        padding-left: 20px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-current {
+        padding-right: 20px;
+        margin-right: 0;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-home-icon {
+        width: 12px;
+        height: 12px;
+        min-width: 12px;
+        min-height: 12px;
+    }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -20px !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -20px !important;
+    }
+    
+    .woocommerce-breadcrumb a,
+    .woocommerce-breadcrumb .breadcrumb-current {
+        height: 28px;
+        padding: 0 18px 0 30px;
+        font-size: 11px;
+        margin: 0 4px 0 0;
+    }
+
+    .woocommerce-breadcrumb a:before,
+    .woocommerce-breadcrumb .breadcrumb-current:before {
+        border-top: 14px solid transparent;
+        border-bottom: 14px solid transparent;
+        border-left: 14px solid #fff;
+    }
+
+    .woocommerce-breadcrumb a:after,
+    .woocommerce-breadcrumb .breadcrumb-current:after {
+        border-top: 14px solid transparent;
+        border-bottom: 14px solid transparent;
+        border-left: 14px solid #F3F5FA;
+        right: -13px;
+    }
+
+    .woocommerce-breadcrumb a:first-child {
+        padding-left: 18px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-current {
+        padding-right: 18px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-home-icon {
+        width: 11px;
+        height: 11px;
+        min-width: 11px;
+        min-height: 11px;
+    }
+}
+
+/* Extra small mobile devices (360px and below) */
+@media (max-width: 360px) {
+    .cart-breadcrumb-wrapper {
+        margin-top: -15px !important;
+    }
+    
+    body.woocommerce-cart .woocommerce-breadcrumb {
+        margin-top: -15px !important;
+    }
+    
+    .woocommerce-breadcrumb a,
+    .woocommerce-breadcrumb .breadcrumb-current {
+        height: 26px;
+        padding: 0 16px 0 28px;
+        font-size: 10px;
+        margin: 0 3px 0 0;
+    }
+
+    .woocommerce-breadcrumb a:before,
+    .woocommerce-breadcrumb .breadcrumb-current:before {
+        border-top: 13px solid transparent;
+        border-bottom: 13px solid transparent;
+        border-left: 13px solid #fff;
+    }
+
+    .woocommerce-breadcrumb a:after,
+    .woocommerce-breadcrumb .breadcrumb-current:after {
+        border-top: 13px solid transparent;
+        border-bottom: 13px solid transparent;
+        border-left: 13px solid #F3F5FA;
+        right: -12px;
+    }
+
+    .woocommerce-breadcrumb a:first-child {
+        padding-left: 16px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-current {
+        padding-right: 16px;
+    }
+
+    .woocommerce-breadcrumb .breadcrumb-home-icon {
+        width: 10px;
+        height: 10px;
+        min-width: 10px;
+        min-height: 10px;
+    }
+}
+
+/* Ensure breadcrumb is visible */
+nav.woocommerce-breadcrumb {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* CART PAGE BREADCRUMB - LEFT ALIGNED WITHIN CONTAINER */
+body.woocommerce-cart .cart-breadcrumb-wrapper {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    padding: 0 !important;
+}
+
+body.woocommerce-cart .cart-breadcrumb-wrapper .woocommerce-breadcrumb {
+    justify-content: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    padding: 0 !important;
+}
+
+/* Remove any text-align center from parent containers on cart page */
+body.woocommerce-cart .content-area {
+    text-align: left !important;
+}
+
+body.woocommerce-cart article {
+    text-align: left !important;
+}

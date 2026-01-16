@@ -1,0 +1,489 @@
+/* ============================================
+   CATEGORY FILTER - MODERN MINIMALIST DESIGN
+   File: category-filter.css
+   Location: assets/css/components/
+   Version: 5.0.0
+   
+   Design: Horizontal rectangular cards with white icon boxes,
+   vibrant blue active state, light grey inactive state
+   NEW: Dynamic gradient overlays for scroll indicators
+   ============================================ */
+
+/* ==========================================================================
+   CATEGORY FILTER WRAPPER
+   ========================================================================== */
+
+.shop-category-filter {
+  width: 100%;
+  margin-bottom: 2.5rem;
+  padding: 0;
+  position: relative;
+}
+
+/* ==========================================================================
+   CATEGORY FILTER BUTTONS CONTAINER - DRAG SCROLLABLE
+   ========================================================================== */
+
+.category-filter-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0;
+  cursor: grab;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar */
+.category-filter-buttons::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
+/* Active dragging state */
+.category-filter-buttons.is-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+.category-filter-buttons.is-dragging * {
+  cursor: grabbing !important;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Disable hover effects during drag */
+.category-filter-buttons.is-dragging .category-filter-btn:hover {
+  background: var(--color-bg-secondary, #f5f5f5);
+  border-color: transparent;
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-icon-box {
+  background: var(--color-white, #ffffff);
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-icon {
+  stroke: var(--color-text-light, #6b7280);
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-label {
+  color: var(--color-text-dark, #1f2937);
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-count {
+  color: var(--color-text-light, #6b7280);
+}
+
+/* Keep active state during drag */
+.category-filter-buttons.is-dragging .category-filter-btn.active {
+  background: var(--brand-color, #0ea5e9);
+  border-color: transparent;
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn.active .filter-icon-box {
+  background: var(--color-white, #ffffff);
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn.active .filter-icon {
+  stroke: var(--brand-color, #0ea5e9);
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn.active .filter-label {
+  color: var(--color-white, #ffffff);
+}
+
+.category-filter-buttons.is-dragging .category-filter-btn.active .filter-count {
+  color: var(--color-white, #ffffff);
+}
+
+/* ==========================================================================
+   GRADIENT OVERLAYS - LEFT & RIGHT SCROLL INDICATORS
+   ========================================================================== */
+
+.category-filter-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+/* Left Overlay - White to Transparent */
+.category-filter-overlay--left {
+  left: 0;
+  background: linear-gradient(to right, white 0%, transparent 100%);
+  opacity: 0;
+}
+
+/* Right Overlay - Transparent to White */
+.category-filter-overlay--right {
+  right: 0;
+  background: linear-gradient(to left, white 0%, transparent 100%);
+  opacity: 1;
+}
+
+/* Show/Hide States */
+.category-filter-overlay.visible {
+  opacity: 1;
+}
+
+.category-filter-overlay.hidden {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   FILTER BUTTON - HORIZONTAL RECTANGULAR CARD
+   ========================================================================== */
+
+.category-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: var(--color-bg-secondary, #f5f5f5);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  box-shadow: none;
+  min-width: 140px;
+}
+
+/* ==========================================================================
+   ICON BOX (Left Side) - WHITE SQUARE WITH FOLDER ICON
+   ========================================================================== */
+
+.category-filter-btn .filter-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--color-white, #ffffff);
+  border: none;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.category-filter-btn .filter-icon {
+  width: 22px;
+  height: 22px;
+  stroke: var(--color-text-light, #6b7280);
+  stroke-width: 2;
+  fill: none;
+  transition: all 0.25s ease;
+}
+
+/* ==========================================================================
+   TEXT CONTENT (Right Side) - BOLD TITLE + ITEM COUNT
+   ========================================================================== */
+
+.category-filter-btn .filter-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1;
+}
+
+.category-filter-btn .filter-label {
+  font-size: 15px;
+  font-weight: var(--font-bold, 700);
+  color: var(--color-text-dark, #1f2937);
+  transition: all 0.25s ease;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.category-filter-btn .filter-count {
+  font-size: 13px;
+  font-weight: var(--font-normal, 400);
+  color: var(--color-text-light, #6b7280);
+  transition: all 0.25s ease;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   HOVER STATE - SUBTLE HIGHLIGHT
+   ========================================================================== */
+
+.category-filter-btn:hover {
+  background: var(--color-bg-tertiary, #e5e7eb);
+  border-color: transparent;
+  transform: translateY(-1px);
+}
+
+.category-filter-btn:hover .filter-icon {
+  stroke: var(--color-text-dark, #374151);
+}
+
+.category-filter-btn:hover .filter-label {
+  color: var(--color-text-darker, #111827);
+}
+
+/* ==========================================================================
+   ACTIVE STATE - VIBRANT BRIGHT BLUE WITH WHITE TEXT
+   ========================================================================== */
+
+.category-filter-btn.active {
+  background: var(--brand-color, #0ea5e9);
+  border-color: transparent;
+  transform: translateY(0);
+}
+
+.category-filter-btn.active .filter-icon-box {
+  background: var(--color-white, #ffffff);
+}
+
+.category-filter-btn.active .filter-icon {
+  stroke: var(--brand-color, #0ea5e9);
+  stroke-width: 2.5;
+}
+
+.category-filter-btn.active .filter-label {
+  color: var(--color-white, #ffffff);
+  font-weight: var(--font-bold, 700);
+}
+
+.category-filter-btn.active .filter-count {
+  color: var(--color-white, #ffffff);
+  opacity: 0.95;
+}
+
+.category-filter-btn.active:hover .filter-icon {
+  stroke: var(--brand-color-hover, #0284c7);
+}
+
+/* ==========================================================================
+   FOCUS STATE (Accessibility)
+   ========================================================================== */
+
+.category-filter-btn:focus {
+  outline: 2px solid var(--brand-color, #0ea5e9);
+  outline-offset: 3px;
+}
+
+.category-filter-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE - TABLET (768px - 1023px)
+   ========================================================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .category-filter-buttons {
+    gap: 14px;
+  }
+  
+  .category-filter-btn {
+    padding: 12px 18px;
+    min-width: 130px;
+    border-radius: 10px;
+  }
+  
+  .category-filter-btn .filter-icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+  }
+  
+  .category-filter-btn .filter-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .category-filter-btn .filter-label {
+    font-size: 14px;
+  }
+  
+  .category-filter-btn .filter-count {
+    font-size: 12px;
+  }
+  
+  .category-filter-overlay {
+    width: 50px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE - MOBILE (max-width: 767px)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .shop-category-filter {
+    margin-bottom: 1.25rem;
+  }
+  
+  .category-filter-buttons {
+    gap: 10px;
+  }
+  
+  .category-filter-btn {
+    padding: 9px 14px;
+    gap: 10px;
+    min-width: 105px;
+    border-radius: 8px;
+  }
+  
+  .category-filter-btn .filter-icon-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+  }
+  
+  .category-filter-btn .filter-icon {
+    width: 17px;
+    height: 17px;
+    stroke-width: 2;
+  }
+  
+  .category-filter-btn .filter-label {
+    font-size: 13px;
+  }
+  
+  .category-filter-btn .filter-count {
+    font-size: 11px;
+  }
+  
+  .category-filter-overlay {
+    width: 35px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE - SMALL MOBILE (max-width: 480px)
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .shop-category-filter {
+    margin-bottom: 1rem;
+  }
+  
+  .category-filter-buttons {
+    gap: 8px;
+  }
+  
+  .category-filter-btn {
+    padding: 8px 12px;
+    gap: 8px;
+    min-width: 95px;
+    border-radius: 7px;
+  }
+  
+  .category-filter-btn .filter-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+  }
+  
+  .category-filter-btn .filter-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+  }
+  
+  .category-filter-btn .filter-label {
+    font-size: 12px;
+  }
+  
+  .category-filter-btn .filter-count {
+    font-size: 10px;
+  }
+  
+  .category-filter-overlay {
+    width: 30px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE - EXTRA SMALL MOBILE (max-width: 360px)
+   ========================================================================== */
+
+@media (max-width: 360px) {
+  .shop-category-filter {
+    margin-bottom: 0.875rem;
+  }
+  
+  .category-filter-buttons {
+    gap: 7px;
+  }
+  
+  .category-filter-btn {
+    padding: 7px 10px;
+    gap: 7px;
+    min-width: 85px;
+    border-radius: 6px;
+  }
+  
+  .category-filter-btn .filter-icon-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+  }
+  
+  .category-filter-btn .filter-icon {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2;
+  }
+  
+  .category-filter-btn .filter-label {
+    font-size: 11px;
+    font-weight: 600;
+  }
+  
+  .category-filter-btn .filter-count {
+    font-size: 9px;
+  }
+  
+  .category-filter-overlay {
+    width: 25px;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY - REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .category-filter-btn,
+  .category-filter-btn .filter-icon-box,
+  .category-filter-btn .filter-icon,
+  .category-filter-btn .filter-label,
+  .category-filter-btn .filter-count,
+  .category-filter-overlay {
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  .category-filter-buttons {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+  .shop-category-filter {
+    display: none !important;
+  }
+}

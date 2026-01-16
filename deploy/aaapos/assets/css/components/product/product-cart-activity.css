@@ -1,0 +1,117 @@
+/**
+ * Product Cart Activity Component Styles
+ * Shows how many people have added the product to cart
+ * Works on both single product pages and quick view modal
+ * 
+ * Location: assets/css/components/product/product-cart-activity.css
+ * @package AAAPOS_Prime
+ * @version 1.0.1
+ */
+
+/* ============================================
+   SINGLE PRODUCT PAGE STYLING
+   ============================================ */
+
+.single-product .product-cart-activity {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.625rem !important;
+    padding: 0.875rem 1rem !important;
+    margin: 1rem 0 0 0 !important;
+    background: #f3f4f6 !important;
+    border-radius: 8px !important;
+    font-size: 0.875rem !important;
+    color: #6b7280 !important;
+    width: 100% !important;
+}
+
+.single-product .product-cart-activity__icon {
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0 !important;
+    color: #6b7280 !important;
+}
+
+.single-product .product-cart-activity__text {
+    font-weight: 400 !important;
+    color: #6b7280 !important;
+}
+
+.single-product .product-cart-activity__count {
+    font-weight: 600 !important;
+    color: #374151 !important;
+}
+
+@media (max-width: 767px) {
+    .single-product .product-cart-activity {
+        font-size: 0.8125rem !important;
+        padding: 0.75rem 0.875rem !important;
+    }
+    .single-product .product-cart-activity__icon {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
+
+/* ============================================
+   QUICK VIEW MODAL STYLING
+   ============================================ */
+
+.quick-view-modal .product-cart-activity,
+.quick-view-product-info .product-cart-activity {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 0.875rem !important;
+    margin: 0.875rem 0 0 0 !important;
+    background: #f3f4f6 !important;
+    border-radius: 8px !important;
+    font-size: 0.8125rem !important;
+    color: #6b7280 !important;
+    width: 100% !important;
+}
+
+.quick-view-modal .product-cart-activity__icon,
+.quick-view-product-info .product-cart-activity__icon {
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0 !important;
+    color: #6b7280 !important;
+}
+
+.quick-view-modal .product-cart-activity__text,
+.quick-view-product-info .product-cart-activity__text {
+    font-weight: 400 !important;
+    color: #6b7280 !important;
+    line-height: 1.4 !important;
+}
+
+.quick-view-modal .product-cart-activity__count,
+.quick-view-product-info .product-cart-activity__count {
+    font-weight: 600 !important;
+    color: #374151 !important;
+}
+
+/* Quick View Mobile Responsive */
+@media (max-width: 640px) {
+    .quick-view-modal .product-cart-activity,
+    .quick-view-product-info .product-cart-activity {
+        font-size: 0.75rem !important;
+        padding: 0.625rem 0.75rem !important;
+        gap: 0.375rem !important;
+    }
+    
+    .quick-view-modal .product-cart-activity__icon,
+    .quick-view-product-info .product-cart-activity__icon {
+        width: 14px !important;
+        height: 14px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-view-modal .product-cart-activity,
+    .quick-view-product-info .product-cart-activity {
+        font-size: 0.6875rem !important;
+        padding: 0.5rem 0.625rem !important;
+    }
+}

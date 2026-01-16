@@ -1,0 +1,363 @@
+/* ==========================================================================
+   Header Actions (Search, Account, Cart Buttons)
+   FIXED: Removed margin-left: auto that was causing the issue
+   ========================================================================== */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+  height: 100%;
+  /* REMOVED: margin-left: auto; - This was causing the problem! */
+}
+
+/* CRITICAL FIX: Force search button to always stay centered - override any conflicting styles */
+.header-search-bar .search-submit,
+.search-form .search-submit,
+button.search-submit,
+.site-header .search-submit {
+  margin: 0 !important;
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.header-action {
+  color: var(--color-header-text);
+  padding: var(--space-2);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.header-action:hover {
+  color: var(--brand-color);
+  background: var(--color-bg-tertiary);
+  transform: translateY(-2px);
+}
+
+.header-action svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.account-username {
+  font-size: 0.9rem;
+  font-weight: var(--font-semibold);
+  white-space: nowrap;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .account-username {
+    display: block;
+  }
+}
+
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--brand-color);
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: var(--font-semibold);
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+/* ==========================================================================
+   LOGIN BUTTON (For Non-Logged-In Users) - ENHANCED WITH ICON
+   ========================================================================== */
+
+.header-auth-buttons {
+  display: none;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .header-auth-buttons {
+    display: flex;
+  }
+}
+
+.btn-auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  font-weight: var(--font-semibold);
+  font-family: var(--font-body);
+  text-decoration: none;
+  border-radius: 20px;
+  transition: var(--transition);
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.btn-auth svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.btn-login {
+  background: var(--brand-color);
+  color: var(--color-white);
+  border: 1px solid var(--brand-color);
+}
+
+.btn-login:hover {
+  background: var(--brand-color-hover);
+  border-color: var(--brand-color-hover);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.btn-login:hover svg {
+  transform: scale(1.1);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   HEADER SEARCH BAR (Desktop) - WITH SMOOTH WIDTH ANIMATION
+   ========================================================================== */
+
+.header-search-bar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .header-search-bar {
+    display: block;
+  }
+}
+
+.header-search-bar .search-form {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 280px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expand width smoothly when search field is focused */
+.header-search-bar .search-form:focus-within {
+  width: 310px;
+}
+
+.header-search-bar .search-field {
+  width: 100%;
+  padding: 8px 45px 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-full);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+}
+
+.header-search-bar .search-field:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  background: var(--color-bg-primary);
+}
+
+.header-search-bar .search-field::placeholder {
+  color: var(--color-text-light);
+}
+
+.header-search-bar .search-submit {
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+  margin: 0 !important;
+}
+
+.header-search-bar .search-submit:hover {
+  background: var(--color-border);
+}
+
+.header-search-bar .search-submit img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) saturate(100%);
+}
+
+.header-search-bar .search-submit svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   SEARCH BAR ANIMATION - REDUCED MOTION SUPPORT
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .header-search-bar .search-form {
+    transition: none;
+  }
+
+  .header-search-bar .search-form:focus-within {
+    width: 280px;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .header-actions .account-link {
+    display: flex;
+  }
+
+  .account-username {
+    display: none;
+  }
+
+  /* Hide account and cart dropdowns on mobile */
+  .account-dropdown,
+  .cart-dropdown {
+    display: none !important;
+  }
+
+  /* Hide auth buttons on mobile - use mobile menu instead */
+  .header-auth-buttons {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-actions .cart-link {
+    padding: var(--space-1);
+  }
+
+  .header-actions {
+    gap: var(--space-2);
+  }
+}
+
+/* Mobile Icon Adjustments */
+@media (max-width: 1023px) {
+  .header-action {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 6px !important;
+  }
+
+  .header-action svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .cart-count {
+    top: -2px !important;
+    right: -2px !important;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & HIGH CONTRAST
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .btn-login,
+  .btn-register {
+    border-width: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-login:hover,
+  .btn-register:hover,
+  .header-action:hover {
+    transform: none;
+  }
+
+  .btn-login:hover svg {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   SEARCH BAR ANIMATION FIX
+   Prevents shaking during zoom-in animation
+   ========================================================================== */
+
+.header-search-bar {
+  isolation: isolate;
+  will-change: opacity;
+}
+
+.header-search-bar[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-search-bar[data-animate].animated {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Override any conflicting keyframe animations */
+.header-search-bar.animated {
+  animation: none;
+}
+
+/* Ensure child elements don't interfere */
+.header-search-bar .search-form,
+.header-search-bar input,
+.header-search-bar button {
+  transform: none;
+}
+
+/* CRITICAL: Force search button positioning on ALL pages including My Account */
+body .header-search-bar .search-submit,
+body.woocommerce-account .header-search-bar .search-submit,
+body.woocommerce-account .search-form .search-submit {
+  margin: 0 !important;
+  padding: 6px !important;
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}

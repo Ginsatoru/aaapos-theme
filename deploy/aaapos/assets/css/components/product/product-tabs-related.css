@@ -1,0 +1,173 @@
+/* ============================================
+   PRODUCT TABS & RELATED PRODUCTS
+   Description, Reviews, Additional Info, Related, Upsells
+   ============================================ */
+
+/* === TABS SECTION === */
+.single-product .woocommerce-tabs {
+  margin-top: 1.5rem !important; /* REDUCED from 3rem to 1.5rem */
+  margin-bottom: 0 !important; /* REDUCED: Remove space after tabs */
+  padding-bottom: 0 !important; /* ADDED: Remove any padding */
+  clear: both !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* === TABS NAVIGATION === */
+.single-product .woocommerce-tabs .tabs {
+  display: flex !important;
+  gap: 0.75rem !important;
+  margin: 0 0 1.5rem 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  border-bottom: none !important;
+  background: #f5f5f5 !important;
+  padding: 0.5rem !important;
+  border-radius: 12px !important;
+  width: fit-content !important;
+}
+
+.single-product .woocommerce-tabs .tabs li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.single-product .woocommerce-tabs .tabs li a {
+  display: block !important;
+  padding: 0.5rem 1.5rem !important;
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  color: var(--color-text-light, #6b7280) !important;
+  text-decoration: none !important;
+  border-radius: 50px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.single-product .woocommerce-tabs .tabs li a:hover {
+  color: var(--color-primary, #0ea5e9) !important;
+  background: rgba(14, 165, 233, 0.08) !important;
+}
+
+.single-product .woocommerce-tabs .tabs li.active a {
+  color: var(--color-primary, #0ea5e9) !important;
+  background: #ffffff !important;
+  border: 1px solid var(--color-border, #e5e7eb) !important;
+}
+
+/* === TAB PANELS === */
+.single-product .woocommerce-tabs .panel {
+  padding: 1.5rem !important;
+  padding-bottom: 1rem !important; /* REDUCED: Less padding at bottom */
+  background: #f5f5f5 !important;
+  border-radius: 16px !important;
+  line-height: 1.6 !important;
+  font-size: 0.9375rem !important;
+  margin-bottom: 0 !important; /* ADDED: Remove any default margin */
+}
+
+.single-product .woocommerce-tabs .panel h2 {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 1.25rem 0 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+}
+
+/* ============================================
+   RELATED PRODUCTS & UPSELLS
+   ============================================ */
+
+.single-product .related.products,
+.single-product .upsells.products {
+  margin-top: 1.5rem !important; /* REDUCED from 4rem to 1.5rem */
+  margin-bottom: 3rem !important; /* ADDED: space after related products */
+  padding-top: 0 !important; /* ADDED: Remove any padding */
+  clear: both !important;
+}
+
+.single-product .related.products > h2,
+.single-product .upsells.products > h2 {
+  font-size: 1.625rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 1.5rem 0 !important;
+  color: var(--color-text-dark, #1f2937) !important;
+  text-align: center !important;
+}
+
+/* === RELATED PRODUCTS GRID === */
+.single-product .related.products ul.products,
+.single-product .upsells.products ul.products {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.25rem !important;
+  margin-bottom: 2rem !important; /* ADDED: space after product cards */
+}
+
+/* ============================================
+   RESPONSIVE - TABS & RELATED
+   ============================================ */
+
+/* Tablets: 3 columns */
+@media (max-width: 1199px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Mobile tablets: 2 columns */
+@media (max-width: 767px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* MOBILE: Reduce spacing further */
+  .single-product .woocommerce-tabs {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .single-product .related.products,
+  .single-product .upsells.products {
+    margin-top: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  /* Tabs - Stack vertically on mobile */
+  .single-product .woocommerce-tabs .tabs {
+    flex-direction: column !important;
+    width: 100% !important;
+    background: transparent !important;
+    padding: 0 !important;
+    gap: 0.5rem !important;
+  }
+
+  .single-product .woocommerce-tabs .tabs li {
+    width: 100% !important;
+  }
+
+  .single-product .woocommerce-tabs .tabs li a {
+    width: 100% !important;
+    padding: 0.625rem 1rem !important;
+    border-radius: 50px !important;
+    background: #f5f5f5 !important;
+  }
+
+  .single-product .woocommerce-tabs .tabs li.active a {
+    background: #ffffff !important;
+  }
+
+  .single-product .woocommerce-tabs .panel {
+    padding: 1.5rem !important;
+  }
+}
+
+  /* Mobile: 1 column */
+@media (max-width: 479px) {
+  .single-product .related.products ul.products,
+  .single-product .upsells.products ul.products {
+    grid-template-columns: 1fr !important;
+  }
+}

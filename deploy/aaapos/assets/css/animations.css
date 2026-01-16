@@ -1,0 +1,515 @@
+/**
+ * Animation Styles
+ * animations.css
+ * Modern CSS animations with GPU acceleration and performance optimizations.
+ * Uses data attributes for flexible, JavaScript-controlled animations.
+ * 
+ * @package Macedon_Ranges
+ */
+
+/* ============================================
+   CORE ANIMATION SETUP
+   ============================================ */
+
+/* Will-change optimization for animated elements */
+[data-animate] {
+    will-change: transform, opacity;
+}
+
+[data-animate].animated {
+    will-change: auto;
+}
+
+/* Initial state - hidden before animation */
+[data-animate]:not(.animated) {
+    opacity: 0;
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0); /* Increased from 30px */
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -30px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeLeft {
+    from {
+        opacity: 0;
+        transform: translate3d(-30px, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeRight {
+    from {
+        opacity: 0;
+        transform: translate3d(30px, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 0;
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+    to {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate3d(0, 100%, 0);
+        visibility: visible;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40% {
+        transform: translate3d(0, -20px, 0);
+    }
+    60% {
+        transform: translate3d(0, -10px, 0);
+    }
+}
+
+/* ============================================
+   ANIMATION CLASSES
+   ============================================ */
+
+.animated {
+    animation-duration: 0.8s; /* Increased from 0.6s for more visible animation */
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation types */
+[data-animate="fade"].animated {
+    animation-name: fadeIn;
+}
+
+[data-animate="fade-up"].animated {
+    animation-name: fadeUp;
+}
+
+[data-animate="fade-down"].animated {
+    animation-name: fadeDown;
+}
+
+[data-animate="fade-left"].animated {
+    animation-name: fadeLeft;
+}
+
+[data-animate="fade-right"].animated {
+    animation-name: fadeRight;
+}
+
+[data-animate="zoom-in"].animated {
+    animation-name: zoomIn;
+}
+
+[data-animate="zoom-out"].animated {
+    animation-name: zoomOut;
+}
+
+[data-animate="slide-up"].animated {
+    animation-name: slideUp;
+}
+
+[data-animate="slide-down"].animated {
+    animation-name: slideDown;
+}
+
+/* ============================================
+   ANIMATION DURATIONS
+   ============================================ */
+
+[data-animate-duration="fast"].animated {
+    animation-duration: 0.3s;
+}
+
+[data-animate-duration="normal"].animated {
+    animation-duration: 0.6s;
+}
+
+[data-animate-duration="slow"].animated {
+    animation-duration: 0.9s;
+}
+
+[data-animate-duration="slower"].animated {
+    animation-duration: 1.2s;
+}
+
+/* ============================================
+   ANIMATION DELAYS
+   ============================================ */
+
+[data-animate-delay="100"].animated {
+    animation-delay: 0.1s;
+}
+
+[data-animate-delay="200"].animated {
+    animation-delay: 0.2s;
+}
+
+[data-animate-delay="300"].animated {
+    animation-delay: 0.3s;
+}
+
+[data-animate-delay="400"].animated {
+    animation-delay: 0.4s;
+}
+
+[data-animate-delay="500"].animated {
+    animation-delay: 0.5s;
+}
+
+/* ============================================
+   FOOTER SPECIFIC ANIMATIONS
+   ============================================ */
+
+/* Footer background and structure should always be visible */
+.footer-main,
+.footer-bottom,
+.footer-widget {
+    opacity: 1 !important;
+}
+
+/* Only animate the inner content wrapper, not the widget container */
+.footer-widget-inner[data-animate]:not(.animated),
+.footer-bottom-inner[data-animate]:not(.animated) {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0); /* Increased from 20px for more visible animation */
+}
+
+.footer-widget-inner[data-animate].animated,
+.footer-bottom-inner[data-animate].animated {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Ensure smooth animation performance */
+.footer-widget-inner,
+.footer-bottom-inner {
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Safety fallback: Show content after 3 seconds if animation didn't trigger */
+.footer-widget-inner[data-animate],
+.footer-bottom-inner[data-animate] {
+    animation: showContentFallback 0s 3s forwards;
+}
+
+@keyframes showContentFallback {
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* ============================================
+   HOVER ANIMATIONS
+   ============================================ */
+
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translate3d(0, -4px, 0);
+}
+
+.hover-scale {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+    transform: scale3d(1.05, 1.05, 1);
+}
+
+.hover-grow {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-grow:hover {
+    transform: scale3d(1.1, 1.1, 1);
+}
+
+/* ============================================
+   LOADING ANIMATIONS
+   ============================================ */
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+.bounce {
+    animation: bounce 1s infinite;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--color-primary, #0ea5e9);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   STAGGER ANIMATIONS
+   ============================================ */
+
+.stagger-fade > * {
+    opacity: 0;
+    animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.stagger-fade > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-fade > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-fade > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-fade > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-fade > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-fade > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* ============================================
+   NOTIFICATION ANIMATIONS
+   ============================================ */
+
+.notification-enter {
+    animation: fadeDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-exit {
+    animation: fadeUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse;
+}
+
+/* ============================================
+   CART MESSAGE ANIMATIONS
+   ============================================ */
+
+.cart-message {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--color-white, #ffffff);
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    transform: translate3d(400px, 0, 0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 400px;
+}
+
+.cart-message.visible {
+    transform: translate3d(0, 0, 0);
+}
+
+.cart-message--success {
+    border-left: 4px solid var(--color-success, #10b981);
+}
+
+.cart-message--error {
+    border-left: 4px solid var(--color-error, #ef4444);
+}
+
+.cart-message--info {
+    border-left: 4px solid var(--color-info, #3b82f6);
+}
+
+/* ============================================
+   COUNTDOWN TIMER
+   ============================================ */
+
+.countdown-timer {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.countdown-item {
+    text-align: center;
+    background: var(--color-white, #ffffff);
+    padding: 12px;
+    border-radius: 8px;
+    min-width: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-value {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-primary, #0ea5e9);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-light, #6b7280);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   BACK TO TOP BUTTON
+   ============================================ */
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--color-primary, #0ea5e9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9998;
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    pointer-events: auto;
+}
+
+.back-to-top:hover {
+    background: var(--color-primary-dark, #0284c7);
+    transform: translate3d(0, -4px, 0);
+}
+
+/* ============================================
+   REDUCE MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    [data-animate] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    [data-animate]:not(.animated) {
+        opacity: 1 !important;
+    }
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Force GPU acceleration for animations */
+.animated,
+.hover-lift,
+.hover-scale,
+.hover-grow {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+

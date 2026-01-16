@@ -1,0 +1,657 @@
+/**
+ * Base Styles - Reset & Typography
+ * 
+ * Modern CSS reset with typography system and utility classes.
+ * Establishes foundation for all other styles.
+ * 
+ * @package Macedon_Ranges
+ */
+
+/* ============================================
+   FORCE LIGHT MODE
+   ============================================ */
+
+html {
+  color-scheme: light only !important;
+}
+
+/* ============================================
+   CSS RESET
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   HTML & BODY
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  height: 100%;
+  background-color: #ffffff;
+  scroll-padding-top: var(--header-total-height);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-white) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
+  padding-top: var(--header-height);
+}
+
+/* When topbar is enabled (has-topbar class added by header.php) */
+@media (min-width: 768px) {
+  body.has-topbar {
+    padding-top: var(--header-total-height);
+  }
+
+  /* When topbar is disabled, use only header height */
+  body:not(.has-topbar) {
+    padding-top: var(--header-height);
+  }
+}
+
+body.menu-open,
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+  margin-bottom: var(--space-4);
+  color: var(--color-dark);
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-extrabold);
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+}
+
+h3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+}
+
+h4 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+}
+
+h5 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+}
+
+h6 {
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: var(--text-5xl);
+  }
+  h2 {
+    font-size: var(--text-4xl);
+  }
+  h3 {
+    font-size: var(--text-3xl);
+  }
+  h4 {
+    font-size: var(--text-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: var(--text-6xl);
+  }
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: var(--space-4);
+  color: var(--color-text);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+p.lead {
+  font-size: var(--text-lg);
+  color: var(--color-text-light);
+  line-height: 1.7;
+}
+
+/* ============================================
+   LINKS
+   ============================================ */
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* ============================================
+   LISTS
+   ============================================ */
+
+ul,
+ol {
+  margin-bottom: var(--space-4);
+  padding-left: var(--space-6);
+}
+
+li {
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+}
+
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  margin-top: var(--space-2);
+  margin-bottom: 0;
+}
+
+/* ============================================
+   IMAGES & MEDIA
+   ============================================ */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--border-radius-xl);
+}
+
+/* EXCEPTION: Hero images should NOT have border radius */
+.hero-section img,
+.hero-slide img,
+.hero-slide-image,
+.hero-static-image,
+.video-fallback-image,
+.hero-video-container img {
+  border-radius: 0 !important;
+}
+
+figure {
+  margin: var(--space-6) 0;
+}
+
+figcaption {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  text-align: center;
+  margin-top: var(--space-2);
+  font-style: italic;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-xl);
+  background: var(--color-white);
+  color: var(--color-text);
+  transition: var(--transition-fast);
+  font-size: var(--text-base);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-lighter);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--space-3) center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: var(--space-10);
+}
+
+label {
+  display: block;
+  font-weight: var(--font-medium);
+  color: var(--color-dark);
+  margin-bottom: var(--space-2);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-weight: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================================
+   CONTENT ELEMENTS
+   ============================================ */
+
+hr {
+  border: none;
+  border-top: var(--border-width) solid var(--border-color);
+  margin: var(--space-8) 0;
+}
+
+blockquote {
+  margin: var(--space-6) 0;
+  padding: var(--space-4) var(--space-6);
+  border-left: 4px solid var(--color-primary);
+  background: var(--bg-secondary);
+  border-radius: 0 var(--border-radius-xl) var(--border-radius-xl) 0;
+  font-style: italic;
+  color: var(--color-text);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  font-style: normal;
+}
+
+code,
+pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--bg-tertiary);
+  color: var(--color-primary-dark);
+  padding: 0.2em 0.4em;
+  border-radius: var(--border-radius-sm);
+}
+
+pre {
+  background: var(--color-gray-900);
+  color: var(--color-gray-100);
+  padding: var(--space-4);
+  border-radius: var(--border-radius-xl);
+  overflow-x: auto;
+  margin-bottom: var(--space-6);
+}
+
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+mark {
+  background: #fef08a;
+  color: var(--color-dark);
+  padding: 0.1em 0.3em;
+  border-radius: var(--border-radius-sm);
+}
+
+small {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+strong,
+b {
+  font-weight: var(--font-bold);
+  color: var(--color-dark);
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  width: 100%;
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 var(--container-padding);
+}
+
+/* Text alignment */
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+/* Text colors */
+.text-primary {
+  color: var(--color-primary);
+}
+.text-secondary {
+  color: var(--color-secondary);
+}
+.text-dark {
+  color: var(--color-dark);
+}
+.text-light {
+  color: var(--color-text-light);
+}
+.text-muted {
+  color: var(--color-text-lighter);
+}
+.text-white {
+  color: var(--color-white);
+}
+
+/* Background colors */
+.bg-white {
+  background-color: var(--color-white);
+}
+.bg-light {
+  background-color: var(--bg-secondary);
+}
+.bg-gray {
+  background-color: var(--bg-tertiary);
+}
+.bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Spacing utilities */
+.m-0 {
+  margin: 0;
+}
+.mt-0 {
+  margin-top: 0;
+}
+.mb-0 {
+  margin-bottom: 0;
+}
+.ml-0 {
+  margin-left: 0;
+}
+.mr-0 {
+  margin-right: 0;
+}
+
+.m-4 {
+  margin: var(--space-4);
+}
+.mt-4 {
+  margin-top: var(--space-4);
+}
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+.ml-4 {
+  margin-left: var(--space-4);
+}
+.mr-4 {
+  margin-right: var(--space-4);
+}
+
+.m-8 {
+  margin: var(--space-8);
+}
+.mt-8 {
+  margin-top: var(--space-8);
+}
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+.ml-8 {
+  margin-left: var(--space-8);
+}
+.mr-8 {
+  margin-right: var(--space-8);
+}
+
+.p-0 {
+  padding: 0;
+}
+.p-4 {
+  padding: var(--space-4);
+}
+.p-8 {
+  padding: var(--space-8);
+}
+
+.pt-4 {
+  padding-top: var(--space-4);
+}
+.pb-4 {
+  padding-bottom: var(--space-4);
+}
+.pl-4 {
+  padding-left: var(--space-4);
+}
+.pr-4 {
+  padding-right: var(--space-4);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-dark);
+}
+
+::-moz-selection {
+  background: var(--color-primary-light);
+  color: var(--color-dark);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-400);
+  border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+    padding-top: 0;
+  }
+
+  .site-header,
+  .top-bar,
+  .site-footer,
+  .mobile-menu,
+  .search-modal {
+    display: none !important;
+  }
+}
+/* ============================================
+   WOOCOMMERCE PRICE FIX - Remove underline from sale prices
+   ============================================ */
+
+ins,
+ins *,
+ins bdi,
+ins span {
+  text-decoration: none !important;
+}
+
+/* Specific override for WooCommerce price elements */
+.woocommerce .price ins,
+.woocommerce .price ins *,
+.woocommerce-page .price ins,
+.woocommerce-page .price ins * {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  border-bottom: none !important;
+}

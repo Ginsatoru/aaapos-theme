@@ -1,0 +1,582 @@
+/* ==========================================================================
+   Main Navigation - Desktop & Mobile
+   SIMPLIFIED FIX - Menu alignment based on header actions visibility
+   ========================================================================== */
+
+/* ==========================================================================
+   DESKTOP NAVIGATION
+   ========================================================================== */
+
+.main-navigation {
+  display: none;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+/* Hide mobile-only elements on desktop */
+.mobile-search-wrapper,
+.mobile-account-section {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .main-navigation {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+  }
+  
+  /* Push navigation right when search bar is hidden */
+  .header-inner:not(:has(.header-search-bar)) .main-navigation {
+    margin-left: auto !important;
+    margin-right: 0px !important;
+  }
+  
+  /* Remove any gap that might prevent alignment */
+  .header-inner:not(:has(.header-search-bar)) {
+    gap: 0 !important;
+  }
+}
+
+.main-navigation .menu-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+  transition: justify-content 0.3s ease;
+}
+
+.nav-menu > li {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+/* Top Level Links */
+.nav-menu > li > a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  color: var(--color-nav-link);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-menu > li > a:hover,
+.nav-menu > li > a:focus {
+  color: var(--color-nav-hover);
+}
+
+/* Active/Current Menu Item */
+.nav-menu > li.current-menu-item > a,
+.nav-menu > li.current-menu-ancestor > a,
+.nav-menu > li.current_page_item > a {
+  color: var(--color-nav-active);
+}
+
+/* Remove Underline Effect */
+.nav-menu > li > a::before {
+  display: none;
+}
+
+/* ==========================================================================
+   DROPDOWN MENUS (All Levels)
+   ========================================================================== */
+
+.nav-menu .sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--color-white);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  min-width: 200px;
+  padding: 8px 0;
+  margin-top: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: var(--z-dropdown);
+  list-style: none;
+}
+
+/* Show dropdown on hover and focus */
+.nav-menu li:hover > .sub-menu,
+.nav-menu li:focus-within > .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Submenu Items */
+.nav-menu .sub-menu li {
+  margin: 0;
+  height: auto;
+  display: block;
+  position: relative;
+}
+
+.nav-menu .sub-menu a {
+  display: block;
+  padding: 10px 20px;
+  white-space: nowrap;
+  height: auto;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-menu .sub-menu a::before {
+  display: none;
+}
+
+.nav-menu .sub-menu a:hover,
+.nav-menu .sub-menu a:focus {
+  background-color: var(--color-bg-secondary);
+  color: var(--brand-color);
+  padding-left: 24px;
+  border-left-color: var(--brand-color);
+}
+
+/* Current item in dropdown */
+.nav-menu .sub-menu .current-menu-item > a {
+  background-color: var(--color-bg-secondary);
+  color: var(--brand-color);
+  border-left-color: var(--brand-color);
+}
+
+/* ==========================================================================
+   THIRD LEVEL DROPDOWNS (AND DEEPER)
+   ========================================================================== */
+
+.nav-menu .sub-menu .sub-menu {
+  left: 100%;
+  top: -8px;
+  margin-top: 0;
+  margin-left: 4px;
+}
+
+/* Fourth level and deeper */
+.nav-menu .sub-menu .sub-menu .sub-menu {
+  left: 100%;
+  top: -8px;
+}
+
+/* ==========================================================================
+   DROPDOWN INDICATOR ARROWS
+   ========================================================================== */
+
+/* Top level dropdown indicator - DESKTOP ONLY */
+.nav-menu .menu-item-has-children > a::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  transition: transform 0.2s ease;
+}
+
+/* Submenu dropdown indicator (right arrow) - DESKTOP ONLY */
+.nav-menu .sub-menu .menu-item-has-children > a::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: auto;
+  margin-right: 0;
+  float: right;
+  border-left: 4px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 0;
+  transition: transform 0.2s ease;
+}
+
+/* Rotate arrow on hover - DESKTOP ONLY */
+.nav-menu li:hover > a::after {
+  transform: rotate(180deg);
+}
+
+.nav-menu .sub-menu li:hover > a::after {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   FOCUS STATES (Accessibility)
+   ========================================================================== */
+
+.nav-menu > li > a:focus-visible {
+  outline: 2px solid var(--brand-color);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.nav-menu .sub-menu a:focus-visible {
+  outline: 2px solid var(--brand-color);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   MOBILE NAVIGATION
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  /* HIDE DESKTOP ARROWS ON MOBILE */
+  .nav-menu .menu-item-has-children > a::after,
+  .nav-menu .sub-menu .menu-item-has-children > a::after {
+    display: none !important;
+  }
+
+  .main-navigation {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    background: var(--color-white);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+    padding: 80px 0 20px;
+    overflow-y: auto;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: calc(var(--z-fixed) + 1);
+    display: block;
+    margin: 0;
+    max-width: 320px;
+  }
+
+  .main-navigation.active {
+    right: 0;
+  }
+
+  /* Mobile Search - Show in sidebar */
+  .mobile-search-wrapper {
+    display: block;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .mobile-search-wrapper .search-form {
+    position: relative;
+    width: 100%;
+  }
+
+  .mobile-search-wrapper .search-field {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-search-wrapper .search-field:focus {
+    border-color: var(--brand-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1);
+  }
+
+  .mobile-search-wrapper .search-submit {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--color-text-light);
+    transition: color 0.2s ease;
+  }
+
+  .mobile-search-wrapper .search-submit:hover {
+    color: var(--brand-color);
+  }
+
+  /* Mobile Account Section */
+  .mobile-account-section {
+    display: block;
+    padding: 20px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .mobile-account-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--color-bg-secondary);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text-dark);
+    transition: all 0.2s ease;
+  }
+
+  .mobile-account-link:hover {
+    background: var(--color-bg-tertiary);
+  }
+
+  .mobile-account-link > svg:first-child {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    background: var(--brand-color);
+    color: white;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .mobile-account-info {
+    flex: 1;
+  }
+
+  .mobile-account-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .mobile-account-status {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    line-height: 1.4;
+  }
+
+  .mobile-account-link > svg:last-child {
+    width: 16px;
+    height: 16px;
+    color: var(--color-text-light);
+    flex-shrink: 0;
+  }
+
+  /* Mobile Account Menu */
+  .mobile-account-menu {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+
+  .mobile-account-menu li {
+    margin: 0;
+  }
+
+  .mobile-account-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-account-menu a:hover {
+    background: var(--color-bg-secondary);
+    color: var(--brand-color);
+  }
+
+  .mobile-account-menu svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .mobile-account-menu .menu-divider {
+    height: 1px;
+    background: var(--color-border-light);
+    margin: 8px 0;
+  }
+
+  /* Mobile Menu Items */
+  .nav-menu {
+    display: block;
+    padding: 20px 0;
+  }
+
+  .nav-menu > li {
+    display: block;
+    height: auto;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .nav-menu > li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-menu > li > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    color: var(--color-text-dark);
+    font-size: 1rem;
+    font-weight: 500;
+    height: auto;
+    position: relative;
+  }
+
+  /* Remove ALL pseudo-elements on mobile */
+  .nav-menu > li > a::before,
+  .nav-menu > li > a::after {
+    display: none !important;
+  }
+
+  .nav-menu > li.current-menu-item > a {
+    color: var(--brand-color);
+    background: var(--color-bg-secondary);
+  }
+
+  /* MOBILE-ONLY dropdown arrows - Clean chevron style */
+  .nav-menu .menu-item-has-children > a::after {
+    display: inline-block !important;
+    content: '▼';
+    font-size: 10px;
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+    vertical-align: middle;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .nav-menu .menu-item-has-children.active > a::after {
+    transform: rotate(180deg);
+  }
+
+  /* Mobile Dropdowns */
+  .nav-menu .sub-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    background: var(--color-bg-secondary);
+    display: none;
+  }
+
+  .nav-menu .menu-item-has-children.active > .sub-menu {
+    display: block;
+  }
+
+  .nav-menu .sub-menu a {
+    padding: 12px 20px 12px 40px;
+    font-size: 0.9375rem;
+    border-left: none;
+  }
+
+  .nav-menu .sub-menu a::before,
+  .nav-menu .sub-menu a::after {
+    display: none !important;
+  }
+
+  .nav-menu .sub-menu a:hover {
+    padding-left: 44px;
+    border-left: none;
+  }
+
+  /* Submenu dropdown arrows - Mobile only */
+  .nav-menu .sub-menu .menu-item-has-children > a::after {
+    display: inline-block !important;
+    content: '▶';
+    font-size: 8px;
+    margin-left: auto;
+    transition: transform 0.2s ease;
+    vertical-align: middle;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .nav-menu .sub-menu .menu-item-has-children.active > a::after {
+    transform: rotate(90deg);
+  }
+
+  /* Nested submenus */
+  .nav-menu .sub-menu .sub-menu {
+    background: var(--color-bg-tertiary);
+    margin-left: 0;
+  }
+
+  .nav-menu .sub-menu .sub-menu a {
+    padding-left: 60px;
+  }
+
+  .nav-menu .sub-menu .sub-menu a:hover {
+    padding-left: 64px;
+  }
+}
+
+/* ==========================================================================
+   MOBILE MENU OVERLAY
+   ========================================================================== */
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: var(--z-fixed);
+  backdrop-filter: blur(4px);
+}
+
+.mobile-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu .sub-menu,
+  .main-navigation,
+  .mobile-menu-overlay {
+    transition: none;
+  }
+  
+  .main-navigation {
+    transition: none;
+  }
+}

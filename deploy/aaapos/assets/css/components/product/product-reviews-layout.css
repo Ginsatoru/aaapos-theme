@@ -1,0 +1,361 @@
+/**
+ * Product Reviews Layout & Structure - MOBILE OPTIMIZED
+ * Location: assets/css/components/product/product-reviews-layout.css
+ * 
+ * @package AAAPOS_Prime
+ * @version 2.0.3
+ */
+
+/* ============================================
+   MAIN REVIEWS SECTION - LIGHT GRAY BACKGROUND
+   ============================================ */
+
+#reviews {
+    background: #f5f5f5 !important;
+    padding: 3rem !important;
+    border-radius: 16px;
+    margin-top: 2rem;
+}
+
+/* Remove gray background from reviews tab panel */
+.woocommerce-tabs .panel#tab-reviews {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Keep other tab panels with default styling */
+.woocommerce-tabs .panel:not(#tab-reviews) {
+    background: #f9fafb;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+#reviews h2 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 2rem !important;
+}
+
+/* ============================================
+   TWO COLUMNS LAYOUT - DESKTOP ONLY
+   Left: Rating Summary + Form | Right: Reviews List
+   ============================================ */
+
+.woocommerce-Reviews,
+#reviews.woocommerce-Reviews {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem !important;
+    align-items: start !important;
+    margin-bottom: 0 !important;
+}
+
+/* ============================================
+   LEFT COLUMN - Rating Summary + Review Form
+   ============================================ */
+
+.reviews-left-column {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    position: sticky !important;
+    top: 2rem !important;
+}
+
+/* Rating Summary Box (Top of left column) */
+.reviews-rating-summary {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 2.5rem;
+}
+
+/* Review Form (Bottom of left column) */
+#review_form_wrapper {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 2.5rem;
+}
+
+/* ============================================
+   RIGHT COLUMN - Reviews List
+   ============================================ */
+
+#comments {
+    order: 2 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .woocommerce-Reviews {
+        grid-template-columns: 350px 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 991px) {
+    #reviews {
+        padding: 2rem !important;
+    }
+    
+    /* Stack to single column on tablet */
+    .woocommerce-Reviews,
+    #reviews.woocommerce-Reviews {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+    
+    .reviews-left-column {
+        position: relative !important;
+        top: auto !important;
+        max-width: 100%;
+    }
+    
+    /* Reorder: Summary -> Reviews -> Form */
+    .reviews-rating-summary {
+        order: 1 !important;
+    }
+    
+    #comments {
+        order: 2 !important;
+    }
+    
+    #review_form_wrapper {
+        order: 3 !important;
+    }
+}
+
+@media (max-width: 767px) {
+    #reviews {
+        padding: 1.5rem !important;
+        border-radius: 12px !important;
+    }
+    
+    /* CRITICAL: Force single column on mobile */
+    .woocommerce-Reviews,
+    #reviews.woocommerce-Reviews {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+    
+    .reviews-left-column {
+        display: contents !important;
+        gap: 0 !important;
+    }
+    
+    /* Mobile spacing */
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 1.5rem !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Clear order on mobile */
+    .reviews-rating-summary {
+        order: 1 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    #comments {
+        order: 2 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    #review_form_wrapper {
+        order: 3 !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+@media (max-width: 479px) {
+    #reviews {
+        padding: 1rem !important;
+        border-radius: 10px !important;
+    }
+    
+    .woocommerce-Reviews,
+    #reviews.woocommerce-Reviews {
+        gap: 1rem !important;
+    }
+    
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 1.25rem !important;
+        border-radius: 10px !important;
+    }
+    
+    #reviews h2 {
+        font-size: 1.25rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+}
+
+/* ============================================
+   EXTRA SPECIFICITY FOR MOBILE
+   ============================================ */
+
+@media (max-width: 767px) {
+    /* Force grid off completely */
+    body .woocommerce-Reviews,
+    body #reviews.woocommerce-Reviews,
+    .single-product .woocommerce-Reviews,
+    .single-product #reviews.woocommerce-Reviews {
+        display: flex !important;
+        flex-direction: column !important;
+        grid-template-columns: none !important;
+    }
+    
+    /* Ensure left column breaks apart */
+    body .reviews-left-column,
+    .single-product .reviews-left-column {
+        display: contents !important;
+    }
+}
+
+/* ============================================
+   MOBILE: ADD MAX-WIDTH TO RATING SUMMARY
+   ============================================ */
+
+@media (max-width: 767px) {
+    #reviews {
+        padding: 1.5rem !important;
+        border-radius: 12px !important;
+    }
+    
+    /* CRITICAL: Force single column on mobile */
+    .woocommerce-Reviews,
+    #reviews.woocommerce-Reviews {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+    
+    .reviews-left-column {
+        display: contents !important;
+        gap: 0 !important;
+    }
+    
+    /* Mobile spacing + MAX WIDTH */
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 1.5rem !important;
+        border-radius: 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Constrain the rating summary content */
+    .reviews-rating-summary {
+        order: 1 !important;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Make sure internal grid also respects max width */
+    .reviews-rating-summary .reviews-rating-summary {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    
+    #comments {
+        order: 2 !important;
+        margin-bottom: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    #review_form_wrapper {
+        order: 3 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Ensure the inner grid layout stacks properly */
+    .reviews-rating-summary .summary-rating-left,
+    .reviews-rating-summary .rating-breakdown {
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 479px) {
+    #reviews {
+        padding: 1rem !important;
+        border-radius: 10px !important;
+    }
+    
+    .woocommerce-Reviews,
+    #reviews.woocommerce-Reviews {
+        gap: 1rem !important;
+    }
+    
+    .reviews-rating-summary,
+    #review_form_wrapper {
+        padding: 1.25rem !important;
+        border-radius: 10px !important;
+    }
+    
+    #reviews h2 {
+        font-size: 1.25rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+    
+    /* Tighter spacing for rating summary */
+    .reviews-rating-summary {
+        padding: 1rem !important;
+    }
+    
+    .summary-rating-number {
+        font-size: 2.5rem !important;
+    }
+    
+    .rating-breakdown {
+        gap: 0.5rem !important;
+    }
+}
+
+/* ============================================
+   EXTRA SPECIFICITY FOR MOBILE
+   ============================================ */
+
+@media (max-width: 767px) {
+    /* Force grid off completely */
+    body .woocommerce-Reviews,
+    body #reviews.woocommerce-Reviews,
+    .single-product .woocommerce-Reviews,
+    .single-product #reviews.woocommerce-Reviews {
+        display: flex !important;
+        flex-direction: column !important;
+        grid-template-columns: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Ensure left column breaks apart */
+    body .reviews-left-column,
+    .single-product .reviews-left-column {
+        display: contents !important;
+        width: 100% !important;
+    }
+    
+    /* Force rating summary to respect container width */
+    body .reviews-rating-summary,
+    .single-product .reviews-rating-summary {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}

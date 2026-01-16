@@ -1,0 +1,414 @@
+/* ===================================================================
+   FEATURED PRODUCTS - MATCHING IMAGE 1 EXACTLY
+   Fixed: Smooth hover, Quick View button, proper spacing
+   Updated: Container width to 1410px for desktop/laptop
+   =================================================================== */
+
+.featured-products {
+  padding: 3.5rem 0 4rem;
+  background: var(--color-bg-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .featured-products {
+    padding: 4rem 0 5rem;
+  }
+}
+
+.featured-products .container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+/* Desktop: Remove padding to get exact 1300px */
+@media (min-width: 1440px) {
+  .featured-products .container {
+    padding: 0;
+  }
+}
+
+.featured-products .section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.featured-products .section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.featured-products .section-description {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ===================================================================
+   PRODUCTS GRID - UPDATED TO FULL WIDTH (1410px)
+   =================================================================== */
+.featured-products ul.products {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.5rem !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  list-style: none !important;
+  width: 100% !important;
+  max-width: 100%; /* Changed from 1200px to 100% to use full container width */
+}
+
+@media (max-width: 1399px) {
+  .featured-products ul.products {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .featured-products ul.products {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .featured-products ul.products {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .featured-products ul.products {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}
+
+/* ===================================================================
+   PRODUCT CARD - SMOOTH HOVER WITH SCROLL ANIMATION
+   =================================================================== */
+.featured-products ul.products li.product {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 0 1rem 0 !important; /* Bottom padding for button spacing */
+  background: var(--color-dark-white) !important;
+  border-radius: 18px !important;
+  overflow: visible !important; /* Changed from hidden to allow button radius */
+  border: none !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), 0 12px 24px rgba(0, 0, 0, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  position: relative !important;
+  /* SMOOTH TRANSITION */
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Scroll Animation - Keep it enabled */
+.featured-products ul.products li.product[data-animate]:not(.animated) {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.featured-products ul.products li.product[data-animate].animated {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeInUp 0.6s ease backwards;
+}
+
+/* HOVER EFFECT - SMOOTH */
+.featured-products ul.products li.product:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.12), 0 16px 32px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Keep image container with overflow hidden */
+.featured-products ul.products li.product > a.woocommerce-LoopProduct-link {
+  overflow: hidden !important;
+  border-radius: 18px 18px 0 0 !important;
+}
+
+/* ===================================================================
+   PRODUCT IMAGE - SMOOTH ZOOM
+   =================================================================== */
+.featured-products ul.products li.product > a.woocommerce-LoopProduct-link {
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: var(--color-white) !important;
+}
+
+.featured-products ul.products li.product a.woocommerce-LoopProduct-link img {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform 0.5s ease !important;
+  border-radius: 0 !important;
+}
+
+.featured-products ul.products li.product:hover a.woocommerce-LoopProduct-link img {
+  transform: scale(1.08) !important;
+}
+
+/* ===================================================================
+   SALE BADGE - BLUE COLOR LIKE IMAGE 1
+   =================================================================== */
+.featured-products ul.products li.product .onsale {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--color-primary, #0ea5e9) !important; /* Blue badge */
+  color: var(--color-white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 2;
+  margin: 0 !important;
+  line-height: 1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===================================================================
+   PRODUCT INFO
+   =================================================================== */
+.featured-products ul.products li.product .product-info {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Title */
+.featured-products ul.products li.product .woocommerce-loop-product__title {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  color: var(--color-text-dark) !important;
+  margin: 0 !important;
+  padding: 1.25rem 1.25rem 0.625rem 1.25rem !important;
+  min-height: 2.8em !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  transition: color 0.2s ease !important;
+}
+
+.featured-products ul.products li.product .woocommerce-loop-product__title a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.featured-products ul.products li.product:hover .woocommerce-loop-product__title a {
+  color: var(--color-primary) !important;
+}
+
+/* Rating */
+.featured-products ul.products li.product .product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 1.25rem 0.5rem 1.25rem;
+}
+
+.featured-products ul.products li.product .rating-stars {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.featured-products ul.products li.product .rating-stars .star-full {
+  color: var(--color-woo-rating, #fbbf24);
+}
+
+.featured-products ul.products li.product .rating-count {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+/* Price */
+.featured-products ul.products li.product .product-price-wrapper {
+  padding: 0 1.25rem 1.25rem 1.25rem !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.featured-products ul.products li.product .price {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: var(--color-text-dark) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 0.5rem !important;
+}
+
+.featured-products ul.products li.product .price del {
+  font-size: 0.875rem !important;
+  color: var(--color-text-lighter) !important;
+  font-weight: 400 !important;
+  text-decoration: line-through !important;
+  opacity: 0.6 !important;
+}
+
+.featured-products ul.products li.product .price ins {
+  text-decoration: none !important;
+  background: none !important;
+  color: var(--color-danger, #ef4444) !important;
+  font-weight: 700 !important;
+  font-size: 1.375rem !important;
+}
+
+/* ===================================================================
+   QUICK VIEW BUTTON - NO BORDER
+   =================================================================== */
+.featured-products ul.products li.product .quick-view-button {
+  width: calc(100% - 2rem) !important; /* Add margins for spacing */
+  background: transparent !important;
+  color: #374151 !important;
+  border: none !important; /* Removed border */
+  padding: 0.875rem 1.5rem !important;
+  margin: 0 1rem !important; /* Left and right margins */
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+}
+
+.featured-products ul.products li.product .quick-view-button:hover {
+  color: var(--color-primary) !important;
+  background: #f9fafb !important;
+}
+
+.featured-products ul.products li.product .quick-view-button svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ===================================================================
+   ADD TO CART BUTTON - WITH BOTTOM SPACING
+   =================================================================== */
+.featured-products ul.products li.product .button {
+  width: calc(100% - 2rem) !important; /* Add margins for spacing */
+  background: var(--color-primary, #0ea5e9) !important;
+  color: var(--color-white) !important;
+  border: none !important;
+  padding: 0.875rem 1.5rem !important;
+  border-radius: 12px !important; /* Rounded button, not card corners */
+  margin: 0 1rem !important; /* Left and right margins, no bottom margin needed due to card padding */
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+}
+
+.featured-products ul.products li.product .button:hover {
+  background: var(--color-primary-hover, #0284c7) !important;
+}
+
+.featured-products ul.products li.product .button svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ===================================================================
+   SECTION FOOTER
+   =================================================================== */
+.featured-products .section-footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.featured-products .section-footer .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.625rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.featured-products .section-footer .btn-outline {
+  background: transparent;
+  color: var(--brand-color);
+  border: 2px solid var(--brand-color);
+}
+
+.featured-products .section-footer .btn-outline:hover {
+  background: var(--brand-color);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+/* ===================================================================
+   DISABLE CONFLICTING ANIMATIONS - KEEP SCROLL ANIMATION
+   =================================================================== */
+/* Scroll animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation delays */
+.featured-products ul.products li.product:nth-child(1) { animation-delay: 0.1s; }
+.featured-products ul.products li.product:nth-child(2) { animation-delay: 0.2s; }
+.featured-products ul.products li.product:nth-child(3) { animation-delay: 0.3s; }
+.featured-products ul.products li.product:nth-child(4) { animation-delay: 0.4s; }
+
+/* Mobile Responsive - UNCHANGED */
+@media (max-width: 767px) {
+  .featured-products ul.products li.product .woocommerce-loop-product__title {
+    font-size: 0.9rem !important;
+    padding: 1rem 1rem 0.5rem 1rem !important;
+  }
+
+  .featured-products ul.products li.product .product-rating {
+    padding: 0 1rem 0.5rem 1rem;
+  }
+
+  .featured-products ul.products li.product .product-price-wrapper {
+    padding: 0 1rem 1rem 1rem !important;
+  }
+
+  .featured-products ul.products li.product .button,
+  .featured-products ul.products li.product .quick-view-button {
+    font-size: 0.9375rem !important;
+    padding: 0.75rem 1.25rem !important;
+  }
+}
