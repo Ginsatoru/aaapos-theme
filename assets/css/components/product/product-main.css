@@ -55,8 +55,12 @@
 /* 11. Product forms */
 @import 'product-reviews-form.css';
 
-/* 9. Product summary */
+/* 12. Product summary */
 @import 'product-reviews-summary.css';
+
+/* 13. Product responsive */
+@import 'product-responsive.css';
+
 
 /**
  * Usage:

@@ -565,3 +565,85 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
     height: 28px !important;
   }
 }
+
+/* ============================================
+   RESPONSIVE - ACTIONS
+   ADD THIS TO THE BOTTOM OF product-actions.css
+   Replace the existing @media (max-width: 767px) section
+   ============================================ */
+
+@media (max-width: 991px) {
+  .single-product button.single_add_to_cart_button,
+  .single-product .buy-now-button {
+    height: 50px !important;
+    font-size: 0.9375rem !important;
+  }
+
+  .single-product .quantity {
+    width: fit-content !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* CRITICAL: Override the row layout for mobile */
+  .single-product form.cart .woocommerce-variation-add-to-cart,
+  body.single-product .variations_form .woocommerce-variation-add-to-cart.variations_button,
+  body.single-product .single_variation_wrap .woocommerce-variation-add-to-cart.variations_button,
+  body.single-product .woocommerce-variation-add-to-cart.variations_button,
+  body.single-product div.woocommerce-variation-add-to-cart,
+  .single-product .woocommerce-variation-add-to-cart,
+  div.woocommerce-variation-add-to-cart {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Stack quantity and add to cart vertically on mobile */
+  .single-product .product-purchase-group .cart {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Quantity selector - fit content with centered controls */
+  .single-product .quantity {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .single-product .quantity .quantity-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
+    height: 44px !important;
+  }
+  
+  /* Ensure buttons stay compact */
+  .single-product .quantity-wrapper button.minus,
+  .single-product .quantity-wrapper button.plus {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .single-product .quantity-wrapper input.qty {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    height: 36px !important;
+  }
+
+  /* Add to cart button - full width */
+  .single-product button.single_add_to_cart_button,
+  .single-product .woocommerce-variation-add-to-cart button.single_add_to_cart_button {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .single-product .payment-methods {
+    justify-content: flex-start !important;
+  }
+
+  .single-product .payment-icon {
+    height: 28px !important;
+  }
+}
