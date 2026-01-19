@@ -507,3 +507,317 @@
     height: 18px;
   }
 }
+
+/* ==========================================================================
+   PAYMENT METHODS SECTION - CUSTOM RADIO BUTTON STYLING
+   ========================================================================== */
+
+/* Payment methods list */
+.wc_payment_methods.payment_methods.methods {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+}
+
+/* Individual payment method item */
+.wc_payment_methods li.wc_payment_method {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  background: var(--color-white) !important;
+  border: 2px solid #D1D5DB !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+.wc_payment_methods li.wc_payment_method:hover {
+  border-color: var(--brand-color) !important;
+  background: rgba(var(--brand-color-rgb), 0.03) !important;
+}
+
+/* Hide default radio button */
+.wc_payment_methods input[type="radio"].input-radio {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Payment method label */
+.wc_payment_methods li.wc_payment_method > label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  padding: 1rem 1.25rem !important;
+  padding-left: 3rem !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  color: var(--color-text-dark) !important;
+  position: relative !important;
+  min-height: 56px !important;
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Payment method icons (Klarna, Afterpay, Card icons) */
+.wc_payment_methods li.wc_payment_method > label img.stripe-icon {
+  height: 24px !important;
+  width: auto !important;
+  max-width: 80px !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+}
+
+/* Custom radio button (outer circle) */
+.wc_payment_methods li.wc_payment_method > label::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 1.125rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  border: 2.5px solid #9CA3AF !important;
+  background: var(--color-white) !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+/* Hover state for radio button */
+.wc_payment_methods li.wc_payment_method:hover > label::before {
+  border-color: var(--brand-color) !important;
+}
+
+/* Checked state - outer circle */
+.wc_payment_methods input[type="radio"].input-radio:checked + label::before {
+  border-color: var(--brand-color) !important;
+  border-width: 2.5px !important;
+  background: var(--color-white) !important;
+}
+
+/* Checked state - inner dot */
+.wc_payment_methods input[type="radio"].input-radio:checked + label::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 1.4375rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background: var(--brand-color) !important;
+  box-shadow: 0 0 0 2px var(--color-white) !important;
+}
+
+/* Checked state - card border */
+.wc_payment_methods input[type="radio"].input-radio:checked + label {
+  border: none !important;
+  background: transparent !important;
+}
+
+.wc_payment_methods li.wc_payment_method input[type="radio"].input-radio:checked ~ * {
+  border: none !important;
+}
+
+.wc_payment_methods input[type="radio"].input-radio:checked ~ label,
+.wc_payment_methods input[type="radio"].input-radio:checked + label {
+  border: none !important;
+}
+
+/* Checked payment method - highlight the entire card */
+.wc_payment_methods li.wc_payment_method:has(input[type="radio"]:checked) {
+  border-color: var(--brand-color) !important;
+  background: rgba(var(--brand-color-rgb), 0.06) !important;
+}
+
+/* Focus state for accessibility */
+.wc_payment_methods input[type="radio"].input-radio:focus + label::before {
+  outline: 2px solid var(--brand-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* Payment box (expanded content area) */
+.wc_payment_methods .payment_box {
+  padding: 1.25rem !important;
+  margin: 0 !important;
+  border-top: 1px solid var(--color-border-light) !important;
+  background: rgba(var(--brand-color-rgb), 0.02) !important;
+  border-radius: 0 0 10px 10px !important;
+}
+
+/* Payment description text */
+.wc_payment_methods .payment_box p {
+  margin: 0 0 0.75rem 0 !important;
+  font-size: 0.875rem !important;
+  color: var(--color-text-light) !important;
+  line-height: 1.5 !important;
+}
+
+.wc_payment_methods .payment_box p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   STRIPE PAYMENT ELEMENTS STYLING - CLEAN & MODERN
+   ========================================================================== */
+
+/* Stripe form wrapper */
+.wc_payment_methods .payment_box .wc-upe-form,
+.wc_payment_methods .payment_box fieldset {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Stripe Element Container */
+.wc_payment_methods .payment_box .wc-stripe-upe-element,
+.wc_payment_methods .payment_box .StripeElement {
+  margin: 0 0 1rem 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Private Stripe Element Wrapper - Clean styling */
+.wc_payment_methods .payment_box .__PrivateStripeElement {
+  border: 2px solid var(--color-gray-300) !important;
+  border-radius: 12px !important;
+  background: var(--color-white) !important;
+  padding: 0.875rem !important;
+  transition: border-color 0.2s ease !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+}
+
+/* Hover state */
+.wc_payment_methods .payment_box .__PrivateStripeElement:hover {
+  border-color: var(--color-primary) !important;
+}
+
+/* Focus state - NO BOX SHADOW */
+.wc_payment_methods .payment_box .__PrivateStripeElement:focus-within,
+.wc_payment_methods .payment_box .wc-stripe-upe-element:focus-within .__PrivateStripeElement {
+  border-color: var(--color-primary) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Stripe iFrame */
+.wc_payment_methods .payment_box .__PrivateStripeElement iframe {
+  border: none !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+/* Error messages container */
+.wc_payment_methods .payment_box #wc-stripe-upe-errors,
+.wc_payment_methods .payment_box #wc-stripe_klarna-upe-errors,
+.wc_payment_methods .payment_box #wc-stripe_afterpay_clearpay-upe-errors {
+  margin-top: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
+  background: #FEE2E2 !important;
+  border: 1px solid #FCA5A5 !important;
+  border-radius: 8px !important;
+  color: #991B1B !important;
+  font-size: 0.875rem !important;
+  display: none !important;
+}
+
+/* Show error when it has content */
+.wc_payment_methods .payment_box #wc-stripe-upe-errors:not(:empty),
+.wc_payment_methods .payment_box #wc-stripe_klarna-upe-errors:not(:empty),
+.wc_payment_methods .payment_box #wc-stripe_afterpay_clearpay-upe-errors:not(:empty) {
+  display: block !important;
+}
+
+/* Hidden inputs */
+.wc_payment_methods .payment_box input[type="hidden"] {
+  display: none !important;
+}
+
+/* Saved payment methods */
+.wc_payment_methods .payment_box .woocommerce-SavedPaymentMethods {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 0 1rem 0 !important;
+}
+
+/* Payment method description text */
+.wc_payment_methods .payment_box > p {
+  margin: 0 0 1rem 0 !important;
+  padding: 0 !important;
+  font-size: 0.875rem !important;
+  color: var(--color-text-light) !important;
+  line-height: 1.6 !important;
+}
+
+.wc_payment_methods .payment_box > p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Payment box spacing adjustments */
+.wc_payment_methods .payment_box {
+  padding: 1.25rem 1.25rem 1rem 1.25rem !important;
+}
+
+/* Klarna specific messaging */
+.wc_payment_methods .payment_method_stripe_klarna .payment_box {
+  background: rgba(var(--brand-color-rgb), 0.03) !important;
+}
+
+/* Remove any default WooCommerce/Stripe shadows */
+.wc_payment_methods .payment_box *,
+.wc_payment_methods .payment_box *:focus,
+.wc_payment_methods .payment_box *:hover {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Ensure clean focus states throughout */
+.wc_payment_methods .payment_box *:focus-visible {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .wc_payment_methods li.wc_payment_method > label {
+    padding: 0.875rem 1rem !important;
+    padding-left: 2.75rem !important;
+    min-height: 52px !important;
+    font-size: 0.9375rem !important;
+  }
+  
+  .wc_payment_methods li.wc_payment_method > label::before {
+    left: 1rem !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  .wc_payment_methods input[type="radio"].input-radio:checked + label::after {
+    left: 1.3125rem !important;
+    width: 9px !important;
+    height: 9px !important;
+  }
+  
+  .wc_payment_methods li.wc_payment_method > label img.stripe-icon {
+    height: 20px !important;
+    max-width: 60px !important;
+  }
+}
