@@ -1,7 +1,8 @@
 <?php
 /**
  * Site Footer Template - Modernized with Image-based Payment Icons
- * 
+ * UPDATED: Footer categories now sync with homepage category order
+ * site-footer.php
  * @package aaapos-prime
  * @since 1.0.0
  */
@@ -105,13 +106,35 @@ $social_icon_style = get_theme_mod('social_icon_style', 'rounded');
                         <h4 class="widget-title"><?php esc_html_e('Categories', 'aaapos-prime'); ?></h4>
                         
                         <?php
-                        $categories = get_terms(array(
-                            'taxonomy' => 'product_cat',
-                            'hide_empty' => true,
-                            'number' => 6,
-                            'orderby' => 'count',
-                            'order' => 'DESC',
-                        ));
+                        // Get the same category order as homepage
+                        $selected_categories = get_theme_mod('selected_categories', '');
+                        $categories_count = get_theme_mod('categories_count', 6);
+                        
+                        if (!empty($selected_categories)) {
+                            // Use selected categories from homepage in the same order
+                            $category_ids = array_map('intval', explode(',', $selected_categories));
+                            
+                            // Limit to 6 for footer display
+                            $category_ids = array_slice($category_ids, 0, 6);
+                            
+                            // Get category objects maintaining order
+                            $categories = array();
+                            foreach ($category_ids as $cat_id) {
+                                $term = get_term($cat_id, 'product_cat');
+                                if ($term && !is_wp_error($term)) {
+                                    $categories[] = $term;
+                                }
+                            }
+                        } else {
+                            // Fallback: Get top categories by product count
+                            $categories = get_terms(array(
+                                'taxonomy' => 'product_cat',
+                                'hide_empty' => true,
+                                'number' => 6,
+                                'orderby' => 'count',
+                                'order' => 'DESC',
+                            ));
+                        }
                         
                         if (!empty($categories) && !is_wp_error($categories)):
                         ?>
