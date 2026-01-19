@@ -2,8 +2,8 @@
 /**
  * Product Categories Section with Scroll Animations
  * 
- * Displays product categories by checkbox selection or shows top categories
- * UPDATED: Now uses selected_categories from checkbox control
+ * Displays product categories with custom ordering from drag-and-drop control
+ * UPDATED: Now respects drag-and-drop order from customizer
  * 
  * @package Macedon_Ranges
  */
@@ -16,19 +16,33 @@ $categories_count = get_theme_mod('categories_count', 6);
 
 // Get product categories
 if (!empty($selected_categories)) {
-    // Get categories by selected IDs
+    // Get categories by selected IDs in the exact order from customizer
     $category_ids = array_map('intval', explode(',', $selected_categories));
     $category_ids = array_filter($category_ids); // Remove empty values
     
     if (!empty($category_ids)) {
-        $categories = get_terms(array(
+        // Get all categories at once
+        $all_categories = get_terms(array(
             'taxonomy'   => 'product_cat',
             'include'    => $category_ids,
             'hide_empty' => false,
-            'orderby'    => 'include', // Maintain the order from checkbox selection
         ));
+        
+        // Create associative array for quick lookup
+        $categories_by_id = array();
+        foreach ($all_categories as $cat) {
+            $categories_by_id[$cat->term_id] = $cat;
+        }
+        
+        // Reorder categories to match the customizer order
+        $categories = array();
+        foreach ($category_ids as $cat_id) {
+            if (isset($categories_by_id[$cat_id])) {
+                $categories[] = $categories_by_id[$cat_id];
+            }
+        }
     } else {
-        $categories = [];
+        $categories = array();
     }
 } else {
     // Fallback: Get top categories by product count
