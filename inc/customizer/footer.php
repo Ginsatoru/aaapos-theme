@@ -1,7 +1,7 @@
 <?php
 /**
  * Footer Customizer Settings - Complete Version with Payment Icons
- * Single primary color for entire site
+ * UPDATED: Payment icon controls now show/hide based on master toggle
  *
  * @package aaapos-prime
  * @since 1.0.0
@@ -375,7 +375,7 @@ function aaapos_footer_customizer($wp_customize)
         ]),
     );
 
-    // Show/Hide Payment Icons
+    // MASTER TOGGLE: Show/Hide Payment Icons Section
     $wp_customize->add_setting("footer_show_payment_icons", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
@@ -384,18 +384,22 @@ function aaapos_footer_customizer($wp_customize)
 
     $wp_customize->add_control("footer_show_payment_icons", [
         "label" => __("Show Payment Icons", "aaapos-prime"),
+        "description" => __(
+            "Enable or disable the entire payment icons section in footer.",
+            "aaapos-prime",
+        ),
         "section" => "aaapos_footer_settings",
         "type" => "checkbox",
         "priority" => 147,
     ]);
 
-    // Individual Payment Card Toggles
+    // Individual Payment Card Toggles (only visible when master toggle is ON)
     $payment_cards = [
-        'visa' => __('Show Visa', 'aaapos-prime'),
-        'mastercard' => __('Show Mastercard', 'aaapos-prime'),
-        'amex' => __('Show American Express', 'aaapos-prime'),
-        'paypal' => __('Show PayPal', 'aaapos-prime'),
-        'discover' => __('Show Discover', 'aaapos-prime'),
+        'visa' => __('Visa', 'aaapos-prime'),
+        'mastercard' => __('Mastercard', 'aaapos-prime'),
+        'amex' => __('American Express', 'aaapos-prime'),
+        'paypal' => __('PayPal', 'aaapos-prime'),
+        'discover' => __('Discover', 'aaapos-prime'),
     ];
 
     $priority = 148;
@@ -407,118 +411,63 @@ function aaapos_footer_customizer($wp_customize)
         ]);
 
         $wp_customize->add_control("payment_show_{$card}", [
-            "label" => $label,
+            "label" => sprintf(__('Show %s', 'aaapos-prime'), $label),
             "section" => "aaapos_footer_settings",
             "type" => "checkbox",
             "priority" => $priority,
+            "active_callback" => "aaapos_is_payment_icons_enabled",
         ]);
 
         $priority++;
     }
 
-    // Visa Icon Upload
-    $wp_customize->add_setting("payment_icon_visa", [
-        "default" => "",
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
+    // Payment Icon Upload Controls (only visible when master toggle is ON)
+    $payment_icon_uploads = [
+        'visa' => [
+            'label' => __('Visa Icon', 'aaapos-prime'),
+            'desc' => __('Upload Visa icon (PNG recommended, 100x60px).', 'aaapos-prime'),
+            'priority' => 153,
+        ],
+        'mastercard' => [
+            'label' => __('Mastercard Icon', 'aaapos-prime'),
+            'desc' => __('Upload Mastercard icon (PNG recommended, 100x60px).', 'aaapos-prime'),
+            'priority' => 154,
+        ],
+        'amex' => [
+            'label' => __('American Express Icon', 'aaapos-prime'),
+            'desc' => __('Upload Amex icon (PNG recommended, 100x60px).', 'aaapos-prime'),
+            'priority' => 155,
+        ],
+        'paypal' => [
+            'label' => __('PayPal Icon', 'aaapos-prime'),
+            'desc' => __('Upload PayPal icon (PNG recommended, 100x60px).', 'aaapos-prime'),
+            'priority' => 156,
+        ],
+        'discover' => [
+            'label' => __('Discover Icon', 'aaapos-prime'),
+            'desc' => __('Upload Discover icon (PNG recommended, 100x60px).', 'aaapos-prime'),
+            'priority' => 157,
+        ],
+    ];
 
-    $wp_customize->add_control(
-        new WP_Customize_Media_Control($wp_customize, "payment_icon_visa", [
-            "label" => __("Visa Icon", "aaapos-prime"),
-            "description" => __(
-                "Upload Visa icon (PNG recommended, 100x60px).",
-                "aaapos-prime",
-            ),
-            "section" => "aaapos_footer_settings",
-            "mime_type" => "image",
-            "priority" => 153,
-        ]),
-    );
+    foreach ($payment_icon_uploads as $card => $data) {
+        $wp_customize->add_setting("payment_icon_{$card}", [
+            "default" => "",
+            "sanitize_callback" => "absint",
+            "transport" => "refresh",
+        ]);
 
-    // Mastercard Icon Upload
-    $wp_customize->add_setting("payment_icon_mastercard", [
-        "default" => "",
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Media_Control(
-            $wp_customize,
-            "payment_icon_mastercard",
-            [
-                "label" => __("Mastercard Icon", "aaapos-prime"),
-                "description" => __(
-                    "Upload Mastercard icon (PNG recommended, 100x60px).",
-                    "aaapos-prime",
-                ),
+        $wp_customize->add_control(
+            new WP_Customize_Media_Control($wp_customize, "payment_icon_{$card}", [
+                "label" => $data['label'],
+                "description" => $data['desc'],
                 "section" => "aaapos_footer_settings",
                 "mime_type" => "image",
-                "priority" => 154,
-            ],
-        ),
-    );
-
-    // American Express Icon Upload
-    $wp_customize->add_setting("payment_icon_amex", [
-        "default" => "",
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Media_Control($wp_customize, "payment_icon_amex", [
-            "label" => __("American Express Icon", "aaapos-prime"),
-            "description" => __(
-                "Upload Amex icon (PNG recommended, 100x60px).",
-                "aaapos-prime",
-            ),
-            "section" => "aaapos_footer_settings",
-            "mime_type" => "image",
-            "priority" => 155,
-        ]),
-    );
-
-    // PayPal Icon Upload
-    $wp_customize->add_setting("payment_icon_paypal", [
-        "default" => "",
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Media_Control($wp_customize, "payment_icon_paypal", [
-            "label" => __("PayPal Icon", "aaapos-prime"),
-            "description" => __(
-                "Upload PayPal icon (PNG recommended, 100x60px).",
-                "aaapos-prime",
-            ),
-            "section" => "aaapos_footer_settings",
-            "mime_type" => "image",
-            "priority" => 156,
-        ]),
-    );
-
-    // Discover Icon Upload
-    $wp_customize->add_setting("payment_icon_discover", [
-        "default" => "",
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control(
-        new WP_Customize_Media_Control($wp_customize, "payment_icon_discover", [
-            "label" => __("Discover Icon", "aaapos-prime"),
-            "description" => __(
-                "Upload Discover icon (PNG recommended, 100x60px).",
-                "aaapos-prime",
-            ),
-            "section" => "aaapos_footer_settings",
-            "mime_type" => "image",
-            "priority" => 157,
-        ]),
-    );
+                "priority" => $data['priority'],
+                "active_callback" => "aaapos_is_payment_icons_enabled",
+            ]),
+        );
+    }
 
     // -------------------------------------------------------------------
     // BACK TO TOP BUTTON
@@ -576,6 +525,14 @@ function aaapos_footer_customizer($wp_customize)
 add_action("customize_register", "aaapos_footer_customizer");
 
 /**
+ * Active Callback: Check if payment icons are enabled
+ * Used to show/hide individual payment icon controls
+ */
+function aaapos_is_payment_icons_enabled() {
+    return get_theme_mod('footer_show_payment_icons', true);
+}
+
+/**
  * Sanitize Select Fields
  */
 function aaapos_sanitize_select($input, $setting)
@@ -583,25 +540,6 @@ function aaapos_sanitize_select($input, $setting)
     $input = sanitize_key($input);
     $choices = $setting->manager->get_control($setting->id)->choices;
     return array_key_exists($input, $choices) ? $input : $setting->default;
-}
-
-/**
- * Sanitize payment methods selection
- */
-function aaapos_sanitize_payment_methods($input) {
-    $valid = array('visa', 'mastercard', 'amex', 'paypal', 'discover');
-    
-    if (is_array($input)) {
-        return array_values(array_intersect($input, $valid));
-    }
-    
-    // If it's a single value (from select dropdown), convert to array
-    if (in_array($input, $valid)) {
-        return array($input);
-    }
-    
-    // Return default if invalid
-    return array('visa', 'mastercard', 'amex', 'paypal', 'discover');
 }
 
 /**
