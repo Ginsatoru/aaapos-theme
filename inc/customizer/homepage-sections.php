@@ -29,7 +29,7 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     $wp_customize->add_setting("featured_products_title", [
-        "default" => "Featured Products",
+        "default" => "Best Selling Products",
         "sanitize_callback" => "sanitize_text_field",
         "transport" => "postMessage",
     ]);
@@ -116,11 +116,10 @@ function mr_homepage_sections_customizer($wp_customize)
         "priority" => 55,
     ]);
 
-    // NEW: Category Checkboxes Control
-    // Get all product categories for checkbox options
     $product_categories = get_terms([
         'taxonomy' => 'product_cat',
         'hide_empty' => false,
+        'parent' => 0,
         'orderby' => 'name',
         'order' => 'ASC',
     ]);

@@ -826,7 +826,7 @@ ul.products.search-results-grid li.search-card-wrapper {
 }
 
 /* ==========================================================================
-   PAGINATION
+   PAGINATION - FIXED ALIGNMENT
    ========================================================================== */
 
 .woocommerce-pagination {
@@ -835,9 +835,12 @@ ul.products.search-results-grid li.search-card-wrapper {
   text-align: center;
 }
 
+/* Target both ul-based and nav-based pagination */
 .woocommerce-pagination ul,
-.woocommerce-pagination .pagination {
+.woocommerce-pagination .pagination,
+.woocommerce-pagination .navigation.pagination {
   display: inline-flex;
+  align-items: center; /* FIXED: Ensures vertical alignment */
   gap: 0.5rem;
   list-style: none;
   padding: 0;
@@ -846,8 +849,18 @@ ul.products.search-results-grid li.search-card-wrapper {
   background: none !important;
 }
 
+/* Target the nav-links wrapper */
+.woocommerce-pagination .nav-links {
+  display: inline-flex;
+  align-items: center; /* FIXED: Critical for alignment */
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+}
+
 .woocommerce-pagination ul:hover,
-.woocommerce-pagination .pagination:hover {
+.woocommerce-pagination .pagination:hover,
+.woocommerce-pagination .navigation.pagination:hover {
   background: none !important;
   border: none !important;
   transform: none !important;
@@ -858,6 +871,8 @@ ul.products.search-results-grid li.search-card-wrapper {
   margin: 0;
   background: none !important;
   border: none !important;
+  display: flex; /* FIXED: Makes li a flex container */
+  align-items: center; /* FIXED: Centers content vertically */
 }
 
 .woocommerce-pagination ul li:hover {
@@ -882,6 +897,22 @@ ul.products.search-results-grid li.search-card-wrapper {
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s ease;
+  line-height: 1; /* FIXED: Ensures consistent line height */
+  vertical-align: middle; /* ADDED: Extra alignment help */
+}
+
+/* FIXED: Specific styling for prev/next buttons with SVG icons */
+.woocommerce-pagination .page-numbers.prev,
+.woocommerce-pagination .page-numbers.next {
+  gap: 0.375rem; /* Space between icon and text */
+}
+
+/* FIXED: Ensure SVG icons are properly aligned */
+.woocommerce-pagination .page-numbers svg {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .woocommerce-pagination .page-numbers:hover {
@@ -901,6 +932,31 @@ ul.products.search-results-grid li.search-card-wrapper {
 .woocommerce-pagination .page-numbers.current:hover {
   transform: none;
   box-shadow: none;
+}
+
+/* FIXED: Ensure dots (...) are also properly aligned */
+.woocommerce-pagination .page-numbers.dots {
+  border: none;
+  background: transparent;
+  min-width: auto;
+  pointer-events: none;
+}
+
+.woocommerce-pagination .page-numbers.dots:hover {
+  transform: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+/* Hide screen reader text */
+.woocommerce-pagination .screen-reader-text {
+  position: absolute;
+  left: -9999px;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* ==========================================================================

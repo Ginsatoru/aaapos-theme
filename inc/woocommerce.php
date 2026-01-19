@@ -1135,6 +1135,7 @@ if (!function_exists("aaapos_render_category_filter")) {
         $args = [
             "taxonomy" => "product_cat",
             "hide_empty" => true,
+            "parent" => 0,
             "orderby" => "name",
             "order" => "ASC",
         ];

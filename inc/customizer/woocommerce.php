@@ -104,6 +104,7 @@ function mr_woocommerce_customizer($wp_customize)
     $categories = get_terms([
         "taxonomy" => "product_cat",
         "hide_empty" => false,
+        "parent" => 0,
     ]);
 
     $category_choices = [];

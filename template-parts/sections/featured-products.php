@@ -1,6 +1,6 @@
 <?php
 /**
- * Featured Products Section - Matching Image 1 Style
+ * Featured Products Section - Best Selling Products
  * Template: template-parts/sections/featured-products.php
  *
  * @package aaapos-prime
@@ -11,20 +11,20 @@ if (!function_exists("wc_get_products")) {
     return;
 }
 
-$title = get_theme_mod("featured_products_title", "Featured Products");
+$title = get_theme_mod("featured_products_title", "Best Selling Products");
 $description = get_theme_mod(
     "featured_products_description",
     "Browse our most popular pet food, animal feed, and farm supplies trusted by local pet owners and farmers",
 );
 $count = get_theme_mod("featured_products_count", 4);
 
-// Get featured products
+// Get best-selling products (ordered by total sales)
 $products = wc_get_products([
     "status" => "publish",
     "limit" => $count,
     "visibility" => "visible",
-    "featured" => true,
-    "orderby" => "date",
+    "meta_key" => "total_sales",
+    "orderby" => "meta_value_num",
     "order" => "DESC",
 ]);
 
@@ -194,7 +194,7 @@ $show_quick_view = get_theme_mod("show_quick_view", true);
             </div>
         <?php else: ?>
             <div class="no-products-message">
-                <p>No featured products found.</p>
+                <p>No best-selling products found.</p>
             </div>
         <?php endif; ?>
     </div>
