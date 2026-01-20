@@ -1,9 +1,10 @@
 /* ==========================================================================
    CHECKOUT PAGE - Order Review & Payment Styles
-   WITH COUPON TOGGLE BUTTON - FIXED SUBTOTAL ALIGNMENT
+   checkout-review.css
    
    @package aaapos-prime
    @since 1.0.0
+   UPDATED: Added skeleton loading animations
    ========================================================================== */
 
 /* ==========================================================================
@@ -20,6 +21,11 @@
   border: 1px solid #E5E5E5;
   position: sticky;
   top: calc(var(--header-total-height) + 1rem);
+  transition: opacity 0.3s ease;
+}
+
+.order-review-wrapper.updating {
+  opacity: 0.6;
 }
 
 .order-review-title {
@@ -43,6 +49,21 @@
   border-collapse: collapse;
   margin-bottom: 1.5rem;
   table-layout: fixed;
+  transition: opacity 0.3s ease;
+}
+
+/* Skeleton loading state for table rows */
+.woocommerce-checkout-review-order-table.skeleton-loading tbody tr,
+.woocommerce-checkout-review-order-table.skeleton-loading tfoot tr {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.woocommerce-checkout-review-order-table.skeleton-loading tbody td,
+.woocommerce-checkout-review-order-table.skeleton-loading tfoot td,
+.woocommerce-checkout-review-order-table.skeleton-loading tfoot th {
+  color: transparent !important;
 }
 
 .woocommerce-checkout-review-order-table thead th {

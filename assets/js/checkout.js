@@ -786,4 +786,77 @@
         }
     }
 
+    /**
+ * Checkout Skeleton Loading
+ * Fixed: Prevents layout shifts by controlling when skeleton is applied
+ * 
+ * @package aaapos-prime
+ */
+
+(function($) {
+    'use strict';
+    
+    var skeletonTimeout;
+    var isUpdating = false;
+    
+    // Apply skeleton to shipping methods
+    function applySkeletonToShipping() {
+        $('.woocommerce-shipping-methods li').addClass('skeleton-loading');
+    }
+    
+    // Remove skeleton from shipping
+    function removeSkeletonFromShipping() {
+        $('.woocommerce-shipping-methods li').removeClass('skeleton-loading');
+    }
+    
+    // Apply skeleton to order review
+    function applySkeletonToOrderReview() {
+        if (!isUpdating) {
+            isUpdating = true;
+            $('.woocommerce-checkout-review-order-table').addClass('skeleton-loading');
+            $('.order-review-wrapper').addClass('updating');
+        }
+    }
+    
+    // Remove skeleton from order review
+    function removeSkeletonFromOrderReview() {
+        isUpdating = false;
+        $('.woocommerce-checkout-review-order-table').removeClass('skeleton-loading');
+        $('.order-review-wrapper').removeClass('updating');
+    }
+    
+    $(document).ready(function() {
+        if (!$('body').hasClass('woocommerce-checkout')) {
+            return;
+        }
+        
+        // When checkout update starts
+        $(document.body).on('update_checkout', function() {
+            clearTimeout(skeletonTimeout);
+            
+            applySkeletonToShipping();
+            applySkeletonToOrderReview();
+        });
+        
+        // When checkout update completes
+        $(document.body).on('updated_checkout', function() {
+            clearTimeout(skeletonTimeout);
+            
+            // Delay removal to ensure content is ready
+            skeletonTimeout = setTimeout(function() {
+                removeSkeletonFromShipping();
+                removeSkeletonFromOrderReview();
+            }, 150);
+        });
+        
+        // On errors, remove skeleton immediately
+        $(document.body).on('checkout_error', function() {
+            clearTimeout(skeletonTimeout);
+            removeSkeletonFromShipping();
+            removeSkeletonFromOrderReview();
+        });
+    });
+    
+})(jQuery);
+
 })(jQuery);
