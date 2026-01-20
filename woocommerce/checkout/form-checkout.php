@@ -2,6 +2,7 @@
 /**
  * Checkout Form - WITH INTEGRATED PROGRESS INDICATOR
  * CLEANED UP - No duplicate fields
+ * FIXED: Only shows shipping method section when methods are actually available
  * UPDATED: Fixed checkbox alignment with custom styling
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/checkout/form-checkout.php.
@@ -28,6 +29,9 @@ if (
     );
     return;
 }
+
+// Check if cart needs shipping at all
+$needs_shipping = WC()->cart->needs_shipping() && WC()->cart->show_shipping();
 ?>
 
 <!-- CHECKOUT PROGRESS INDICATOR -->
@@ -99,8 +103,8 @@ if (
 							</div>
 						</div>
 
-						<!-- Shipping Method Section -->
-						<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()): ?>
+						<!-- Shipping Method Section - Show if cart needs shipping -->
+						<?php if ($needs_shipping): ?>
 							
 							<div class="checkout-section shipping-method-section">
 								<h3 class="section-title">
@@ -115,15 +119,15 @@ if (
 									<?php esc_html_e("Shipping method", "macedon-ranges"); ?>
 								</h3>
 								
-								<div class="shipping-method-options">
-									<?php wc_cart_totals_shipping_html(); ?>
+								<div class="shipping-method-options" id="shipping_method">
+									<?php woocommerce_order_review_shipping(); ?>
 								</div>
 							</div>
 
 						<?php endif; ?>
 
-						<!-- Shipping Address Section (Only if shipping is needed) -->
-						<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()): ?>
+						<!-- Shipping Address Section - Show if cart needs shipping -->
+						<?php if ($needs_shipping): ?>
 							
 							<div class="checkout-section shipping-section">
 								<h3 class="section-title shipping-section-title">

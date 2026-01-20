@@ -1264,6 +1264,35 @@ if (!function_exists("aaapos_render_category_filter")) {
 }
 
 /**
+ * Custom shipping method output for checkout page
+ * This ensures the shipping section updates via AJAX
+ */
+function woocommerce_order_review_shipping() {
+    wc_cart_totals_shipping_html();
+}
+
+/**
+ * Add shipping method div to WooCommerce fragments for AJAX updates
+ * This ensures the shipping method section updates when address changes
+ * FIXED: Properly wraps content and forces recalculation
+ */
+add_filter('woocommerce_update_order_review_fragments', 'aaapos_shipping_method_fragment', 10, 1);
+
+function aaapos_shipping_method_fragment($fragments) {
+    // Force WooCommerce to recalculate shipping
+    WC()->cart->calculate_shipping();
+    
+    ob_start();
+    woocommerce_order_review_shipping();
+    $shipping_html = ob_get_clean();
+    
+    // Add to fragments array
+    $fragments['.shipping-method-options'] = '<div class="shipping-method-options" id="shipping_method">' . $shipping_html . '</div>';
+    
+    return $fragments;
+}
+
+/**
  * Add Custom Star Rating to Single Product Page
  */
 function aaapos_custom_single_rating()

@@ -535,6 +535,23 @@ if (is_product()) {
         true
     );
 }
+
+/**
+ * Enqueue Checkout Shipping Visibility Handler
+ */
+function aaapos_enqueue_checkout_shipping_handler() {
+    // Only on checkout page
+    if (is_checkout() && !is_order_received_page()) {
+        wp_enqueue_script(
+            'aaapos-checkout-shipping-visibility',
+            get_template_directory_uri() . '/assets/js/checkout-shipping.js',
+            array('jquery', 'wc-checkout'),
+            AAAPOS_VERSION,
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'aaapos_enqueue_checkout_shipping_handler', 1001);
             // Localize for cart.js and woocommerce.js
             wp_localize_script("mr-cart", "mr_ajax", [
                 "url" => admin_url("admin-ajax.php"),
