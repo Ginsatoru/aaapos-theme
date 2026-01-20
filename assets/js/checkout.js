@@ -3,12 +3,137 @@
  * WITH COUPON TOGGLE & NOTIFICATIONS
  * FIXED: Proper coupon validation with user feedback
  * UPDATED: Shows discount amount in notification and proper error messages
+ * FIXED: Auto-select single shipping method and force visual display
  * 
  * @package aaapos-prime
  */
 
 (function($) {
     'use strict';
+
+    /**
+     * Force shipping method radio button to always display and be auto-selected
+     * FIX: WooCommerce converts radio to hidden input when there's only 1 method
+     * We need to convert it BACK to a radio button!
+     */
+    function forceShippingRadioDisplay() {
+        const $shippingMethods = $('.woocommerce-shipping-methods');
+        
+        if ($shippingMethods.length) {
+            // CRITICAL FIX: Look for BOTH radio AND hidden inputs
+            let $inputs = $shippingMethods.find('input.shipping_method');
+            
+            if ($inputs.length === 1) {
+                const $input = $inputs.first();
+                const $label = $input.next('label');
+                const $listItem = $input.closest('li');
+                
+                // CONVERT HIDDEN INPUT TO RADIO
+                if ($input.attr('type') === 'hidden') {
+                    // Store the current attributes
+                    const inputId = $input.attr('id');
+                    const inputName = $input.attr('name');
+                    const inputValue = $input.val();
+                    const inputDataIndex = $input.attr('data-index');
+                    
+                    // Create a new radio input with same attributes
+                    const $newRadio = $('<input>', {
+                        type: 'radio',
+                        id: inputId,
+                        name: inputName,
+                        value: inputValue,
+                        'data-index': inputDataIndex,
+                        'class': 'shipping_method',
+                        checked: true
+                    });
+                    
+                    // Replace the hidden input with radio
+                    $input.replaceWith($newRadio);
+                    
+                    // Update reference to the new radio
+                    $inputs = $shippingMethods.find('input.shipping_method');
+                }
+                
+                // Now style the radio button
+                const $radio = $inputs.first();
+                
+                // FORCE CHECK THE RADIO
+                $radio.prop('checked', true);
+                $radio.attr('checked', 'checked');
+                
+                // Apply our custom positioning (invisible but functional)
+                $radio.css({
+                    'position': 'absolute',
+                    'opacity': '0',
+                    'width': '1px',
+                    'height': '1px',
+                    'left': '0',
+                    'top': '0',
+                    'display': 'block',
+                    'visibility': 'visible',
+                    'pointer-events': 'auto'
+                });
+                
+                // Ensure label has proper padding for the radio button
+                $label.css('padding-left', '2.75rem');
+                
+                // Add classes to force visual selected state
+                $listItem.addClass('shipping-method-auto-selected');
+                $label.addClass('shipping-method-selected');
+                
+                // Force the ::after pseudo element to show (the orange dot)
+                $label.attr('data-selected', 'true');
+                
+            } else if ($inputs.length > 1) {
+                // Multiple shipping methods - ensure checked one shows properly
+                $inputs.each(function() {
+                    const $input = $(this);
+                    const $label = $input.next('label');
+                    const $listItem = $input.closest('li');
+                    
+                    // Make sure they're radio buttons, not hidden
+                    if ($input.attr('type') === 'hidden') {
+                        $input.attr('type', 'radio');
+                    }
+                    
+                    if ($input.is(':checked')) {
+                        $listItem.addClass('shipping-method-auto-selected');
+                        $label.addClass('shipping-method-selected');
+                        $label.attr('data-selected', 'true');
+                    } else {
+                        $listItem.removeClass('shipping-method-auto-selected');
+                        $label.removeClass('shipping-method-selected');
+                        $label.removeAttr('data-selected');
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * Handle shipping method changes
+     */
+    function handleShippingMethodChange() {
+        $(document).on('change', '.woocommerce-shipping-methods input[type="radio"]', function() {
+            const $radio = $(this);
+            const $allItems = $('.woocommerce-shipping-methods li');
+            const $allLabels = $('.woocommerce-shipping-methods label');
+            
+            // Remove selected state from all
+            $allItems.removeClass('shipping-method-auto-selected');
+            $allLabels.removeClass('shipping-method-selected').removeAttr('data-selected');
+            
+            // Add to selected one
+            if ($radio.is(':checked')) {
+                const $listItem = $radio.closest('li');
+                const $label = $radio.next('label');
+                
+                $listItem.addClass('shipping-method-auto-selected');
+                $label.addClass('shipping-method-selected');
+                $label.attr('data-selected', 'true');
+            }
+        });
+    }
 
     /**
      * Remove duplicate coupon fields
@@ -437,6 +562,12 @@
         // Initialize coupon toggle handler
         handleCouponToggle();
         
+        // Force shipping radio display and auto-select
+        forceShippingRadioDisplay();
+        
+        // Handle shipping method changes
+        handleShippingMethodChange();
+        
         // Smooth toggle for "Ship to different address"
         $('#ship-to-different-address-checkbox').on('change', function() {
             const $shippingFields = $('.shipping-fields');
@@ -597,6 +728,11 @@
             setTimeout(removeDuplicateCoupons, 100);
             setTimeout(removeDuplicateCoupons, 300);
             setTimeout(removeDuplicateCoupons, 500);
+            
+            // Force shipping radio with delays
+            setTimeout(forceShippingRadioDisplay, 100);
+            setTimeout(forceShippingRadioDisplay, 500);
+            setTimeout(forceShippingRadioDisplay, 1000);
         }
     });
 
@@ -609,17 +745,33 @@
         // Remove duplicates after checkout update
         setTimeout(removeDuplicateCoupons, 100);
         setTimeout(removeDuplicateCoupons, 300);
+        
+        // Re-apply shipping radio fix after update with multiple attempts
+        setTimeout(forceShippingRadioDisplay, 50);
+        setTimeout(forceShippingRadioDisplay, 150);
+        setTimeout(forceShippingRadioDisplay, 300);
+        setTimeout(forceShippingRadioDisplay, 500);
+    });
+    
+    /**
+     * Re-apply shipping radio fix when checkout updates
+     */
+    $(document.body).on('update_checkout', function() {
+        setTimeout(forceShippingRadioDisplay, 100);
+        setTimeout(forceShippingRadioDisplay, 300);
     });
 
     /**
-     * Monitor for dynamically added coupon forms
+     * Monitor for dynamically added coupon forms and shipping methods
      */
     if ($('body').hasClass('woocommerce-checkout')) {
-        // Use MutationObserver to catch any dynamically added coupons
+        // Use MutationObserver to catch any dynamically added elements
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.addedNodes.length) {
                     removeDuplicateCoupons();
+                    setTimeout(forceShippingRadioDisplay, 50);
+                    setTimeout(forceShippingRadioDisplay, 150);
                 }
             });
         });
