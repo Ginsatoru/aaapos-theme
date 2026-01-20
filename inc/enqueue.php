@@ -602,6 +602,17 @@ add_action('wp_enqueue_scripts', 'aaapos_enqueue_checkout_shipping_handler', 100
         true,
     );
 
+    // Deals Rotation Script - ALWAYS LOAD (Both production and development)
+if (is_front_page()) {
+    wp_enqueue_script(
+        'aaapos-deals-rotation',
+        get_template_directory_uri() . '/assets/js/deals-rotation.js',
+        array(), // REMOVE jQuery dependency - script is vanilla JS
+        MR_THEME_VERSION,
+        true // Load in footer
+    );
+}
+
     // Get custom image directly from customizer
     $login_image_id = get_theme_mod('auth_modal_login_image', '');
     $login_image_url = '';
@@ -837,7 +848,7 @@ function mr_script_loader_tag($tag, $handle, $src)
 
     // Scripts that should be deferred
     $defer_scripts = [
-        "mr-bundle", // Production bundle
+        "mr-bundle",
         "mr-theme",
         "mr-navigation",
         "mr-animations",

@@ -1,6 +1,6 @@
 /* ===================================================================
-   SPECIAL DEALS SECTION - REDESIGNED
-   Full-width background with glass-style product card
+   SPECIAL DEALS SECTION - AUTO-ROTATION DESIGN
+   Full-width background with glass-style product card slider
    =================================================================== */
 
 .special-deals-section {
@@ -13,15 +13,14 @@
   padding: 80px 20px;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
-  /* Background image is set inline via PHP for correct path */
-  background-size: cover !important; /* FIXED: Force cover on all images */
-  background-position: center center !important; /* FIXED: Force center positioning */
-  background-repeat: no-repeat !important; /* FIXED: Force no-repeat */
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
   background-attachment: scroll;
   overflow: hidden;
 }
 
-/* Dark overlay for better contrast - uses customizer opacity */
+/* Dark overlay for better contrast */
 .special-deals-section::before {
   content: "";
   position: absolute;
@@ -68,12 +67,20 @@
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* ===================================================================
+   SLIDER WRAPPER - Contains all deal cards
+   =================================================================== */
+
+.deals-slider-wrapper {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 /* Deal Card - Glass Morphism Style */
 .special-deal-card {
   display: grid;
   grid-template-columns: 40% 60%;
-  max-width: 900px;
-  margin: 0 auto;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -81,6 +88,31 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  
+  /* Rotation Animation Properties */
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+}
+
+/* Active deal card */
+.special-deal-card.active {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+}
+
+/* Fade animation variants (for smoother transitions) */
+.special-deal-card.fade-out {
+  opacity: 0;
+}
+
+.special-deal-card.fade-in {
+  opacity: 1;
 }
 
 /* Product Image */
@@ -328,6 +360,84 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* ===================================================================
+   NAVIGATION CONTROLS - Dots & Arrows
+   =================================================================== */
+
+/* Navigation Dots */
+.deals-nav-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.deals-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.deals-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.deals-dot.active {
+  background: var(--brand-color, #0ea5e9);
+  border-color: var(--brand-color, #0ea5e9);
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* Navigation Arrows */
+.deals-nav-arrows {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.deals-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: all;
+  color: #ffffff;
+}
+
+.deals-arrow:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.deals-arrow-prev {
+  margin-left: -60px;
+}
+
+.deals-arrow-next {
+  margin-right: -60px;
+}
+
 /* No Deals State */
 .no-deals {
   text-align: center;
@@ -379,7 +489,6 @@
 
   .special-deal-card {
     grid-template-columns: 1fr;
-    max-width: 700px;
   }
 
   .deal-card-image {
@@ -396,6 +505,15 @@
 
   .price-current {
     font-size: 2rem;
+  }
+  
+  /* Adjust arrows for tablet */
+  .deals-arrow-prev {
+    margin-left: -10px;
+  }
+  
+  .deals-arrow-next {
+    margin-right: -10px;
   }
 }
 
@@ -461,6 +579,15 @@
   .deal-btn {
     width: 100%;
   }
+  
+  /* Hide arrows on mobile, keep dots */
+  .deals-nav-arrows {
+    display: none;
+  }
+  
+  .deals-nav-dots {
+    margin-top: 20px;
+  }
 }
 
 /* Small Mobile */
@@ -488,5 +615,14 @@
 
   .countdown-value {
     font-size: 1.25rem;
+  }
+  
+  .deals-dot {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .deals-dot.active {
+    width: 24px;
   }
 }

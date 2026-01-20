@@ -4,7 +4,7 @@
   "scripts": {
     "clean": "rimraf assets/css/dist assets/js/dist",
     "build:css": "postcss assets/css/main.css -o assets/css/dist/main.min.css",
-    "build:js": "terser assets/js/animations.js assets/js/cart.js assets/js/category-filter-drag.js assets/js/footer.js assets/js/header-scroll.js assets/js/hero-video.js assets/js/modal.js assets/js/navigation.js assets/js/quantity-selector.js assets/js/quick-view.js assets/js/search-results.js assets/js/shop-column-toggle.js assets/js/slider.js assets/js/theme.js assets/js/variation-swatches.js assets/js/woocommerce.js --compress --mangle --output assets/js/dist/bundle.min.js",
+    "build:js": "terser assets/js/animations.js assets/js/cart.js assets/js/category-filter-drag.js assets/js/deals-rotation.js assets/js/footer.js assets/js/header-scroll.js assets/js/hero-video.js assets/js/modal.js assets/js/navigation.js assets/js/quantity-selector.js assets/js/quick-view.js assets/js/search-results.js assets/js/shop-column-toggle.js assets/js/slider.js assets/js/theme.js assets/js/variation-swatches.js assets/js/woocommerce.js --compress --mangle --output assets/js/dist/bundle.min.js",
     "build": "npm run clean && npm run build:css && npm run build:js"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 <?php
 /**
  * Homepage sections customizer settings
- * UPDATED: Uses drag-and-drop sortable control for category ordering
+ * UPDATED: Simplified deals section - auto-detects scheduled sales
  */
 function mr_homepage_sections_customizer($wp_customize)
 {
@@ -169,7 +169,7 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     // ===================================
-    // SPECIAL DEALS SECTION - ENHANCED
+    // SPECIAL DEALS SECTION - AUTO SCHEDULED
     // ===================================
 
     $wp_customize->add_setting("show_deals", [
@@ -180,6 +180,7 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("show_deals", [
         "label" => __("Show Special Deals Section", "macedon-ranges"),
+        "description" => __("Automatically displays products with active scheduled sales", "macedon-ranges"),
         "section" => "mr_homepage_sections",
         "type" => "checkbox",
         "priority" => 60,
@@ -260,69 +261,6 @@ function mr_homepage_sections_customizer($wp_customize)
             "step" => 0.1,
         ],
         "priority" => 73,
-    ]);
-
-    // Deal Selection Method
-    $wp_customize->add_setting("deal_selection_method", [
-        "default" => "manual",
-        "sanitize_callback" => "sanitize_text_field",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control("deal_selection_method", [
-        "label" => __("Deal Selection Method", "macedon-ranges"),
-        "description" => __(
-            "Choose how to select the product to display",
-            "macedon-ranges",
-        ),
-        "section" => "mr_homepage_sections",
-        "type" => "select",
-        "choices" => [
-            "manual" => __("Manual - Select Product ID", "macedon-ranges"),
-            "latest_sale" => __(
-                "Automatic - Latest Sale Product",
-                "macedon-ranges",
-            ),
-            "featured_sale" => __(
-                "Automatic - Featured Sale Product",
-                "macedon-ranges",
-            ),
-        ],
-        "priority" => 75,
-    ]);
-
-    $wp_customize->add_setting("deal_product_id", [
-        "default" => 0,
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control("deal_product_id", [
-        "label" => __("Deal Product ID", "macedon-ranges"),
-        "description" => __(
-            "Enter the product ID to display (only used when Manual is selected)",
-            "macedon-ranges",
-        ),
-        "section" => "mr_homepage_sections",
-        "type" => "number",
-        "priority" => 80,
-    ]);
-
-    $wp_customize->add_setting("deal_end_date", [
-        "default" => "",
-        "sanitize_callback" => "sanitize_text_field",
-        "transport" => "postMessage",
-    ]);
-
-    $wp_customize->add_control("deal_end_date", [
-        "label" => __("Deal End Date & Time", "macedon-ranges"),
-        "description" => __(
-            "Format: YYYY-MM-DD HH:MM:SS (e.g., 2026-12-31 23:59:59). Leave empty to hide countdown.",
-            "macedon-ranges",
-        ),
-        "section" => "mr_homepage_sections",
-        "type" => "text",
-        "priority" => 85,
     ]);
 
     // ===================================
