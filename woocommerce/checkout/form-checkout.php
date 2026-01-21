@@ -1,11 +1,8 @@
 <?php
 /**
  * Checkout Form - WITH INTEGRATED PROGRESS INDICATOR
- * CLEANED UP - No duplicate fields
- * FIXED: Only shows shipping method section when methods are actually available
- * UPDATED: Fixed checkbox alignment with custom styling
- *
- * This template can be overridden by copying it to yourtheme/woocommerce/checkout/form-checkout.php.
+ * UPDATED: Removed "Ship to different address" functionality
+ * CLEANED UP: Billing address only, shipping handled by WooCommerce default
  *
  * @package WooCommerce\Templates
  * @version 3.5.0
@@ -121,37 +118,6 @@ $needs_shipping = WC()->cart->needs_shipping() && WC()->cart->show_shipping();
 								
 								<div class="shipping-method-options" id="shipping_method">
 									<?php woocommerce_order_review_shipping(); ?>
-								</div>
-							</div>
-
-						<?php endif; ?>
-
-						<!-- Shipping Address Section - Show if cart needs shipping -->
-						<?php if ($needs_shipping): ?>
-							
-							<div class="checkout-section shipping-section">
-								<h3 class="section-title shipping-section-title">
-									<div class="title-with-icon">
-										<span class="title-icon">
-											<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-												<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-												<circle cx="12" cy="7" r="4"></circle>
-											</svg>
-										</span>
-										<label class="ship-different-checkbox">
-											<input id="ship-to-different-address-checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox custom-checkbox" <?php checked(apply_filters("woocommerce_ship_to_different_address_checked", "shipping" === get_option("woocommerce_ship_to_destination") ? 1 : 0), 1); ?> type="checkbox" name="ship_to_different_address" value="1" />
-											<span class="custom-checkbox-box">
-												<svg class="checkmark" width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M1 5L4.5 8.5L11 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-												</svg>
-											</span>
-											<span class="checkbox-label-text"><?php esc_html_e("Ship to a different address?", "woocommerce"); ?></span>
-										</label>
-									</div>
-								</h3>
-
-								<div class="shipping-fields">
-									<?php do_action("woocommerce_checkout_shipping"); ?>
 								</div>
 							</div>
 

@@ -1620,35 +1620,6 @@ function enable_cart_update_button()
 }
 
 /**
- * Remove duplicate "Ship to different address" section
- * We're handling it manually in our checkout template
- */
-remove_action('woocommerce_checkout_shipping', 'woocommerce_checkout_shipping', 10);
-
-/**
- * Add custom shipping fields output without the duplicate checkbox
- */
-add_action('woocommerce_checkout_shipping', function() {
-    $checkout = WC()->checkout();
-    
-    foreach ($checkout->get_checkout_fields('shipping') as $key => $field) {
-        woocommerce_form_field($key, $field, $checkout->get_value($key));
-    }
-}, 10);
-
-/**
- * Remove order notes from shipping section to prevent duplicates
- * Order notes will only show in "Additional information" section
- */
-add_filter('woocommerce_enable_order_notes_field', function($enabled) {
-    // Only disable in shipping context
-    if (doing_action('woocommerce_checkout_shipping')) {
-        return false;
-    }
-    return $enabled;
-}, 10, 1);
-
-/**
  * Enqueue Quick View Assets (FIXED - Works everywhere)
  */
 function aaapos_enqueue_quick_view_assets()
@@ -2813,7 +2784,7 @@ function aaapos_empty_cart_recommended_products()
     $show_rating = get_theme_mod("show_product_rating", true);
     $sale_badge_text = get_theme_mod(
         "sale_badge_text",
-        __("Sale", "macedon-ranges"),
+        __("Sale", "aaapos"),
     );
     $show_quick_view = get_theme_mod("show_quick_view", true);
     ?>
@@ -2823,15 +2794,15 @@ function aaapos_empty_cart_recommended_products()
             <div class="cart-empty-recommended__header">
                 <span class="cart-empty-recommended__badge"><?php esc_html_e(
                     "START SHOPPING",
-                    "macedon-ranges",
+                    "aaapos",
                 ); ?></span>
                 <h2 class="cart-empty-recommended__title"><?php esc_html_e(
                     "Popular Products",
-                    "macedon-ranges",
+                    "aaapos",
                 ); ?></h2>
                 <p class="cart-empty-recommended__subtitle"><?php esc_html_e(
                     "Check out our most popular items to get started",
-                    "macedon-ranges",
+                    "aaapos",
                 ); ?></p>
             </div>
             
@@ -2926,7 +2897,7 @@ function aaapos_empty_cart_recommended_products()
                             </svg>
                             <span><?php esc_html_e(
                                 "Quick View",
-                                "macedon-ranges",
+                                "aaapos",
                             ); ?></span>
                         </button>
                     <?php endif; ?>
@@ -2943,7 +2914,7 @@ function aaapos_empty_cart_recommended_products()
                             </svg>
                             <span><?php esc_html_e(
                                 "Select options",
-                                "macedon-ranges",
+                                "aaapos",
                             ); ?></span>
                         </a>
                     <?php else: ?>
