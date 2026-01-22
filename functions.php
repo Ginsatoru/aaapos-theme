@@ -87,6 +87,9 @@ add_action("after_setup_theme", "aaapos_load_theme_files", 1);
 // Remove "Clear" button from single product variations
 add_filter('woocommerce_reset_variations_link', '__return_empty_string');
 
+// Set to false for development, true for production
+define('MR_PRODUCTION_MODE', false);
+
 /**
  * Theme Setup
  *
@@ -896,3 +899,101 @@ function aaapos_display_contact_form_messages()
         echo "</div>";
     }
 }
+
+/**
+ * Add this code to your functions.php file
+ * 
+ * This will:
+ * 1. Include the setup wizard class
+ * 2. Trigger the setup on theme activation
+ * 3. Add a menu item to re-run setup if needed
+ */
+
+// Include setup wizard
+require_once get_template_directory() . '/inc/setup-wizard.php';
+
+/**
+ * Set activation redirect transient on theme switch
+ */
+function aaapos_setup_theme_activation() {
+    // Only run on theme activation, not on every page load
+    if (!get_option('aaapos_setup_complete')) {
+        set_transient('_aaapos_activation_redirect', 1, 30);
+    }
+}
+add_action('after_switch_theme', 'aaapos_setup_theme_activation');
+
+/**
+ * Add setup wizard link to admin menu (for re-running setup)
+ */
+function aaapos_add_setup_menu_link() {
+    // Only show if setup is complete (to re-run) or not (to complete)
+    add_theme_page(
+        __('Theme Setup', 'aaapos'),
+        __('Theme Setup', 'aaapos'),
+        'manage_options',
+        'aaapos-setup',
+        '__return_false' // The wizard handles its own output
+    );
+}
+add_action('admin_menu', 'aaapos_add_setup_menu_link');
+
+/**
+ * Add setup wizard link to Appearance menu
+ */
+function aaapos_add_appearance_setup_link($wp_admin_bar) {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    
+    $wp_admin_bar->add_node(array(
+        'parent' => 'appearance',
+        'id' => 'aaapos-setup-wizard',
+        'title' => __('Theme Setup Wizard', 'aaapos'),
+        'href' => admin_url('admin.php?page=aaapos-setup'),
+    ));
+}
+add_action('admin_bar_menu', 'aaapos_add_appearance_setup_link', 999);
+
+/**
+ * Add admin notice if setup is not complete
+ */
+function aaapos_setup_admin_notice() {
+    // Don't show on setup wizard page
+    if (isset($_GET['page']) && $_GET['page'] === 'aaapos-setup') {
+        return;
+    }
+    
+    // Don't show if setup is complete
+    if (get_option('aaapos_setup_complete')) {
+        return;
+    }
+    
+    // Show notice
+    ?>
+    <div class="notice notice-info is-dismissible">
+        <p>
+            <strong><?php esc_html_e('Welcome to AAAPOS Theme!', 'aaapos'); ?></strong>
+            <?php esc_html_e('Complete the setup wizard to configure your store.', 'aaapos'); ?>
+            <a href="<?php echo esc_url(admin_url('admin.php?page=aaapos-setup')); ?>" class="button button-primary" style="margin-left: 10px;">
+                <?php esc_html_e('Start Setup', 'aaapos'); ?>
+            </a>
+        </p>
+    </div>
+    <?php
+}
+add_action('admin_notices', 'aaapos_setup_admin_notice');
+
+/**
+ * Reset setup wizard (for development/testing)
+ * Add ?reset_setup=1 to any admin URL to reset
+ */
+function aaapos_reset_setup_wizard() {
+    if (isset($_GET['reset_setup']) && current_user_can('manage_options')) {
+        delete_option('aaapos_setup_complete');
+        delete_option('aaapos_pages_created');
+        wp_redirect(admin_url('admin.php?page=aaapos-setup'));
+        exit;
+    }
+}
+add_action('admin_init', 'aaapos_reset_setup_wizard');

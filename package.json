@@ -9,11 +9,15 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
+    "clean-css-cli": "^5.6.3",
     "cssnano": "^6.0.0",
+    "imagemin": "^9.0.1",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
     "postcss": "^8.4.0",
     "postcss-cli": "^10.0.0",
     "postcss-import": "^16.0.0",
     "rimraf": "^5.0.0",
-    "terser": "^5.14.0"
+    "terser": "^5.46.0"
   }
 }
