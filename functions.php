@@ -997,3 +997,98 @@ function aaapos_reset_setup_wizard() {
     }
 }
 add_action('admin_init', 'aaapos_reset_setup_wizard');
+
+/**
+ * Check if current page should display homepage sections
+ * 
+ * @return bool True if homepage sections should be displayed
+ */
+function aaapos_should_display_homepage_sections() {
+    // Only on front page
+    if (!is_front_page()) {
+        return false;
+    }
+    
+    // Get the page set as homepage
+    $page_id = get_option('page_on_front');
+    
+    // If no static page is set (showing latest posts), don't show sections
+    if (!$page_id) {
+        return false;
+    }
+    
+    // Check if the homepage uses the Homepage Template
+    $template = get_page_template_slug($page_id);
+    
+    return ($template === 'page-templates/homepage.php');
+}
+
+/**
+ * Check if WooCommerce sections should be displayed
+ * Useful for conditionally showing product-related sections
+ * 
+ * @return bool True if WooCommerce is active and sections should show
+ */
+function aaapos_show_woocommerce_sections() {
+    return class_exists('WooCommerce') && aaapos_should_display_homepage_sections();
+}
+
+/**
+ * Get homepage template status for admin notices
+ */
+function aaapos_homepage_setup_notice() {
+    // Only show on Pages screen
+    $screen = get_current_screen();
+    if (!$screen || $screen->id !== 'edit-page') {
+        return;
+    }
+    
+    // Check if homepage is configured
+    $page_on_front = get_option('page_on_front');
+    $show_on_front = get_option('show_on_front');
+    
+    if ($show_on_front !== 'page' || !$page_on_front) {
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p>
+                <strong><?php esc_html_e('AAAPOS Theme Tip:', 'aaapos'); ?></strong>
+                <?php esc_html_e('To use the homepage sections (hero, products, categories), create a page with the "Homepage Template" and set it as your homepage in Settings > Reading.', 'aaapos'); ?>
+            </p>
+        </div>
+        <?php
+        return;
+    }
+    
+    // Check if homepage has the right template
+    $template = get_page_template_slug($page_on_front);
+    if ($template !== 'page-templates/homepage.php') {
+        $edit_link = get_edit_post_link($page_on_front);
+        ?>
+        <div class="notice notice-warning is-dismissible">
+            <p>
+                <strong><?php esc_html_e('AAAPOS Theme Notice:', 'aaapos'); ?></strong>
+                <?php 
+                printf(
+                    /* translators: %s: Edit page link */
+                    esc_html__('Your homepage is not using the "Homepage Template". %sEdit the page%s and select "Homepage Template" from the Template dropdown to enable homepage sections.', 'aaapos'),
+                    '<a href="' . esc_url($edit_link) . '">',
+                    '</a>'
+                );
+                ?>
+            </p>
+        </div>
+        <?php
+    }
+}
+add_action('admin_notices', 'aaapos_homepage_setup_notice');
+
+/**
+ * Add helpful text to the Homepage Template in the template selector
+ */
+function aaapos_add_template_descriptions($templates) {
+    if (isset($templates['page-templates/homepage.php'])) {
+        $templates['page-templates/homepage.php'] = __('Homepage Template (Enables hero, products, categories sections)', 'aaapos');
+    }
+    return $templates;
+}
+add_filter('theme_page_templates', 'aaapos_add_template_descriptions');

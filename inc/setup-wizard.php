@@ -414,81 +414,96 @@ class AAAPOS_Setup_Wizard {
     }
     
     /**
-     * STEP: Branding
-     */
-    private function step_branding() {
-        ?>
-        <div class="setup-step step-branding">
-            <div class="step-header">
-                <div class="header-icon">
-                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="24" cy="20" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <path d="M14 36c0-5.5 4.5-8 10-8s10 2.5 10 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <h1><?php esc_html_e('Brand Settings', 'aaapos'); ?></h1>
-                <p class="step-subtitle">
-                    <?php esc_html_e('Customize your store\'s identity', 'aaapos'); ?>
-                </p>
+ * STEP: Branding
+ * Replace the existing step_branding() method with this updated version
+ */
+private function step_branding() {
+    ?>
+    <div class="setup-step step-branding">
+        <div class="step-header">
+            <div class="header-icon">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2.5"/>
+                    <circle cx="24" cy="20" r="6" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M14 36c0-5.5 4.5-8 10-8s10 2.5 10 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h1><?php esc_html_e('Brand Settings', 'aaapos'); ?></h1>
+            <p class="step-subtitle">
+                <?php esc_html_e('Customize your store\'s identity', 'aaapos'); ?>
+            </p>
+        </div>
+        
+        <!-- Changed from form to div to prevent browser warning -->
+        <div id="branding-form" class="branding-form">
+            <div class="input-group">
+                <label for="site_title"><?php esc_html_e('Store Name', 'aaapos'); ?></label>
+                <input type="text" id="site_title" name="site_title" value="<?php echo esc_attr(get_bloginfo('name')); ?>" class="input-field" autocomplete="off">
+                <span class="input-hint"><?php esc_html_e('Appears in your header and browser tab', 'aaapos'); ?></span>
             </div>
             
-            <form id="branding-form" class="branding-form">
-                <div class="input-group">
-                    <label for="site_title"><?php esc_html_e('Store Name', 'aaapos'); ?></label>
-                    <input type="text" id="site_title" name="site_title" value="<?php echo esc_attr(get_bloginfo('name')); ?>" class="input-field">
-                    <span class="input-hint"><?php esc_html_e('Appears in your header and browser tab', 'aaapos'); ?></span>
+            <div class="input-group">
+                <label for="brand_color"><?php esc_html_e('Brand Color', 'aaapos'); ?></label>
+                <div class="color-picker-group">
+                    <input type="color" id="brand_color" name="brand_color" value="#0f8abe" class="color-swatch" autocomplete="off">
+                    <input type="text" id="brand_color_text" value="#0f8abe" class="input-field color-value" autocomplete="off">
                 </div>
-                
-                <div class="input-group">
-                    <label for="brand_color"><?php esc_html_e('Brand Color', 'aaapos'); ?></label>
-                    <div class="color-picker-group">
-                        <input type="color" id="brand_color" name="brand_color" value="#0f8abe" class="color-swatch">
-                        <input type="text" id="brand_color_text" value="#0f8abe" class="input-field color-value">
-                    </div>
-                    <span class="input-hint"><?php esc_html_e('Used for buttons, links, and accents', 'aaapos'); ?></span>
-                </div>
-                
-                <div class="preview-section">
-                    <h3><?php esc_html_e('Preview', 'aaapos'); ?></h3>
-                    <div class="preview-window">
-                        <div class="preview-toolbar">
-                            <div class="preview-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                        <div class="preview-body">
-                            <div class="preview-brand" id="preview-name"><?php echo esc_html(get_bloginfo('name')); ?></div>
-                            <div class="preview-btn" id="preview-button">
-                                <?php esc_html_e('Shop Now', 'aaapos'); ?>
-                            </div>
-                            <div class="preview-link" id="preview-link">
-                                <?php esc_html_e('View Products', 'aaapos'); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                <span class="input-hint"><?php esc_html_e('Used for buttons, links, and accents', 'aaapos'); ?></span>
+            </div>
             
-            <div class="setup-actions">
-                <button type="button" class="btn btn-primary btn-large" id="save-branding-btn">
-                    <span class="btn-text"><?php esc_html_e('Save & Continue', 'aaapos'); ?></span>
-                    <span class="btn-loader">
-                        <svg class="spinner" width="20" height="20" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" opacity="0.25"/>
-                            <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        </svg>
-                    </span>
-                </button>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=aaapos-setup&step=ready')); ?>" class="btn btn-text">
-                    <?php esc_html_e('Skip this step', 'aaapos'); ?>
-                </a>
+            <div class="preview-section">
+                <h3><?php esc_html_e('Preview', 'aaapos'); ?></h3>
+                <div class="preview-window">
+                    <div class="preview-toolbar">
+                        <div class="preview-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="preview-body">
+                        <div class="preview-brand" id="preview-name"><?php echo esc_html(get_bloginfo('name')); ?></div>
+                        <div class="preview-btn" id="preview-button">
+                            <?php esc_html_e('Shop Now', 'aaapos'); ?>
+                        </div>
+                        <div class="preview-link" id="preview-link">
+                            <?php esc_html_e('View Products', 'aaapos'); ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <?php
-    }
+        
+        <div class="setup-actions">
+            <button type="button" class="btn btn-primary btn-large" id="save-branding-btn">
+                <span class="btn-text"><?php esc_html_e('Save & Continue', 'aaapos'); ?></span>
+                <span class="btn-loader">
+                    <svg class="spinner" width="20" height="20" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" opacity="0.25"/>
+                        <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </span>
+            </button>
+            <a href="<?php echo esc_url(admin_url('admin.php?page=aaapos-setup&step=ready')); ?>" class="btn btn-text">
+                <?php esc_html_e('Skip this step', 'aaapos'); ?>
+            </a>
+        </div>
+    </div>
+    
+    <!-- JavaScript to prevent browser warning -->
+    <script>
+        // Prevent "Changes you made may not be saved" warning
+        window.onbeforeunload = null;
+        
+        // Also prevent it when clicking any link
+        document.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                window.onbeforeunload = null;
+            });
+        });
+    </script>
+    <?php
+}
     
     /**
      * STEP: Ready

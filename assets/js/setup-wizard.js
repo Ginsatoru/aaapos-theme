@@ -1,5 +1,6 @@
 /**
- * Setup Wizard JavaScript - iPhone Style
+ * Setup Wizard JavaScript - Fixed Version
+ * Prevents browser "unsaved changes" warning while maintaining all functionality
  * 
  * @package AAAPOS
  * @since 1.0.0
@@ -8,15 +9,49 @@
 (function($) {
     'use strict';
 
+    // CRITICAL: Disable browser's beforeunload warning immediately
+    window.onbeforeunload = null;
+    $(window).off('beforeunload');
+
     const SetupWizard = {
+        
+        setupInProgress: false,
         
         /**
          * Initialize
          */
         init: function() {
+            this.disableBrowserWarning();
             this.bindEvents();
             this.initBrandingPreview();
             this.initAnimations();
+            this.addInputEffects();
+        },
+        
+        /**
+         * Disable Browser Warning Completely
+         */
+        disableBrowserWarning: function() {
+            // Remove all beforeunload handlers
+            $(window).off('beforeunload');
+            window.onbeforeunload = null;
+            
+            // Prevent any new handlers from being attached
+            $(window).on('beforeunload', function() {
+                return undefined;
+            });
+            
+            // Disable on all link clicks
+            $(document).on('click', 'a', function() {
+                window.onbeforeunload = null;
+                $(window).off('beforeunload');
+            });
+            
+            // Disable on button clicks
+            $(document).on('click', 'button', function() {
+                window.onbeforeunload = null;
+                $(window).off('beforeunload');
+            });
         },
         
         /**
@@ -24,21 +59,28 @@
          */
         bindEvents: function() {
             // Create pages button
-            $('#create-pages-btn').on('click', this.createPages);
+            $(document).on('click', '#create-pages-btn', this.createPages.bind(this));
             
             // Save branding button
-            $('#save-branding-btn').on('click', this.saveBranding);
+            $(document).on('click', '#save-branding-btn', this.saveBranding.bind(this));
             
             // Complete setup button
-            $('#complete-setup-btn').on('click', this.completeSetup);
+            $(document).on('click', '#complete-setup-btn', this.completeSetup.bind(this));
             
             // Color picker sync
-            $('#brand_color').on('input', this.syncColorPicker);
-            $('#brand_color_text').on('input', this.syncColorText);
-            $('#brand_color_text').on('blur', this.validateColor);
+            $(document).on('input', '#brand_color', this.syncColorPicker.bind(this));
+            $(document).on('input', '#brand_color_text', this.syncColorText.bind(this));
+            $(document).on('blur', '#brand_color_text', this.validateColor.bind(this));
             
             // Site title preview
-            $('#site_title').on('input', this.updateSiteTitlePreview);
+            $(document).on('input', '#site_title', this.updateSiteTitlePreview.bind(this));
+            
+            // Prevent form submission
+            $(document).on('submit', 'form, #branding-form', function(e) {
+                e.preventDefault();
+                window.onbeforeunload = null;
+                return false;
+            });
         },
         
         /**
@@ -80,13 +122,18 @@
         createPages: function(e) {
             e.preventDefault();
             
-            const $btn = $(this);
+            // Disable browser warning
+            window.onbeforeunload = null;
+            
+            const $btn = $('#create-pages-btn');
             
             // Disable button and show loader
             $btn.prop('disabled', true);
             
             // Add haptic-like feedback
-            SetupWizard.addButtonFeedback($btn);
+            this.addButtonFeedback($btn);
+            
+            const self = this;
             
             $.ajax({
                 url: aaaposSetup.ajaxUrl,
@@ -98,22 +145,26 @@
                 success: function(response) {
                     if (response.success) {
                         // Update UI to show pages created
-                        SetupWizard.updatePagesList();
+                        self.updatePagesList();
                         
                         // Show success notification
-                        SetupWizard.showNotification('success', response.data.message);
+                        self.showNotification('success', response.data.message);
+                        
+                        // Ensure no warning on redirect
+                        window.onbeforeunload = null;
+                        $(window).off('beforeunload');
                         
                         // Redirect after animation completes
                         setTimeout(function() {
                             window.location.href = aaaposSetup.adminUrl + 'admin.php?page=aaapos-setup&step=branding';
                         }, 1800);
                     } else {
-                        SetupWizard.showNotification('error', response.data.message || 'An error occurred');
+                        self.showNotification('error', response.data.message || 'An error occurred');
                         $btn.prop('disabled', false);
                     }
                 },
                 error: function() {
-                    SetupWizard.showNotification('error', 'An error occurred. Please try again.');
+                    self.showNotification('error', 'An error occurred. Please try again.');
                     $btn.prop('disabled', false);
                 }
             });
@@ -158,13 +209,16 @@
         saveBranding: function(e) {
             e.preventDefault();
             
-            const $btn = $(this);
+            // Disable browser warning
+            window.onbeforeunload = null;
+            
+            const $btn = $('#save-branding-btn');
             const siteTitle = $('#site_title').val();
             const brandColor = $('#brand_color').val();
             
             // Validate inputs
             if (!siteTitle.trim()) {
-                SetupWizard.showNotification('error', 'Please enter a store name');
+                this.showNotification('error', 'Please enter a store name');
                 $('#site_title').focus();
                 return;
             }
@@ -173,7 +227,9 @@
             $btn.prop('disabled', true);
             
             // Add button feedback
-            SetupWizard.addButtonFeedback($btn);
+            this.addButtonFeedback($btn);
+            
+            const self = this;
             
             $.ajax({
                 url: aaaposSetup.ajaxUrl,
@@ -186,22 +242,26 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        SetupWizard.showNotification('success', response.data.message);
+                        self.showNotification('success', response.data.message);
                         
                         // Update CSS variable globally
                         document.documentElement.style.setProperty('--brand-color', brandColor);
+                        
+                        // Ensure no warning on redirect
+                        window.onbeforeunload = null;
+                        $(window).off('beforeunload');
                         
                         // Redirect after delay
                         setTimeout(function() {
                             window.location.href = aaaposSetup.adminUrl + 'admin.php?page=aaapos-setup&step=ready';
                         }, 1200);
                     } else {
-                        SetupWizard.showNotification('error', response.data.message || 'An error occurred');
+                        self.showNotification('error', response.data.message || 'An error occurred');
                         $btn.prop('disabled', false);
                     }
                 },
                 error: function() {
-                    SetupWizard.showNotification('error', 'An error occurred. Please try again.');
+                    self.showNotification('error', 'An error occurred. Please try again.');
                     $btn.prop('disabled', false);
                 }
             });
@@ -213,10 +273,15 @@
         completeSetup: function(e) {
             e.preventDefault();
             
-            const $btn = $(this);
+            // Disable browser warning
+            window.onbeforeunload = null;
+            
+            const $btn = $('#complete-setup-btn');
             $btn.prop('disabled', true);
             
-            SetupWizard.addButtonFeedback($btn);
+            this.addButtonFeedback($btn);
+            
+            const self = this;
             
             $.ajax({
                 url: aaaposSetup.ajaxUrl,
@@ -228,7 +293,11 @@
                 success: function(response) {
                     if (response.success && response.data.redirect) {
                         // Show success message
-                        SetupWizard.showNotification('success', 'Launching your store...');
+                        self.showNotification('success', 'Launching your store...');
+                        
+                        // Ensure no warning on redirect
+                        window.onbeforeunload = null;
+                        $(window).off('beforeunload');
                         
                         // Redirect after animation
                         setTimeout(function() {
@@ -237,7 +306,7 @@
                     }
                 },
                 error: function() {
-                    SetupWizard.showNotification('error', 'An error occurred. Please try again.');
+                    self.showNotification('error', 'An error occurred. Please try again.');
                     $btn.prop('disabled', false);
                 }
             });
@@ -259,26 +328,26 @@
          * Sync Color Picker
          */
         syncColorPicker: function() {
-            const color = $(this).val();
+            const color = $('#brand_color').val();
             $('#brand_color_text').val(color.toUpperCase());
-            SetupWizard.updateBrandColor(color);
+            this.updateBrandColor(color);
         },
         
         /**
          * Sync Color Text
          */
         syncColorText: function() {
-            let color = $(this).val().trim();
+            let color = $('#brand_color_text').val().trim();
             
             // Auto-add # if missing
             if (color && !color.startsWith('#')) {
                 color = '#' + color;
-                $(this).val(color);
+                $('#brand_color_text').val(color);
             }
             
-            if (SetupWizard.isValidHex(color)) {
+            if (this.isValidHex(color)) {
                 $('#brand_color').val(color);
-                SetupWizard.updateBrandColor(color);
+                this.updateBrandColor(color);
             }
         },
         
@@ -286,21 +355,21 @@
          * Validate Color
          */
         validateColor: function() {
-            let color = $(this).val().trim();
+            let color = $('#brand_color_text').val().trim();
             
             // Auto-add # if missing
             if (color && !color.startsWith('#')) {
                 color = '#' + color;
             }
             
-            if (!SetupWizard.isValidHex(color)) {
+            if (!this.isValidHex(color)) {
                 const defaultColor = '#0f8abe';
-                $(this).val(defaultColor.toUpperCase());
+                $('#brand_color_text').val(defaultColor.toUpperCase());
                 $('#brand_color').val(defaultColor);
-                SetupWizard.updateBrandColor(defaultColor);
-                SetupWizard.showNotification('error', 'Invalid color format. Using default color.');
+                this.updateBrandColor(defaultColor);
+                this.showNotification('error', 'Invalid color format. Using default color.');
             } else {
-                $(this).val(color.toUpperCase());
+                $('#brand_color_text').val(color.toUpperCase());
             }
         },
         
@@ -319,11 +388,11 @@
             document.documentElement.style.setProperty('--brand-color', color);
             
             // Calculate darker shade for hover
-            const darkerColor = SetupWizard.adjustColor(color, -20);
+            const darkerColor = this.adjustColor(color, -20);
             document.documentElement.style.setProperty('--brand-color-dark', darkerColor);
             
             // Calculate lighter shade for backgrounds
-            const lighterColor = SetupWizard.adjustColor(color, 40, true);
+            const lighterColor = this.adjustColor(color, 40, true);
             document.documentElement.style.setProperty('--brand-color-light', lighterColor);
             
             // Update preview elements with smooth transition
@@ -352,7 +421,7 @@
          * Update Site Title Preview
          */
         updateSiteTitlePreview: function() {
-            const title = $(this).val().trim();
+            const title = $('#site_title').val().trim();
             $('#preview-name').text(title || 'Your Store');
         },
         
@@ -406,9 +475,9 @@
          * Add Input Focus Effects
          */
         addInputEffects: function() {
-            $('.input-field').on('focus', function() {
+            $(document).on('focus', '.input-field', function() {
                 $(this).parent().addClass('input-focused');
-            }).on('blur', function() {
+            }).on('blur', '.input-field', function() {
                 $(this).parent().removeClass('input-focused');
             });
         }
@@ -420,21 +489,13 @@
         
         // Add smooth scroll behavior
         $('html').css('scroll-behavior', 'smooth');
-        
-        // Prevent accidental page unload during setup
-        let setupInProgress = false;
-        
-        $('#create-pages-btn, #save-branding-btn, #complete-setup-btn').on('click', function() {
-            setupInProgress = true;
-        });
-        
-        $(window).on('beforeunload', function(e) {
-            if (setupInProgress) {
-                const message = 'Setup is in progress. Are you sure you want to leave?';
-                e.returnValue = message;
-                return message;
-            }
-        });
+    });
+    
+    // Initialize on window load as backup
+    $(window).on('load', function() {
+        // Force disable warning one more time
+        window.onbeforeunload = null;
+        $(window).off('beforeunload');
     });
     
 })(jQuery);

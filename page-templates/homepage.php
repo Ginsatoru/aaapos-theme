@@ -1,9 +1,12 @@
 <?php
 /**
- * homepage.php
  * Template Name: Homepage Template
  * Template Post Type: page
+ * 
+ * Description: This template enables the homepage sections (hero, products, categories, etc.)
+ * When assigned to a page and that page is set as the homepage in Reading Settings.
  */
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -11,49 +14,57 @@ if (!defined('ABSPATH')) {
 get_header();
 ?>
 
-<?php
-// Use front-page.php content or custom page content
-if (have_posts()) :
-    while (have_posts()) : the_post();
-        if (get_the_content()) :
-            ?>
-            <div class="container">
-                <div class="homepage-content">
-                    <?php the_content(); ?>
+<div class="homepage-wrapper">
+    <?php
+    // Display custom page content if it exists (editor content)
+    if (have_posts()) :
+        while (have_posts()) : the_post();
+            if (trim(get_the_content())) :
+                ?>
+                <div class="container">
+                    <div class="homepage-custom-content">
+                        <?php the_content(); ?>
+                    </div>
                 </div>
-            </div>
-            <?php
-        endif;
-    endwhile;
-endif;
+                <?php
+            endif;
+        endwhile;
+    endif;
 
-// Include homepage sections
-get_template_part('template-parts/hero/hero-section');
+    // Hero Section
+    get_template_part('template-parts/hero/hero-section');
 
-if (get_theme_mod('show_featured_products', true)) {
-    get_template_part('template-parts/sections/featured-products');
-}
+    // Featured Products
+    if (get_theme_mod('show_featured_products', true)) {
+        get_template_part('template-parts/sections/featured-products');
+    }
 
-if (get_theme_mod('show_categories', true)) {
-    get_template_part('template-parts/sections/product-categories');
-}
+    // Product Categories
+    if (get_theme_mod('show_categories', true)) {
+        get_template_part('template-parts/sections/product-categories');
+    }
 
-if (get_theme_mod('show_deals', true)) {
-    get_template_part('template-parts/sections/deals-offers');
-}
+    // Deals & Offers
+    if (get_theme_mod('show_deals', true)) {
+        get_template_part('template-parts/sections/deals-offers');
+    }
 
-if (get_theme_mod('show_testimonials', true)) {
-    get_template_part('template-parts/sections/testimonials');
-}
+    // Testimonials
+    if (get_theme_mod('show_testimonials', true)) {
+        get_template_part('template-parts/sections/testimonials');
+    }
 
-if (get_theme_mod('show_blog', true)) {
-    get_template_part('template-parts/sections/blog-preview');
-}
+    // Blog Preview
+    if (get_theme_mod('show_blog', true)) {
+        get_template_part('template-parts/sections/blog-preview');
+    }
 
-if (get_theme_mod('show_newsletter', true)) {
-    get_template_part('template-parts/sections/newsletter');
-}
-?>
+    // Newsletter
+    if (get_theme_mod('show_newsletter', true)) {
+        get_template_part('template-parts/sections/newsletter');
+    }
+    ?>
+</div>
 
 <?php
 get_footer();
