@@ -119,7 +119,7 @@ get_header();
                                     id="contact-name" 
                                     name="contact_name" 
                                     class="form-input"
-                                    placeholder="Neil Riding"
+                                    placeholder="Your Name"
                                     required>
                             </div>
                             
@@ -133,7 +133,7 @@ get_header();
                                     id="contact-email" 
                                     name="contact_email" 
                                     class="form-input"
-                                    placeholder="support@aaapos.com"
+                                    placeholder="Your Email Address"
                                     required>
                             </div>
                         </div>
@@ -148,7 +148,7 @@ get_header();
                                     id="contact-phone" 
                                     name="contact_phone" 
                                     class="form-input"
-                                    placeholder="1300 555 115">
+                                    placeholder="Your Phone Number">
                             </div>
                             
                             <div class="form-field">
