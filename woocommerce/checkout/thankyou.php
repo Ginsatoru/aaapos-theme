@@ -144,8 +144,6 @@ defined('ABSPATH') || exit;
 				<?php esc_html_e('Order details', 'woocommerce'); ?>
 			</h3>
 
-			<?php do_action('woocommerce_thankyou_order_received_text', $order); ?>
-
 			<?php do_action('woocommerce_order_details_before_order_table', $order); ?>
 
 			<!-- ORDER TABLE -->
@@ -242,9 +240,7 @@ defined('ABSPATH') || exit;
 		</div>
 
 		<!-- CUSTOMER DETAILS SECTION -->
-		<div class="order-customer-details">
-			<?php do_action('woocommerce_order_details_after_customer_details', $order); ?>
-		</div>
+		<?php do_action('woocommerce_email_customer_details', $order, false, false, ''); ?>
 
 	<?php else: ?>
 
