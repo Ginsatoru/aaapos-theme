@@ -749,36 +749,55 @@ add_action(
 function mr_enqueue_google_fonts()
 {
     // Get font choices from customizer
-    $body_font = get_theme_mod("mr_body_font", "Inter");
-    $heading_font = get_theme_mod("mr_heading_font", "Montserrat");
-    $accent_font = get_theme_mod("mr_accent_font", "Playfair Display");
+    $heading_font = get_theme_mod("heading_font_family", "Montserrat");
+    $body_font = get_theme_mod("body_font_family", "Inter");
+    $accent_font = get_theme_mod("accent_font_family", "Playfair Display");
+    
+    // Check if custom fonts are uploaded (if yes, skip Google Fonts for those)
+    $heading_custom = get_theme_mod("heading_font_custom_woff", "");
+    $body_custom = get_theme_mod("body_font_custom_woff", "");
 
-    // Build font families string
-    $font_families = [];
+    // List of Google Fonts (don't load system fonts)
+    $google_fonts_list = array(
+        'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Poppins',
+        'Raleway', 'Nunito', 'Work Sans', 'Ubuntu', 'PT Sans', 'Source Sans Pro',
+        'Noto Sans', 'Playfair Display', 'Merriweather', 'Lora', 'PT Serif',
+        'Crimson Text', 'EB Garamond', 'Libre Baskerville', 'Bitter',
+        'Bebas Neue', 'Oswald', 'Abril Fatface', 'Pacifico', 'Comfortaa', 'Righteous'
+    );
 
-    if ("Inter" === $body_font) {
-        $font_families[] = "Inter:wght@400;500;600";
+    // Build font families array
+    $font_families = array();
+    
+    // Heading font
+    if (!$heading_custom && in_array($heading_font, $google_fonts_list)) {
+        $font_families[] = str_replace(' ', '+', $heading_font) . ':wght@300;400;500;600;700;800;900';
     }
-
-    if ("Montserrat" === $heading_font) {
-        $font_families[] = "Montserrat:wght@600;700;800";
+    
+    // Body font (avoid duplicates)
+    if (!$body_custom && in_array($body_font, $google_fonts_list)) {
+        $font_key = str_replace(' ', '+', $body_font) . ':wght@300;400;500;600;700;800;900';
+        if (!in_array($font_key, $font_families)) {
+            $font_families[] = $font_key;
+        }
     }
-
-    if ("Playfair Display" === $accent_font) {
-        $font_families[] = "Playfair+Display:wght@700";
+    
+    // Accent font (avoid duplicates)
+    if (in_array($accent_font, $google_fonts_list)) {
+        $font_key = str_replace(' ', '+', $accent_font) . ':wght@300;400;500;600;700;800;900';
+        if (!in_array($font_key, $font_families)) {
+            $font_families[] = $font_key;
+        }
     }
 
     // Only load if we have fonts to load
     if (!empty($font_families)) {
-        $fonts_url =
-            "https://fonts.googleapis.com/css2?family=" .
-            implode("&family=", $font_families) .
-            "&display=swap";
-
-        wp_enqueue_style("mr-google-fonts", $fonts_url, [], null);
+        $fonts_url = 'https://fonts.googleapis.com/css2?family=' . implode('&family=', $font_families) . '&display=swap';
+        wp_enqueue_style('aaapos-google-fonts', $fonts_url, array(), null);
     }
 }
 add_action("wp_enqueue_scripts", "mr_enqueue_google_fonts", 5);
+
 
 /**
  * Preload critical assets

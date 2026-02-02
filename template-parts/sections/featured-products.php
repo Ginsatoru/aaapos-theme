@@ -1,6 +1,7 @@
 <?php
 /**
  * Featured Products Section - Best Selling Products
+ * UPDATED: Added product exclusion feature
  * Template: template-parts/sections/featured-products.php
  *
  * @package aaapos-prime
@@ -17,16 +18,32 @@ $description = get_theme_mod(
     "Browse our most popular pet food, animal feed, and farm supplies trusted by local pet owners and farmers",
 );
 $count = get_theme_mod("featured_products_count", 4);
+$exclude_ids = get_theme_mod("featured_products_exclude", "");
 
-// Get best-selling products (ordered by total sales)
-$products = wc_get_products([
+// Parse excluded product IDs
+$excluded_products = array();
+if (!empty($exclude_ids)) {
+    $excluded_products = array_map('intval', explode(',', $exclude_ids));
+    $excluded_products = array_filter($excluded_products); // Remove empty values
+}
+
+// Build query args
+$args = [
     "status" => "publish",
     "limit" => $count,
     "visibility" => "visible",
     "meta_key" => "total_sales",
     "orderby" => "meta_value_num",
     "order" => "DESC",
-]);
+];
+
+// Add exclusions if any
+if (!empty($excluded_products)) {
+    $args['exclude'] = $excluded_products;
+}
+
+// Get best-selling products (ordered by total sales)
+$products = wc_get_products($args);
 
 // Get customizer settings
 $show_rating = get_theme_mod("show_product_rating", true);

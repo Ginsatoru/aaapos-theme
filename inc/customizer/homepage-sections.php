@@ -1,7 +1,7 @@
 <?php
 /**
  * Homepage sections customizer settings
- * UPDATED: Simplified deals section - auto-detects scheduled sales
+ * UPDATED: Added exclude products feature for featured products
  */
 function mr_homepage_sections_customizer($wp_customize)
 {
@@ -70,6 +70,21 @@ function mr_homepage_sections_customizer($wp_customize)
             "step" => 1,
         ],
         "priority" => 30,
+    ]);
+
+    // NEW: Exclude Products
+    $wp_customize->add_setting("featured_products_exclude", [
+        "default" => "",
+        "sanitize_callback" => "aaapos_sanitize_product_ids",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("featured_products_exclude", [
+        "label" => __("Exclude Products", "macedon-ranges"),
+        "description" => __("Enter product IDs separated by commas (e.g., 123,456,789). These products will be excluded from the best-selling list.", "macedon-ranges"),
+        "section" => "mr_homepage_sections",
+        "type" => "text",
+        "priority" => 35,
     ]);
 
     // ===================================
@@ -423,6 +438,31 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 }
 add_action("customize_register", "mr_homepage_sections_customizer");
+
+/**
+ * Sanitize Product IDs
+ */
+if (!function_exists("aaapos_sanitize_product_ids")) {
+    function aaapos_sanitize_product_ids($input) {
+        // Remove all spaces
+        $input = str_replace(' ', '', $input);
+        
+        // Split by comma
+        $ids = explode(',', $input);
+        
+        // Sanitize each ID
+        $sanitized = array();
+        foreach ($ids as $id) {
+            $id = absint(trim($id));
+            if ($id > 0) {
+                $sanitized[] = $id;
+            }
+        }
+        
+        // Return comma-separated string
+        return implode(',', $sanitized);
+    }
+}
 
 /**
  * Sanitize Float values for customizer

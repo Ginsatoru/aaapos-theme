@@ -1092,3 +1092,87 @@ function aaapos_add_template_descriptions($templates) {
     return $templates;
 }
 add_filter('theme_page_templates', 'aaapos_add_template_descriptions');
+
+/**
+ * Allow Font Uploads
+ */
+function aaapos_allow_font_uploads($mimes) {
+    $mimes['woff']  = 'font/woff';
+    $mimes['woff2'] = 'font/woff2';
+    $mimes['ttf']   = 'font/ttf';
+    $mimes['otf']   = 'font/otf';
+    $mimes['eot']   = 'application/vnd.ms-fontobject';
+    return $mimes;
+}
+add_filter('upload_mimes', 'aaapos_allow_font_uploads');
+
+function aaapos_fix_font_upload($data, $file, $filename, $mimes) {
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    if (in_array($ext, array('woff', 'woff2', 'ttf', 'otf', 'eot'))) {
+        $data['ext'] = $ext;
+        $data['type'] = isset($mimes[$ext]) ? $mimes[$ext] : 'font/' . $ext;
+        $data['proper_filename'] = $filename;
+    }
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'aaapos_fix_font_upload', 10, 4);
+
+function aaapos_disable_real_mime_check($data, $file, $filename, $mimes) {
+    $wp_filetype = wp_check_filetype($filename, $mimes);
+    $ext = $wp_filetype['ext'];
+    $type = $wp_filetype['type'];
+    $proper_filename = $filename;
+    
+    if ($ext && $type) {
+        $data['ext'] = $ext;
+        $data['type'] = $type;
+        $data['proper_filename'] = $proper_filename;
+    }
+    
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'aaapos_disable_real_mime_check', 10, 4);
+
+/**
+ * Display Font Files Properly in Media Library
+ * 
+ * Shows font file icon and information
+ */
+function aaapos_font_media_display($response, $attachment, $meta) {
+    $file_ext = pathinfo($response['filename'], PATHINFO_EXTENSION);
+    
+    if (in_array($file_ext, array('woff', 'woff2', 'ttf', 'otf', 'eot'))) {
+        $response['icon'] = includes_url('images/media/document.png');
+        $response['title'] = basename($response['filename'], '.' . $file_ext);
+        
+        // Add helpful description
+        $response['description'] = sprintf(
+            __('Font File (%s format) - Use in Customizer → Typography', 'aaapos'),
+            strtoupper($file_ext)
+        );
+    }
+    
+    return $response;
+}
+add_filter('wp_prepare_attachment_for_js', 'aaapos_font_media_display', 10, 3);
+
+/**
+ * Add Help Text to Media Uploader for Fonts
+ */
+function aaapos_font_upload_help() {
+    $screen = get_current_screen();
+    
+    if ($screen && $screen->id === 'customize') {
+        ?>
+        <style>
+            .customize-control-media .description {
+                margin-top: 8px;
+                font-size: 12px;
+                font-style: italic;
+                color: #646970;
+            }
+        </style>
+        <?php
+    }
+}
+add_action('admin_head', 'aaapos_font_upload_help');
