@@ -1176,3 +1176,99 @@ function aaapos_font_upload_help() {
     }
 }
 add_action('admin_head', 'aaapos_font_upload_help');
+
+/**
+ * Hero Section Shortcode
+ * Makes the hero section reusable on any page
+ * Usage: [hero_section] or [hero_section show_carousel="false" show_notification="true"]
+ */
+function aaapos_hero_section_shortcode($atts) {
+    // Parse shortcode attributes
+    $atts = shortcode_atts(array(
+        'show_carousel' => null,
+        'show_notification' => null,
+    ), $atts, 'hero_section');
+    
+    // Store original theme mods if overrides are provided
+    $original_mods = array();
+    
+    if ($atts['show_carousel'] !== null) {
+        $original_mods['hero_show_product_carousel'] = get_theme_mod('hero_show_product_carousel');
+        set_theme_mod('hero_show_product_carousel', filter_var($atts['show_carousel'], FILTER_VALIDATE_BOOLEAN));
+    }
+    
+    if ($atts['show_notification'] !== null) {
+        $original_mods['hero_show_notification'] = get_theme_mod('hero_show_notification');
+        set_theme_mod('hero_show_notification', filter_var($atts['show_notification'], FILTER_VALIDATE_BOOLEAN));
+    }
+    
+    // Enqueue hero assets
+    aaapos_enqueue_hero_assets();
+    
+    // Capture hero section output
+    ob_start();
+    get_template_part('template-parts/hero/hero-section');
+    $output = ob_get_clean();
+    
+    // Restore original theme mods
+    foreach ($original_mods as $mod => $value) {
+        set_theme_mod($mod, $value);
+    }
+    
+    return $output;
+}
+add_shortcode('hero_section', 'aaapos_hero_section_shortcode');
+
+/**
+ * Enqueue hero section assets when shortcode is used
+ */
+function aaapos_enqueue_hero_assets() {
+    $is_production = mr_is_production_mode();
+    
+    // Hero CSS
+    wp_enqueue_style(
+        'aaapos-hero',
+        get_template_directory_uri() . '/assets/css/components/hero.css',
+        $is_production ? array('mr-main') : array('mr-components'),
+        AAAPOS_VERSION
+    );
+    
+    // Hero JS - Image slideshow
+    $media_type = get_theme_mod('hero_media_type', 'image');
+    $enable_slideshow = get_theme_mod('hero_enable_slideshow', true);
+    
+    if ($media_type === 'image' && $enable_slideshow && !$is_production) {
+        wp_enqueue_script(
+            'mr-slider',
+            get_template_directory_uri() . '/assets/js/slider.js',
+            array('mr-theme'),
+            AAAPOS_VERSION,
+            true
+        );
+    }
+    
+    // Hero JS - Product carousel
+    if (get_theme_mod('hero_show_product_carousel', true)) {
+        wp_enqueue_script(
+            'aaapos-hero-carousel',
+            get_template_directory_uri() . '/assets/js/hero-enhanced.js',
+            array(),
+            AAAPOS_VERSION,
+            true
+        );
+    }
+    
+    // Hero JS - Video (if video mode)
+    if ($media_type === 'video' && !$is_production) {
+        $video_id = get_theme_mod('hero_video_webm', '');
+        if ($video_id) {
+            wp_enqueue_script(
+                'mr-hero-video',
+                get_template_directory_uri() . '/assets/js/hero-video.js',
+                array('jquery'),
+                AAAPOS_VERSION,
+                true
+            );
+        }
+    }
+}

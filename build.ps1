@@ -1,54 +1,79 @@
-$zipFile = "aaapos-v1.0.0.zip"
+# AAAPOS Theme Packager
+# Version: 1.0.1
+
+$themeName = "aaapos"
+$version = "1.0.0"
+$zipFile = "$themeName-v$version.zip"
+
+Write-Host "================================================" -ForegroundColor Cyan
+Write-Host "  AAAPOS Theme Packager" -ForegroundColor Cyan
+Write-Host "  Version: $version" -ForegroundColor Cyan
+Write-Host "================================================" -ForegroundColor Cyan
+Write-Host ""
 
 # Remove old zip if exists
 if (Test-Path $zipFile) {
+    Write-Host "Removing old zip file..." -ForegroundColor Yellow
     Remove-Item $zipFile -Force
 }
 
-# Create array of items to include
-$itemsToInclude = @(
-    "assets",
-    "images",
-    "inc",
-    "page-templates",
-    "template-parts",
-    "woocommerce",
-    "404.php",
-    "LICENSE.txt",
-    "README.md",
-    "archive.php",
-    "comments.php",
-    "footer.php",
-    "front-page.php",
-    "functions.php",
-    "header.php",
-    "index.php",
-    "page.php",
-    "postcss.config.js",
-    "rtl.css",
-    "screenshot.png",
-    "search.php",
-    "sidebar.php",
-    "single.php",
-    "style.css"
+# Items to EXCLUDE from the zip
+$excludeItems = @(
+    ".vscode",
+    ".git",
+    ".gitignore",
+    "node_modules",
+    "package.json",
+    "package-lock.json",
+    "build.ps1",
+    "*.zip"
 )
 
-# Filter to only existing items
-$existingItems = $itemsToInclude | Where-Object { Test-Path $_ }
+Write-Host "Building theme package..." -ForegroundColor Green
+Write-Host ""
 
-# Create the zip
-Compress-Archive -Path $existingItems -DestinationPath $zipFile -CompressionLevel Optimal
-
-if (Test-Path $zipFile) {
-    Write-Host ""
-    Write-Host "Success! Created: $zipFile" -ForegroundColor Green
-    $size = (Get-Item $zipFile).Length / 1MB
-    Write-Host ("Size: {0:N2} MB" -f $size) -ForegroundColor Green
-} else {
-    Write-Host ""
-    Write-Host "Error: Failed to create zip file" -ForegroundColor Red
+# Get all items in current directory
+$allItems = Get-ChildItem -Path . -Force | Where-Object {
+    $item = $_
+    $shouldExclude = $false
+    
+    foreach ($exclude in $excludeItems) {
+        if ($item.Name -like $exclude) {
+            $shouldExclude = $true
+            Write-Host "  Excluding: $($item.Name)" -ForegroundColor DarkGray
+            break
+        }
+    }
+    
+    -not $shouldExclude
 }
 
 Write-Host ""
-Write-Host "Press any key to continue..."
+Write-Host "Creating zip archive..." -ForegroundColor Green
+
+# Create the zip
+try {
+    Compress-Archive -Path $allItems -DestinationPath $zipFile -CompressionLevel Optimal -Force
+    
+    if (Test-Path $zipFile) {
+        Write-Host ""
+        Write-Host "================================================" -ForegroundColor Green
+        Write-Host "  SUCCESS!" -ForegroundColor Green
+        Write-Host "================================================" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "  File: $zipFile" -ForegroundColor White
+        $size = (Get-Item $zipFile).Length / 1MB
+        Write-Host ("  Size: {0:N2} MB" -f $size) -ForegroundColor White
+        Write-Host ""
+        Write-Host "  Ready to upload to WordPress!" -ForegroundColor Cyan
+        Write-Host ""
+    }
+} catch {
+    Write-Host ""
+    Write-Host "ERROR: Failed to create zip file" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    Write-Host ""
+}
+
+Write-Host "Press any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

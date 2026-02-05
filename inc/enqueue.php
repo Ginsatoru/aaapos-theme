@@ -23,6 +23,11 @@ if (!defined("ABSPATH")) {
  * @return bool True if production files exist
  */
 function mr_is_production_mode() {
+    // FORCE DEVELOPMENT MODE - Always return false
+    // Change this to true if you ever build minified files
+    return false;
+    
+    /* Original code - commented out
     static $is_production = null;
     
     if ($is_production === null) {
@@ -31,6 +36,7 @@ function mr_is_production_mode() {
     }
     
     return $is_production;
+    */
 }
 
 /**
@@ -920,4 +926,13 @@ add_action(
     "wp_enqueue_scripts",
     "aaapos_enqueue_woocommerce_blocks_styles",
     999,
+);
+
+// Enhanced Hero Animations
+wp_enqueue_script(
+    'aaapos-hero-enhanced',
+    get_template_directory_uri() . '/assets/js/hero-enhanced.js',
+    array(), // No dependencies
+    filemtime(get_template_directory() . '/assets/js/hero-enhanced.js'),
+    true
 );
