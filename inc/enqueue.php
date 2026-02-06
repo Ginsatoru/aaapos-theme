@@ -123,13 +123,15 @@ function mr_enqueue_styles()
         MR_THEME_VERSION,
     );
 
-    // Search no results styles
+// Search no results styles
+if (is_search()) {
     wp_enqueue_style(
         "mr-search-no-results",
         MR_THEME_URI . "/assets/css/components/search-no-results.css",
-        $is_production ? ["mr-main"] : ["mr-components"],
+        ["mr-base"],
         MR_THEME_VERSION,
     );
+}
 
     // Cart Confirmation Modal CSS
     wp_enqueue_style(
@@ -217,6 +219,16 @@ function mr_enqueue_styles()
         $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
+
+    // Special Deals / Offers Section - Homepage only
+    if (is_front_page() || is_page_template('page-templates/homepage.php')) {
+        wp_enqueue_style(
+            'aaapos-deals-offers',
+            get_template_directory_uri() . '/assets/css/components/deals-offers.css',
+            $is_production ? ['mr-main'] : ['mr-components'],
+            MR_THEME_VERSION
+        );
+    }
 
     // 404 Page styles
     if (is_404()) {

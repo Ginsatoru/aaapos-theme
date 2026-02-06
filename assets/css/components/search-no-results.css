@@ -1,4 +1,19 @@
 /* ==========================================================================
+   BASE FIXES - Remove default link styles
+   ========================================================================== */
+
+.suggestion-card,
+.suggestion-card:link,
+.suggestion-card:visited {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.suggestion-card * {
+  text-decoration: none !important;
+}
+
+/* ==========================================================================
    SEARCH HEADER - WHEN RESULTS ARE FOUND
    ========================================================================== */
 
@@ -240,15 +255,15 @@
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-light);
   border-radius: var(--border-radius-lg);
-  text-decoration: none;
-  transition: all 0.2s ease;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother easing */
 }
 
 .suggestion-card:hover {
   border-color: var(--brand-color);
   background: var(--color-white);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  transform: translateY(-4px); /* Slightly more lift */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* Better shadow */
 }
 
 .suggestion-icon {
@@ -260,7 +275,7 @@
   background: rgba(var(--brand-color-rgb), 0.1);
   border-radius: var(--border-radius-lg);
   color: var(--brand-color);
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Match parent */
 }
 
 .suggestion-card:hover .suggestion-icon {

@@ -2,11 +2,28 @@
    My Account Layout - Grid & Container Styles
    ============================================ */
 
+body.woocommerce-account .site-main,
+body.woocommerce-account #main.site-main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body.woocommerce-account .container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body.woocommerce-account .content-area {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
 /* === My Account Page Container === */
 .woocommerce-account {
-  margin-top: -110px !important;
+  margin-top: 0 !important;
+  padding-top: var(--space-6);
   background: var(--color-bg-secondary);
-  padding: var(--space-8) 0;
+  padding-bottom: var(--space-8);
   min-height: calc(100vh - var(--header-total-height));
 }
 

@@ -21,8 +21,13 @@ fieldset {
   border: none;
 }
 
-.entry-title {
-  display: none;
+/* Hide page title completely - no space */
+.woocommerce-account .entry-header {
+  display: none !important;
+}
+
+.woocommerce-account .entry-title {
+  display: none !important;
 }
 
 /* Hide default WooCommerce paragraphs */
