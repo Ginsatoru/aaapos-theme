@@ -8,18 +8,68 @@
   font-size: var(--text-sm);
   height: 45px;
   display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 1001;
+  transition: transform 0.3s ease;
+  margin-bottom: -40px !important;
 }
 
+/* Show on desktop */
 @media (min-width: 768px) {
   .top-bar {
     display: block;
   }
 }
+
+
+body:not(.has-sticky-header):not(.admin-bar) .top-bar {
+  margin-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   NON-STICKY MODE (Default) - Topbar uses margin for admin bar spacing
+   ========================================================================== */
+
+@media screen and (min-width: 783px) {
+  body:not(.has-sticky-header).admin-bar .top-bar {
+    margin-top: 32px;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  body:not(.has-sticky-header).admin-bar .top-bar {
+    margin-top: 46px;
+  }
+}
+
+/* ==========================================================================
+   STICKY MODE - Only when enabled
+   ========================================================================== */
+
+/* When sticky header is enabled, make topbar fixed */
+body.has-sticky-header .top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Admin bar adjustments when sticky is enabled */
+@media screen and (min-width: 783px) {
+  body.has-sticky-header.admin-bar .top-bar {
+    top: 32px; 
+  }
+}
+
+@media screen and (max-width: 782px) {
+  body.has-sticky-header.admin-bar .top-bar {
+    top: 46px; 
+  }
+}
+
+/* ==========================================================================
+   TOPBAR INNER STRUCTURE
+   ========================================================================== */
 
 .top-bar .container {
   height: 100%;

@@ -18,7 +18,7 @@
 @import '_dropdowns.css';
 
 /* ==========================================================================
-   MAIN HEADER CONTAINER
+   MAIN HEADER CONTAINER - WITH STICKY CONTROL
    ========================================================================== */
 
 .site-header {
@@ -26,10 +26,7 @@
   background-color: var(--color-header-bg);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 1000;
   height: 80px;
   transition: all 0.3s ease;
@@ -39,25 +36,105 @@
   .site-header {
     height: 90px;
   }
+}
+
+/* ==========================================================================
+   ✅ ADMIN BAR FIX - Non-Sticky Header Mode
+   ========================================================================== */
+
+/* When header is NOT sticky but admin bar exists, push only topbar down */
+@media screen and (min-width: 783px) {
+  html.admin-bar,
+  body.admin-bar {
+    margin-top: 0 !important;
+  }
   
-  /* Only add top spacing when topbar is active AND body has the class */
-  body.has-topbar .site-header {
-    top: 45px;
+  /* Push topbar down using margin for NON-sticky mode */
+  body:not(.has-sticky-header).admin-bar .top-bar {
+    margin-top: 32px;
   }
 }
 
-.site-header.is-sticky {
+@media screen and (max-width: 782px) {
+  /* Remove WordPress default margins */
+  html.admin-bar,
+  body.admin-bar {
+    margin-top: 0 !important;
+  }
+  
+  /* Push topbar down using margin for NON-sticky mode */
+  body:not(.has-sticky-header).admin-bar .top-bar {
+    margin-top: 46px;
+  }
+}
+
+/* ==========================================================================
+   STICKY HEADER MODE - Only when enabled
+   ========================================================================== */
+
+body.has-sticky-header .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Desktop: Topbar exists and sticky enabled - position below topbar */
+@media (min-width: 768px) {
+  body.has-sticky-header.has-topbar .site-header {
+    top: 45px;
+  }
+  
+  /* Admin bar + topbar + sticky */
+  body.has-sticky-header.has-topbar.admin-bar .site-header {
+    top: 77px;
+  }
+  
+  /* Admin bar only (no topbar) + sticky */
+  body.has-sticky-header:not(.has-topbar).admin-bar .site-header {
+    top: 32px;
+  }
+}
+
+/* Mobile admin bar adjustments */
+@media (max-width: 782px) {
+  body.has-sticky-header.admin-bar .site-header {
+    top: 46px; 
+  }
+  
+  body.has-sticky-header.has-topbar.admin-bar .site-header {
+    top: 46px;
+  }
+}
+
+/* When scrolled - header moves to top, topbar hides */
+body.has-sticky-header.scrolled .site-header {
+  top: 0 !important;
+}
+
+body.has-sticky-header.scrolled.admin-bar .site-header {
+  top: 32px !important;
+}
+
+@media (max-width: 782px) {
+  body.has-sticky-header.scrolled.admin-bar .site-header {
+    top: 46px !important;
+  }
+}
+
+body.has-sticky-header.scrolled .top-bar {
+  transform: translateY(-100%);
+}
+
+/* Sticky state styling */
+body.has-sticky-header .site-header.is-sticky {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   background: var(--color-header-bg);
 }
 
-body.scrolled .top-bar {
-  transform: translateY(-100%);
-}
-
-body.scrolled .site-header {
-  top: 0;
-}
+/* ==========================================================================
+   HEADER INNER STRUCTURE
+   ========================================================================== */
 
 .site-header .container {
   height: 100%;
@@ -124,7 +201,7 @@ body.scrolled .site-header {
     content: "";
     position: absolute;
     z-index: -1;
-    bottom: 25px; /* Position at bottom of menu item */
+    bottom: 25px; 
     left: var(--space-4);
     right: var(--space-4);
     height: 3px;
@@ -364,5 +441,25 @@ body.menu-open {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
+  }
+}
+
+@media screen and (min-width: 783px) {
+  html {
+    margin-top: 0 !important;
+  }
+  
+  body:not(.has-sticky-header).admin-bar .top-bar {
+    margin-top: 0px !important;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  html {
+    margin-top: 0 !important;
+  }
+  
+  body:not(.has-sticky-header).admin-bar .top-bar {
+    margin-top: 0px !important;
   }
 }

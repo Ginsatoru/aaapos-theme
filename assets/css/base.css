@@ -39,6 +39,19 @@ html {
   scroll-padding-top: var(--header-total-height);
 }
 
+/* ✅ Override WordPress admin bar margin when header is not sticky */
+@media screen and (min-width: 783px) {
+  html.admin-bar {
+    margin-top: 0 !important;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  html.admin-bar {
+    margin-top: 0 !important;
+  }
+}
+
 body {
   font-family: var(--font-body);
   font-size: var(--text-base);
@@ -48,19 +61,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100%;
-  padding-top: var(--header-height);
-}
-
-/* When topbar is enabled (has-topbar class added by header.php) */
-@media (min-width: 768px) {
-  body.has-topbar {
-    padding-top: var(--header-total-height);
-  }
-
-  /* When topbar is disabled, use only header height */
-  body:not(.has-topbar) {
-    padding-top: var(--header-height);
-  }
+  /* ✅ FIXED: Removed padding-top - handled by .site in layout.css to prevent double spacing */
 }
 
 body.menu-open,

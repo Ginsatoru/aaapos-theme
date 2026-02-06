@@ -17,7 +17,7 @@ function mr_header_customizer($wp_customize)
     $wp_customize->add_setting("show_top_bar", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "postMessage",
+        "transport" => "refresh", // Changed to refresh
     ]);
 
     $wp_customize->add_control("show_top_bar", [
@@ -73,11 +73,12 @@ function mr_header_customizer($wp_customize)
     $wp_customize->add_setting("sticky_header", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "postMessage",
+        "transport" => "refresh", // Changed to refresh so body class updates
     ]);
 
     $wp_customize->add_control("sticky_header", [
         "label" => __("Sticky Header", "macedon-ranges"),
+        "description" => __("Keep header visible when scrolling down", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "checkbox",
         "priority" => 50,
@@ -90,7 +91,7 @@ function mr_header_customizer($wp_customize)
     $wp_customize->add_setting("show_search_bar", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "postMessage",
+        "transport" => "refresh",
     ]);
 
     $wp_customize->add_control("show_search_bar", [
@@ -101,11 +102,11 @@ function mr_header_customizer($wp_customize)
         "priority" => 55,
     ]);
 
-    // NEW: Show/Hide Account Icon
+    // Show/Hide Account Icon
     $wp_customize->add_setting("show_account_icon", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "refresh", // Use refresh to regenerate HTML
+        "transport" => "refresh",
     ]);
 
     $wp_customize->add_control("show_account_icon", [
@@ -116,11 +117,11 @@ function mr_header_customizer($wp_customize)
         "priority" => 56,
     ]);
 
-    // NEW: Show/Hide Cart Icon
+    // Show/Hide Cart Icon
     $wp_customize->add_setting("show_cart_icon", [
         "default" => true,
         "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "refresh", // Use refresh to regenerate HTML
+        "transport" => "refresh",
     ]);
 
     $wp_customize->add_control("show_cart_icon", [

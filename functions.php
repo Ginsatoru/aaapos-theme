@@ -264,9 +264,9 @@ function aaapos_body_classes($classes)
     }
 
     // Sticky header
-    if (get_theme_mod("header_sticky", true)) {
-        $classes[] = "has-sticky-header";
-    }
+if (get_theme_mod("sticky_header", true)) {
+    $classes[] = "has-sticky-header";
+}
 
     // Sidebar layouts
     if (
@@ -1272,3 +1272,30 @@ function aaapos_enqueue_hero_assets() {
         }
     }
 }
+
+/**
+ * Add spacing for non-sticky header pages
+ */
+function aaapos_non_sticky_header_spacing() {
+    if (!get_theme_mod('sticky_header', true)) {
+        ?>
+        <style>
+            /* Add top spacing when header is not sticky */
+            body:not(.has-sticky-header) .site-main {
+                padding-top: 80px;
+            }
+            
+            @media (min-width: 768px) {
+                body:not(.has-sticky-header) .site-main {
+                    padding-top: 90px;
+                }
+                
+                body:not(.has-sticky-header).has-topbar .site-main {
+                    padding-top: 135px; /* 90px header + 45px topbar */
+                }
+            }
+        </style>
+        <?php
+    }
+}
+add_action('wp_head', 'aaapos_non_sticky_header_spacing');

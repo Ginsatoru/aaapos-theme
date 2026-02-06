@@ -20,8 +20,14 @@
 <body <?php 
     $body_classes = [];
     
+    // Add topbar class if enabled
     if (get_theme_mod('show_top_bar', true)) {
         $body_classes[] = 'has-topbar';
+    }
+    
+    // Add sticky header class if enabled
+    if (get_theme_mod('sticky_header', true)) {
+        $body_classes[] = 'has-sticky-header';
     }
     
     body_class($body_classes); 

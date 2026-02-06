@@ -10,6 +10,50 @@
   background: var(--color-white);
 }
 
+/* Add top padding when header/topbar ARE sticky (fixed positioning) */
+/* This prevents content from hiding under the fixed header */
+@media (min-width: 768px) {
+  /* Sticky enabled - content needs spacing */
+  body.has-sticky-header.has-topbar .site {
+    padding-top: 135px; /* 45px topbar + 90px header */
+  }
+  
+  body.has-sticky-header:not(.has-topbar) .site {
+    padding-top: 90px; /* Just header */
+  }
+  
+  /* Admin bar adjustments for sticky */
+  body.has-sticky-header.admin-bar.has-topbar .site {
+    padding-top: 167px; /* 32px admin + 45px topbar + 90px header */
+  }
+  
+  body.has-sticky-header.admin-bar:not(.has-topbar) .site {
+    padding-top: 122px; /* 32px admin + 90px header */
+  }
+  
+  /* ✅ NOT sticky - no padding needed (header/topbar are in document flow) */
+  body:not(.has-sticky-header) .site {
+    padding-top: 0 !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  /* Mobile - no topbar shown, just header */
+  body.has-sticky-header .site {
+    padding-top: 80px; /* Just mobile header height */
+  }
+  
+  body.has-sticky-header.admin-bar .site {
+    padding-top: 126px; /* 46px mobile admin + 80px header */
+  }
+  
+  /* ✅ NOT sticky - no padding */
+  body:not(.has-sticky-header) .site {
+    padding-top: 0 !important;
+  }
+}
+
 .site-main {
   flex: 1;
   background: var(--color-white);
@@ -201,12 +245,13 @@
 .pr-4 { padding-right: var(--space-4); }
 
 /* ===================================
-   CONTENT AREAS
+   CONTENT AREAS - ✅ FIXED: Removed default padding
    =================================== */
 .content-area {
     width: 100%;
     background: var(--color-white);
-    padding: var(--space-8) 0;
+    /* ✅ REMOVED: padding: var(--space-8) 0; - This was causing the gap! */
+    /* Individual pages can add their own padding as needed */
 }
 
 /* Cart page - remove top padding for breadcrumb */
@@ -497,11 +542,11 @@ section.bg-gray {
 }
 
 /* ===================================
-   HERO SECTION ADJUSTMENTS
+   HERO SECTION ADJUSTMENTS - ✅ FIXED
    =================================== */
 .home .hero-section,
 .hero-section {
-    margin-top: 0;
+    margin-top: 0 !important; /* ✅ Force no top margin */
 }
 
 /* ===================================

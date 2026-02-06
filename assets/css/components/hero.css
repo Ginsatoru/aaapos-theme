@@ -14,19 +14,19 @@ body {
   overflow-x: hidden;
 }
 
-/* Hero Section - OPTIMIZED HEIGHTS */
+/* Hero Section - OPTIMIZED HEIGHTS - ✅ FIXED: Removed all margins */
 .hero-section.hero-simple {
   position: relative;
   height: 75vh;
   min-height: 560px;
   overflow: hidden;
-  margin: 0;
+  margin: 0 !important; /* ✅ Force no margin */
   padding: 0;
   width: 100vw;
   left: 50%;
   right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
   background-color: var(--color-black);
 }
 
@@ -837,23 +837,19 @@ body {
 }
 
 /* ==========================================================================
-   Page Spacing
+   ✅ FIXED: Page Spacing - REMOVED ALL HARDCODED PADDINGS
    ========================================================================== */
 
+/* Homepage has no padding on site-main */
 .home .site-main {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
 
+/* All other pages - NO padding (handled by .site in layout.css) */
 .page:not(.home) .site-main,
 .single .site-main,
-.archive .site-main {
-  padding-top: 80px;
-}
-
-@media (min-width: 768px) {
-  .page:not(.home) .site-main,
-  .single .site-main,
-  .archive .site-main {
-    padding-top: 135px;
-  }
+.archive .site-main,
+.blog .site-main,
+.search .site-main {
+  padding-top: 0 !important;
 }
