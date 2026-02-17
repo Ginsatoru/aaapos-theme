@@ -113,8 +113,7 @@ body.woocommerce-cart #main.site-main article .entry-title {
    ========================================================================== */
 body.woocommerce-cart #main.site-main form.woocommerce-cart-form {
   background: var(--color-white);
-  border-radius: 12px; /* Reduced from 15px */
-  overflow: hidden;
+  border-radius: 12px;
   margin-bottom: 0;
   width: 100%;
 }

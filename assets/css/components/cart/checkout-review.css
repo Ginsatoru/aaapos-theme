@@ -70,7 +70,7 @@
   padding: 0.75rem 0;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--color-text-light);
+  color: var(--color-text-dark) !important;
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -469,4 +469,16 @@
 
 @keyframes spin {
   to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.woocommerce-checkout-review-order-table thead th {
+    color: #6b7280 !important;
+}
+
+.woocommerce-checkout-review-order-table .product-name {
+    color: #1f2937 !important;
+}
+
+.woocommerce-checkout-review-order-table tbody td {
+    color: #1f2937 !important;
 }

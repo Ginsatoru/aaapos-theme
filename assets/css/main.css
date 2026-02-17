@@ -20,6 +20,13 @@
 @import './components/about.css';
 @import './components/contact.css';
 
+/* Cart component styles */
+@import './components/cart/cart-main.css';
+@import './components/cart/cart-table.css';
+@import './components/cart/cart-sidebar.css';
+@import './components/cart/cart-empty.css';
+@import './components/cart/cart-responsive.css';
+
 /* Section styles */
 .section {
   padding: var(--space-12) 0;

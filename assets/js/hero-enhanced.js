@@ -1,9 +1,7 @@
 /**
- * Simple Hero Product Carousel
- * hero-product-carousel.js
- * 
- * Auto-rotating product carousel with smooth transitions
- * No complex effects - just clean, smooth sliding
+ * Hero Section Animations
+ * - Content entrance animations (slide in from left/right)
+ * - Product carousel auto-rotation
  * 
  * @package aaapos-prime
  */
@@ -11,6 +9,30 @@
 (function () {
   "use strict";
 
+  /**
+   * Hero Content Entrance Animations
+   */
+  class HeroContentAnimations {
+    constructor() {
+      this.heroSection = document.querySelector(".hero-section");
+      if (!this.heroSection) return;
+
+      this.init();
+    }
+
+    init() {
+      // Add 'loaded' class after a tiny delay to trigger CSS animations
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.heroSection.classList.add("hero-loaded");
+        });
+      });
+    }
+  }
+
+  /**
+   * Hero Product Carousel
+   */
   class HeroProductCarousel {
     constructor() {
       this.carousel = document.querySelector(".hero-product-carousel");
@@ -136,12 +158,18 @@
     }
   }
 
+  /**
+   * Initialize all hero animations when DOM is ready
+   */
+  function initHeroAnimations() {
+    new HeroContentAnimations();
+    new HeroProductCarousel();
+  }
+
   // Initialize when DOM is ready
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      new HeroProductCarousel();
-    });
+    document.addEventListener("DOMContentLoaded", initHeroAnimations);
   } else {
-    new HeroProductCarousel();
+    initHeroAnimations();
   }
 })();

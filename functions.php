@@ -39,6 +39,7 @@ function aaapos_load_theme_files()
         "inc/woocommerce.php",
         "inc/ajax.php",
         "inc/customizer/customizer.php",
+        "inc/customizer/page-loader-customizer.php",
         "inc/customizer/auth-customizer.php",
         "inc/customizer/about-customizer.php",
         "inc/customizer/contact-customizer.php",

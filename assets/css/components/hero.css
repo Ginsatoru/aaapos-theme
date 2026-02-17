@@ -382,6 +382,13 @@ body {
   }
 }
 
+/* ✅ MOBILE HIDE: Hide product carousel on mobile and tablet devices */
+@media (max-width: 1023px) {
+  .hero-product-carousel.hero-product-desktop-only {
+    display: none !important;
+  }
+}
+
 /* Product Carousel Track - LARGER SIZE */
 .product-carousel-track {
   position: relative;
@@ -605,7 +612,7 @@ body {
 }
 
 /* ==========================================================================
-   Mobile Responsive - OPTIMIZED HEIGHTS
+   Mobile Responsive - OPTIMIZED HEIGHTS & CAROUSEL HIDDEN
    ========================================================================== */
 
 @media (max-width: 1023px) {
@@ -631,9 +638,10 @@ body {
   .hero-buttons {
     justify-content: center;
   }
-
-  .product-carousel-track {
-    height: 420px;
+  
+  /* ✅ Content takes full width when carousel is hidden */
+  .hero-content-container {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -675,29 +683,6 @@ body {
     height: 18px;
   }
 
-  .product-info-card {
-    padding: 0.75rem 1rem;
-    max-width: 280px;
-  }
-
-  .product-name {
-    font-size: 0.9375rem;
-  }
-
-  .product-price {
-    font-size: 0.875rem;
-  }
-
-  .product-carousel-track {
-    height: 380px;
-    max-width: 400px;
-  }
-
-  .product-image-wrapper {
-    max-width: 300px;
-    margin-bottom: 1.25rem;
-  }
-
   /* Notification Banner Mobile */
   .hero-notification-banner {
     flex-direction: column;
@@ -737,19 +722,6 @@ body {
 
   .hero-btn {
     width: 100%;
-  }
-
-  .product-carousel-track {
-    height: 350px;
-    max-width: 350px;
-  }
-
-  .product-image-wrapper {
-    max-width: 260px;
-  }
-  
-  .product-info-card {
-    max-width: 280px;
   }
 }
 
@@ -852,4 +824,111 @@ body {
 .blog .site-main,
 .search .site-main {
   padding-top: 0 !important;
+}
+
+/* ==========================================================================
+   Hero Content Entrance Animations - Slide In from Left/Right
+   ========================================================================== */
+
+/* Initial hidden state - content slides in from left */
+.hero-section:not(.hero-loaded) .hero-content {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* Initial hidden state - product carousel slides in from right */
+.hero-section:not(.hero-loaded) .hero-product-carousel {
+  opacity: 0;
+  transform: translateX(60px);
+}
+
+/* Animate content when page loads */
+.hero-content {
+  transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+}
+
+.hero-product-carousel {
+  transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
+}
+
+/* Loaded state - everything visible */
+.hero-section.hero-loaded .hero-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero-section.hero-loaded .hero-product-carousel {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Staggered entrance for individual content elements */
+.hero-section:not(.hero-loaded) .hero-title {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-section:not(.hero-loaded) .hero-subtitle {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-section:not(.hero-loaded) .hero-buttons {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-section:not(.hero-loaded) .hero-notification-banner {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Animate individual elements with staggered delays */
+.hero-title {
+  transition: opacity 0.6s ease-out 0.4s, transform 0.6s ease-out 0.4s;
+}
+
+.hero-subtitle {
+  transition: opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s;
+}
+
+.hero-buttons {
+  transition: opacity 0.6s ease-out 0.8s, transform 0.6s ease-out 0.8s;
+}
+
+.hero-notification-banner {
+  transition: opacity 0.6s ease-out 1s, transform 0.6s ease-out 1s;
+}
+
+/* Loaded state for individual elements */
+.hero-section.hero-loaded .hero-title,
+.hero-section.hero-loaded .hero-subtitle,
+.hero-section.hero-loaded .hero-buttons,
+.hero-section.hero-loaded .hero-notification-banner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ensure smooth animation on mobile too */
+@media (max-width: 1023px) {
+  .hero-section:not(.hero-loaded) .hero-content {
+    transform: translateY(30px);
+  }
+  
+  .hero-section.hero-loaded .hero-content {
+    transform: translateY(0);
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-product-carousel,
+  .hero-title,
+  .hero-subtitle,
+  .hero-buttons,
+  .hero-notification-banner {
+    transition: opacity 0.3s ease-out !important;
+    transform: none !important;
+  }
 }

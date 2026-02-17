@@ -20,6 +20,11 @@
 <body <?php 
     $body_classes = [];
     
+    // Add page loader class if enabled
+    if (get_theme_mod('enable_page_loader', false)) {
+        $body_classes[] = 'page-loading';
+    }
+    
     // Add topbar class if enabled
     if (get_theme_mod('show_top_bar', true)) {
         $body_classes[] = 'has-topbar';
@@ -33,6 +38,55 @@
     body_class($body_classes); 
 ?>>
 <?php wp_body_open(); ?>
+
+<?php
+/**
+ * Page Loader Overlay - MUST BE FIRST THING AFTER <body>
+ */
+if (get_theme_mod('enable_page_loader', false)) {
+    // Determine which logo to use
+    $use_site_logo = get_theme_mod('page_loader_use_site_logo', true);
+    $loader_logo_url = '';
+    
+    if ($use_site_logo) {
+        // Use site logo
+        $custom_logo_id = get_theme_mod('custom_logo');
+        if ($custom_logo_id) {
+            $loader_logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+        }
+    } else {
+        // Use custom loader logo
+        $custom_loader_id = get_theme_mod('page_loader_custom_logo');
+        if ($custom_loader_id) {
+            $loader_logo_url = wp_get_attachment_image_url($custom_loader_id, 'full');
+        }
+    }
+    
+    // Get other settings
+    $loader_text = get_theme_mod('page_loader_text', 'Loading…');
+    $bg_color = get_theme_mod('page_loader_bg_color', '#fafafa');
+    $text_color = get_theme_mod('page_loader_text_color', '#4a5568');
+    $accent_color = get_theme_mod('page_loader_accent_color', '#0f8abe');
+    ?>
+    
+    <!-- Page Loader Overlay -->
+    <div class="page-loader-overlay" style="--loader-bg: <?php echo esc_attr($bg_color); ?>; --loader-text: <?php echo esc_attr($text_color); ?>; --loader-accent: <?php echo esc_attr($accent_color); ?>;">
+        <div class="page-loader-content">
+            <?php if ($loader_logo_url): ?>
+                <img src="<?php echo esc_url($loader_logo_url); ?>" 
+                     alt="<?php echo esc_attr(get_bloginfo('name')); ?>" 
+                     class="page-loader-logo">
+            <?php endif; ?>
+            
+            <p class="page-loader-text"><?php echo esc_html($loader_text); ?></p>
+            
+            <div class="page-loader-progress">
+                <div class="page-loader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+    
+<?php } ?>
 
 <div id="page" class="site">
     <a class="skip-link sr-only" href="#main">
@@ -277,7 +331,7 @@
                                         <li>
                                             <a href="<?php echo esc_url(wc_get_account_endpoint_url('customer-logout')); ?>">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2h4"/>
                                                     <polyline points="16 17 21 12 16 7"/>
                                                     <line x1="21" y1="12" x2="9" y2="12"/>
                                                 </svg>
@@ -407,4 +461,4 @@
 
     <div class="mobile-menu-overlay"></div>
 
-    <main id="main" class="site-main">
+        <main id="main" class="site-main">

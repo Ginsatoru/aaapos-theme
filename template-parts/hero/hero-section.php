@@ -315,9 +315,9 @@ if ($media_type === "video") {
                 <?php endif; ?>
             </div>
 
-            <!-- Right Side: Product Carousel -->
+            <!-- Right Side: Product Carousel - HIDDEN ON MOBILE -->
             <?php if ($show_product_carousel): ?>
-            <div class="hero-product-carousel">
+            <div class="hero-product-carousel hero-product-desktop-only">
                 <div class="product-carousel-track">
                     <?php foreach ($products as $index => $product): ?>
                         <?php if ($product['image']): ?>

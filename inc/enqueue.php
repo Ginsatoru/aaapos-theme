@@ -414,16 +414,50 @@ function mr_enqueue_scripts()
             true,
         );
 
-        // Slider (conditional - only on pages with sliders)
-        if (is_front_page() || is_page_template("page-templates/homepage.php")) {
-            wp_enqueue_script(
-                "mr-slider",
-                MR_THEME_URI . "/assets/js/slider.js",
-                ["mr-theme"],
-                MR_THEME_VERSION,
-                true,
-            );
-        }
+// Hero Scripts - Background Slider + Product Carousel
+if (is_front_page() || is_page_template("page-templates/homepage.php")) {
+    // Background image slideshow
+    wp_enqueue_script(
+        "mr-slider",
+        MR_THEME_URI . "/assets/js/slider.js",
+        ["mr-theme"],
+        MR_THEME_VERSION,
+        true,
+    );
+    
+    // Product carousel animation
+    wp_enqueue_script(
+        "aaapos-hero-enhanced",
+        MR_THEME_URI . "/assets/js/hero-enhanced.js",
+        [], // No dependencies - pure vanilla JS
+        MR_THEME_VERSION,
+        true,
+    );
+}
+
+// Page Loader - Only if enabled
+if (get_theme_mod('enable_page_loader', false)) {
+    wp_enqueue_style(
+        'aaapos-page-loader',
+        MR_THEME_URI . '/assets/css/page-loader.css',
+        $is_production ? ['mr-main'] : ['mr-base'],
+        MR_THEME_VERSION
+    );
+    
+    wp_enqueue_script(
+        'aaapos-page-loader',
+        MR_THEME_URI . '/assets/js/page-loader.js',
+        [],
+        MR_THEME_VERSION,
+        true
+    );
+    
+    // Pass settings to JavaScript
+    wp_localize_script('aaapos-page-loader', 'pageLoaderSettings', array(
+        'minTime' => get_theme_mod('page_loader_min_time', 500),
+        'maxTime' => get_theme_mod('page_loader_max_time', 5000),
+    ));
+}
 
         // Modal (conditional)
         if (is_search() || is_singular()) {
@@ -551,6 +585,16 @@ if (is_product()) {
         array('jquery'),
         MR_THEME_VERSION,
         true
+    );
+}
+
+// Cart styles - ONLY on cart page
+if (is_cart()) {
+    wp_enqueue_style(
+        'mr-cart-main',
+        get_template_directory_uri() . '/assets/css/components/cart/cart-main.css',
+        $is_production ? ['mr-main'] : ['mr-components'],
+        MR_THEME_VERSION,
     );
 }
 
@@ -938,13 +982,4 @@ add_action(
     "wp_enqueue_scripts",
     "aaapos_enqueue_woocommerce_blocks_styles",
     999,
-);
-
-// Enhanced Hero Animations
-wp_enqueue_script(
-    'aaapos-hero-enhanced',
-    get_template_directory_uri() . '/assets/js/hero-enhanced.js',
-    array(), // No dependencies
-    filemtime(get_template_directory() . '/assets/js/hero-enhanced.js'),
-    true
 );

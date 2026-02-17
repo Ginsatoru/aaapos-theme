@@ -1,0 +1,145 @@
+/* =================================================================
+   Page Loading Overlay Animation
+   Professional minimal loader with logo
+   ================================================================= */
+
+:root {
+    --loader-bg: #fafafa;
+    --loader-text: #4a5568;
+    --loader-accent: #0f8abe;
+    --loader-progress-bg: #e2e8f0;
+}
+
+/* Prevent scrolling while loader is active */
+body.page-loading {
+    overflow: hidden !important;
+    height: 100vh;
+}
+
+/* =================================================================
+   LOADER OVERLAY - Full screen, centered
+   ================================================================= */
+.page-loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--loader-bg);
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+/* Fade out state */
+.page-loader-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =================================================================
+   LOADER CONTENT
+   ================================================================= */
+.page-loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+/* Logo styling */
+.page-loader-logo {
+    width: 190px;
+    max-width: 90vw;
+    height: auto;
+    object-fit: contain;
+    animation: logoBreathing 2s ease-in-out infinite;
+}
+
+/* Logo breathing animation */
+@keyframes logoBreathing {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.85;
+        transform: scale(0.98);
+    }
+}
+
+/* Loading text */
+.page-loader-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--loader-text);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    animation: textFade 1.5s ease-in-out infinite;
+}
+
+/* Text fade animation */
+@keyframes textFade {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Progress bar container */
+.page-loader-progress {
+    width: 250px;
+    max-width: 80vw;
+    height: 4px;
+    background-color: var(--loader-progress-bg);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Progress bar fill */
+.page-loader-progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--loader-accent);
+    border-radius: 2px;
+    transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =================================================================
+   REDUCED MOTION - Accessibility
+   ================================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .page-loader-logo {
+        animation: none !important;
+    }
+    
+    .page-loader-text {
+        animation: none !important;
+        opacity: 1 !important;
+    }
+    
+    .page-loader-progress-bar {
+        transition: width 0.5s linear !important;
+    }
+}
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 768px) {
+    .page-loader-logo {
+        width: 150px;
+    }
+    
+    .page-loader-content {
+        gap: 1.25rem;
+    }
+}
