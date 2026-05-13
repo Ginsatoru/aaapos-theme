@@ -73,12 +73,7 @@ $products = array(
 );
 
 // Default fallback images
-$default_images = [
-    "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1920&q=80",
-    "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1920&q=80",
-    "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1920&q=80",
-    "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1920&q=80",
-];
+$default_image = "https://www.aaapos.com/wp-content/uploads/cropped-cropped-aaapos-logo.png";
 
 // Add CSS class
 $hero_class = "hero-section hero-simple";

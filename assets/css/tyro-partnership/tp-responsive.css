@@ -1,0 +1,193 @@
+/**
+ * tp-responsive.css — Scroll animations & responsive breakpoints
+ * Imported via tyro-partnership.css
+ */
+
+/* ─── Animation base states ─── */
+
+/* Word-slice: each word clips upward from overflow:hidden parent */
+.tp-word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+.tp-word {
+    display: inline-block;
+    transform: translateY(110%);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1),
+                opacity 0.2s ease;
+}
+.tp-in .tp-word {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* slide-up: body text, descriptions, supporting elements */
+.tp-anim-slide-up {
+    opacity: 0;
+    transform: translateY(48px);
+    transition: transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.85s ease;
+}
+
+/* card-pop: feat, opt, rba, flat cards — scale + slide from right */
+.tp-feat-card,
+.tp-opt-card,
+.tp-rba-card,
+.tp-flat-card {
+    opacity: 0;
+    transform: scale(0.92) translateX(32px);
+    transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.55s ease,
+                border-color var(--tp-transition),
+                box-shadow var(--tp-transition);
+}
+
+/* drop: chips, pills — drop in from above */
+.tp-anim-drop {
+    opacity: 0;
+    transform: translateY(-36px);
+    transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.55s ease;
+}
+
+/* fade-up: table, rec-highlight, date-banner */
+.tp-anim-fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.8s ease;
+}
+
+/* ─── Scroll-in trigger ─── */
+
+.tp-in .tp-anim-slide-up,
+.tp-in .tp-anim-drop,
+.tp-in .tp-anim-fade-up {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tp-in .tp-feat-card,
+.tp-in .tp-opt-card,
+.tp-in .tp-rba-card,
+.tp-in .tp-flat-card {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+}
+
+/* ─── Stagger delays ─── */
+/* Applied globally — JS adds .tp-animated after animation ends to swap
+   to hover-only transitions without disrupting the stagger timing */
+
+.tp-feat-card:nth-child(1) { transition-delay: 0.15s; }
+.tp-feat-card:nth-child(2) { transition-delay: 0.30s; }
+.tp-feat-card:nth-child(3) { transition-delay: 0.45s; }
+.tp-feat-card:nth-child(4) { transition-delay: 0.60s; }
+
+.tp-opt-card:nth-child(1)  { transition-delay: 0.15s; }
+.tp-opt-card:nth-child(2)  { transition-delay: 0.35s; }
+
+.tp-rba-card:nth-child(1)  { transition-delay: 0.15s; }
+.tp-rba-card:nth-child(2)  { transition-delay: 0.30s; }
+.tp-rba-card:nth-child(3)  { transition-delay: 0.45s; }
+.tp-rba-card:nth-child(4)  { transition-delay: 0.60s; }
+
+.tp-flat-card:nth-child(1) { transition-delay: 0.15s; }
+.tp-flat-card:nth-child(2) { transition-delay: 0.35s; }
+
+/* ─── Post-animation state: hover transitions only, no delay ─── */
+/* .tp-animated is added by JS via transitionend — after the card has
+   finished animating in, so hover feels instant and clean */
+
+.tp-animated {
+    transition: border-color var(--tp-transition),
+                box-shadow var(--tp-transition) !important;
+    transition-delay: 0s !important;
+}
+
+/* ─── RBA learn-more: never participates in card-pop, hover only ─── */
+.tp-in .tp-rba-learn-more {
+    transition: gap var(--tp-transition),
+                color var(--tp-transition),
+                background var(--tp-transition);
+    transition-delay: 0s !important;
+    transform: none !important;
+}
+
+/* ─── Tablet ─── */
+
+@media (max-width: 1024px) {
+    .tp-partner-grid,
+    .tp-cost-grid,
+    .tp-rba-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .tp-rec-box {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .tp-rec-highlight {
+        text-align: left;
+        min-width: unset;
+        white-space: normal;
+    }
+}
+
+/* ─── Mobile ─── */
+
+@media (max-width: 768px) {
+    .tp-container {
+        padding-inline: 16px;
+    }
+
+    .tp-section {
+        padding-block: 44px;
+    }
+
+    .tp-hero {
+        padding: 56px 0 64px;
+    }
+
+    .tp-hero__logos {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .tp-feat-grid,
+    .tp-opt-row,
+    .tp-rba-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .tp-date-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tp-cta {
+        padding: 56px 0;
+    }
+
+    .tp-rec-box::before {
+        display: none;
+    }
+}
+
+/* ─── Small mobile ─── */
+
+@media (max-width: 480px) {
+    .tp-hero__logo-wrap {
+        min-width: 120px;
+        padding: 12px 20px;
+    }
+
+    .tp-cta__btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

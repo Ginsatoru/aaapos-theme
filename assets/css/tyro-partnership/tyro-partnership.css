@@ -1,0 +1,13 @@
+/**
+ * tyro-partnership.css — Main entry file
+ * File: /wp-content/themes/yith-proteo-child-1/css/tyro-partnership.css
+ *
+ * This file is enqueued via functions.php only on the Tyro Partnership Page template.
+ * It imports all partial stylesheets in order.
+ */
+
+@import url('tp-tokens.css');
+@import url('tp-hero.css');
+@import url('tp-sections.css');
+@import url('tp-blocks.css');
+@import url('tp-responsive.css');

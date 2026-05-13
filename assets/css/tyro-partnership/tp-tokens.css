@@ -1,0 +1,133 @@
+/**
+ * tp-tokens.css — Design tokens & base reset
+ * Imported via tyro-partnership.css
+ */
+
+:root {
+    --tp-brand:       #0f8abe;
+    --tp-brand-dark:  #0b6e96;
+    --tp-brand-light: #e6f4fb;
+    --tp-green:       #2eaf6e;
+    --tp-green-light: #e8f7ef;
+    --tp-yellow:      #f5c842;
+    --tp-yellow-light:#fffbea;
+    --tp-dark:        #1a1f2e;
+    --tp-text:        #2d3340;
+    --tp-muted:       #6b7280;
+    --tp-border:      #e4e8f0;
+    --tp-bg:          #ffffff;
+    --tp-white:       #ffffff;
+    --tp-shadow:      0 2px 16px rgba(30,40,60,0.08);
+    --tp-shadow-md:   0 6px 28px rgba(30,40,60,0.11);
+    --tp-shadow-lg:   0 12px 48px rgba(30,40,60,0.13);
+    --tp-radius:      14px;
+    --tp-radius-sm:   9px;
+    --tp-radius-lg:   20px;
+    --tp-font:        'DM Sans', sans-serif;
+    --tp-transition:  0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+.tyro-pg *,
+.tyro-pg *::before,
+.tyro-pg *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.tyro-pg {
+    font-family: var(--tp-font);
+    color: var(--tp-text);
+    line-height: 1.6;
+    background: var(--tp-bg);
+}
+
+.tp-container {
+    width: 100%;
+    padding-inline: clamp(16px, 4vw, 40px);
+}
+
+#tyro-page {
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+@media (max-width: 768px) {
+    #tyro-page {
+        padding: 6px;
+        gap: 10px;
+    }
+}
+
+/* Section wrappers — each is an independent rounded card */
+.tp-section,
+.tp-hero {
+    border-radius: 20px;
+}
+
+.tp-hero {
+    overflow: hidden;
+}
+
+.tp-section {
+    padding-block: 76px 88px;
+    background: var(--tp-white);
+    border-radius: 20px;
+    box-shadow: var(--tp-shadow-lg);
+    overflow: visible;
+}
+
+.tp-section--grey {
+    background: #f4f6f9;
+    box-shadow: none;
+}
+
+/* Shared chip label */
+.tp-chip {
+    display: inline-block;
+    background: var(--tp-brand-light);
+    color: var(--tp-brand);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+}
+
+.tp-chip--amber  { background: #fff7e6; color: #92700a; }
+.tp-chip--green  { background: var(--tp-green-light); color: var(--tp-green); }
+.tp-chip--yellow { background: var(--tp-yellow-light); color: #92700a; }
+
+/* Shared section heading block */
+.tp-section-head {
+    margin-bottom: clamp(32px, 4vw, 52px);
+}
+
+.tp-sec-title {
+    font-family: var(--tp-font);
+    font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+    font-weight: 800;
+    color: var(--tp-dark);
+    margin-bottom: 12px;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+.tp-lead {
+    font-size: 1.05rem;
+    color: var(--tp-muted);
+    line-height: 1.8;
+    max-width: 720px;
+}
+
+/* Scroll-in animation base */
+@keyframes tp-fade-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

@@ -1300,3 +1300,65 @@ function aaapos_non_sticky_header_spacing() {
     }
 }
 add_action('wp_head', 'aaapos_non_sticky_header_spacing');
+
+
+/**
+ * Tyro Partnership Assets
+ */
+function aaapos_enqueue_tyro_assets()
+{
+    if (!is_page_template('page-templates/tyro-partnership.php')) {
+        return;
+    }
+
+    $tp_css_uri = AAAPOS_ASSETS_URI . '/css/tyro-partnership';
+
+    wp_enqueue_style(
+        'aaapos-tyro-tokens',
+        $tp_css_uri . '/tp-tokens.css',
+        [],
+        AAAPOS_VERSION
+    );
+
+    wp_enqueue_style(
+        'aaapos-tyro-hero',
+        $tp_css_uri . '/tp-hero.css',
+        ['aaapos-tyro-tokens'],
+        AAAPOS_VERSION
+    );
+
+    wp_enqueue_style(
+        'aaapos-tyro-sections',
+        $tp_css_uri . '/tp-sections.css',
+        ['aaapos-tyro-tokens'],
+        AAAPOS_VERSION
+    );
+
+    wp_enqueue_style(
+        'aaapos-tyro-blocks',
+        $tp_css_uri . '/tp-blocks.css',
+        ['aaapos-tyro-tokens'],
+        AAAPOS_VERSION
+    );
+
+    wp_enqueue_style(
+        'aaapos-tyro-responsive',
+        $tp_css_uri . '/tp-responsive.css',
+        ['aaapos-tyro-sections'],
+        AAAPOS_VERSION
+    );
+
+    wp_enqueue_style(
+        'aaapos-tyro-main',
+        $tp_css_uri . '/tyro-partnership.css',
+        [
+            'aaapos-tyro-tokens',
+            'aaapos-tyro-hero',
+            'aaapos-tyro-sections',
+            'aaapos-tyro-blocks',
+            'aaapos-tyro-responsive'
+        ],
+        AAAPOS_VERSION
+    );
+}
+add_action('wp_enqueue_scripts', 'aaapos_enqueue_tyro_assets');

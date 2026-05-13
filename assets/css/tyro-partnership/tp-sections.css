@@ -1,0 +1,247 @@
+/**
+ * tp-sections.css — Sections 1, 2, 3
+ * Imported via tyro-partnership.css
+ */
+
+/* ─── SECTION 1: Partnership Features ─── */
+
+.tp-partner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+}
+
+.tp-feat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.tp-feat-card {
+    background: var(--tp-white);
+    border: 1.5px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    padding: 24px 26px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1),
+                transform 1.1s cubic-bezier(0.16,1,0.3,1),
+                border-color 0.15s ease,
+                box-shadow 0.15s ease;
+}
+
+.tp-feat-card:hover {
+    border-color: var(--tp-brand);
+    box-shadow: var(--tp-shadow);
+}
+
+.tp-feat-icon {
+    width: 46px;
+    height: 46px;
+    background: var(--tp-brand-light);
+    border-radius: var(--tp-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--tp-brand);
+}
+
+.tp-feat-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--tp-dark);
+    margin-bottom: 5px;
+}
+
+.tp-feat-desc {
+    font-size: 14px;
+    color: var(--tp-muted);
+    line-height: 1.6;
+}
+
+/* ─── SECTION 2: Surcharge Regulatory Change ─── */
+
+.tp-date-banner {
+    background: var(--tp-yellow-light);
+    border: 1.5px solid var(--tp-yellow);
+    border-radius: var(--tp-radius);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.tp-date-pill {
+    background: #fde68a;
+    color: #5a3d00;
+    font-weight: 800;
+    border-radius: var(--tp-radius-sm);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+
+
+.tp-date-text strong {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--tp-dark);
+    display: block;
+    margin-bottom: 7px;
+}
+
+.tp-date-text p {
+    font-size: 15px;
+    color: var(--tp-muted);
+    line-height: 1.65;
+    margin: 0;
+}
+
+.tp-opt-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.tp-opt-card {
+    background: var(--tp-white);
+    border: 1.5px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    padding: clamp(24px, 3vw, 36px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1),
+                transform 1.1s cubic-bezier(0.16,1,0.3,1),
+                border-color var(--tp-transition),
+                box-shadow var(--tp-transition);
+}
+
+.tp-opt-card:hover {
+    border-color: var(--tp-brand);
+    box-shadow: var(--tp-shadow);
+}
+
+.tp-opt-num {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--tp-brand);
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.tp-opt-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--tp-dark);
+    margin-bottom: 8px;
+}
+
+.tp-opt-desc {
+    font-size: 14.5px;
+    color: var(--tp-muted);
+    line-height: 1.65;
+}
+
+/* ─── SECTION 3: Cost Table ─── */
+
+.tp-cost-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.tp-table-wrap {
+    background: var(--tp-white);
+    border: 1.5px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    overflow: hidden;
+}
+
+.tp-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tp-table th {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--tp-muted);
+    text-align: left;
+    padding: 14px 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border-bottom: 1.5px solid var(--tp-border);
+    background: var(--tp-bg);
+}
+
+.tp-table td {
+    font-size: 15px;
+    color: #374151;
+    padding: 16px 22px;
+    border-bottom: 1px solid #f0f3f8;
+}
+
+.tp-table tbody tr:last-child td { border-bottom: none; }
+.tp-table tbody tr:hover td { background: #fafbfd; }
+.tp-table__type { font-weight: 600; color: var(--tp-dark) !important; }
+
+.tp-badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 999px;
+}
+.tp-badge--low  { background: var(--tp-brand-light); color: var(--tp-brand); }
+.tp-badge--mid  { background: var(--tp-yellow-light); color: #7a5800; }
+.tp-badge--high { background: #fee2e2; color: #991b1b; }
+
+.tp-flat-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tp-flat-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tp-muted);
+    margin-bottom: 4px;
+}
+
+.tp-flat-card {
+    background: var(--tp-white);
+    border: 1.5px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    padding: 22px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color var(--tp-transition), box-shadow var(--tp-transition);
+}
+
+.tp-flat-card:hover {
+    border-color: var(--tp-brand);
+    box-shadow: var(--tp-shadow);
+}
+
+.tp-flat-card span {
+    font-size: 15px;
+    color: var(--tp-muted);
+}
+
+.tp-flat-card strong {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--tp-dark);
+}
