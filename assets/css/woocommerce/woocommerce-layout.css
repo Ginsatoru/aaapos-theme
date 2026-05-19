@@ -1,7 +1,7 @@
 /* ============================================
    WooCommerce Layout Styles
    Page structure, containers, headers, toolbars
-   Version: 2.0 - Enhanced Shop Header
+   Version: 2.1 - Fixed container alignment with global layout
    ============================================ */
 
 /* === PAGE BACKGROUND & WRAPPER === */
@@ -12,37 +12,24 @@
   min-height: 100vh;
 }
 
-/* === CONTAINER WIDTHS === */
+/* === CONTAINER WIDTHS ===
+   FIXED: Now uses --container-max-width (1400px) to match
+   the global .container used by header and footer.
+   Previously was hardcoded to 72% which caused the shop
+   content to be wider than the navbar/footer.
+*/
 .woocommerce .shop-page-wrapper .container-wide,
 .woocommerce-page .shop-page-wrapper .container-wide {
-  max-width: 72% !important;
-  width: 72% !important;
+  max-width: var(--container-max-width) !important;
+  width: 100% !important;
   margin: 0 auto !important;
-  padding: 0 2rem !important;
-}
-
-@media (max-width: 1600px) {
-  .woocommerce .shop-page-wrapper .container-wide,
-  .woocommerce-page .shop-page-wrapper .container-wide {
-    max-width: 90% !important;
-    width: 90% !important;
-  }
-}
-
-@media (max-width: 1200px) {
-  .woocommerce .shop-page-wrapper .container-wide,
-  .woocommerce-page .shop-page-wrapper .container-wide {
-    max-width: 97% !important;
-    width: 97% !important;
-  }
+  padding: 0 var(--container-padding) !important;
 }
 
 @media (max-width: 768px) {
   .woocommerce .shop-page-wrapper .container-wide,
   .woocommerce-page .shop-page-wrapper .container-wide {
-    max-width: 95% !important;
-    width: 95% !important;
-    padding: 0 1rem !important;
+    padding: 0 var(--container-padding) !important;
   }
 
   .woocommerce .shop-page-wrapper,
@@ -51,13 +38,15 @@
   }
 }
 
-/* === BREADCRUMB === */
+/* === BREADCRUMB ===
+   FIXED: Also aligned to --container-max-width to match header/footer.
+*/
 .woocommerce-breadcrumb,
 .woocommerce .woocommerce-breadcrumb {
-  max-width: 72% !important;
-  width: 72% !important;
+  max-width: var(--container-max-width) !important;
+  width: 100% !important;
   margin: 0 auto 0.75rem auto !important;
-  padding: 0.5rem 2rem !important;
+  padding: 0.5rem var(--container-padding) !important;
   font-size: var(--text-sm);
   color: var(--color-text-light);
   margin-top: 0.75rem !important;
@@ -71,31 +60,6 @@
 
 .woocommerce-breadcrumb a:hover {
   color: var(--color-primary);
-}
-
-@media (max-width: 1600px) {
-  .woocommerce-breadcrumb,
-  .woocommerce .woocommerce-breadcrumb {
-    max-width: 90% !important;
-    width: 90% !important;
-  }
-}
-
-@media (max-width: 1200px) {
-  .woocommerce-breadcrumb,
-  .woocommerce .woocommerce-breadcrumb {
-    max-width: 97% !important;
-    width: 97% !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .woocommerce-breadcrumb,
-  .woocommerce .woocommerce-breadcrumb {
-    max-width: 95% !important;
-    width: 95% !important;
-    padding: 1rem !important;
-  }
 }
 
 /* === TOP SPACING CONTROL === */

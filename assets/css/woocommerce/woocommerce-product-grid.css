@@ -181,11 +181,9 @@
   color: var(--color-text-dark) !important;
   margin: 0 !important;
   padding: 1.125rem 1.25rem 0.5rem 1.25rem !important;
-  min-height: 2.8em !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
+  display: block !important;
+  overflow: visible !important;
+  white-space: normal !important;
   transition: color 0.2s ease !important;
 }
 

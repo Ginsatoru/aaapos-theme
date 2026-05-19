@@ -46,8 +46,14 @@ if ( ! empty( $breadcrumb ) ) {
 			}
 			
 		} else {
-			// Last item (current page) - WRAP IN SPAN with special class
-			echo '<span class="breadcrumb-current">' . esc_html( $crumb[0] ) . '</span>';
+			// Last item (current page) - truncate to first 2 words + ellipsis if longer
+			$full_title = $crumb[0];
+			$words      = explode( ' ', $full_title );
+			$short      = count( $words ) > 2
+				? implode( ' ', array_slice( $words, 0, 2 ) )
+				: $full_title;
+
+			echo '<span class="breadcrumb-current" title="' . esc_attr( $full_title ) . '">' . esc_html( $short ) . '</span>';
 		}
 
 		echo $args['after'];

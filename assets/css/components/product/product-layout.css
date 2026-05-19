@@ -3,11 +3,13 @@
  * Handles container width, grid system, breadcrumb, and sale badge
  * product-layout.css
  * @package AAAPOS_Prime
- * @version 1.0.5
- * 
+ * @version 1.1.0
+ *
+ * FIXED: Container now uses --container-max-width (1400px) and
+ * --container-padding to match the global .container used by
+ * header and footer — replacing all hardcoded percentage widths.
+ *
  * Location: assets/css/components/product/product-layout.css
- * 
- * FIXED: Related products overflow issue resolved
  */
 
 /* ============================================
@@ -72,74 +74,40 @@
 .single-product .site-main,
 .single-product #main {
   background: var(--color-white) !important;
-  padding: 1.5rem 0 8rem 0 !important; /* INCREASED: Much more space at bottom */
-  min-height: auto !important; /* CHANGED: Was 100vh - causing overflow */
+  padding: 1.5rem 0 8rem 0 !important;
+  min-height: auto !important;
 }
 
-/* === RESPONSIVE CONTAINER - WORKS ON ALL DESKTOP SIZES === */
+/* === PRODUCT CONTAINER — ALIGNED WITH GLOBAL LAYOUT ===
+   FIXED: Replaced all breakpoint-specific percentages (72%, 80%, 90%, 92%)
+   with --container-max-width (1400px) + --container-padding, matching
+   the .container class used in header.php and site-footer.php.
+*/
 .single-product div.product {
-  max-width: 92% !important;
+  max-width: var(--container-max-width) !important;
   width: 100% !important;
-  margin: 0 auto 3rem auto !important; /* ADDED: Bottom margin for spacing */
-  padding: 0 2rem !important;
+  margin: 0 auto 3rem auto !important;
+  padding: 0 var(--container-padding) !important;
 }
 
-/* Large Desktop (1920px+) - Keep current 24" monitor size */
-@media (min-width: 1920px) {
-  .single-product div.product {
-    max-width: 72% !important;
-  }
-}
-
-/* Standard Desktop (1600px - 1919px) - Keep current size */
-@media (min-width: 1600px) and (max-width: 1919px) {
-  .single-product div.product {
-    max-width: 80% !important;
-  }
-}
-
-/* Medium Desktop (1200px - 1599px) - Laptops - BIGGER */
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .single-product div.product {
-    max-width: 90% !important;
-  }
-}
-
-/* Small Laptop (1024px - 1199px) - BIGGER */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .single-product div.product {
-    max-width: 92% !important;
-  }
-}
-
-/* Tablet (768px - 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .single-product div.product {
-    max-width: 95% !important;
-    padding: 0 1.5rem !important;
-  }
-}
-
-/* Mobile (max 767px) */
+/* Mobile */
 @media (max-width: 767px) {
   .single-product div.product {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 0 1rem !important;
+    padding: 0 var(--container-padding) !important;
     margin: 0 auto 2rem auto !important;
   }
-  
+
   .single-product div.product .onsale {
     top: 10px;
     left: 10px;
   }
-  
+
   .single-product div.product .onsale .sale-text {
     font-size: 11px;
     padding: 4px 8px;
     border-radius: 10px;
   }
-  
+
   .single-product div.product .onsale .sale-percentage {
     font-size: 14px;
     padding: 3px 8px;
@@ -147,12 +115,14 @@
   }
 }
 
-/* === BREADCRUMB - ALIGNED WITH PRODUCT CONTAINER === */
+/* === BREADCRUMB — ALIGNED WITH GLOBAL LAYOUT ===
+   FIXED: Same treatment as the product container above.
+*/
 .single-product .woocommerce-breadcrumb {
-  max-width: 92% !important;
+  max-width: var(--container-max-width) !important;
   width: 100% !important;
   margin: 0 auto 1rem auto !important;
-  padding: 0.625rem 2rem !important;
+  padding: 0.625rem var(--container-padding) !important;
   font-size: 0.8125rem !important;
   color: var(--color-text-light, #6b7280);
 }
@@ -165,51 +135,6 @@
 
 .single-product .woocommerce-breadcrumb a:hover {
   color: var(--color-primary, #0ea5e9);
-}
-
-/* Large Desktop (1920px+) - Keep current 24" monitor size */
-@media (min-width: 1920px) {
-  .single-product .woocommerce-breadcrumb {
-    max-width: 72% !important;
-  }
-}
-
-/* Standard Desktop (1600px - 1919px) - Keep current size */
-@media (min-width: 1600px) and (max-width: 1919px) {
-  .single-product .woocommerce-breadcrumb {
-    max-width: 80% !important;
-  }
-}
-
-/* Medium Desktop (1200px - 1599px) - Laptops - BIGGER */
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .single-product .woocommerce-breadcrumb {
-    max-width: 90% !important;
-  }
-}
-
-/* Small Laptop (1024px - 1199px) - BIGGER */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .single-product .woocommerce-breadcrumb {
-    max-width: 92% !important;
-  }
-}
-
-/* Tablet (768px - 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .single-product .woocommerce-breadcrumb {
-    max-width: 95% !important;
-    padding: 0.625rem 1.5rem !important;
-  }
-}
-
-/* Mobile (max 767px) */
-@media (max-width: 767px) {
-  .single-product .woocommerce-breadcrumb {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 0.625rem 1rem !important;
-  }
 }
 
 /* ============================================
@@ -242,18 +167,17 @@
 .single-product .woocommerce-tabs {
   grid-column: 1 / -1 !important;
   order: 3 !important;
-  margin-top: 3rem !important; /* ADDED: Spacing before tabs */
+  margin-top: 3rem !important;
 }
 
 .single-product .related.products,
 .single-product .upsells.products {
   grid-column: 1 / -1 !important;
   order: 4 !important;
-  margin-top: 4rem !important; /* INCREASED: More spacing before related products */
-  margin-bottom: 6rem !important; /* INCREASED: Much more spacing after related products */
+  margin-top: 4rem !important;
+  margin-bottom: 6rem !important;
 }
 
-/* ADDED: Ensure related products container is properly contained */
 .single-product .related.products ul.products,
 .single-product .upsells.products ul.products {
   display: grid !important;
@@ -280,12 +204,12 @@
     grid-template-columns: 1fr !important;
     gap: 2rem !important;
   }
-  
+
   .single-product .woocommerce-product-gallery {
     grid-column: 1 !important;
     grid-row: auto !important;
   }
-  
+
   .single-product .summary.entry-summary {
     grid-column: 1 !important;
     grid-row: auto !important;
@@ -293,9 +217,9 @@
 
   .single-product .site-main,
   .single-product #main {
-    padding: 1.25rem 0 6rem 0 !important; /* INCREASED: Much more space at bottom on mobile */
+    padding: 1.25rem 0 6rem 0 !important;
   }
-  
+
   .single-product .related.products ul.products,
   .single-product .upsells.products ul.products {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -307,15 +231,15 @@
   .single-product .upsells.products ul.products {
     grid-template-columns: 1fr !important;
   }
-  
+
   .single-product .woocommerce-tabs {
     margin-top: 2rem !important;
   }
-  
+
   .single-product .related.products,
   .single-product .upsells.products {
     margin-top: 3rem !important;
-    margin-bottom: 5rem !important; /* INCREASED: Much more space on mobile */
+    margin-bottom: 5rem !important;
   }
 }
 

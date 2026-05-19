@@ -1,22 +1,22 @@
 /**
  * Product Navigation Styles
- * Positioned inline with product title on the same row
- * 
+ * Positioned top-right, always anchored to top of title wrapper
+ *
  * Location: assets/css/components/product/product-navigation.css
  * @package AAAPOS_Prime
- * @version 1.0.6
- * 
- * UPDATED: Removed transform hover effects from navigation buttons
+ * @version 1.1.0
+ *
+ * FIXED: align-items changed from center to flex-start so nav buttons
+ *        always sit at the top-right regardless of how long the title is.
  */
 
 /* ============================================
    TITLE + NAVIGATION WRAPPER
-   Creates flex container for same-row layout
    ============================================ */
 
 .product-title-nav-wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;        /* FIXED: was center — buttons now always top-right */
     justify-content: space-between;
     gap: 1.5rem;
     margin-bottom: 1rem;
@@ -25,21 +25,19 @@
 
 /* ============================================
    PRODUCT TITLE STYLING
-   Allow title to take available space
    ============================================ */
 
 .product-title-nav-wrapper .product_title {
     flex: 1;
     margin: 0 !important;
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #1f2937;
-    line-height: 1.2;
+    line-height: 1.3;
 }
 
 /* ============================================
    PRODUCT NAVIGATION CONTAINER
-   Position: Same row as product title
    ============================================ */
 
 .product-navigation {
@@ -48,6 +46,7 @@
     gap: 0.25rem;
     flex-shrink: 0;
     position: relative;
+    margin-top: 0.25rem;            /* Fine-tune optical alignment with first title line */
 }
 
 /* ============================================
@@ -86,11 +85,6 @@
 .product-nav-btn:hover {
     background: #e5e7eb;
     color: #374151;
-    /* REMOVED: transform: translateY(-2px); */
-}
-
-.product-nav-btn:active {
-    /* REMOVED: transform: translateY(0); */
 }
 
 /* Disabled state */
@@ -114,7 +108,6 @@
 
 /* ============================================
    HOVER LABEL - SHOP BUTTON
-   Simple rounded label without tooltip arrow
    ============================================ */
 
 .product-nav-grid::after {
@@ -145,7 +138,6 @@
 
 /* ============================================
    HOVER TOOLTIPS - PRODUCT PREVIEW CARDS
-   Show product image, title, and price
    ============================================ */
 
 .product-nav-prev,
@@ -153,7 +145,6 @@
     position: relative;
 }
 
-/* Product preview card container */
 .product-nav-preview {
     position: absolute;
     top: calc(100% + 8px);
@@ -176,17 +167,14 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Position for previous button (left side) */
 .product-nav-prev .product-nav-preview {
     left: 0;
 }
 
-/* Position for next button (right side) */
 .product-nav-next .product-nav-preview {
     right: 0;
 }
 
-/* Show on hover */
 .product-nav-prev:hover .product-nav-preview,
 .product-nav-next:hover .product-nav-preview {
     opacity: 1;
@@ -194,7 +182,6 @@
     transform: translateY(0);
 }
 
-/* Product preview image - spans 2 rows on the left */
 .product-nav-preview-img {
     width: 60px;
     height: 60px;
@@ -205,7 +192,6 @@
     grid-column: 1;
 }
 
-/* Product preview title - top right */
 .product-nav-preview-title {
     font-size: 14px;
     font-weight: 600;
@@ -222,7 +208,6 @@
     padding: 0;
 }
 
-/* Product preview price - bottom right */
 .product-nav-preview-price {
     font-size: 14px;
     font-weight: 600;
@@ -235,7 +220,6 @@
     line-height: 1;
 }
 
-/* Sale price styling */
 .product-nav-preview-price del {
     font-size: 13px;
     font-weight: 400;
@@ -247,37 +231,34 @@
    RESPONSIVE DESIGN
    ============================================ */
 
-/* Large desktop - Keep side by side */
 @media (min-width: 1024px) {
     .product-title-nav-wrapper {
         margin-bottom: 1.5rem;
     }
-    
+
     .product-title-nav-wrapper .product_title {
-        font-size: 2.25rem;
+        font-size: 1.375rem;
     }
 }
 
-/* Medium desktop */
 @media (min-width: 768px) and (max-width: 1023px) {
     .product-title-nav-wrapper {
         gap: 1rem;
     }
-    
+
     .product-title-nav-wrapper .product_title {
-        font-size: 1.875rem;
+        font-size: 1.25rem;
     }
-    
+
     .product-nav-preview {
         min-width: 180px;
     }
-    
+
     .product-nav-preview-img {
         height: 100px;
     }
 }
 
-/* Tablet - Stack navigation below title & hide tooltips */
 @media (max-width: 767px) {
     .product-title-nav-wrapper {
         flex-direction: column;
@@ -285,22 +266,22 @@
         gap: 1rem;
         margin-bottom: 1rem;
     }
-    
+
     .product-title-nav-wrapper .product_title {
-        font-size: 1.75rem;
+        font-size: 1.2rem;
         width: 100%;
     }
 
     .product-navigation {
         width: 100%;
         justify-content: flex-start;
+        margin-top: 0;
     }
 
     .product-nav-buttons {
         justify-content: flex-start;
     }
-    
-    /* Hide tooltips on mobile for better UX */
+
     .product-nav-preview,
     .product-nav-grid::after,
     .product-nav-grid::before {
@@ -308,14 +289,13 @@
     }
 }
 
-/* Mobile - Larger touch targets */
 @media (max-width: 480px) {
     .product-title-nav-wrapper {
         gap: 0.75rem;
     }
-    
+
     .product-title-nav-wrapper .product_title {
-        font-size: 1.5rem;
+        font-size: 1.1rem;
     }
 
     .product-nav-btn {
@@ -342,7 +322,6 @@
     outline: none;
 }
 
-/* Screen reader only text */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -370,12 +349,8 @@
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
 
 /* ============================================
@@ -401,7 +376,6 @@
 
 /* ============================================
    REMOVE DEFAULT TITLE MARGIN
-   Prevent double spacing
    ============================================ */
 
 .summary.entry-summary .product_title {
