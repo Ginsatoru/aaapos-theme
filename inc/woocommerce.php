@@ -1099,166 +1099,78 @@ add_action(
 
 /**
  * Render Category Filter with Modern Card Design
- * Updated version with proper folder icon SVGs
+ * Order reflects the drag-and-drop sequence set in Customizer
  */
+if ( ! function_exists( 'aaapos_render_category_filter' ) ) {
+    function aaapos_render_category_filter() {
 
-if (!function_exists("aaapos_render_category_filter")) {
-    function aaapos_render_category_filter()
-    {
-        // Check if we're on shop or category page
-        if (!is_shop() && !is_product_category()) {
-            return;
+        if ( ! is_shop() && ! is_product_category() ) return;
+        if ( ! get_theme_mod( 'enable_category_filter', true ) ) return;
+
+        // Parse saved order from customizer (comma-separated term IDs)
+        $saved = array_filter( array_map( 'intval', explode( ',', get_theme_mod( 'category_filter_categories', '' ) ) ) );
+
+        if ( ! empty( $saved ) ) {
+            // Fetch terms and reorder to match saved sequence
+            $terms = get_terms( [ 'taxonomy' => 'product_cat', 'hide_empty' => true, 'include' => $saved ] );
+            if ( is_wp_error( $terms ) || empty( $terms ) ) return;
+
+            $indexed    = array_column( (array) $terms, null, 'term_id' );
+            $categories = array_filter( array_map( fn( $id ) => $indexed[ $id ] ?? null, $saved ) );
+        } else {
+            // Fallback: alphabetical
+            $categories = get_terms( [ 'taxonomy' => 'product_cat', 'hide_empty' => true, 'parent' => 0, 'orderby' => 'name', 'order' => 'ASC' ] );
+            if ( is_wp_error( $categories ) || empty( $categories ) ) return;
         }
 
-        // Check if filter is enabled
-        if (!get_theme_mod("enable_category_filter", true)) {
-            return;
-        }
+        $all_count   = wp_count_posts( 'product' )->publish;
+        $current_cat = is_product_category() ? get_queried_object()->term_id : 0;
+        $shop_url    = get_permalink( wc_get_page_id( 'shop' ) );
 
-        // Get selected categories from customizer (comma-separated string)
-        $selected_categories_string = get_theme_mod(
-            "category_filter_categories",
-            "",
-        );
+        // Folder icon SVG (reused per category)
+        $folder_icon = '<svg class="filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 7V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>';
 
-        // Convert to array
-        $selected_categories = [];
-        if (!empty($selected_categories_string)) {
-            $selected_categories = array_map(
-                "intval",
-                explode(",", $selected_categories_string),
-            );
-            $selected_categories = array_filter($selected_categories);
-        }
-
-        // Build query args
-        $args = [
-            "taxonomy" => "product_cat",
-            "hide_empty" => true,
-            "parent" => 0,
-            "orderby" => "name",
-            "order" => "ASC",
-        ];
-
-        // If specific categories selected, filter them
-        if (!empty($selected_categories)) {
-            $args["include"] = $selected_categories;
-        }
-
-        $categories = get_terms($args);
-
-        // If no categories or error, don't show filter
-        if (empty($categories) || is_wp_error($categories)) {
-            return;
-        }
-
-        // Get total product count
-        $all_products_count = wp_count_posts("product")->publish;
-
-        // Get current category (if on category page)
-        $current_cat = is_product_category()
-            ? get_queried_object()->term_id
-            : 0;
-
-        // Get shop URL
-        $shop_url = get_permalink(wc_get_page_id("shop"));
         ?>
-        
         <div class="shop-category-filter">
             <div class="category-filter-buttons">
-                
-                <!-- All Products Button -->
-                <a href="<?php echo esc_url($shop_url); ?>" 
-                   class="category-filter-btn<?php echo !$current_cat
-                       ? " active"
-                       : ""; ?>" 
-                   aria-current="<?php echo !$current_cat
-                       ? "page"
-                       : "false"; ?>">
-                    
-                    <!-- Icon Box with Grid Icon -->
+
+                <!-- All Products -->
+                <a href="<?php echo esc_url( $shop_url ); ?>"
+                   class="category-filter-btn<?php echo ! $current_cat ? ' active' : ''; ?>"
+                   aria-current="<?php echo ! $current_cat ? 'page' : 'false'; ?>">
                     <div class="filter-icon-box">
                         <svg class="filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
                         </svg>
                     </div>
-                    
-                    <!-- Text Content -->
                     <div class="filter-content">
-                        <span class="filter-label"><?php esc_html_e(
-                            "All Products",
-                            "aaapos-prime",
-                        ); ?></span>
-                        <span class="filter-count"><?php printf(
-                            esc_html(
-                                _n(
-                                    "%s Item",
-                                    "%s Items",
-                                    $all_products_count,
-                                    "aaapos-prime",
-                                ),
-                            ),
-                            number_format_i18n($all_products_count),
-                        ); ?></span>
+                        <span class="filter-label"><?php esc_html_e( 'All Products', 'aaapos-prime' ); ?></span>
+                        <span class="filter-count"><?php printf( esc_html( _n( '%s Item', '%s Items', $all_count, 'aaapos-prime' ) ), number_format_i18n( $all_count ) ); ?></span>
                     </div>
                 </a>
-                
-                <?php // Loop through selected categories
 
-        foreach ($categories as $category):
-
-                    $category_url = get_term_link($category);
-
-                    if (is_wp_error($category_url)) {
-                        continue;
-                    }
-
+                <?php foreach ( $categories as $category ) :
+                    $url = get_term_link( $category );
+                    if ( is_wp_error( $url ) ) continue;
                     $is_active = $current_cat === $category->term_id;
-                    $product_count = $category->count;
-                    ?>
-                
-                <a href="<?php echo esc_url($category_url); ?>" 
-                   class="category-filter-btn<?php echo $is_active
-                       ? " active"
-                       : ""; ?>"
-                   aria-current="<?php echo $is_active ? "page" : "false"; ?>">
-                    
-                    <!-- Icon Box with Folder Icon -->
-                    <div class="filter-icon-box">
-                        <svg class="filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M16 7V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    
-                    <!-- Text Content -->
+                ?>
+                <a href="<?php echo esc_url( $url ); ?>"
+                   class="category-filter-btn<?php echo $is_active ? ' active' : ''; ?>"
+                   aria-current="<?php echo $is_active ? 'page' : 'false'; ?>">
+                    <div class="filter-icon-box"><?php echo $folder_icon; ?></div>
                     <div class="filter-content">
-                        <span class="filter-label"><?php echo esc_html(
-                            $category->name,
-                        ); ?></span>
-                        <span class="filter-count"><?php printf(
-                            esc_html(
-                                _n(
-                                    "%s Item",
-                                    "%s Items",
-                                    $product_count,
-                                    "aaapos-prime",
-                                ),
-                            ),
-                            number_format_i18n($product_count),
-                        ); ?></span>
+                        <span class="filter-label"><?php echo esc_html( $category->name ); ?></span>
+                        <span class="filter-count"><?php printf( esc_html( _n( '%s Item', '%s Items', $category->count, 'aaapos-prime' ) ), number_format_i18n( $category->count ) ); ?></span>
                     </div>
                 </a>
-                
-                <?php
-                endforeach; ?>
-                
+                <?php endforeach; ?>
+
             </div><!-- .category-filter-buttons -->
         </div><!-- .shop-category-filter -->
-        
         <?php
     }
 }
