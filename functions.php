@@ -37,6 +37,7 @@ function aaapos_load_theme_files()
         "inc/template-tags.php",
         "inc/widgets.php",
         "inc/woocommerce.php",
+        'inc/serial-number.php',
         "inc/ajax.php",
         "inc/customizer/customizer.php",
         "inc/customizer/page-loader-customizer.php",

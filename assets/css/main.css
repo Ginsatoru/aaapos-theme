@@ -27,6 +27,8 @@
 @import './components/cart/cart-empty.css';
 @import './components/cart/cart-responsive.css';
 
+@import './components/serial-number.css';
+
 /* Section styles */
 .section {
   padding: var(--space-12) 0;

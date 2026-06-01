@@ -141,6 +141,7 @@
   position: relative !important;
   text-decoration: none !important;
   flex-shrink: 0 !important;
+  overflow: hidden !important;
 }
 
 .woocommerce ul.products li.product a.woocommerce-LoopProduct-link img,
@@ -155,11 +156,12 @@
   margin: 0 !important;
   padding: 0 !important;
   background: var(--color-white) !important;
+  transform: scale(1.01) !important;
 }
 
 .woocommerce ul.products li.product:hover a.woocommerce-LoopProduct-link img,
 .woocommerce-page ul.products li.product:hover a.woocommerce-LoopProduct-link img {
-  transform: scale(1.05) !important;
+  transform: scale(1.01) !important;
 }
 
 /* === PRODUCT INFO CONTAINER === */

@@ -27,6 +27,7 @@ $excludeItems = @(
     "package-lock.json",
     "build.ps1",
     "*.zip"
+    "Backups"
 )
 
 Write-Host "Building theme package..." -ForegroundColor Green
