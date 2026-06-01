@@ -134,13 +134,14 @@ body.tax-product_cat ul.products li.product-category > a > img {
   border: none !important;
   transition: transform 0.3s ease !important;
   flex-shrink: 0 !important;
+  transform: scale(1.01) !important;
 }
 
 .woocommerce-shop ul.products li.product-category:hover > a > img,
 .woocommerce-page.archive ul.products li.product-category:hover > a > img,
 .post-type-archive-product ul.products li.product-category:hover > a > img,
 body.tax-product_cat ul.products li.product-category:hover > a > img {
-  transform: scale(1.05) !important;
+  transform: scale(1.01) !important;
 }
 
 /* Title (H2) */
