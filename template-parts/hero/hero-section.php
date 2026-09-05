@@ -234,6 +234,8 @@ if (!function_exists('aaapos_ascend_words')) {
 
         </div>
 
+        <div>Testing</div>
+
         <!-- Other Goods Row -->
         <?php if ($show_other_goods && !empty($other_goods)): ?>
         <div class="hero-other-goods">
