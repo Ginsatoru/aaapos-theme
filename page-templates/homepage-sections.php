@@ -1,15 +1,15 @@
 <?php
 /**
- * The front page template file
+ * Template Name: Custom Homepage
  *
- * Only shows the theme's built-in homepage sections (hero, products,
- * categories, brands, etc.) when the page currently assigned as the
- * site's static front page has the "Homepage Sections" page template
- * selected (Page Attributes > Template).
+ * Assign this template (via Page Attributes) to whichever page should
+ * use the theme's built-in homepage layout (hero, categories, featured
+ * products, brands, deals, testimonials, blog preview, newsletter).
  *
- * If a different page is set as the homepage instead (Settings >
- * Reading), that page's own content is shown as-is - nothing from
- * this file gets injected into it.
+ * front-page.php checks for this template on the page currently set as
+ * the site's static front page - if it's assigned here, these sections
+ * are shown; if a different page is set as the homepage instead, this
+ * file is simply never used and that page's own content displays as-is.
  */
 
 if (!defined('ABSPATH')) {
@@ -17,12 +17,6 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
-
-$aaapos_front_page_id = get_option('page_on_front');
-$aaapos_use_sections   = $aaapos_front_page_id
-    && get_page_template_slug($aaapos_front_page_id) === 'page-templates/homepage-sections.php';
-
-if ($aaapos_use_sections) :
 ?>
 
 <div class="homepage-wrapper">
@@ -65,7 +59,7 @@ if ($aaapos_use_sections) :
         get_template_part('template-parts/sections/deals-offers');
     }
 
-    // Testimonials
+    // Testimonials 
     if (get_theme_mod('show_testimonials', true)) {
         get_template_part('template-parts/sections/testimonials');
     }
@@ -83,21 +77,4 @@ if ($aaapos_use_sections) :
 </div>
 
 <?php
-else :
-    // A different page is assigned as the homepage - show its own
-    // content only, exactly like a normal static page.
-    ?>
-    <main id="primary" class="site-main">
-        <div class="container">
-            <?php
-            while (have_posts()) :
-                the_post();
-                get_template_part('template-parts/content/content-page');
-            endwhile;
-            ?>
-        </div>
-    </main>
-    <?php
-endif;
-
 get_footer();
