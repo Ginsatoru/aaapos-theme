@@ -65,6 +65,35 @@
   }
 
   /**
+   * Create a generic success notification (no "View Cart" action) -
+   * reused for My Account success messages (e.g. "Account details
+   * changed successfully.", "Address changed successfully.").
+   * EXPOSED GLOBALLY.
+   */
+  function createSuccessNotification(message) {
+    removeNotification();
+
+    const $el = $(`
+      <div class="aaapos-cart-notification">
+        <div class="aaapos-cart-tick">${checkmarkSVG}</div>
+
+        <div class="aaapos-cart-content aaapos-cart-row">
+          <div class="aaapos-cart-icon">${checkmarkSVG}</div>
+
+          <div class="aaapos-cart-text">
+            <span class="aaapos-cart-product-name">${escapeHtml(message)}</span>
+          </div>
+
+          <div class="aaapos-cart-close">&times;</div>
+        </div>
+      </div>
+    `);
+
+    $('body').append($el);
+    animateNotification($el);
+  }
+
+  /**
    * Create notification for coupon applied
    * EXPOSED GLOBALLY for checkout page use
    */
@@ -216,6 +245,26 @@
   // EXPOSE GLOBALLY for checkout.js to use
   // ==========================================================================
   window.createCouponNotification = createCouponNotification;
+  window.createSuccessNotification = createSuccessNotification;
+
+  // ==========================================================================
+  // MY ACCOUNT - Convert WooCommerce's inline success message
+  // (e.g. "Account details changed successfully.") into the same
+  // animated toast used elsewhere, instead of the plain inline notice.
+  // ==========================================================================
+  $(function () {
+    const $accountMessage = $('.woocommerce-MyAccount-content .woocommerce-message').first();
+
+    if ($accountMessage.length) {
+      const messageText = $accountMessage.clone().children('a, button').remove().end().text().trim();
+
+      $accountMessage.remove();
+
+      if (messageText) {
+        createSuccessNotification(messageText);
+      }
+    }
+  });
 
   // ==========================================================================
   // EVENT LISTENERS

@@ -1,171 +1,299 @@
 /* ============================================
-   My Account Dashboard - Greeting & Cards
+   My Account Dashboard - Redesign
+   Welcome header + two action cards + 4-item stat grid
+   with badge counts, matching the flat design language
+   (no box-shadow, no lift hover, rounded pill/card shapes).
    ============================================ */
+
+/* ===================================
+   OUTER WRAPPER - light gray fill behind everything
+   =================================== */
+.woocommerce-MyAccount-content {
+  background: #eef0f5;
+  border-radius: 1.25rem;
+  padding: var(--space-3);
+  margin-bottom: 2rem;
+}
+
+/* ===================================
+   WELCOME HEADER CARD
+   =================================== */
+.dashboard-welcome-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-white);
+  border-radius: 1rem;
+  padding: 1.5rem 1.75rem;
+  margin: 0 0 1.5rem;
+  margin-top: -2rem !important;
+}
+
+.dashboard-welcome-avatar {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.dashboard-welcome-avatar-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+}
+
+.dashboard-welcome-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+}
+
+.dashboard-welcome-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin: 0;
+  line-height: 1;
+  border: none !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
 
 .greeting-name {
   color: var(--color-primary);
 }
 
-.dashboard-greeting {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--color-text-dark);
-  margin: 0;
-  border: none;
-  padding: 0;
-  font-family: var(--font-heading);
-  line-height: 1;
-}
-
-.greeting-icon {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  color: var(--color-primary);
-}
-
-.dashboard-logout-text {
-  display: none;
+.dashboard-welcome-logout {
+  font-family: var(--font-body);
   font-size: 0.875rem;
   color: var(--color-text-light);
-  margin: 0;
+  text-decoration: none;
+  margin-top: -1rem;
 }
 
-.dashboard-logout-text a {
-  color: var(--color-text-light);
+.dashboard-welcome-logout span {
   text-decoration: underline;
-  font-weight: normal;
-}
-
-.dashboard-logout-text a:hover {
+  font-weight: 600;
   color: var(--color-primary);
 }
 
-.woocommerce-MyAccount-dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+.dashboard-welcome-logout:hover span {
+  color: var(--brand-color-hover, var(--color-primary));
 }
 
-.dashboard-card {
-  background: var(--color-dark-white);
-  border: none;
-  border-radius: 0.75rem;
+/* ===================================
+   TWO ACTION CARDS (My Account / Billing Address)
+   =================================== */
+.dashboard-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-action-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--color-white);
+  border: 1px solid #eceef1;
+  border-radius: 1rem;
   padding: 1.5rem;
-  text-align: center;
+}
+
+.dashboard-action-card__icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F3F5FA;
+  color: #000000;
+}
+
+.dashboard-action-card__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.dashboard-action-card__icon--filled {
+  background: #F3F5FA;
+  color: #000000;
+}
+
+.dashboard-action-card__body h3 {
+  font-family: var(--font-heading);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin: 0 0 0.375rem;
+}
+
+.dashboard-action-card__body p {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.dashboard-action-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  background: #F3F5FA;
+  border-radius: 0.625rem;
+  color: var(--color-text-dark);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dashboard-action-card__btn:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ===================================
+   4-ITEM STAT GRID (Downloads / Orders / Addresses / Payment Methods)
+   =================================== */
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.dashboard-stat-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--color-white);
+  border: 1px solid #eceef1;
+  border-radius: 1rem;
+  padding: 1.75rem 1rem;
+  text-decoration: none;
+  text-align: center;
+  transition: border-color 0.2s ease;
 }
 
-.dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+.dashboard-stat-card:hover {
+  border-color: var(--color-primary);
 }
 
-.dashboard-card__icon {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 1rem;
+.dashboard-stat-badge {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 0.375rem;
+  background: var(--color-danger, #ef4444);
+  color: var(--color-white);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.dashboard-card__icon svg {
+.dashboard-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--color-text-light);
+}
+
+.dashboard-stat-icon svg {
   width: 100%;
   height: 100%;
-  stroke: var(--color-primary);
-  fill: none;
 }
 
-.dashboard-card__title,
-.dashboard-card h3.dashboard-card__title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--color-text-dark);
-  margin: 0;
-  margin-bottom: 4px;
-  padding: 0;
+.dashboard-stat-label {
   font-family: var(--font-heading);
-  line-height: 1.2;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
 }
 
-.dashboard-card__description,
-.dashboard-card p.dashboard-card__description {
-  display: block;
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-body);
-  line-height: 1.4;
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 900px) {
+  .dashboard-action-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 767px) {
-  .dashboard-greeting {
-    font-size: var(--text-2xl) !important;
+  .woocommerce-MyAccount-content {
+    padding: 1rem;
+    border-radius: 1rem;
   }
-  
-  .greeting-icon {
-    width: 28px !important;
-    height: 28px !important;
+
+  .dashboard-welcome-card {
+    padding: 1.25rem;
+    gap: 0.875rem;
   }
-  
-  .woocommerce-MyAccount-dashboard-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: var(--space-4) !important;
+
+  .dashboard-welcome-avatar-img {
+    width: 44px;
+    height: 44px;
   }
-  
-  .dashboard-card {
-    padding: var(--space-4) !important;
+
+  .dashboard-welcome-title {
+    font-size: 1.375rem;
   }
-  
-  .dashboard-card__icon {
-    width: 40px !important;
-    height: 40px !important;
-    margin-bottom: var(--space-3) !important;
+
+  .dashboard-action-card {
+    padding: 1.25rem;
   }
-  
-  .dashboard-card__title {
-    font-size: 0.8125rem !important;
-    margin-bottom: 2px !important;
-    line-height: 1.3 !important;
+
+  .dashboard-stat-card {
+    padding: 1.25rem 0.75rem;
   }
-  
-  .dashboard-card__description {
-    font-size: 0.6875rem !important;
-    line-height: 1.4 !important;
+
+  .dashboard-stat-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .dashboard-stat-label {
+    font-size: 0.8125rem;
   }
 }
 
 @media (max-width: 480px) {
-  .woocommerce-MyAccount-dashboard-grid {
-    gap: var(--space-3);
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
-  
-  .dashboard-card {
-    padding: var(--space-3);
-  }
-  
-  .dashboard-card__icon {
-    width: 36px;
-    height: 36px;
-  }
-}
 
-/* Profile image styling */
-.dashboard-greeting .greeting-icon-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 0.75rem;
-    border: 1px solid rgb(190, 190, 190);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  .dashboard-action-grid {
+    gap: 0.75rem;
+  }
+
+  .dashboard-welcome-title {
+    font-size: 1.25rem;
+  }
 }

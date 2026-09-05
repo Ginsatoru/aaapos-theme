@@ -2,10 +2,8 @@
 /**
  * The front page template file
  * 
- * This template intelligently handles different homepage scenarios:
- * 1. If a specific page is selected as homepage with "Homepage Template" -> Show homepage sections
- * 2. If a different page is set as homepage -> Show that page's normal content
- * 3. If "Latest Posts" is selected -> Show blog posts
+ * Always displays the homepage sections (hero, products, categories, brands, etc.)
+ * for whatever page is set as the site's static front page.
  */
 
 if (!defined('ABSPATH')) {
@@ -13,32 +11,41 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
+?>
 
-// Get the current page ID if a static page is set
-$page_id = get_option('page_on_front');
-
-// Check if this page uses the Homepage Template
-$is_homepage_template = false;
-if ($page_id) {
-    $template = get_page_template_slug($page_id);
-    $is_homepage_template = ($template === 'page-templates/homepage.php');
-}
-
-// Scenario 1: Homepage Template is assigned OR no static page is set (show sections)
-if ($is_homepage_template || !$page_id) {
-    ?>
+<div class="homepage-wrapper">
     <?php
+    // Display custom page content if it exists (editor content)
+    if (have_posts()) :
+        while (have_posts()) : the_post();
+            if (trim(get_the_content())) :
+                ?>
+                <div class="container">
+                    <div class="homepage-custom-content">
+                        <?php the_content(); ?>
+                    </div>
+                </div>
+                <?php
+            endif;
+        endwhile;
+    endif;
+
     // Hero Section
     get_template_part('template-parts/hero/hero-section');
+
+    // Product Categories
+    if (get_theme_mod('show_categories', true)) {
+        get_template_part('template-parts/sections/product-categories');
+    }
 
     // Featured Products
     if (get_theme_mod('show_featured_products', true)) {
         get_template_part('template-parts/sections/featured-products');
     }
 
-    // Product Categories
-    if (get_theme_mod('show_categories', true)) {
-        get_template_part('template-parts/sections/product-categories');
+    // Brands
+    if (get_theme_mod('show_brands', true)) {
+        get_template_part('template-parts/sections/Brands');
     }
 
     // Deals & Offers
@@ -61,43 +68,7 @@ if ($is_homepage_template || !$page_id) {
         get_template_part('template-parts/sections/newsletter');
     }
     ?>
-    <?php
-} 
-// Scenario 2: A different page template is set as homepage (show regular page content)
-else {
-    ?>
-    <div class="site-content">
-        <div class="container">
-            <main id="primary" class="site-main">
-                <?php
-                while (have_posts()) :
-                    the_post();
-                    
-                    // Use a custom content template that excludes the title for Elementor pages
-                    if (did_action('elementor/loaded')) {
-                        // For Elementor pages, just show the content without the title
-                        ?>
-                        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                            <div class="entry-content">
-                                <?php the_content(); ?>
-                            </div>
-                        </article>
-                        <?php
-                    } else {
-                        // For non-Elementor pages, show the full content with title
-                        get_template_part('template-parts/content/content', 'page');
-                    }
-                    
-                    // If comments are open or there's at least one comment, load the comment template
-                    if (comments_open() || get_comments_number()) :
-                        comments_template();
-                    endif;
-                endwhile;
-                ?>
-            </main>
-        </div>
-    </div>
-    <?php
-}
+</div>
 
+<?php
 get_footer();

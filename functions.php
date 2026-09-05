@@ -20,6 +20,23 @@ define("MR_THEME_VERSION", AAAPOS_VERSION);
 define("MR_THEME_DIR", AAAPOS_THEME_DIR);
 define("MR_THEME_URI", AAAPOS_THEME_URI);
 
+// ==========================================================================
+// Theme Update Checker (GitHub-based "Update available" button in wp-admin)
+// Library: https://github.com/YahnisElsts/plugin-update-checker
+// ==========================================================================
+if (file_exists(AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php')) {
+    require_once AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php';
+
+    $aaaposUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+        'https://github.com/YOUR-USERNAME/YOUR-REPO/',
+        AAAPOS_THEME_DIR . '/style.css',
+        'aaapos-prime'
+    );
+
+    // Uses GitHub Releases (tags) to detect new versions - no manual zip needed.
+    $aaaposUpdateChecker->getVcsApi()->enableReleaseAssets();
+}
+
 // Content Width
 if (!isset($content_width)) {
     $content_width = 1200;
@@ -36,7 +53,9 @@ function aaapos_load_theme_files()
         "inc/security.php",
         "inc/template-tags.php",
         "inc/widgets.php",
+        "inc/class-aaapos-nav-walker.php",
         "inc/woocommerce.php",
+        "inc/myaccount-dashboard.php",
         'inc/serial-number.php',
         "inc/ajax.php",
         "inc/customizer/customizer.php",
@@ -52,7 +71,9 @@ function aaapos_load_theme_files()
         "inc/customizer/homepage-sections.php",
         "inc/customizer/woocommerce.php",
         "inc/customizer/header-dropdown-customizer.php",
+        "inc/customizer/nav-menu-items.php",
         "inc/customizer/trust-badges-customizer.php",
+        "inc/customizer/recaptcha.php",
         "inc/customizer/multiple-control.php",
         "inc/customizer/category-order-control.php",
     ];
@@ -734,6 +755,46 @@ function aaapos_handle_contact_form_submission()
         exit();
     }
 
+    // reCAPTCHA v2 verification (only enforced when enabled + configured
+    // in Customizer > reCAPTCHA)
+    if (get_theme_mod("recaptcha_enable", false) && get_theme_mod("recaptcha_secret_key", "")) {
+        $recaptcha_response = isset($_POST["g-recaptcha-response"])
+            ? sanitize_text_field($_POST["g-recaptcha-response"])
+            : "";
+
+        if (empty($recaptcha_response)) {
+            wp_safe_redirect(
+                add_query_arg("form_error", "recaptcha_missing", wp_get_referer()),
+            );
+            exit();
+        }
+
+        $recaptcha_verify = wp_remote_post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            [
+                "body" => [
+                    "secret"   => get_theme_mod("recaptcha_secret_key", ""),
+                    "response" => $recaptcha_response,
+                    "remoteip" => isset($_SERVER["REMOTE_ADDR"]) ? sanitize_text_field($_SERVER["REMOTE_ADDR"]) : "",
+                ],
+            ],
+        );
+
+        $recaptcha_success = false;
+
+        if (!is_wp_error($recaptcha_verify)) {
+            $recaptcha_body = json_decode(wp_remote_retrieve_body($recaptcha_verify), true);
+            $recaptcha_success = !empty($recaptcha_body["success"]);
+        }
+
+        if (!$recaptcha_success) {
+            wp_safe_redirect(
+                add_query_arg("form_error", "recaptcha_failed", wp_get_referer()),
+            );
+            exit();
+        }
+    }
+
     // Sanitize and validate input fields
     $name = isset($_POST["contact_name"])
         ? sanitize_text_field($_POST["contact_name"])
@@ -883,6 +944,14 @@ function aaapos_display_contact_form_messages()
             ),
             "spam" => esc_html__(
                 "Your submission was flagged as spam. Please try again.",
+                "AAAPOS",
+            ),
+            "recaptcha_missing" => esc_html__(
+                "Please complete the reCAPTCHA checkbox before submitting.",
+                "AAAPOS",
+            ),
+            "recaptcha_failed" => esc_html__(
+                "reCAPTCHA verification failed. Please try again.",
                 "AAAPOS",
             ),
         ];

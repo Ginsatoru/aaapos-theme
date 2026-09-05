@@ -123,13 +123,6 @@ defined('ABSPATH') || exit;
 
 		</div>
 
-		<!-- PAYMENT INSTRUCTIONS (if any) -->
-		<?php if ($order->get_payment_method()): ?>
-			<div class="order-payment-section">
-				<?php do_action('woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id()); ?>
-			</div>
-		<?php endif; ?>
-
 		<!-- ORDER DETAILS SECTION -->
 		<div class="order-details-section">
 			

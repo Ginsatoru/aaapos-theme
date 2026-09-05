@@ -9,6 +9,9 @@
  * - Resource hints
  * - Auto-detection of production/development mode
  *
+ * UPDATED: Quick View functionality removed completely (script, style,
+ * and localization no longer enqueued).
+ *
  * @package AAAPOS
  * @since 1.0.0
  */
@@ -118,20 +121,10 @@ function mr_enqueue_styles()
     // Search results styles
     wp_enqueue_style(
         "mr-search-results",
-        MR_THEME_URI . "/assets/css/components/search-results.css",
+        MR_THEME_URI . "/assets/css/components/search.css",
         $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
-
-// Search no results styles
-if (is_search()) {
-    wp_enqueue_style(
-        "mr-search-no-results",
-        MR_THEME_URI . "/assets/css/components/search-no-results.css",
-        ["mr-base"],
-        MR_THEME_VERSION,
-    );
-}
 
     // Cart Confirmation Modal CSS
     wp_enqueue_style(
@@ -211,11 +204,27 @@ if (is_search()) {
         );
     }
 
+    // Archive blog styles
+    wp_enqueue_style(
+        "aaapos-archive-blog",
+        get_template_directory_uri() . "/assets/css/components/archive-blog.css",
+        $is_production ? ["mr-main"] : ["mr-components"],
+        MR_THEME_VERSION,
+    );
+
     // Category cards styles
     wp_enqueue_style(
         "aaapos-categories",
         get_template_directory_uri() .
             "/assets/css/components/categories-shop.css",
+        $is_production ? ["mr-main"] : ["mr-components"],
+        MR_THEME_VERSION,
+    );
+
+    // Brands section styles
+    wp_enqueue_style(
+        "aaapos-brands",
+        get_template_directory_uri() . "/assets/css/components/Brands.css",
         $is_production ? ["mr-main"] : ["mr-components"],
         MR_THEME_VERSION,
     );
@@ -240,16 +249,6 @@ if (is_search()) {
         );
     }
 
-    // WooCommerce specific styles
-    if (class_exists("WooCommerce")) {
-        // Quick View Modal styles
-        wp_enqueue_style(
-            "aaapos-quick-view",
-            MR_THEME_URI . "/assets/css/quick-view.css",
-            [],
-            MR_THEME_VERSION,
-        );
-    }
     // Variation Alert styles
     wp_enqueue_style(
     'aaapos-variation-alert',
@@ -360,20 +359,6 @@ function mr_enqueue_scripts()
                 "nonce" => wp_create_nonce("mr_nonce"),
                 "cart_nonce" => wp_create_nonce("mr_cart_nonce"),
             ]);
-
-            // Quick View localization
-            if (
-                is_shop() ||
-                is_product_category() ||
-                is_product_tag() ||
-                is_search() ||
-                is_front_page()
-            ) {
-                wp_localize_script("mr-bundle", "aaaposQuickView", [
-                    "ajax_url" => admin_url("admin-ajax.php"),
-                    "nonce" => wp_create_nonce("aaapos_quick_view_nonce"),
-                ]);
-            }
         }
 
     } else {
@@ -404,6 +389,14 @@ function mr_enqueue_scripts()
                 "nonce" => wp_create_nonce("mr_cart_nonce"),
             ]);
         }
+
+        wp_enqueue_script(
+    'aaapos-header-dropdowns',
+    get_template_directory_uri() . '/assets/js/header-dropdowns.js',
+    [],
+    AAAPOS_VERSION,
+    true
+);
 
         // Animations
         wp_enqueue_script(
@@ -513,29 +506,6 @@ if (get_theme_mod('enable_page_loader', false)) {
                 MR_THEME_VERSION,
                 true,
             );
-
-            // Quick View
-            if (
-                is_shop() ||
-                is_product_category() ||
-                is_product_tag() ||
-                is_search() ||
-                is_front_page()
-            ) {
-                wp_enqueue_script(
-                    "aaapos-quick-view",
-                    MR_THEME_URI . "/assets/js/quick-view.js",
-                    ["jquery"],
-                    MR_THEME_VERSION,
-                    true,
-                );
-
-                // Localize Quick View script
-                wp_localize_script("aaapos-quick-view", "aaaposQuickView", [
-                    "ajax_url" => admin_url("admin-ajax.php"),
-                    "nonce" => wp_create_nonce("aaapos_quick_view_nonce"),
-                ]);
-            }
 
             // SINGLE PRODUCT PAGE - Modern variation swatches
             if (is_product()) {
@@ -943,7 +913,6 @@ function mr_script_loader_tag($tag, $handle, $src)
         "mr-header-scroll",
         "mr-variation-swatches",
         "mr-quantity-selector",
-        "aaapos-quick-view",
         "aaapos-cart-notifications",
         "aaapos-shop-column-toggle",
         "aaapos-category-filter-drag",

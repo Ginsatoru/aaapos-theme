@@ -1,8 +1,12 @@
 /**
  * Custom Variation Swatches for WooCommerce
- * Converts color and size dropdowns into modern UI elements
- * FIXED: Size buttons reset on page refresh (no persistent selection)
- * 
+ * Converts color dropdowns into swatches, and ANY other attribute
+ * (size, length, material, style, etc.) into modern button groups.
+ * FIXED: Size/other attribute buttons reset on page refresh (no persistent selection)
+ * FIXED: Only "color" and "size" were recognized before — attributes like
+ *        "Length" fell through and stayed as plain unstyled <select> dropdowns.
+ *        Now anything that isn't a color attribute gets the button treatment.
+ *
  * @package AAAPOS_Prime
  * Location: assets/js/variation-swatches.js
  */
@@ -48,9 +52,9 @@
     function initVariationSwatches() {
         // Convert Color Variations to Swatches
         convertColorVariations();
-        
-        // Convert Size Variations to Buttons
-        convertSizeVariations();
+
+        // Convert every other attribute (size, length, material, style, etc.) to buttons
+        convertOtherVariationsToButtons();
     }
 
     /**
@@ -112,15 +116,25 @@
     }
 
     /**
-     * Convert Size Dropdowns to Modern Buttons
+     * Convert any non-color attribute Dropdown to Modern Buttons.
+     * This used to only match attribute names containing "size", which meant
+     * attributes like "Length", "Material", "Style" etc. were left as plain
+     * native <select> dropdowns. Now it catches everything except color.
      */
-    function convertSizeVariations() {
+    function convertOtherVariationsToButtons() {
         $('.variations select').each(function() {
             const $select = $(this);
             const attributeName = $select.attr('name');
-            
-            // Check if this is a size attribute
-            if (!attributeName || !attributeName.toLowerCase().includes('size')) {
+
+            if (!attributeName) return;
+
+            // Color already has its own dedicated swatch UI - skip it here
+            if (attributeName.toLowerCase().includes('color')) {
+                return;
+            }
+
+            // Avoid double-converting if this select was already processed
+            if ($select.next('.size-buttons').length) {
                 return;
             }
 
@@ -136,7 +150,7 @@
                 // Skip "Choose an option" text
                 if (!value) return;
                 
-                // Create size button
+                // Create button
                 const $button = $('<button type="button" class="size-button"></button>');
                 $button.attr('data-value', value);
                 $button.text(label);
@@ -235,7 +249,7 @@
      * Update variation swatches when WooCommerce updates variations
      */
     $(document).on('woocommerce_update_variation_values', function() {
-        // Update disabled states for size buttons
+        // Update disabled states for all button-style attributes (size, length, material, etc.)
         $('.size-buttons .size-button').each(function() {
             const $button = $(this);
             const value = $button.data('value');

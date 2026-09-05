@@ -15,7 +15,6 @@ if (!function_exists("wc_get_products")) {
 $title = get_theme_mod("featured_products_title", "Best Selling Products");
 $description = get_theme_mod(
     "featured_products_description",
-    "Browse our most popular pet food, animal feed, and farm supplies trusted by local pet owners and farmers",
 );
 $count = get_theme_mod("featured_products_count", 4);
 $exclude_ids = get_theme_mod("featured_products_exclude", "");
@@ -57,10 +56,21 @@ $show_quick_view = get_theme_mod("show_quick_view", true);
              data-animate="fade-up" 
              data-animate-delay="100">
             
-            <h2 class="section-title"><?php echo esc_html($title); ?></h2>
-            
-            <?php if ($description): ?>
-                <p class="section-description"><?php echo esc_html($description); ?></p>
+            <div class="section-header-text">
+                <h2 class="section-title"><?php echo esc_html($title); ?></h2>
+                
+                <?php if ($description): ?>
+                    <p class="section-description"><?php echo esc_html($description); ?></p>
+                <?php endif; ?>
+            </div>
+
+            <?php if (!empty($products)): ?>
+                <a href="<?php echo esc_url(get_permalink(wc_get_page_id("shop"))); ?>" class="btn btn-outline section-header-btn">
+                    View All Products
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a>
             <?php endif; ?>
         </div>
         
@@ -145,30 +155,14 @@ $show_quick_view = get_theme_mod("show_quick_view", true);
                             
                         </div>
                         
-                        <!-- Quick View Button -->
-                        <?php if ($show_quick_view): ?>
-                            <button type="button" 
-                                    class="quick-view-button" 
-                                    data-product-id="<?php echo esc_attr($product->get_id()); ?>"
-                                    aria-label="<?php echo esc_attr(
-                                        sprintf(__("Quick view %s", "aaapos-prime"), $product->get_name()),
-                                    ); ?>">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                    <circle cx="12" cy="12" r="3"/>
-                                </svg>
-                                <span>Quick View</span>
-                            </button>
-                        <?php endif; ?>
-                        
                         <!-- Add to Cart Button -->
                         <?php if ($product->is_type("variable")): ?>
                             <a href="<?php echo esc_url($product->get_permalink()); ?>" 
                                class="button product_type_variable">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
                                 </svg>
                                 <span>Select options</span>
                             </a>
@@ -183,9 +177,9 @@ $show_quick_view = get_theme_mod("show_quick_view", true);
                                ); ?>" 
                                rel="nofollow">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
                                 </svg>
                                 <span><?php echo esc_html($product->add_to_cart_text()); ?></span>
                             </a>
@@ -197,18 +191,6 @@ $show_quick_view = get_theme_mod("show_quick_view", true);
                     $delay += 100;
                 endforeach; ?>
             </ul>
-            
-            <!-- View All Products Button -->
-            <div class="section-footer" 
-                 data-animate="fade-up" 
-                 data-animate-delay="600">
-                <a href="<?php echo esc_url(get_permalink(wc_get_page_id("shop"))); ?>" class="btn btn-outline">
-                    View All Products
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </a>
-            </div>
         <?php else: ?>
             <div class="no-products-message">
                 <p>No best-selling products found.</p>

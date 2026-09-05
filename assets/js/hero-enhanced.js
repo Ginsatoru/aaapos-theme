@@ -2,7 +2,8 @@
  * Hero Section Animations
  * - Content entrance animations (slide in from left/right)
  * - Product carousel auto-rotation
- * 
+ * - Button icon hover animations (JS-driven via Web Animations API)
+ *
  * @package aaapos-prime
  */
 
@@ -159,11 +160,57 @@
   }
 
   /**
+   * Hero Button Icon Hover Animations
+   * Pure JS (Web Animations API) - no CSS transitions/keyframes involved.
+   * - Primary button icon (arrow): darts diagonally out and back on hover
+   * - Secondary button icon (list): nudges left and back on hover
+   */
+  class HeroButtonIconAnimations {
+    constructor() {
+      this.primaryBtn = document.querySelector(".hero-btn-primary");
+      this.secondaryBtn = document.querySelector(".hero-btn-secondary");
+
+      if (this.primaryBtn) {
+        this.bind(this.primaryBtn, ".hero-btn-icon", [
+          { transform: "translate(0, 0)", opacity: 1 },
+          { transform: "translate(6px, -6px)", opacity: 0 },
+          { transform: "translate(-6px, 6px)", opacity: 0 },
+          { transform: "translate(0, 0)", opacity: 1 },
+        ]);
+      }
+
+      if (this.secondaryBtn) {
+        this.bind(this.secondaryBtn, ".hero-btn-icon-left", [
+          { transform: "translateX(0)" },
+          { transform: "translateX(-3px)" },
+          { transform: "translateX(0)" },
+        ]);
+      }
+    }
+
+    bind(button, iconSelector, keyframes) {
+      const icon = button.querySelector(iconSelector);
+      if (!icon) return;
+
+      const runAnimation = () => {
+        icon.animate(keyframes, {
+          duration: 350,
+          easing: "ease-out",
+        });
+      };
+
+      button.addEventListener("mouseenter", runAnimation);
+      button.addEventListener("focus", runAnimation);
+    }
+  }
+
+  /**
    * Initialize all hero animations when DOM is ready
    */
   function initHeroAnimations() {
     new HeroContentAnimations();
     new HeroProductCarousel();
+    new HeroButtonIconAnimations();
   }
 
   // Initialize when DOM is ready

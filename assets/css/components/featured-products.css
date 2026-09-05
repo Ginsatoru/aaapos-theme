@@ -2,11 +2,13 @@
    FEATURED PRODUCTS - MATCHING IMAGE 1 EXACTLY
    Fixed: Smooth hover, Quick View button, proper spacing
    Updated: Container width to 1410px for desktop/laptop
+   Updated: Mobile header row layout + reduced padding (matches
+   categories.css / Brands.css treatment). Grid stays 2 per row on mobile.
    =================================================================== */
 
 .featured-products {
   padding: 3.5rem 0 4rem;
-  background: var(--color-bg-secondary);
+  background: var(--color-white);
   position: relative;
   overflow: hidden;
 }
@@ -32,8 +34,21 @@
 }
 
 .featured-products .section-header {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  text-align: left;
   margin-bottom: 3rem;
+}
+
+.featured-products .section-header-text {
+  flex: 1;
+}
+
+.featured-products .section-header-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .featured-products .section-title {
@@ -49,7 +64,7 @@
   font-size: 1rem;
   color: var(--color-text-light);
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0;
   line-height: 1.7;
 }
 
@@ -88,7 +103,7 @@
 
 @media (max-width: 639px) {
   .featured-products ul.products {
-    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 0.75rem !important;
   }
 }
 
@@ -99,17 +114,15 @@
   width: 100% !important;
   margin: 0 !important;
   padding: 0 0 1rem 0 !important; /* Bottom padding for button spacing */
-  background: var(--color-dark-white) !important;
+  background: #f0f1f3 !important;
   border-radius: 18px !important;
   overflow: visible !important; /* Changed from hidden to allow button radius */
   border: none !important;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), 0 12px 24px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
   position: relative !important;
-  /* SMOOTH TRANSITION */
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
 }
 
 /* Scroll Animation - Keep it enabled */
@@ -122,12 +135,6 @@
   opacity: 1;
   transform: translateY(0);
   animation: fadeInUp 0.6s ease backwards;
-}
-
-/* HOVER EFFECT - SMOOTH */
-.featured-products ul.products li.product:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.12), 0 16px 32px rgba(0, 0, 0, 0.06) !important;
 }
 
 /* Keep image container with overflow hidden */
@@ -143,7 +150,7 @@
   display: block !important;
   position: relative !important;
   overflow: hidden !important;
-  background: var(--color-white) !important;
+  background: #f0f1f3 !important;
 }
 
 .featured-products ul.products li.product a.woocommerce-LoopProduct-link img {
@@ -152,12 +159,7 @@
   aspect-ratio: 1 / 1 !important;
   object-fit: cover !important;
   display: block !important;
-  transition: transform 0.5s ease !important;
   border-radius: 0 !important;
-}
-
-.featured-products ul.products li.product:hover a.woocommerce-LoopProduct-link img {
-  transform: scale(1.08) !important;
 }
 
 /* ===================================================================
@@ -200,21 +202,12 @@
   color: var(--color-text-dark) !important;
   margin: 0 !important;
   padding: 1.25rem 1.25rem 0.625rem 1.25rem !important;
-  min-height: 2.8em !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
   transition: color 0.2s ease !important;
 }
 
 .featured-products ul.products li.product .woocommerce-loop-product__title a {
   color: inherit !important;
   text-decoration: none !important;
-}
-
-.featured-products ul.products li.product:hover .woocommerce-loop-product__title a {
-  color: var(--color-primary) !important;
 }
 
 /* Rating */
@@ -274,37 +267,6 @@
   font-size: 1.375rem !important;
 }
 
-/* ===================================================================
-   QUICK VIEW BUTTON - NO BORDER
-   =================================================================== */
-.featured-products ul.products li.product .quick-view-button {
-  width: calc(100% - 2rem) !important; /* Add margins for spacing */
-  background: transparent !important;
-  color: #374151 !important;
-  border: none !important; /* Removed border */
-  padding: 0.875rem 1.5rem !important;
-  margin: 0 1rem !important; /* Left and right margins */
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.5rem !important;
-  text-decoration: none !important;
-}
-
-.featured-products ul.products li.product .quick-view-button:hover {
-  color: var(--color-primary) !important;
-  background: #f9fafb !important;
-}
-
-.featured-products ul.products li.product .quick-view-button svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
 
 /* ===================================================================
    ADD TO CART BUTTON - WITH BOTTOM SPACING
@@ -315,17 +277,18 @@
   color: var(--color-white) !important;
   border: none !important;
   padding: 0.875rem 1.5rem !important;
-  border-radius: 12px !important; /* Rounded button, not card corners */
+  border-radius: 12px !important; /* Matches hero button rounding */
   margin: 0 1rem !important; /* Left and right margins, no bottom margin needed due to card padding */
   font-size: 1rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
+  transition: background-color 0.2s ease !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 0.5rem !important;
   text-decoration: none !important;
+  box-shadow: none !important;
 }
 
 .featured-products ul.products li.product .button:hover {
@@ -346,28 +309,35 @@
   margin-top: 3rem;
 }
 
-.featured-products .section-footer .btn {
-  display: inline-flex;
+.featured-products .section-header-btn {
+  display: inline-flex !important;
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 2.5rem;
   font-size: 1rem;
   font-weight: 600;
+  border: none !important;
   border-radius: 0.625rem;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease !important;
   text-decoration: none;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
-.featured-products .section-footer .btn-outline {
-  background: transparent;
-  color: var(--brand-color);
-  border: 2px solid var(--brand-color);
+.featured-products .section-header-btn:hover {
+  transform: none !important;
+  box-shadow: none !important;
 }
 
-.featured-products .section-footer .btn-outline:hover {
-  background: var(--brand-color);
-  color: var(--color-white);
-  transform: translateY(-2px);
+.featured-products .section-header-btn.btn-outline {
+  background: #f0f1f3 !important;
+  color: #16181d !important;
+}
+
+.featured-products .section-header-btn.btn-outline:hover {
+  background: #e5e7ea !important;
+  color: #16181d !important;
+  transform: none !important;
 }
 
 /* ===================================================================
@@ -391,8 +361,50 @@
 .featured-products ul.products li.product:nth-child(3) { animation-delay: 0.3s; }
 .featured-products ul.products li.product:nth-child(4) { animation-delay: 0.4s; }
 
-/* Mobile Responsive - UNCHANGED */
+/* Mobile Responsive */
 @media (max-width: 767px) {
+  .featured-products {
+    padding: 1.5rem 0 !important;
+  }
+
+  /* Keep title-left / button-right row layout, just smaller (matches categories/brands) */
+  .featured-products .section-header {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .featured-products .section-header-text {
+    min-width: 0;
+  }
+
+  .featured-products .section-title {
+    font-size: 1.125rem;
+    margin: 0 0 0.125rem;
+    white-space: nowrap;
+  }
+
+  .featured-products .section-description {
+    font-size: 0.8125rem;
+  }
+
+  /* Smaller "View All Products" button on mobile */
+  .featured-products .section-header-btn {
+    align-self: center;
+    padding: 0 0.625rem !important;
+    font-size: 0.6875rem !important;
+    min-height: 2rem !important;
+    max-height: 2rem !important;
+    gap: 0.1875rem !important;
+    border-radius: 0.5rem !important;
+  }
+
+  .featured-products .section-header-btn svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
   .featured-products ul.products li.product .woocommerce-loop-product__title {
     font-size: 0.9rem !important;
     padding: 1rem 1rem 0.5rem 1rem !important;
@@ -406,9 +418,50 @@
     padding: 0 1rem 1rem 1rem !important;
   }
 
-  .featured-products ul.products li.product .button,
-  .featured-products ul.products li.product .quick-view-button {
+  .featured-products ul.products li.product .button {
     font-size: 0.9375rem !important;
     padding: 0.75rem 1.25rem !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .featured-products ul.products li.product .woocommerce-loop-product__title {
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    padding: 0.75rem 0.75rem 0.375rem 0.75rem !important;
+  }
+
+  .featured-products ul.products li.product .product-rating {
+    padding: 0 0.75rem 0.375rem 0.75rem;
+  }
+
+  .featured-products ul.products li.product .product-price-wrapper {
+    padding: 0 0.75rem 0.75rem 0.75rem !important;
+  }
+
+  .featured-products ul.products li.product .price {
+    font-size: 1rem !important;
+  }
+
+  .featured-products ul.products li.product .price ins {
+    font-size: 1.0625rem !important;
+  }
+
+  .featured-products ul.products li.product .button {
+    width: calc(100% - 1.25rem) !important;
+    margin: 0 0.625rem !important;
+    font-size: 0.8125rem !important;
+    padding: 0.625rem 0.75rem !important;
+  }
+
+  .featured-products ul.products li.product .button svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-products {
+    padding: 1.25rem 0 !important;
   }
 }

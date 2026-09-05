@@ -1,274 +1,186 @@
 <?php
 /**
- * Simplified Hero Section with Product Carousel
- * Clean design inspired by modern e-commerce
+ * Hero Section - Driven by Customizer settings (inc/customizer/hero.php)
+ * Falls back to the original default values/images if a setting is left
+ * empty OR if the stored attachment ID no longer resolves to a real file
+ * (e.g. media was deleted) - see aaapos_resolve_media_url() below.
  */
-if (!get_theme_mod("show_hero", true)) {
-    return;
+
+// Resolves an attachment ID to a URL, falling back safely if the ID is
+// empty OR if wp_get_attachment_image_url() fails (e.g. deleted media).
+if (!function_exists('aaapos_resolve_media_url')) {
+    function aaapos_resolve_media_url($attachment_id, $fallback_url) {
+        if ($attachment_id) {
+            $url = wp_get_attachment_image_url($attachment_id, 'full');
+            if ($url) {
+                return $url;
+            }
+        }
+        return $fallback_url;
+    }
 }
 
-// Get media type
-$media_type = get_theme_mod("hero_media_type", "image");
-
-// Get overlay opacity
-$overlay_opacity = get_theme_mod("hero_overlay_opacity", 0.6);
-
-// Get content settings
-$hero_title = get_theme_mod("hero_title", "Premium Feed & Supplies");
-$hero_title_highlight = get_theme_mod(
-    "hero_title_highlight",
-    "For Your Beloved Pets & Livestock",
-);
-$hero_subtitle = get_theme_mod(
-    "hero_subtitle",
-    "Your trusted local supplier for premium pet food, animal feed, farm supplies, and everything your animals need. From dogs and cats to horses, poultry, and livestock.",
-);
-$primary_btn_text = get_theme_mod(
-    "hero_primary_button_text",
-    "Shop All Products",
-);
-$primary_btn_link = get_theme_mod("hero_primary_button_link", "/shop");
-$secondary_btn_text = get_theme_mod(
-    "hero_secondary_button_text",
-    "About Our Store",
-);
-$secondary_btn_link = get_theme_mod("hero_secondary_button_link", "/about");
-
-// Notification Banner Settings
-$show_notification = get_theme_mod("hero_show_notification", true);
-$notification_icon = get_theme_mod("hero_notification_icon");
-$notification_title = get_theme_mod("hero_notification_title", "RetailManager Update Available!");
-$notification_text = get_theme_mod("hero_notification_text", "Discover the latest features, improvements, and enhancements that will boost your retail operations.");
-$notification_btn_text = get_theme_mod("hero_notification_btn_text", "LEARN ABOUT NEW UPDATES");
-$notification_btn_link = get_theme_mod("hero_notification_btn_link", "#");
-
-// Product carousel settings
-$show_product_carousel = get_theme_mod("hero_show_product_carousel", true);
-$product_1_image = get_theme_mod("hero_product_1_image");
-$product_1_name = get_theme_mod("hero_product_1_name", "Product Name");
-$product_1_price = get_theme_mod("hero_product_1_price", "$99");
-$product_1_link = get_theme_mod("hero_product_1_link", "#");
-
-$product_2_image = get_theme_mod("hero_product_2_image");
-$product_2_name = get_theme_mod("hero_product_2_name", "Product Name");
-$product_2_price = get_theme_mod("hero_product_2_price", "$99");
-$product_2_link = get_theme_mod("hero_product_2_link", "#");
-
-$product_3_image = get_theme_mod("hero_product_3_image");
-$product_3_name = get_theme_mod("hero_product_3_name", "Product Name");
-$product_3_price = get_theme_mod("hero_product_3_price", "$99");
-$product_3_link = get_theme_mod("hero_product_3_link", "#");
-
-$product_4_image = get_theme_mod("hero_product_4_image");
-$product_4_name = get_theme_mod("hero_product_4_name", "Product Name");
-$product_4_price = get_theme_mod("hero_product_4_price", "$99");
-$product_4_link = get_theme_mod("hero_product_4_link", "#");
-
-// Build products array
-$products = array(
-    array('image' => $product_1_image, 'name' => $product_1_name, 'price' => $product_1_price, 'link' => $product_1_link),
-    array('image' => $product_2_image, 'name' => $product_2_name, 'price' => $product_2_price, 'link' => $product_2_link),
-    array('image' => $product_3_image, 'name' => $product_3_name, 'price' => $product_3_price, 'link' => $product_3_link),
-    array('image' => $product_4_image, 'name' => $product_4_name, 'price' => $product_4_price, 'link' => $product_4_link),
+// ==========================================================================
+// Background image
+// ==========================================================================
+$hero_bg_image = aaapos_resolve_media_url(
+    get_theme_mod('hero_bg_image', ''),
+    get_template_directory_uri() . '/images/herobg.png'
 );
 
-// Default fallback images
-$default_image = "https://www.aaapos.com/wp-content/uploads/cropped-cropped-aaapos-logo.png";
+// ==========================================================================
+// Eyebrow / Title / Subtitle
+// ==========================================================================
+$hero_eyebrow      = get_theme_mod('hero_eyebrow', 'TRUSTED FOR 25+ YEARS');
+$hero_title_line1  = get_theme_mod('hero_title_line1', 'AAAPOS RetailManager');
+$hero_title_line2  = get_theme_mod('hero_title_line2', 'POS Software');
+$hero_subtitle     = get_theme_mod('hero_subtitle', 'Formerly MYOB RetailManager, trusted by retailers across Australia, New Zealand, Asia and the Pacific Islands for over 25 years.');
 
-// Add CSS class
-$hero_class = "hero-section hero-simple";
-if ($media_type === "video") {
-    $hero_class .= " hero-video-mode";
-} else {
-    $hero_class .= " hero-image-mode";
-}
+// ==========================================================================
+// Feature bullets (small icon + label row under subtitle)
+// Icon uses the uploaded image if set and valid; otherwise falls back to
+// the bundled /images/sync.gif and /images/support.gif icons.
+// ==========================================================================
+$hero_features = array(
+    array(
+        'icon_url' => aaapos_resolve_media_url(
+            get_theme_mod('hero_feature_1_icon', ''),
+            get_template_directory_uri() . '/images/sync.gif'
+        ),
+        'label' => get_theme_mod('hero_feature_1_label', 'Multi-Store Sync'),
+    ),
+    array(
+        'icon_url' => aaapos_resolve_media_url(
+            get_theme_mod('hero_feature_2_icon', ''),
+            get_template_directory_uri() . '/images/support.gif'
+        ),
+        'label' => get_theme_mod('hero_feature_2_label', '7 Days Support'),
+    ),
+);
 
-// Get video settings if video mode
-if ($media_type === "video") {
-    $video_loop = get_theme_mod("hero_video_loop", true);
-    $video_mute = get_theme_mod("hero_video_mute", true);
-    $video_mobile_fallback = get_theme_mod("hero_video_mobile_fallback", true);
+// ==========================================================================
+// Buttons
+// ==========================================================================
+$primary_btn_text   = get_theme_mod('hero_primary_btn_text', 'RetailManager Update');
+$primary_btn_link   = get_theme_mod('hero_primary_btn_link', '/shop');
+$secondary_btn_text = get_theme_mod('hero_secondary_btn_text', 'Support');
+$secondary_btn_link = get_theme_mod('hero_secondary_btn_link', '/support');
 
-    $video_id = get_theme_mod("hero_video_webm", "");
-    $video_url = $video_id ? wp_get_attachment_url($video_id) : "";
+// ==========================================================================
+// Product image panel (sliding images)
+// ==========================================================================
+$show_product_carousel = get_theme_mod('hero_show_product_carousel', true);
 
-    $fallback_image_id = get_theme_mod("hero_video_fallback", "");
-    $fallback_image_url = $fallback_image_id
-        ? wp_get_attachment_image_url($fallback_image_id, "full")
-        : "";
+$default_carousel_images = array(
+    get_template_directory_uri() . '/images/1.png',
+    get_template_directory_uri() . '/images/2.png',
+    get_template_directory_uri() . '/images/3.png',
+    get_template_directory_uri() . '/images/4.png',
+);
 
-    // Add video data attributes
-    $video_data_attrs = sprintf(
-        'data-video-url="%s" data-fallback-image="%s" data-video-loop="%s" data-video-mute="%s" data-mobile-fallback="%s"',
-        esc_url($video_url),
-        esc_url($fallback_image_url),
-        $video_loop ? "true" : "false",
-        $video_mute ? "true" : "false",
-        $video_mobile_fallback ? "true" : "false",
+$hardcoded_product_images = array();
+for ($i = 1; $i <= 4; $i++) {
+    $hardcoded_product_images[] = aaapos_resolve_media_url(
+        get_theme_mod("hero_carousel_image_{$i}", ''),
+        $default_carousel_images[$i - 1]
     );
-} else {
-    $video_data_attrs = "";
+}
 
-    // Get image slideshow settings
-    $enable_slideshow = get_theme_mod("hero_enable_slideshow", true);
+// Optional per-image link URL - clicking the slide navigates here if set.
+$hardcoded_product_links = array();
+for ($i = 1; $i <= 4; $i++) {
+    $hardcoded_product_links[] = get_theme_mod("hero_carousel_link_{$i}", '');
+}
 
-    // Get slide images
-    $hero_slide_1 = get_theme_mod("hero_slide_1");
-    $hero_slide_2 = get_theme_mod("hero_slide_2");
-    $hero_slide_3 = get_theme_mod("hero_slide_3");
-    $hero_slide_4 = get_theme_mod("hero_slide_4");
+// ==========================================================================
+// "Other goods" cards below the hero
+// ==========================================================================
+$show_other_goods = get_theme_mod('hero_show_other_goods', true);
 
-    $slideshow_speed = get_theme_mod("hero_slideshow_speed", 5000);
+$default_other_goods = array(
+    1 => array(
+        'title'  => 'RM-MultiStore',
+        'desc'   => 'Head office data aggregation tool to manage multiple stores from one dashboard, with real-time sync.',
+        'image'  => get_template_directory_uri() . '/images/2.png',
+        'ribbon' => '',
+    ),
+    2 => array(
+        'title'  => 'Webstore Manager',
+        'desc'   => 'Sync stock and orders automatically with Shopify, WooCommerce, eBay and BigCommerce.',
+        'image'  => get_template_directory_uri() . '/images/3.png',
+        'ribbon' => '',
+    ),
+    3 => array(
+        'title'  => 'RM Mobile App',
+        'desc'   => 'Access AAAPOS RetailManager on the go with the free companion app for Android and iOS.',
+        'image'  => get_template_directory_uri() . '/images/4.png',
+        'ribbon' => 'Coming soon',
+    ),
+);
 
-    // Build slides array
-    $slides = [$hero_slide_1, $hero_slide_2, $hero_slide_3, $hero_slide_4];
+$other_goods = array();
+foreach ($default_other_goods as $i => $defaults) {
+    $other_goods[] = array(
+        'title'  => get_theme_mod("hero_goods_{$i}_title", $defaults['title']),
+        'desc'   => get_theme_mod("hero_goods_{$i}_desc", $defaults['desc']),
+        'image'  => aaapos_resolve_media_url(get_theme_mod("hero_goods_{$i}_image", ''), $defaults['image']),
+        'ribbon' => get_theme_mod("hero_goods_{$i}_ribbon", $defaults['ribbon']),
+        'link'   => get_theme_mod("hero_goods_{$i}_link", ''),
+    );
+}
 
-    if (!$enable_slideshow) {
-        $hero_class .= " hero-static";
+// Word-by-word ascend reveal helper
+if (!function_exists('aaapos_ascend_words')) {
+    function aaapos_ascend_words($text, $base_delay = 0, $step = 0.045) {
+        $words = preg_split('/\s+/', trim($text));
+        $out = array();
+        foreach ($words as $i => $word) {
+            $delay = $base_delay + ($i * $step);
+            $out[] = '<span class="ascend-word" style="--ascend-delay: ' . esc_attr(number_format($delay, 3)) . 's;"><span class="ascend-inner">' . esc_html($word) . '</span></span>';
+        }
+        return implode(' ', $out);
     }
 }
 ?>
 
-<section class="<?php echo esc_attr($hero_class); ?>" <?php echo $video_data_attrs; ?>>
-    
-    <?php if ($media_type === "video"): ?>
-        <!-- Video Background -->
-        <div class="hero-video-background">
-            <?php if ($video_url && $video_url): ?>
-                <div class="hero-video-container">
-                    <?php if ($fallback_image_url): ?>
-                        <img src="<?php echo esc_url($fallback_image_url); ?>" 
-                             alt="<?php echo esc_attr($hero_title); ?>"
-                             class="video-fallback-image"
-                             loading="lazy">
-                    <?php else: ?>
-                        <img src="<?php echo esc_url($default_images[0]); ?>" 
-                             alt="<?php echo esc_attr($hero_title); ?>"
-                             class="video-fallback-image"
-                             loading="lazy">
-                    <?php endif; ?>
-                    
-                    <div class="video-controls">
-                        <button class="video-play-btn" aria-label="Play video">
-                            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </button>
-                        <button class="video-pause-btn" aria-label="Pause video" style="display: none;">
-                            <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                            </svg>
-                        </button>
-                        <button class="video-mute-btn" aria-label="<?php echo $video_mute ? "Unmute video" : "Mute video"; ?>">
-                            <?php if ($video_mute): ?>
-                                <svg class="mute-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                                </svg>
-                            <?php else: ?>
-                                <svg class="unmute-icon" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                                </svg>
-                            <?php endif; ?>
-                        </button>
-                    </div>
-                </div>
-            <?php else: ?>
-                <div class="hero-static-background">
-                    <?php if ($fallback_image_url): ?>
-                        <img src="<?php echo esc_url($fallback_image_url); ?>" 
-                             alt="<?php echo esc_attr($hero_title); ?>"
-                             class="hero-static-image"
-                             loading="lazy">
-                    <?php else: ?>
-                        <img src="<?php echo esc_url($default_images[0]); ?>" 
-                             alt="<?php echo esc_attr($hero_title); ?>"
-                             class="hero-static-image"
-                             loading="lazy">
-                    <?php endif; ?>
-                    <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
-                </div>
-            <?php endif; ?>
-            <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
-        </div>
-        
-    <?php else: ?>
-        <!-- Image Background -->
-        <?php if ($enable_slideshow): ?>
-            <div class="hero-slider" 
-                 data-autoplay="true" 
-                 data-delay="<?php echo esc_attr($slideshow_speed); ?>"
-                 data-pause-hover="true"
-                 data-keyboard="true"
-                 data-dots="false"
-                 data-arrows="false"
-                 data-loop="true">
-                <div class="hero-slides">
-                    <?php foreach ($slides as $index => $slide_id): ?>
-                        <div class="hero-slide">
-                            <?php if ($slide_id): ?>
-                                <?php echo wp_get_attachment_image(
-                                    $slide_id,
-                                    "full",
-                                    false,
-                                    [
-                                        "alt" => esc_attr($hero_title),
-                                        "loading" => "lazy",
-                                        "class" => "hero-slide-image",
-                                    ],
-                                ); ?>
-                            <?php else: ?>
-                                <img src="<?php echo esc_url($default_images[$index]); ?>" 
-                                     alt="<?php echo esc_attr($hero_title); ?>"
-                                     class="hero-slide-image"
-                                     loading="lazy">
-                            <?php endif; ?>
-                            <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="hero-static-background">
-                <?php if ($hero_slide_1): ?>
-                    <?php echo wp_get_attachment_image($hero_slide_1, "full", false, [
-                        "alt" => esc_attr($hero_title),
-                        "class" => "hero-static-image",
-                        "loading" => "lazy",
-                    ]); ?>
-                <?php else: ?>
-                    <img src="<?php echo esc_url($default_images[0]); ?>" 
-                         alt="<?php echo esc_attr($hero_title); ?>" 
-                         class="hero-static-image"
-                         loading="lazy">
-                <?php endif; ?>
-                <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
-            </div>
-        <?php endif; ?>
-    <?php endif; ?>
+<section class="hero-section hero-simple hero-light" style="background-image: url('<?php echo esc_url($hero_bg_image); ?>') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important;">
 
     <!-- Hero Content Container -->
     <div class="hero-content-wrapper">
         <div class="hero-content-container">
-            
+
             <!-- Left Side: Content -->
             <div class="hero-content">
+                <?php if ($hero_eyebrow): ?>
+                <p class="hero-eyebrow"><?php echo aaapos_ascend_words($hero_eyebrow, 0.05); ?></p>
+                <?php endif; ?>
+
                 <h1 class="hero-title">
-                    <?php echo esc_html($hero_title); ?>
-                    <?php if ($hero_title_highlight): ?>
-                    <span class="hero-title-highlight"><?php echo esc_html($hero_title_highlight); ?></span>
-                    <?php endif; ?>
+                    <span class="hero-title-line"><?php echo aaapos_ascend_words($hero_title_line1, 0.15); ?></span>
+                    <span class="hero-title-line"><?php echo aaapos_ascend_words($hero_title_line2, 0.28); ?></span>
                 </h1>
-                
-                <p class="hero-subtitle">
-                    <?php echo esc_html($hero_subtitle); ?>
-                </p>
+
+                <p class="hero-subtitle"><?php echo aaapos_ascend_words($hero_subtitle, 0.4, 0.025); ?></p>
+
+                <?php if (!empty($hero_features)): ?>
+                <div class="hero-features">
+                    <?php foreach ($hero_features as $f_index => $feature): ?>
+                        <div class="hero-feature">
+                            <span class="hero-feature-icon">
+                                <img src="<?php echo esc_url($feature['icon_url']); ?>" alt="<?php echo esc_attr($feature['label']); ?>">
+                            </span>
+                            <span class="hero-feature-label"><?php echo aaapos_ascend_words($feature['label'], 0.55 + ($f_index * 0.1)); ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
 
                 <div class="hero-buttons">
                     <?php if ($primary_btn_text): ?>
                         <a href="<?php echo esc_url($primary_btn_link); ?>" class="hero-btn hero-btn-primary">
-                            <?php echo esc_html($primary_btn_text); ?>
+                            <span class="hero-btn-label"><?php echo aaapos_ascend_words($primary_btn_text, 0.6); ?></span>
                             <svg class="hero-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 17L17 7M17 7H8M17 7V16"></path>
                             </svg>
                         </a>
                     <?php endif; ?>
@@ -276,95 +188,78 @@ if ($media_type === "video") {
                     <?php if ($secondary_btn_text): ?>
                         <a href="<?php echo esc_url($secondary_btn_link); ?>" class="hero-btn hero-btn-secondary">
                             <svg class="hero-btn-icon-left" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h7"></path>
                             </svg>
-                            <?php echo esc_html($secondary_btn_text); ?>
+                            <span class="hero-btn-label"><?php echo aaapos_ascend_words($secondary_btn_text, 0.68); ?></span>
                         </a>
                     <?php endif; ?>
                 </div>
-
-                <!-- Notification Banner -->
-                <?php if ($show_notification): ?>
-                <div class="hero-notification-banner">
-                    <div class="notification-content">
-                        <?php if ($notification_icon): ?>
-                        <div class="notification-icon">
-                            <?php echo wp_get_attachment_image($notification_icon, 'thumbnail', false, [
-                                'alt' => esc_attr($notification_title),
-                            ]); ?>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <div class="notification-text">
-                            <h3 class="notification-title"><?php echo esc_html($notification_title); ?></h3>
-                            <p class="notification-description"><?php echo esc_html($notification_text); ?></p>
-                        </div>
-                    </div>
-                    
-                    <?php if ($notification_btn_text): ?>
-                    <a href="<?php echo esc_url($notification_btn_link); ?>" class="notification-btn">
-                        <?php echo esc_html($notification_btn_text); ?>
-                    </a>
-                    <?php endif; ?>
-                </div>
-                <?php endif; ?>
             </div>
 
-            <!-- Right Side: Product Carousel - HIDDEN ON MOBILE -->
+            <!-- Right Side: Product Image + Vertical Dots -->
             <?php if ($show_product_carousel): ?>
-            <div class="hero-product-carousel hero-product-desktop-only">
+            <div class="hero-product-carousel hero-product-side hero-product-desktop-only">
                 <div class="product-carousel-track">
-                    <?php foreach ($products as $index => $product): ?>
-                        <?php if ($product['image']): ?>
+                    <?php foreach ($hardcoded_product_images as $index => $img_url): ?>
                         <div class="product-slide <?php echo $index === 0 ? 'active' : ''; ?>">
-                            <a href="<?php echo esc_url($product['link']); ?>" class="product-slide-link">
-                                <div class="product-image-wrapper">
-                                    <?php echo wp_get_attachment_image($product['image'], 'large', false, [
-                                        'alt' => esc_attr($product['name']),
-                                        'class' => 'product-image',
-                                    ]); ?>
-                                </div>
-                                <div class="product-info-card">
-                                    <div class="product-info-content">
-                                        <div class="product-thumbnail">
-                                            <?php echo wp_get_attachment_image($product['image'], 'thumbnail', false, [
-                                                'alt' => esc_attr($product['name']),
-                                            ]); ?>
-                                        </div>
-                                        <div class="product-details">
-                                            <h3 class="product-name"><?php echo esc_html($product['name']); ?></h3>
-                                            <p class="product-price"><?php echo esc_html($product['price']); ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            <?php $slide_link = $hardcoded_product_links[$index]; ?>
+                            <?php if (!empty($slide_link)): ?>
+                                <a href="<?php echo esc_url($slide_link); ?>" class="product-slide-link">
+                                    <img src="<?php echo esc_url($img_url); ?>"
+                                         alt="<?php echo esc_attr($hero_title_line1 . ' - image ' . ($index + 1)); ?>"
+                                         class="product-slide-img"
+                                         loading="lazy">
+                                </a>
+                            <?php else: ?>
+                                <img src="<?php echo esc_url($img_url); ?>"
+                                     alt="<?php echo esc_attr($hero_title_line1 . ' - image ' . ($index + 1)); ?>"
+                                     class="product-slide-img"
+                                     loading="lazy">
+                            <?php endif; ?>
                         </div>
-                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                
-                <!-- Carousel Indicators -->
+
+                <!-- Vertical Dot Pill -->
                 <div class="carousel-indicators">
-                    <?php foreach ($products as $index => $product): ?>
-                        <?php if ($product['image']): ?>
-                        <button class="indicator-dot <?php echo $index === 0 ? 'active' : ''; ?>" 
+                    <?php foreach ($hardcoded_product_images as $index => $img_url): ?>
+                        <button class="indicator-dot <?php echo $index === 0 ? 'active' : ''; ?>"
                                 data-slide="<?php echo $index; ?>"
-                                aria-label="Go to product <?php echo $index + 1; ?>">
+                                aria-label="Go to image <?php echo $index + 1; ?>">
                         </button>
-                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             </div>
             <?php endif; ?>
-            
+
         </div>
+
+        <!-- Other Goods Row -->
+        <?php if ($show_other_goods && !empty($other_goods)): ?>
+        <div class="hero-other-goods">
+            <div class="other-goods-grid">
+                <?php foreach ($other_goods as $item): ?>
+                    <?php $goods_link = $item['link']; ?>
+                    <?php if (!empty($goods_link)): ?><a href="<?php echo esc_url($goods_link); ?>" class="other-goods-card-link"><?php endif; ?>
+                    <div class="other-goods-card">
+                        <?php if (!empty($item['ribbon'])): ?>
+                            <span class="other-goods-ribbon"><?php echo aaapos_ascend_words($item['ribbon'], 0.9); ?></span>
+                        <?php endif; ?>
+                        <div class="other-goods-card-body">
+                            <div class="other-goods-text">
+                                <h3 class="other-goods-title"><?php echo aaapos_ascend_words($item['title'], 0.75); ?></h3>
+                                <p class="other-goods-desc"><?php echo aaapos_ascend_words($item['desc'], 0.85, 0.02); ?></p>
+                            </div>
+                            <div class="other-goods-thumb">
+                                <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                    <?php if (!empty($goods_link)): ?></a><?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
-    
-    <!-- Loading indicator for videos -->
-    <?php if ($media_type === "video" && $video_url): ?>
-        <div class="video-loading" style="display: none;">
-            <div class="loading-spinner"></div>
-            <span class="loading-text">Loading video...</span>
-        </div>
-    <?php endif; ?>
+
 </section>

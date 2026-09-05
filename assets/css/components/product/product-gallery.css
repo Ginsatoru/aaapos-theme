@@ -1,24 +1,30 @@
 /**
  * Product Gallery Styles - Fixed Image Sizing & Centering
  *
- * FIX: Gallery uses overflow:visible so images are never clipped.
+ * FIX: Gallery uses overflow:visible on the outer card so thumbnail
+ *      hover effects are never clipped, but the inner image wrapper
+ *      uses overflow:hidden + a slight image scale to crop out the
+ *      hairline edge artifact baked into product photos.
  * FIX: object-fit:contain ensures full image is always shown.
  * FIX: FlexSlider thumbnails properly fill full width aligned with parent.
  *
  * @package AAAPOS_Prime
- * @version 1.2.0
+ * @version 1.3.0
  * Location: assets/css/components/product/product-gallery.css
  */
 
 /* ============================================
-   GALLERY OVERFLOW FIX
-   Nothing in the gallery is ever clipped/cut off
+   GALLERY CARD (matches .summary.entry-summary)
    ============================================ */
 
 .woocommerce-product-gallery {
     position: relative;
     margin-bottom: 0;
-    overflow: visible !important;
+    background: var(--color-white, #ffffff) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+    padding: 1.5rem !important;
+    overflow: visible !important; /* keep thumbnail hover lift from clipping */
 }
 
 .woocommerce-product-gallery__wrapper {
@@ -28,15 +34,21 @@
     overflow: visible !important;
 }
 
+/* ============================================
+   IMAGE CROP FIX
+   Crops the ~1px edge artifact baked into product photos
+   ============================================ */
+
 .woocommerce-product-gallery__image {
     margin: 0;
     padding: 0;
-    overflow: visible !important;
+    overflow: hidden !important; /* crop the scaled image edge */
+    border-radius: 12px;
 }
 
 .woocommerce-product-gallery__image a {
     display: block !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     width: 100% !important;
 }
 
@@ -46,9 +58,10 @@
     height: auto !important;
     max-width: 100% !important;
     object-fit: contain !important;
-    overflow: visible !important;
     display: block !important;
-    border-radius: 8px;
+    border-radius: 12px;
+    transform: scale(1.01);
+    transform-origin: center center;
 }
 
 /* ============================================
@@ -134,16 +147,35 @@
 }
 
 /* ============================================
+   SALE BADGE - removed from the image on single product pages.
+   The percentage-off pill now appears next to the price instead
+   (see product-details.css .aaapos-sale-percentage).
+   ============================================ */
+
+.single-product span.onsale {
+    display: none !important;
+}
+
+/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
 @media (max-width: 1024px) {
+    .woocommerce-product-gallery {
+        padding: 1.25rem !important;
+    }
+
     .flex-control-thumbs li img {
         height: 55px !important;
     }
 }
 
 @media (max-width: 768px) {
+    .woocommerce-product-gallery {
+        padding: 1rem !important;
+        border-radius: 12px !important;
+    }
+
     .flex-control-thumbs {
         gap: 6px !important;
     }

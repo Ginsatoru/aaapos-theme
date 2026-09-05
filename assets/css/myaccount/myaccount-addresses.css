@@ -1,5 +1,9 @@
 /* ============================================
    My Account Addresses - Address Cards & Edit
+   UPDATED: Matches the flat dashboard design language -
+   no box-shadow, no lift-hover, icon circle in the header
+   (matching dashboard-action-card), flat pill edit button,
+   and a clean text-only "not set up yet" empty state.
    ============================================ */
 
 /* ==========================================================================
@@ -12,7 +16,7 @@
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: var(--space-6) !important;
-  margin: 0 !important;
+  margin: -2.8rem 0 0 0 !important;
   padding: 0 !important;
   width: 100% !important;
 }
@@ -26,62 +30,93 @@
   margin: 0 !important;
   padding: 0 !important;
   background: var(--color-white) !important;
-  border: none !important;
-  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--color-border-light) !important;
+  box-shadow: none !important;
   border-radius: var(--border-radius-lg) !important;
   display: block !important;
   position: relative !important;
-  transition: var(--transition);
+  transition: border-color 0.2s ease !important;
 }
 
 .woocommerce-Address:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary) !important;
+  box-shadow: none !important;
 }
 
-/* Header section with title and button */
+/* Header section with icon, title and edit button */
 .woocommerce-Address header,
-.woocommerce-Address-title {
+.woocommerce-Address-title,
+.aaapos-address-card__header {
   background: transparent !important;
   box-shadow: none !important;
   padding: var(--space-6) var(--space-6) 0 var(--space-6) !important;
   border: none !important;
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: wrap !important;
-  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
   align-items: center !important;
   gap: var(--space-3) !important;
-  margin: 0 0 var(--space-4) 0 !important;
+  margin: 0 0 var(--space-2) 0 !important;
 }
 
-/* Address title - visible and on the left */
-.woocommerce-Address-title h3 {
+/* Icon circle - matches dashboard-action-card__icon */
+.aaapos-address-card__icon {
+  flex-shrink: 0 !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  background: #F3F5FA !important;
+  color: #000000 !important;
+}
+
+.aaapos-address-card__icon svg {
+  width: 22px !important;
+  height: 22px !important;
+  display: block !important;
+}
+
+/* Address title - visible and grows to fill remaining space */
+.woocommerce-Address-title h3,
+.aaapos-address-card__title {
   font-size: var(--text-xl) !important;
   font-weight: var(--font-bold) !important;
   color: var(--color-text-dark) !important;
   margin: 0 !important;
   padding: 0 !important;
   font-family: var(--font-heading) !important;
-  flex: 0 1 auto !important;
+  flex: 1 1 auto !important;
   min-width: 0 !important;
+  border: none !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+  align-self: center !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: -3px !important;
 }
 
-/* Edit button - on the right side */
+/* Edit/Add button - flat pill matching dashboard-action-card__btn */
 .woocommerce-Address-title .edit,
-.woocommerce-Address .edit {
+.woocommerce-Address .edit,
+.aaapos-address-card__edit {
   display: inline-flex !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: var(--space-2) !important;
   padding: var(--space-2) var(--space-4) !important;
-  background: var(--color-primary) !important;
-  color: var(--color-white) !important;
+  background: #F3F5FA !important;
+  color: #000000 !important;
   border: none !important;
   border-radius: var(--border-radius) !important;
   font-size: var(--text-sm) !important;
   font-weight: var(--font-semibold) !important;
   text-decoration: none !important;
-  transition: all 0.2s ease !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
   box-shadow: none !important;
   margin: 0 !important;
   white-space: nowrap !important;
@@ -92,18 +127,22 @@
 }
 
 .woocommerce-Address-title .edit:hover,
-.woocommerce-Address .edit:hover {
-  background: var(--color-primary-dark) !important;
-  transform: translateY(-1px) !important;
+.woocommerce-Address .edit:hover,
+.aaapos-address-card__edit:hover {
+  background: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  transform: none !important;
 }
 
 .woocommerce-Address-title .edit:active,
-.woocommerce-Address .edit:active {
-  transform: translateY(0) !important;
+.woocommerce-Address .edit:active,
+.aaapos-address-card__edit:active {
+  transform: none !important;
 }
 
 /* Address content */
-.woocommerce-Address address {
+.woocommerce-Address address,
+.aaapos-address-card__body {
   font-style: normal !important;
   line-height: 1.7 !important;
   color: var(--color-text) !important;
@@ -129,6 +168,27 @@
 }
 
 /* ==========================================================================
+   Empty state - "You have not set up this type of address yet."
+   Text-only (the icon is already shown once in the card header),
+   vertically centered within the address body.
+   ========================================================================== */
+
+.aaapos-address-empty {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.aaapos-address-empty__text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-light);
+  font-style: normal;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
    Mobile Responsive Adjustments for Address Cards
    ========================================================================== */
 
@@ -141,28 +201,48 @@
 
   /* Adjust header layout for mobile */
   .woocommerce-Address header,
-  .woocommerce-Address-title {
-    flex-direction: column !important;
-    align-items: flex-start !important;
+  .woocommerce-Address-title,
+  .aaapos-address-card__header {
+    flex-wrap: wrap !important;
     gap: var(--space-3) !important;
     padding: var(--space-5) var(--space-5) 0 var(--space-5) !important;
   }
 
+  .aaapos-address-card__icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .aaapos-address-card__icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
   /* Title takes full width on mobile */
-  .woocommerce-Address-title h3 {
+  .woocommerce-Address-title h3,
+  .aaapos-address-card__title {
     font-size: var(--text-lg) !important;
     width: 100% !important;
+    flex: 1 1 100% !important;
+    order: 2 !important;
   }
 
   /* Button takes full width on mobile for easier tapping */
   .woocommerce-Address-title .edit,
-  .woocommerce-Address .edit {
+  .woocommerce-Address .edit,
+  .aaapos-address-card__edit {
     width: 100% !important;
     justify-content: center !important;
+    order: 3 !important;
+  }
+
+  .aaapos-address-card__icon {
+    order: 1 !important;
   }
 
   /* Adjust address content padding */
-  .woocommerce-Address address {
+  .woocommerce-Address address,
+  .aaapos-address-card__body {
     padding: var(--space-4) var(--space-5) var(--space-5) var(--space-5) !important;
   }
 }
@@ -182,16 +262,18 @@ body.woocommerce-account.woocommerce-edit-address {
    ========================= */
 
 /* The main "Billing address" or "Shipping address" title */
+.woocommerce-address-fields > h2,
+.woocommerce-MyAccount-content form h2,
 body.woocommerce-edit-address .woocommerce-MyAccount-content > h2,
 body.woocommerce-edit-address .entry-content > h2,
-body.woocommerce-edit-address header.woocommerce-Address-title > h2,
+body.woocommerce-edit-address header.woocommerce-Address-title:not(.aaapos-address-card__header) > h2,
 body.woocommerce-edit-address .woocommerce-MyAccount-content > h3,
 body.woocommerce-edit-address .entry-content > h3,
-body.woocommerce-edit-address header.woocommerce-Address-title > h3 {
-  margin-top: var(--space-8) !important;
-  padding-top: var(--space-6) !important;
-  margin-bottom: var(--space-5) !important;
-  padding-left: var(--space-6) !important;
+body.woocommerce-edit-address header.woocommerce-Address-title:not(.aaapos-address-card__header) > h3 {
+  margin-top: -2.4rem !important;
+  padding-top: 0 !important;
+  margin-bottom: var(--space-6) !important;
+  padding-left: 0 !important;
 }
 
 /* =========================
@@ -216,26 +298,36 @@ body.woocommerce-edit-address .woocommerce-address-fields .woocommerce-form-row:
    3. GRID LAYOUT ADJUSTMENTS
    ========================= */
 
-/* Tighten the two-column grid (First name / Last name) */
+/* If a .woocommerce-address-fields__field-wrapper div IS present, it's set
+   to display:grid in myaccount-forms.css - inside a grid, width:% on a
+   child is computed against its grid TRACK, not the row, which silently
+   neutralizes the override below. Force it back to block so float/width
+   behave normally, regardless of which markup this page actually uses. */
 body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: var(--space-3) var(--space-4) !important;
-  margin-bottom: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  display: block !important;
 }
 
-/* Full-width fields (Country, Street address, etc.) */
-body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper .form-row-wide {
-  grid-column: 1 / -1 !important;
+/* form-row-first / form-row-last are floated <p> tags. Core WC CSS sets
+   them to width:47% (leaving a ~6% gap). Widen them and shrink the gap
+   so First/Last name get noticeably more room. */
+body.woocommerce-edit-address .woocommerce-address-fields .form-row-first,
+body.woocommerce-edit-address .woocommerce-address-fields .form-row-last {
+  width: 48.5% !important;
+  float: left !important;
+  box-sizing: border-box !important;
   margin-bottom: var(--space-3) !important;
 }
 
-/* First and Last columns in the grid */
-body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper .form-row-first,
-body.woocommerce-edit-address .woocommerce-address-fields__field-wrapper .form-row-last {
-  margin-bottom: 0 !important;
+body.woocommerce-edit-address .woocommerce-address-fields .form-row-last {
+  float: right !important;
+}
+
+/* Full-width fields (Country, Street address, etc.) */
+body.woocommerce-edit-address .woocommerce-address-fields .form-row-wide {
+  width: 100% !important;
+  float: none !important;
+  clear: both !important;
+  margin-bottom: var(--space-3) !important;
 }
 
 /* =========================
@@ -253,10 +345,12 @@ body.woocommerce-edit-address .woocommerce-form-row label {
    5. FORM WRAPPER PADDING
    ========================= */
 
-/* Reduce overall form container padding for more compact feel */
+/* Reduce overall form container padding for more compact feel -
+   slightly tighter horizontal padding also widens the First/Last inputs */
+.woocommerce-address-fields,
 body.woocommerce-edit-address .woocommerce-address-fields,
 body.woocommerce-edit-address form.edit-address {
-  padding: var(--space-5) var(--space-6) !important;
+  padding: var(--space-5) var(--space-5) !important;
 }
 
 /* The main form element */

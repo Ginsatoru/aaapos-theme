@@ -1,6 +1,7 @@
 /* ============================================
    PRODUCT SOCIAL SHARE BUTTONS
    Displays share buttons below secure payments
+   Pill-morph hover animation (matches header nav style)
    ============================================ */
 
 .single-product .product-share-section {
@@ -28,25 +29,56 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.5rem !important;
+  gap: 0.625rem !important;
   flex-wrap: wrap !important;
 }
 
+/* ============================================
+   PILL BUTTON — circle by default, expands
+   into a capsule revealing the label on hover
+   ============================================ */
+
 .single-product .share-button {
+  --i: #6b7280;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 40px !important;
   height: 40px !important;
-  border-radius: 50% !important;
-  background: transparent !important;
+  min-width: 40px !important;
+  border-radius: 40px !important;
+  background: #ffffff !important;
   border: none !important;
+  outline: none !important;
   color: #6b7280 !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
   padding: 0 !important;
   text-decoration: none !important;
   position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  transition: width 0.5s, min-width 0.5s, padding 0.5s !important;
+}
+
+/* Solid fill layer (fades in on hover) */
+.single-product .share-button::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 40px !important;
+  background: var(--i) !important;
+  opacity: 0 !important;
+  transition: 0.5s !important;
+  z-index: -1 !important;
+}
+
+.single-product .share-button:hover {
+  min-width: 132px !important;
+  padding: 0 18px !important;
+  gap: 8px !important;
+}
+
+.single-product .share-button:hover::before {
+  opacity: 1 !important;
 }
 
 /* CRITICAL: Target SVG with maximum specificity */
@@ -54,104 +86,74 @@
 .single-product .share-button svg,
 body.single-product .share-button svg,
 .woocommerce .single-product .share-button svg {
-  width: 22px !important;
-  height: 22px !important;
+  width: 20px !important;
+  height: 20px !important;
   fill: currentColor !important;
-  display: block !important;
   flex-shrink: 0 !important;
+  transition: transform 0.4s, color 0.4s !important;
+  transition-delay: 0.15s !important;
+  z-index: 1 !important;
+}
+
+.single-product .share-button:hover svg {
+  color: #ffffff !important;
+  transform: scale(0.85) !important;
+  transition-delay: 0s !important;
 }
 
 /* ============================================
-   TOOLTIP STYLES
+   LABEL — revealed inside the pill on hover
+   (repurposes data-tooltip instead of a floating tip)
    ============================================ */
 
 .single-product .share-button::after {
   content: attr(data-tooltip) !important;
-  position: absolute !important;
-  bottom: calc(100% + 8px) !important;
-  left: 50% !important;
-  transform: translateX(-50%) translateY(-4px) !important;
-  background: var(--color-primary) !important;
-  color: #ffffff !important;
-  padding: 6px 12px !important;
-  border-radius: 16px !important;
-  font-size: 0.75rem !important;
-  font-weight: 500 !important;
+  display: inline-block !important;
+  max-width: 0 !important;
+  overflow: hidden !important;
   white-space: nowrap !important;
+  color: #ffffff !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
   opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  transition: all 0.2s ease !important;
-  z-index: 1000 !important;
+  transition: max-width 0.5s, opacity 0.3s !important;
+  transition-delay: 0s !important;
+  z-index: 1 !important;
 }
 
-/* Show tooltip on hover */
 .single-product .share-button:hover::after {
+  max-width: 100px !important;
   opacity: 1 !important;
-  visibility: visible !important;
-  transform: translateX(-50%) translateY(0) !important;
+  transition-delay: 0.25s !important;
 }
 
-/* Hover States */
-.single-product .share-button:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 50% !important;
-}
+/* Brand colors per network */
+.single-product .share-button--facebook  { --i: #1877F2; }
+.single-product .share-button--twitter   { --i: #000000; }
+.single-product .share-button--whatsapp  { --i: #25D366; }
+.single-product .share-button--telegram  { --i: #0088cc; }
+.single-product .share-button--email     { --i: #4b5563; }
+.single-product .share-button--copy      { --i: #0ea5e9; }
 
-.single-product .share-button--facebook:hover {
-  background: #1877F2 !important;
-  border-color: #1877F2 !important;
-  color: #ffffff !important;
-}
-
-.single-product .share-button--twitter:hover {
-  background: #000000 !important;
-  border-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-.single-product .share-button--pinterest:hover {
-  background: #E60023 !important;
-  border-color: #E60023 !important;
-  color: #ffffff !important;
-}
-
-.single-product .share-button--whatsapp:hover {
-  background: #25D366 !important;
-  border-color: #25D366 !important;
-  color: #ffffff !important;
-}
-
-.single-product .share-button--telegram:hover {
-  background: #0088cc !important;
-  border-color: #0088cc !important;
-  color: #ffffff !important;
-}
-
-.single-product .share-button--email:hover {
-  background: #374151 !important;
-  border-color: #374151 !important;
-  color: #ffffff !important;
-}
-
-.single-product .share-button--copy:hover {
-  background: #0ea5e9 !important;
-  border-color: #0ea5e9 !important;
-  color: #ffffff !important;
-}
-
-/* Copied state animation */
+/* Copied state — icon tints green persistently (no width/layout change
+   at all, so hovering neighboring buttons never reflows this one).
+   The "Copied!" label only appears if the user is still actively
+   hovering, same as every other share button's normal behavior. */
 .single-product .share-button--copy.copied {
-  background: #10b981 !important;
-  border-color: #10b981 !important;
+  color: #10b981 !important;
+}
+
+.single-product .share-button--copy.copied svg {
+  color: #10b981 !important;
+}
+
+.single-product .share-button--copy.copied:hover svg {
   color: #ffffff !important;
 }
 
-/* Update tooltip text when copied */
-.single-product .share-button--copy.copied::after {
+.single-product .share-button--copy.copied:hover::after {
   content: 'Copied!' !important;
-  background: #10b981 !important;
 }
 
 /* Responsive */
@@ -160,27 +162,34 @@ body.single-product .share-button svg,
     gap: 0.75rem !important;
     padding: 0.75rem 0.875rem !important;
   }
-  
+
   .single-product .product-share-title {
     font-size: 0.8125rem !important;
   }
-  
+
   .single-product .share-button {
-    width: 44px !important;
     height: 44px !important;
+    min-width: 44px !important;
   }
-  
+
+  .single-product .share-button:hover {
+    min-width: 120px !important;
+    padding: 0 14px !important;
+  }
+
   /* Mobile SVG sizes with extra specificity */
   .single-product .product-share-buttons .share-button svg,
   .single-product .share-button svg,
   body.single-product .share-button svg {
-    width: 24px !important;
-    height: 24px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
-  
-  /* Adjust tooltip position on mobile */
+
   .single-product .share-button::after {
-    font-size: 0.6875rem !important;
-    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .single-product .share-button:hover::after {
+    max-width: 90px !important;
   }
 }

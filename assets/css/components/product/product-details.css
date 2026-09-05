@@ -59,6 +59,7 @@
   color: var(--color-text-lighter, #9ca3af) !important;
   font-weight: 400 !important;
   text-decoration: line-through !important;
+  order: 2 !important;
 }
 
 .single-product .price del .amount {
@@ -72,6 +73,27 @@
   color: var(--color-text-dark, #1f2937) !important;
   font-weight: 700 !important;
   font-size: 1.75rem !important;
+  order: 1 !important;
+}
+
+/* Percentage-off pill - injected directly into the price HTML via the
+   woocommerce_get_price_html filter, so it's a genuine flex child of
+   .price (same row as the price), matching the reference design.
+   Replaces the old badge that used to overlay the product image. */
+.single-product .price .aaapos-sale-percentage {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  padding: 0.60rem 0.60rem !important;
+  border-radius: 6px !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  white-space: nowrap !important;
+  order: 3 !important;
 }
 
 /* === PRODUCT RATING - FIXED REVIEW COUNT VISIBILITY === */

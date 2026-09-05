@@ -1,6 +1,8 @@
 /* ===================================================================
    SPECIAL DEALS SECTION - AUTO-ROTATION DESIGN
    Full-width background with glass-style product card slider
+   Updated: Mobile keeps the same side-by-side (image left / content
+   right) layout as desktop, just scaled down, instead of stacking.
    =================================================================== */
 
 .special-deals-section {
@@ -131,7 +133,7 @@
   object-fit: cover;
 }
 
-/* Deal Badge */
+/* Deal Badge - no box-shadow */
 .deal-badge {
   position: absolute;
   top: 15px;
@@ -143,7 +145,7 @@
   font-weight: 700;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
   z-index: 2;
 }
 
@@ -201,7 +203,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
@@ -223,42 +225,17 @@
   text-decoration: line-through;
 }
 
+/* You Save badge - white text */
 .price-saved {
   display: inline-flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.2);
-  color: var(--brand-color, #0ea5e9);
+  color: #ffffff !important;
   padding: 8px 16px;
   border-radius: 50px;
   font-size: 0.875rem;
   font-weight: 600;
   height: 32px;
-}
-
-/* Stock Badge */
-.deal-stock {
-  margin-bottom: 15px;
-}
-
-.stock-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  height: 32px;
-}
-
-.stock-in {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--brand-color, #0ea5e9) !important;
-}
-
-.stock-badge svg {
-  width: 16px;
-  height: 16px;
 }
 
 /* Countdown Timer */
@@ -311,7 +288,7 @@
   font-weight: 600;
 }
 
-/* Action Buttons */
+/* Action Buttons - flat, minimal hover */
 .deal-actions {
   display: flex;
   gap: 12px;
@@ -328,9 +305,10 @@
   font-weight: 600;
   border-radius: 10px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease;
   border: none;
   cursor: pointer;
+  box-shadow: none;
 }
 
 .deal-btn svg {
@@ -344,9 +322,8 @@
 }
 
 .deal-btn-primary:hover {
+  background: var(--brand-color-hover, #0284c7);
   color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .deal-btn-secondary {
@@ -355,9 +332,8 @@
 }
 
 .deal-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
   color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* ===================================================================
@@ -452,177 +428,265 @@
 }
 
 .no-deals svg {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(255, 255, 255);
   margin-bottom: 20px;
 }
 
 .no-deals h3 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #ffffff !important;
   margin: 0 0 10px 0;
 }
 
 .no-deals p {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8) !important;
   margin: 0 0 30px 0;
 }
 
 /* ===================================================================
    RESPONSIVE DESIGN
+   Side-by-side layout (image left / content right) is preserved at
+   every breakpoint below - only sizes shrink, nothing stacks.
    =================================================================== */
 
 /* Tablet */
 @media (max-width: 1024px) {
   .special-deals-section {
     height: auto;
-    min-height: 600px;
+    min-height: 500px;
     max-height: none;
     padding: 50px 20px;
     background-attachment: scroll;
   }
 
   .special-deals-title {
-    font-size: 2rem;
-  }
-
-  .special-deal-card {
-    grid-template-columns: 1fr;
+    font-size: 1.75rem;
   }
 
   .deal-card-image {
-    min-height: 300px;
+    min-height: 260px;
   }
 
   .deal-card-content {
-    padding: 30px;
+    padding: 24px;
   }
 
   .deal-product-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .price-current {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
-  
+
   /* Adjust arrows for tablet */
   .deals-arrow-prev {
     margin-left: -10px;
   }
-  
+
   .deals-arrow-next {
     margin-right: -10px;
   }
 }
 
-/* Mobile */
+/* Mobile - keeps the same 2-column (image / content) layout as desktop */
 @media (max-width: 768px) {
   .special-deals-section {
-    padding: 40px 16px;
+    padding: 30px 12px;
     min-height: auto;
   }
 
   .special-deals-header {
-    margin-bottom: 30px;
+    margin-bottom: 16px;
   }
 
   .special-deals-title {
-    font-size: 2rem;
+    font-size: 1.25rem;
   }
 
   .special-deals-subtitle {
-    font-size: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .special-deal-card {
+    grid-template-columns: 34% 66%;
+    border-radius: 14px;
   }
 
   .deal-card-image {
-    min-height: 280px;
+    min-height: 140px;
   }
 
-  .deal-card-content {
-    padding: 30px 20px;
-  }
-
-  .deal-product-title {
-    font-size: 1.5rem;
-  }
-
-  .price-current {
-    font-size: 2rem;
-  }
-
-  .price-original {
-    font-size: 1.125rem;
-  }
-
-  .countdown-timer {
-    gap: 8px;
-  }
-
-  .countdown-item {
-    padding: 12px 6px;
-  }
-
-  .countdown-value {
-    font-size: 1.5rem;
-  }
-
-  .countdown-label {
+  .deal-badge {
+    top: 8px;
+    left: 8px;
+    padding: 4px 10px;
     font-size: 0.625rem;
   }
 
+  .deal-card-content {
+    padding: 10px 12px;
+  }
+
+  .deal-product-title {
+    font-size: 0.875rem;
+    margin-bottom: 5px;
+    line-height: 1.25;
+  }
+
+  .deal-rating {
+    gap: 6px;
+    margin-bottom: 5px;
+  }
+
+  .rating-text {
+    font-size: 0.625rem;
+  }
+
+  .deal-price {
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+
+  .price-current {
+    font-size: 1.125rem;
+  }
+
+  .price-original {
+    font-size: 0.6875rem;
+  }
+
+  .price-saved {
+    font-size: 0.5625rem;
+    padding: 3px 7px;
+    height: auto;
+  }
+
+  .deal-countdown {
+    padding: 6px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+  }
+
+  .countdown-title {
+    font-size: 0.5625rem;
+    margin-bottom: 4px;
+  }
+
+  .countdown-timer {
+    gap: 3px;
+  }
+
+  .countdown-item {
+    padding: 4px 1px;
+    border-radius: 5px;
+  }
+
+  .countdown-value {
+    font-size: 0.6875rem;
+    margin-bottom: 0;
+  }
+
+  .countdown-label {
+    font-size: 0.4375rem;
+    letter-spacing: 0.25px;
+  }
+
+  /* Keep buttons side by side, just smaller (not stacked) */
   .deal-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 5px;
   }
 
   .deal-btn {
-    width: 100%;
+    padding: 7px 8px;
+    font-size: 0.625rem;
+    border-radius: 7px;
+    gap: 3px;
   }
-  
+
+  .deal-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
   /* Hide arrows on mobile, keep dots */
   .deals-nav-arrows {
     display: none;
   }
-  
+
   .deals-nav-dots {
-    margin-top: 20px;
+    margin-top: 12px;
+    gap: 6px;
+  }
+
+  .deals-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .deals-dot.active {
+    width: 20px;
   }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
+  .special-deals-section {
+    padding: 24px 8px;
+  }
+
   .special-deals-title {
-    font-size: 1.75rem;
+    font-size: 1.125rem;
+  }
+
+  .special-deal-card {
+    grid-template-columns: 32% 68%;
+  }
+
+  .deal-card-image {
+    min-height: 110px;
   }
 
   .deal-badge {
-    padding: 8px 16px;
-    font-size: 0.75rem;
+    padding: 3px 8px;
+    font-size: 0.5625rem;
   }
 
   .deal-card-content {
-    padding: 25px 16px;
+    padding: 10px 10px;
   }
 
   .deal-product-title {
-    font-size: 1.25rem;
+    font-size: 0.8125rem;
   }
 
   .price-current {
-    font-size: 1.75rem;
+    font-size: 1.0625rem;
   }
 
   .countdown-value {
-    font-size: 1.25rem;
+    font-size: 0.75rem;
   }
-  
+
   .deals-dot {
-    width: 10px;
-    height: 10px;
+    width: 7px;
+    height: 7px;
   }
-  
+
   .deals-dot.active {
-    width: 24px;
+    width: 18px;
+  }
+
+  .deal-btn {
+    font-size: 0.625rem;
+    padding: 7px 6px;
+  }
+
+  .deal-btn svg {
+    width: 12px;
+    height: 12px;
   }
 }

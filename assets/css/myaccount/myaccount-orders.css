@@ -1,5 +1,8 @@
 /* ============================================
    My Account Orders - Tables & Order Details
+   UPDATED: Matches the flat dashboard design language -
+   no box-shadow, no lift-hover, flat #F3F5FA pill buttons,
+   plus a custom icon for the empty "no orders" state.
    ============================================ */
 
 /* ==========================================================================
@@ -12,7 +15,7 @@
   border-collapse: separate !important;
   border-spacing: 0 !important;
   background: transparent !important;
-  margin: 0 !important;
+  margin: -2rem 0 0 0 !important;
 }
 
 /* Table wrapper - remove default WooCommerce styling */
@@ -22,41 +25,42 @@
   padding: 0 !important;
   border-radius: var(--border-radius-lg) !important;
   overflow: hidden !important;
-  box-shadow: var(--shadow-sm) !important;
+  box-shadow: none !important;
 }
 
 /* Table header */
 .woocommerce-orders-table thead {
-  background: transparent !important;
+  background: var(--color-white) !important;
 }
 
 .woocommerce-orders-table thead tr {
-  background: transparent !important;
+  background: var(--color-white) !important;
 }
 
 .woocommerce-orders-table thead th {
-  background: var(--color-bg-secondary) !important;
+  background: var(--color-white) !important;
   color: var(--color-text-dark) !important;
   font-weight: var(--font-semibold) !important;
   font-size: var(--text-sm) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.5px !important;
-  padding: var(--space-4) var(--space-5) !important;
+  padding: var(--space-3) var(--space-4) !important;
   border: none !important;
-  border-bottom: 2px solid var(--color-border) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  box-shadow: none !important;
   text-align: left !important;
 }
 
 /* First header cell - rounded left */
 .woocommerce-orders-table thead th:first-child {
   border-radius: var(--border-radius-lg) 0 0 0 !important;
-  padding-left: var(--space-6) !important;
+  padding-left: var(--space-5) !important;
 }
 
 /* Last header cell - rounded right */
 .woocommerce-orders-table thead th:last-child {
   border-radius: 0 var(--border-radius-lg) 0 0 !important;
-  padding-right: var(--space-6) !important;
+  padding-right: var(--space-5) !important;
   text-align: center !important;
 }
 
@@ -64,47 +68,53 @@
 .woocommerce-orders-table tbody tr {
   background: var(--color-white) !important;
   border: none !important;
-  transition: all 0.2s ease !important;
+  transition: background-color 0.2s ease !important;
 }
 
 .woocommerce-orders-table tbody tr:hover {
-  background: var(--color-bg-secondary) !important;
-  transform: translateX(2px) !important;
-  box-shadow: var(--shadow-sm) !important;
+  background: #F3F5FA !important;
 }
 
-/* Table cells */
-.woocommerce-orders-table tbody td {
-  padding: var(--space-5) var(--space-5) !important;
+/* Table cells (order number cell is a <th>, not a <td> - target both) */
+.woocommerce-orders-table tbody td,
+.woocommerce-orders-table tbody th {
+  padding: var(--space-4) var(--space-4) !important;
   border: none !important;
   border-bottom: 1px solid var(--color-border-light) !important;
   color: var(--color-text) !important;
   font-size: var(--text-base) !important;
+  font-weight: normal !important;
+  text-align: left !important;
   vertical-align: middle !important;
 }
 
 /* First cell in row */
-.woocommerce-orders-table tbody td:first-child {
-  padding-left: var(--space-6) !important;
+.woocommerce-orders-table tbody td:first-child,
+.woocommerce-orders-table tbody th:first-child {
+  padding-left: var(--space-5) !important;
   font-weight: var(--font-semibold) !important;
 }
 
 /* Last cell in row */
-.woocommerce-orders-table tbody td:last-child {
-  padding-right: var(--space-6) !important;
+.woocommerce-orders-table tbody td:last-child,
+.woocommerce-orders-table tbody th:last-child {
+  padding-right: var(--space-5) !important;
   text-align: center !important;
 }
 
 /* Last row - rounded bottom corners */
-.woocommerce-orders-table tbody tr:last-child td {
+.woocommerce-orders-table tbody tr:last-child td,
+.woocommerce-orders-table tbody tr:last-child th {
   border-bottom: none !important;
 }
 
-.woocommerce-orders-table tbody tr:last-child td:first-child {
+.woocommerce-orders-table tbody tr:last-child td:first-child,
+.woocommerce-orders-table tbody tr:last-child th:first-child {
   border-radius: 0 0 0 var(--border-radius-lg) !important;
 }
 
-.woocommerce-orders-table tbody tr:last-child td:last-child {
+.woocommerce-orders-table tbody tr:last-child td:last-child,
+.woocommerce-orders-table tbody tr:last-child th:last-child {
   border-radius: 0 0 var(--border-radius-lg) 0 !important;
 }
 
@@ -135,7 +145,8 @@
   display: inline-block !important;
 }
 
-/* Status colors */
+/* Status colors - kept as semantic accent colors (not part of the flat
+   black/gray palette, since these convey meaning: success/pending/etc) */
 .woocommerce-orders-table__cell-order-status mark.status-completed {
   background: #d1fae5 !important;
   color: #065f46 !important;
@@ -178,57 +189,52 @@
   color: var(--color-text-dark) !important;
 }
 
-/* View button */
+/* View button - flat pill matching dashboard-action-card__btn */
 .woocommerce-orders-table__cell-order-actions a {
   display: inline-flex !important;
   align-items: center !important;
   gap: var(--space-2) !important;
   padding: var(--space-2) var(--space-5) !important;
-  background: var(--color-primary) !important;
-  color: var(--color-white) !important;
+  background: #F3F5FA !important;
+  color: #000000 !important;
   border: none !important;
   border-radius: var(--border-radius) !important;
   font-size: var(--text-sm) !important;
   font-weight: var(--font-semibold) !important;
   text-decoration: none !important;
-  transition: all 0.2s ease !important;
-  box-shadow: var(--shadow-sm) !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+  box-shadow: none !important;
 }
 
 .woocommerce-orders-table__cell-order-actions a:hover {
-  background: var(--color-primary-dark) !important;
-  box-shadow: var(--shadow) !important;
-  transform: translateY(-1px) !important;
+  background: var(--color-primary) !important;
+  color: var(--color-white) !important;
 }
 
-.woocommerce-orders-table__cell-order-actions a:active {
-  transform: translateY(0) !important;
-  box-shadow: var(--shadow-sm) !important;
-}
-
-/* Buttons */
+/* Buttons - flat pill matching dashboard-action-card__btn */
 .woocommerce-orders-table .woocommerce-button,
 .woocommerce-Button {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: #F3F5FA;
+  color: #000000;
   border: none;
   border-radius: var(--border-radius-lg);
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   text-decoration: none;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: background-color 0.2s ease, color 0.2s ease;
   font-family: var(--font-body);
+  box-shadow: none;
 }
 
 .woocommerce-orders-table .woocommerce-button:hover,
 .woocommerce-Button:hover {
-  background: var(--color-primary-hover);
-  transform: translateY(-1px);
+  background: var(--color-primary);
+  color: var(--color-white);
 }
 
 /* Order Status (legacy) */
@@ -267,6 +273,136 @@
 }
 
 /* ==========================================================================
+   EMPTY STATE - "No orders yet"
+   Real markup (icon + text + button) from the theme's
+   woocommerce/myaccount/orders.php override - matches the dashboard's
+   flat icon-circle language. This replaces WooCommerce's default
+   ::before-icon notice for the empty orders state.
+   ========================================================================== */
+
+.aaapos-empty-orders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-6);
+  min-height: 400px;
+}
+
+.aaapos-empty-orders__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+}
+
+.aaapos-empty-orders__icon svg {
+  width: 56px;
+  height: 56px;
+}
+
+.aaapos-empty-orders__text {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.aaapos-empty-orders__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  background: #000000;
+  color: var(--color-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border-radius: 0.625rem;
+  text-decoration: none;
+  box-shadow: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.aaapos-empty-orders__btn:hover {
+  background: #2a2d33;
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   CONFIRM EMAIL NOTICE - "Confirm your email address to check for past
+   orders" - this is WooCommerce's own .woocommerce-info notice, printed
+   by woocommerce_before_account_orders when $has_pending_email_confirmation
+   is true (see orders.php), which also injects the .aaapos-notice-icon
+   <img> into it. Scoped with :has() to ONLY this specific notice (not
+   every .woocommerce-info in My Account) so it doesn't affect anything
+   else. Centered/pushed down to match the .aaapos-empty-orders layout
+   above instead of sitting flush at the top of the content area.
+   ========================================================================== */
+
+.woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: var(--space-4) !important;
+  min-height: 400px !important;
+  padding: var(--space-12) var(--space-6) !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  list-style: none !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-lg) !important;
+  color: var(--color-text) !important;
+}
+
+/* Kill WooCommerce's default ::before icon - we use a real <img> instead */
+.woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon)::before {
+  content: none !important;
+  display: none !important;
+}
+
+.aaapos-notice-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aaapos-notice-icon img {
+  display: block;
+}
+
+.woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.button,
+.woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.woocommerce-Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  background: #000000;
+  color: var(--color-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border-radius: 0.625rem;
+  text-decoration: none;
+  box-shadow: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.button:hover,
+.woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.woocommerce-Button:hover {
+  background: #2a2d33;
+  color: var(--color-white);
+}
+
+/* ==========================================================================
    Order Details Page - Compact & Clean Styling
    ========================================================================== */
 
@@ -274,11 +410,24 @@
 .woocommerce-order-details {
   background: var(--color-white) !important;
   border-radius: var(--border-radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
+  box-shadow: none !important;
   overflow: hidden !important;
-  margin-bottom: var(--space-8) !important;
-  margin-top: 0 !important;
+  margin-bottom: var(--space-4) !important;
+  margin-top: -2rem !important;
   padding: 0 !important;
+}
+
+/* Higher specificity than the generic ".woocommerce-MyAccount-content h2"
+   rule in myaccount-layout.css (class+element beats a lone class) -
+   without this, the border-bottom/padding/margin below never applied. */
+.woocommerce-order-details .woocommerce-order-details__title {
+  padding: var(--space-5) var(--space-6) var(--space-2) var(--space-6) !important;
+  margin: 0 !important;
+  border-bottom: none !important;
+  font-size: var(--text-2xl) !important;
+  font-weight: var(--font-bold) !important;
+  color: var(--color-text-dark) !important;
+  font-family: var(--font-heading) !important;
 }
 
 /* Order details table */
@@ -291,7 +440,7 @@
 
 /* Table header */
 .woocommerce-table--order-details thead {
-  background: var(--color-bg-secondary) !important;
+  background: var(--color-white) !important;
 }
 
 .woocommerce-table--order-details thead th {
@@ -302,6 +451,7 @@
   letter-spacing: 0.5px !important;
   color: var(--color-text-dark) !important;
   border: none !important;
+  border-bottom: 1px solid var(--color-border) !important;
   text-align: left !important;
 }
 
@@ -364,7 +514,7 @@
 
 .woocommerce-table--order-details tfoot tr:last-child {
   border-bottom: none !important;
-  background: var(--color-bg-secondary) !important;
+  background: var(--color-white) !important;
 }
 
 .woocommerce-table--order-details tfoot th,
@@ -408,44 +558,38 @@
 
 /* Payment method row */
 .woocommerce-table--order-details tfoot tr:nth-last-child(2) {
-  background: var(--color-bg-secondary) !important;
+  background: var(--color-white) !important;
 }
 
-/* Order details heading */
-.woocommerce-order-details__title {
-  font-size: var(--text-2xl) !important;
-  font-weight: var(--font-bold) !important;
-  color: var(--color-text-dark) !important;
-  margin-bottom: var(--space-5) !important;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  font-family: var(--font-heading) !important;
-}
-
-/* Billing/Shipping address sections */
+/* Billing/Shipping address sections - same card treatment as Order details */
 .woocommerce-customer-details {
-  margin-top: var(--space-6) !important;
+  background: var(--color-white) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  margin-top: var(--space-3) !important;
   margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding: 0 !important;
 }
 
-.woocommerce-column__title {
+/* Higher specificity than the generic ".woocommerce-MyAccount-content h2"
+   rule - same fix as the Order details title above. */
+.woocommerce-customer-details .woocommerce-column__title {
+  padding: var(--space-5) var(--space-6) var(--space-2) var(--space-6) !important;
+  margin: 0 !important;
+  border-bottom: none !important;
   font-size: var(--text-xl) !important;
   font-weight: var(--font-bold) !important;
   color: var(--color-text-dark) !important;
-  margin-bottom: var(--space-3) !important;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
   font-family: var(--font-heading) !important;
 }
 
 .woocommerce-customer-details address {
   background: var(--color-white) !important;
-  padding: var(--space-4) var(--space-5) var(--space-3) var(--space-5) !important;
-  border-radius: var(--border-radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
-  border: 1px solid var(--color-border-light) !important;
+  padding: 0 var(--space-6) var(--space-5) var(--space-6) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
   font-style: normal !important;
   line-height: 1.6 !important;
   color: var(--color-text) !important;
@@ -476,4 +620,34 @@
   margin-top: var(--space-4) !important;
   margin-bottom: 0 !important;
   padding: 0 !important;
+}
+
+/* "Order again" link - flat black pill matching the empty-state
+   "Browse products" button (this uses WooCommerce's generic
+   .button.wc-forward class, which the other button rules above
+   don't target, so it was rendering as a plain unstyled link) */
+.woocommerce-order-details .order-again {
+  margin: 0 var(--space-6) var(--space-5) !important;
+}
+
+.woocommerce-order-details .order-again .button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 2.5rem !important;
+  padding: 0 1.25rem !important;
+  background: #000000 !important;
+  color: var(--color-white) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  font-family: var(--font-body) !important;
+  border-radius: 0.625rem !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.woocommerce-order-details .order-again .button:hover {
+  background: #2a2d33 !important;
+  color: var(--color-white) !important;
 }

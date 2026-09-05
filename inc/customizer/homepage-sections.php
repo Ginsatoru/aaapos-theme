@@ -184,6 +184,36 @@ function mr_homepage_sections_customizer($wp_customize)
     ]);
 
     // ===================================
+    // BRANDS SECTION
+    // ===================================
+
+    $wp_customize->add_setting("show_brands", [
+        "default" => true,
+        "sanitize_callback" => "wp_validate_boolean",
+        "transport" => "postMessage",
+    ]);
+
+    $wp_customize->add_control("show_brands", [
+        "label" => __("Show Brands Section", "macedon-ranges"),
+        "section" => "mr_homepage_sections",
+        "type" => "checkbox",
+        "priority" => 58,
+    ]);
+
+    $wp_customize->add_setting("brands_title", [
+        "default" => "Our Brands",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "postMessage",
+    ]);
+
+    $wp_customize->add_control("brands_title", [
+        "label" => __("Brands Title", "macedon-ranges"),
+        "section" => "mr_homepage_sections",
+        "type" => "text",
+        "priority" => 59,
+    ]);
+
+    // ===================================
     // SPECIAL DEALS SECTION - AUTO SCHEDULED
     // ===================================
 

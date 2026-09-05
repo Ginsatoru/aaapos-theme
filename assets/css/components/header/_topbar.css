@@ -98,6 +98,7 @@ body.has-sticky-header .top-bar {
   align-items: center;
   height: 100%;
   width: 100%;
+  gap: var(--space-4);
 }
 
 .top-bar-left,
@@ -105,6 +106,21 @@ body.has-sticky-header .top-bar {
   display: flex;
   align-items: center;
   gap: var(--space-6);
+  flex: 0 0 auto;
+}
+
+.promo-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+}
+
+@media (max-width: 1023px) {
+  .promo-text {
+    display: none;
+  }
 }
 
 .top-bar-item {
@@ -114,6 +130,7 @@ body.has-sticky-header .top-bar {
   align-items: center;
   gap: var(--space-2);
   transition: var(--transition);
+  white-space: nowrap;
 }
 
 .top-bar-item:hover {
@@ -121,11 +138,11 @@ body.has-sticky-header .top-bar {
   transform: translateY(-1px);
 }
 
-.promo-text {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: var(--font-medium);
+/* Hide email first on tighter desktop widths so the slider keeps room */
+@media (max-width: 1023px) {
+  .top-bar-item--email {
+    display: none;
+  }
 }
 
 .social-links {
@@ -148,4 +165,55 @@ body.has-sticky-header .top-bar {
   color: var(--color-white);
   background: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   LIVE UPDATE SLIDER
+   ========================================================================== */
+
+.top-bar-announce {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .top-bar-announce {
+    display: flex;
+  }
+}
+
+.announce-icon {
+  flex: 0 0 auto;
+  opacity: 0.85;
+}
+
+.announce-viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.announce-link {
+  color: var(--color-white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.announce-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.announce-text {
+  display: inline-block;
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  overflow: hidden;
 }

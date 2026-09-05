@@ -63,30 +63,12 @@
   visibility: visible;
 }
 
-/* Mobile Navigation Sidebar */
+/* Mobile Navigation Sidebar
+   NOTE: .main-navigation panel positioning/scroll (position, width, height,
+   overflow-y, transition, .active state) lives in navigation.css only,
+   to avoid two files fighting over the same properties. This file only
+   keeps the pieces unique to _mobile-menu.css (search bar, account section). */
 @media (max-width: 1023px) {
-  .main-navigation {
-    display: block;
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 320px;
-    max-width: 85vw;
-    height: 100vh;
-    background: var(--color-bg-primary);
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-    overflow-y: auto;
-    transition: right 0.3s ease;
-    z-index: 999;
-    margin: 0;
-    flex: 0;
-    padding: 80px 0 2rem;
-  }
-
-  .main-navigation.active {
-    right: 0;
-  }
-
   /* Mobile Search Bar in Sidebar */
   .mobile-search-wrapper {
     display: block;
@@ -242,102 +224,7 @@
     margin: var(--space-3) 0;
   }
 
-  /* Menu Container */
-  .main-navigation .menu-container {
-    display: block;
-    width: 100%;
-    height: auto;
-    padding: 0;
-  }
-
-  .nav-menu {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    width: 100%;
-    height: auto;
-  }
-
-  .nav-menu > li {
-    width: 100%;
-    border-bottom: 1px solid var(--color-border-light);
-    height: auto;
-  }
-
-  .nav-menu a {
-    padding: 1rem 2rem;
-    font-size: 1.05rem;
-    height: auto;
-    justify-content: flex-start;
-    color: var(--color-text);
-  }
-
-  .nav-menu > li > a::after {
-    display: none;
-  }
-
-  /* Mobile Dropdowns */
-  .nav-menu .sub-menu {
-    position: static;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    box-shadow: none;
-    background: var(--color-bg-secondary);
-    border-radius: 0;
-    padding: 0;
-    margin: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-
-  .nav-menu li.menu-item-has-children > a {
-    position: relative;
-    padding-right: 3rem;
-  }
-
-  /* Single chevron icon for mobile */
-  .nav-menu li.menu-item-has-children > a .submenu-toggle,
-  .nav-menu li.menu-item-has-children > a .dropdown-icon {
-    display: none !important;
-  }
-
-  .nav-menu li.menu-item-has-children > a::after {
-    content: "›";
-    font-size: 1.5rem;
-    font-weight: 300;
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%) rotate(90deg);
-    transition: transform 0.3s ease;
-    line-height: 1;
-  }
-
-  .nav-menu li.menu-item-has-children.active > a::after {
-    transform: translateY(-50%) rotate(-90deg);
-  }
-
-  .nav-menu li.menu-item-has-children.active > .sub-menu {
-    max-height: 500px;
-  }
-
-  .nav-menu .sub-menu li {
-    border-bottom: none;
-  }
-
-  .nav-menu .sub-menu a {
-    padding: 0.75rem 2rem 0.75rem 3rem;
-    font-size: 0.95rem;
-  }
-
-  /* Nested submenu (3rd level) */
-  .nav-menu .sub-menu .sub-menu a {
-    padding-left: 4rem;
-  }
-
-  .nav-menu .sub-menu li.menu-item-has-children > a::after {
-    right: 2rem;
-  }
+  /* Menu Container, .nav-menu, .sub-menu, and dropdown arrows for mobile
+     are defined once in navigation.css to prevent duplicate/conflicting
+     rules across files. */
 }

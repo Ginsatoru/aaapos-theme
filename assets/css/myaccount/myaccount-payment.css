@@ -1,0 +1,177 @@
+/* ============================================
+   My Account Payment Methods - Card & Table
+   Matches the flat dashboard/address design language -
+   icon circle + title + "Add" pill button in the header,
+   no box-shadow, no lift-hover, text-only empty state,
+   card pulled up to match the Addresses page spacing.
+   ============================================ */
+
+.aaapos-payment-card {
+  width: 100%;
+  background: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  box-shadow: none;
+  border-radius: var(--border-radius-lg);
+  margin: -2rem 0 0 0;
+  transition: border-color 0.2s ease;
+}
+
+/* Header: icon, title, Add button in one row */
+.aaapos-payment-card__header {
+  background: transparent;
+  padding: var(--space-6) var(--space-6) 0 var(--space-6) !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.aaapos-payment-card__icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F3F5FA;
+  color: #000000;
+}
+
+.aaapos-payment-card__icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.aaapos-payment-card__title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text-dark);
+  margin: 0;
+  padding: 0;
+  padding-bottom: 0;
+  font-family: var(--font-heading);
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none !important;
+  border-bottom: none !important;
+  line-height: 1;
+  align-self: center;
+  display: flex;
+  align-items: center;
+}
+
+.aaapos-payment-card__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: #F3F5FA;
+  color: #000000;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  box-shadow: none;
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font-body);
+}
+
+.aaapos-payment-card__add:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Body: holds the table or the empty state */
+.aaapos-payment-card__body {
+  padding: 0 var(--space-6) var(--space-6) var(--space-6) !important;
+}
+
+.aaapos-payment-card__body .account-payment-methods-table {
+  margin: 0;
+}
+
+/* ==========================================================================
+   Empty state - "No saved methods found."
+   Text-only (icon already shown once in the card header).
+   ========================================================================== */
+
+.aaapos-payment-empty {
+  display: flex;
+  align-items: center;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.aaapos-payment-empty__text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-light);
+  font-style: normal;
+  line-height: 1.5;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ==========================================================================
+   Desktop-only adjustments
+   ========================================================================== */
+
+@media (min-width: 769px) {
+  .aaapos-payment-card__header {
+    margin-bottom: -1rem !important;
+  }
+
+  .aaapos-payment-card__icon {
+    margin-top: -2.3rem !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .aaapos-payment-card__header {
+    flex-wrap: nowrap;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-5) 0 var(--space-5);
+  }
+
+  .aaapos-payment-card__icon {
+    width: 36px;
+    height: 36px;
+    order: 1;
+    margin-top: -30px !important;
+  }
+
+  .aaapos-payment-card__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .aaapos-payment-card__title {
+    font-size: var(--text-lg);
+    width: auto;
+    flex: 1 1 auto;
+    order: 2;
+  }
+
+  .aaapos-payment-card__add {
+    width: auto;
+    justify-content: center;
+    order: 3;
+  }
+
+  .aaapos-payment-card__body {
+    padding: var(--space-4) var(--space-5) var(--space-5) var(--space-5);
+  }
+}

@@ -2,6 +2,13 @@
    FOOTER - MODERNIZED & CLEAN DESIGN
    Image-based payment icons with customizer support
    Colors controlled via: Customizer > Brand Color
+   UPDATED: Fixed footer-brand column content being pushed down/
+   overlapping the bottom bar - caused by grid stretch making all
+   columns equal height (matching the tallest column), combined with
+   .footer-brand likely being flex + justify-content:space-between
+   elsewhere. align-items:start now prevents the stretch at the root,
+   and .footer-brand is defensively locked to a normal top-aligned
+   stack regardless of other rules.
    =================================================================== */
 
 :root {
@@ -54,6 +61,9 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr;
+  /* Prevents columns from stretching to match the tallest column's
+     height - each column now sizes to its own content only. */
+  align-items: start;
 }
 
 /* 1 Column Layout */
@@ -162,6 +172,15 @@
 
 .footer-brand {
   max-width: 400px;
+  /* Defensively force a normal top-aligned stack. This overrides any
+     flex + justify-content:space-between rule defined elsewhere that
+     would otherwise spread the logo/social/description apart when
+     the grid stretches this column's height. */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  height: auto !important;
 }
 
 .footer-logo {
@@ -286,8 +305,8 @@
 
 .contact-item svg {
   flex-shrink: 0;
-  color: var(--brand-color) !important;
-  stroke: var(--brand-color) !important;
+  color: var(--footer-text) !important;
+  stroke: var(--footer-text) !important;
   fill: none !important;
   margin-top: 0.125rem;
 }
@@ -313,6 +332,14 @@
 
 .footer-social-links {
   margin-top: 1.5rem;
+}
+
+/* If there are no social links configured, don't reserve any space
+   for this container at all. */
+.footer-social-links:empty,
+.footer-social-links .social-links:empty {
+  display: none;
+  margin: 0;
 }
 
 .social-links {

@@ -1,0 +1,121 @@
+/* ==========================================================================
+   IMAGE STYLE DROPDOWNS
+   ==========================================================================
+   Alternate mega-menu card style: a single larger uploaded image per
+   item instead of a small icon. Switched on per top-level dropdown via
+   Customizer > Menu Options > [Parent] > Style > "Image Style"
+   (nav_menu_style_{ID}, see inc/customizer/nav-menu-items.php). Items
+   under a dropdown left on the default "Icon Style" are untouched by
+   this file - see _dropdowns.css for that variant.
+
+   AAAPOS_Nav_Walker (inc/class-aaapos-nav-walker.php) adds the
+   .menu-item-rich--image-style modifier (alongside the base
+   .menu-item-rich class) to any depth>0 item rendered under an
+   Image Style dropdown, and swaps the icon markup for
+   .menu-item-rich__icon--image-style > img (source: nav_item_image_{ID},
+   a dedicated upload separate from the Icon Style's custom-icon field).
+
+   Selectors below intentionally repeat .menu-item-rich--image-style
+   (or add :has()) beyond what's strictly needed to match, so they
+   out-specificity the equivalent Icon Style rules in _dropdowns.css
+   regardless of which of the two files happens to be enqueued last.
+   ========================================================================== */
+
+/* Wider card than the default icon-row layout, and vertical padding
+   to match (image sits above the text instead of beside it). */
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style > a {
+  white-space: normal;
+  padding: 14px 14px 16px;
+}
+
+/* Base layout: image on top, text stacked below - overrides the
+   icon-row flex from .menu-item-rich__inner in _dropdowns.css (higher
+   specificity via the repeated class, so file load order doesn't
+   matter). Also overrides the two-column grid variant used when a
+   description is present, so Image Style always gets the same
+   vertical card regardless of whether a description is set. */
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style .menu-item-rich__inner,
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style:has(.menu-item-rich__desc) .menu-item-rich__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style .menu-item-rich__text,
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style:has(.menu-item-rich__desc) .menu-item-rich__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style .menu-item-rich__title,
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style:has(.menu-item-rich__desc) .menu-item-rich__title {
+  grid-column: auto;
+  grid-row: auto;
+  white-space: normal;
+}
+
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style .menu-item-rich__desc,
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style:has(.menu-item-rich__desc) .menu-item-rich__desc {
+  grid-column: auto;
+  grid-row: auto;
+  white-space: normal;
+}
+
+/* The image itself: full-width banner, much bigger than the 20px
+   icon it replaces. No background - fully transparent so only the
+   uploaded image shows (object-fit: contain below keeps the whole
+   image visible, uncropped, letterboxed within the frame if its
+   aspect ratio doesn't match). */
+.menu-item-rich__icon--image-style {
+  display: block;
+  width: 100%;
+  height: 160px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: none;
+}
+
+.menu-item-rich__icon--image-style img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Hover: background stays transparent (overrides _dropdowns.css's
+   black hover fill for regular sub-menu links - higher specificity
+   here via the extra .menu-item-rich--image-style class, so load
+   order doesn't matter). No image scale/lift, no text color change -
+   just the same background as the site's main background. */
+.nav-menu .sub-menu li.menu-item-rich--image-style > a:hover {
+  background: var(--color-bg-secondary);
+}
+
+/* Neutralizes _dropdowns.css's white-on-hover title/desc color (that
+   effect is for the dark hover fill used by Icon Style; Image Style's
+   light hover bg above needs the text to stay its normal color). */
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style > a:hover .menu-item-rich__title {
+  color: #000000;
+}
+
+.nav-menu .sub-menu li.menu-item-rich.menu-item-rich--image-style > a:hover .menu-item-rich__desc {
+  color: #9ca3af;
+}
+
+@media (max-width: 991px) {
+  .menu-item-rich__icon--image-style {
+    height: 130px;
+  }
+}
+
+/* Image Style cards read better wider than the default min-content
+   column, so the banner image doesn't get squeezed - bump the minimum
+   column width for any dropdown that has at least one Image Style
+   item. */
+.nav-menu > li > .sub-menu:has(.menu-item-rich--image-style) {
+  grid-template-columns: repeat(var(--sub-menu-columns, 3), minmax(240px, max-content));
+}

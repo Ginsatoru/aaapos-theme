@@ -1,0 +1,183 @@
+/* ==========================================================================
+   SEARCH PAGE (search.php)
+   Layout, header, toolbar, product grid/cards and pagination for the
+   WITH-RESULTS state are all inherited from the shared shop CSS
+   (categories-shop.css, woocommerce-product-grid.css, woocommerce.css)
+   because search.php reuses the exact same markup/classes as
+   archive-product.php. Everything below is what's actually unique to
+   the search template: the highlighted query term, and the NO-RESULTS
+   state (icon, title, text).
+   ========================================================================== */
+
+.search-query {
+  color: var(--color-white);
+  font-weight: 800;
+}
+
+/* The result count in the header sits on the same dark background image
+   as the title — keep it white instead of brand color so it never
+   blends into a darker photo */
+.woocommerce-products-header .woocommerce-archive-description strong {
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   NO RESULTS STATE
+   ========================================================================== */
+
+.search-no-results.woocommerce-info {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Search page never needs the full-viewport min-height the shop archive
+   forces on .shop-page-wrapper — let it size to its content instead,
+   whether that's a full grid, one product, or the no-results state */
+.shop-page-wrapper.search-page {
+  min-height: auto !important;
+}
+
+/* No-results state specifically: also center content vertically */
+.shop-page-wrapper.search-page:has(.search-no-results) {
+  min-height: 60vh !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-results-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+}
+
+.no-results-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto var(--space-6);
+  color: var(--brand-color);
+}
+
+.no-results-icon img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.no-results-icon svg {
+  width: 70px;
+  height: 70px;
+  opacity: 0.8;
+}
+
+.no-results-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-heading);
+}
+
+.no-results-text {
+  font-size: var(--text-base);
+  color: var(--color-text-light);
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .no-results-content {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .no-results-icon {
+    width: 130px;
+    height: 130px;
+  }
+
+  .no-results-icon img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .no-results-icon svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .no-results-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .no-results-content {
+    padding: 2rem 1rem;
+  }
+
+  .no-results-icon {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 1.5rem;
+  }
+
+  .no-results-icon img {
+    width: 95px;
+    height: 95px;
+  }
+
+  .no-results-icon svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .no-results-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .no-results-text {
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .no-results-content {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .no-results-icon {
+    width: 95px;
+    height: 95px;
+    margin-bottom: 1.25rem;
+  }
+
+  .no-results-icon img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .no-results-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .no-results-title {
+    font-size: 1.35rem;
+  }
+
+  .no-results-text {
+    font-size: 0.85rem;
+  }
+}

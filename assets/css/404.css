@@ -108,19 +108,8 @@
 }
 
 .btn-404-home:hover {
-  background: var(--color-primary-hover);
+  background: black;
   color: var(--color-white);
-  transform: translateY(-2px);
-}
-
-.btn-404-home:active {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(var(--color-primary-rgb), 0.3);
-}
-
-.btn-404-home:focus {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.2);
 }
 
 /* ==========================================================================

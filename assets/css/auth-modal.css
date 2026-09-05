@@ -871,11 +871,8 @@
 
 
 .auth-submit-btn:hover {
-
-  transform: translateY(-2px);
-
+  background-color: black !important;
   box-shadow: none !important;
-
 }
 
 

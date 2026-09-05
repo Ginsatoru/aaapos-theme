@@ -24,37 +24,14 @@
   font-weight: var(--font-semibold);
   font-family: var(--font-body);
   text-decoration: none;
-  border: 2px solid transparent;
-  border-radius: var(--border-radius);
-  transition: var(--transition);
+  border: none;
+  border-radius: var(--border-radius-xl);
+  transition: opacity 0.2s ease, background-color 0.2s ease;
   cursor: pointer;
   line-height: 1;
   position: relative;
-  overflow: hidden;
-}
-
-/* Shine effect on hover */
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: var(--transition-slow);
-}
-
-.btn:hover::before {
-  left: 100%;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn:active {
-  transform: translateY(0);
+  white-space: nowrap;
+  box-shadow: none;
 }
 
 .btn:focus {
@@ -90,17 +67,15 @@
    BUTTON VARIANTS - SOLID COLORS ONLY
    ========================================================================== */
 
-/* Primary Button - Main CTA (SOLID COLOR) */
+/* Primary Button - Main CTA (solid pill, no shadow) */
 .btn--primary {
-  background: var(--brand-color); /* Solid color */
+  background: var(--brand-color);
   color: var(--color-white);
-  box-shadow: var(--shadow);
 }
 
 .btn--primary:hover {
-  background: var(--brand-color-hover); /* Solid hover color */
+  background: var(--brand-color-hover);
   color: var(--color-white);
-  box-shadow: var(--shadow-lg);
 }
 
 .btn--primary:focus {
@@ -109,47 +84,41 @@
 
 /* Primary Gradient Button - REMOVED, now uses solid color */
 .btn--primary-gradient {
-  background: var(--brand-color); /* Solid color instead of gradient */
+  background: var(--brand-color);
   color: var(--color-white);
-  box-shadow: var(--shadow);
 }
 
 .btn--primary-gradient:hover {
-  background: var(--brand-color-hover); /* Solid hover color */
-  box-shadow: var(--shadow-lg);
+  background: var(--brand-color-hover);
 }
 
-/* Secondary Button (SOLID COLOR) */
+/* Secondary Button - light gray pill (matches hero secondary) */
 .btn--secondary {
-  background: var(--brand-color); /* Solid color */
-  color: var(--color-white);
-  box-shadow: var(--shadow);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-dark);
 }
 
 .btn--secondary:hover {
-  background: var(--brand-color-hover); /* Solid hover color */
-  color: var(--color-white);
-  box-shadow: var(--shadow-lg);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-dark);
 }
 
-/* Accent Button (SOLID COLOR) */
+/* Accent Button (solid pill) */
 .btn--accent {
-  background: var(--brand-color); /* Solid color */
+  background: var(--brand-color);
   color: var(--color-white);
-  box-shadow: var(--shadow);
 }
 
 .btn--accent:hover {
-  background: var(--brand-color-hover); /* Solid hover color */
+  background: var(--brand-color-hover);
   color: var(--color-white);
-  box-shadow: var(--shadow-lg);
 }
 
 /* Outline Buttons */
 .btn--outline {
   background: transparent;
   color: var(--brand-color);
-  border-color: var(--brand-color);
+  border: 2px solid var(--brand-color);
 }
 
 .btn--outline:hover {
@@ -161,7 +130,7 @@
 .btn--outline-secondary {
   background: transparent;
   color: var(--brand-color);
-  border-color: var(--brand-color);
+  border: 2px solid var(--brand-color);
 }
 
 .btn--outline-secondary:hover {
@@ -173,7 +142,7 @@
 .btn--outline-accent {
   background: transparent;
   color: var(--brand-color);
-  border-color: var(--brand-color);
+  border: 2px solid var(--brand-color);
 }
 
 .btn--outline-accent:hover {
@@ -186,19 +155,17 @@
 .btn--white {
   background: var(--color-white);
   color: var(--color-text-dark);
-  box-shadow: var(--shadow);
 }
 
 .btn--white:hover {
   background: var(--color-gray-100);
   color: var(--color-text-dark);
-  box-shadow: var(--shadow-lg);
 }
 
 .btn--outline-white {
   background: transparent;
   color: var(--color-white);
-  border-color: var(--color-white);
+  border: 2px solid var(--color-white);
 }
 
 .btn--outline-white:hover {
@@ -241,13 +208,11 @@
 .btn--dark {
   background: var(--color-bg-dark);
   color: var(--color-white);
-  box-shadow: var(--shadow);
 }
 
 .btn--dark:hover {
   background: var(--color-gray-900);
   color: var(--color-white);
-  box-shadow: var(--shadow-lg);
 }
 
 /* ==========================================================================
@@ -299,14 +264,12 @@
 .btn[disabled] {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none !important;
   pointer-events: none;
 }
 
 .btn.loading {
   opacity: 0.8;
   cursor: wait;
-  transform: none !important;
 }
 
 .btn.loading::after {
@@ -472,8 +435,6 @@
 .product_type_variable:hover,
 .single_add_to_cart_button:hover {
   background: var(--brand-color-hover) !important; /* Solid hover color */
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
 }
 
 /* View cart button */
@@ -557,15 +518,7 @@
   .btn {
     transition: none;
   }
-  
-  .btn::before {
-    display: none;
-  }
-  
-  .btn:hover {
-    transform: none;
-  }
-  
+
   .btn.loading::after {
     animation: none;
   }

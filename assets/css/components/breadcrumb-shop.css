@@ -3,12 +3,13 @@
    Modern arrow-style breadcrumbs with home icon
    Works on ALL WooCommerce pages
    UPDATED: Cart page breadcrumb moved UP closer to header
+   UPDATED: Breadcrumb text set to fully black (was dark gray)
    =================================== */
 
 /* Main breadcrumb container */
 .woocommerce-breadcrumb {
     font-size: var(--text-sm, 0.875rem);
-    color: var(--color-text, #8093A7);
+    color: #000000;
     margin-bottom: var(--space-8, 2rem);
     padding: 0;
     display: flex;
@@ -112,14 +113,14 @@ body.woocommerce-cart nav.woocommerce-breadcrumb {
 /* Mobile devices (640px and below) */
 @media (max-width: 640px) {
     .cart-breadcrumb-wrapper {
-        margin-top: -50px !important;
+        margin-top: -30px !important;
         margin-left: 0 !important;
         margin-right: auto !important;
         margin-bottom: var(--space-3, 0.75rem) !important;
     }
     
     body.woocommerce-cart .woocommerce-breadcrumb {
-        margin-top: -50px !important;
+        margin-top: -30px !important;
         margin-left: 0 !important;
         margin-right: auto !important;
         margin-bottom: 1rem !important;
@@ -129,13 +130,13 @@ body.woocommerce-cart nav.woocommerce-breadcrumb {
 /* Small mobile devices (480px and below) */
 @media (max-width: 480px) {
     .cart-breadcrumb-wrapper {
-        margin-top: -30px !important;
+        margin-top: -20px !important;
         margin-left: 0 !important;
         margin-right: auto !important;
     }
     
     body.woocommerce-cart .woocommerce-breadcrumb {
-        margin-top: -30px !important;
+        margin-top: -20px !important;
         margin-left: 0 !important;
         margin-right: auto !important;
     }
@@ -201,7 +202,7 @@ body.woocommerce-cart .woocommerce-breadcrumb a:first-child {
     margin: 0 8px 0 0; /* Spacing between items */
     font-size: 13px; /* Smaller font */
     text-decoration: none;
-    color: var(--color-text, #8093A7);
+    color: #000000;
     transition: background-color 0s, color 0s; /* Instant change - synchronized with arrow */
     white-space: nowrap;
 }
@@ -245,12 +246,12 @@ body.woocommerce-cart .woocommerce-breadcrumb a:first-child {
     display: none;
 }
 
-/* Last item (current page) - Rounded right edge, no right arrow, darker text */
+/* Last item (current page) - Rounded right edge, no right arrow, black text */
 .woocommerce-breadcrumb .breadcrumb-current {
     padding-right: 28px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    color: #374151;
+    color: #000000;
     font-weight: 600;
     margin-right: 0; /* Remove right margin on last item */
 }

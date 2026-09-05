@@ -11,6 +11,10 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
+
+if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_key', '')) {
+    wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true);
+}
 ?>
 
 <div class="contact-page-redesign">
@@ -180,6 +184,12 @@ get_header();
                                 required></textarea>
                         </div>
                         
+                        <?php if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_key', '')) : ?>
+                        <div class="form-field">
+                            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_theme_mod('recaptcha_site_key', '')); ?>"></div>
+                        </div>
+                        <?php endif; ?>
+                        
                         <button type="submit" class="btn-contact btn-contact--primary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -199,7 +209,7 @@ get_header();
                     <div class="contact-info-block">
                         <h3 class="contact-info-block__title"><?php echo esc_html(get_theme_mod('contact_info_title', 'Contact Information')); ?></h3>
                         <p class="contact-info-block__text">
-                            <?php echo esc_html(get_theme_mod('contact_info_text', 'Reach out through any of these channels—we\'re here to help!')); ?>
+                            <?php echo esc_html(get_theme_mod('contact_info_text', 'Reach out through any of these channels, we\'re here to help!')); ?>
                         </p>
                         
                         <div class="contact-info-list">
@@ -301,48 +311,26 @@ get_header();
                         <p class="social-block__text"><?php echo esc_html(get_theme_mod('contact_social_text', 'Follow us for updates, tips, and special offers')); ?></p>
                         <div class="social-block__links">
                             <?php
-                            // Display social media icons - inline implementation with fallback URLs
+                            // Display social media icons - only shows icons that have actually
+                            // been configured in Customizer > Footer Settings. No hardcoded
+                            // fallback URLs, so this matches the footer's behavior exactly.
                             $social_icons = array(
-                                'facebook' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>',
-                                    'fallback' => 'https://www.facebook.com/aaapos.retailmanager'
-                                ),
-                                'instagram' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"/><path d="M6.5 3h11A3.5 3.5 0 0121 6.5v11a3.5 3.5 0 01-3.5 3.5h-11A3.5 3.5 0 013 17.5v-11A3.5 3.5 0 016.5 3z"/></svg>',
-                                    'fallback' => ''
-                                ),
-                                'twitter' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>',
-                                    'fallback' => 'https://x.com/'
-                                ),
-                                'youtube' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z M9.75 15.02l.01-6.27 5.77 3.14-5.78 3.13z"/></svg>',
-                                    'fallback' => 'https://www.youtube.com/@aaapos'
-                                ),
-                                'linkedin' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z M4 6a2 2 0 110-4 2 2 0 010 4z"/></svg>',
-                                    'fallback' => ''
-                                ),
-                                'pinterest' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 2.1c-3.3 0-6 2.7-6 6 0 2.5 1.5 4.7 3.7 5.7.1 0 .2 0 .2-.1 0-.1.1-.4.1-.5 0-.1 0-.2-.1-.3-.4-.5-.7-1.1-.7-1.8 0-2.3 1.7-4.4 4.4-4.4 2.4 0 3.7 1.5 3.7 3.4 0 2.6-1.1 4.7-2.8 4.7-.9 0-1.6-.7-1.4-1.6.2-1.1.7-2.2.7-3 0-.7-.4-1.3-1.1-1.3-1 0-1.7 1-1.7 2.3 0 .8.3 1.4.3 1.4s-.9 3.8-1 4.5c-.3 1.3-.1 2.9 0 3.1 0 .1.1.1.2.1.1 0 1.4-1.8 1.8-3 .1-.4.6-2.3.6-2.3.3.6 1.2 1.1 2.2 1.1 2.9 0 4.9-2.7 4.9-6.2 0-2.7-2.2-5.2-5.6-5.2z"/></svg>',
-                                    'fallback' => ''
-                                ),
-                                'tiktok' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>',
-                                    'fallback' => ''
-                                ),
-                                'whatsapp' => array(
-                                    'icon' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
-                                    'fallback' => ''
-                                ),
+                                'facebook' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>',
+                                'instagram' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"/><path d="M6.5 3h11A3.5 3.5 0 0121 6.5v11a3.5 3.5 0 01-3.5 3.5h-11A3.5 3.5 0 013 17.5v-11A3.5 3.5 0 016.5 3z"/></svg>',
+                                'twitter' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>',
+                                'youtube' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z M9.75 15.02l.01-6.27 5.77 3.14-5.78 3.13z"/></svg>',
+                                'linkedin' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z M4 6a2 2 0 110-4 2 2 0 010 4z"/></svg>',
+                                'pinterest' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 2.1c-3.3 0-6 2.7-6 6 0 2.5 1.5 4.7 3.7 5.7.1 0 .2 0 .2-.1 0-.1.1-.4.1-.5 0-.1 0-.2-.1-.3-.4-.5-.7-1.1-.7-1.8 0-2.3 1.7-4.4 4.4-4.4 2.4 0 3.7 1.5 3.7 3.4 0 2.6-1.1 4.7-2.8 4.7-.9 0-1.6-.7-1.4-1.6.2-1.1.7-2.2.7-3 0-.7-.4-1.3-1.1-1.3-1 0-1.7 1-1.7 2.3 0 .8.3 1.4.3 1.4s-.9 3.8-1 4.5c-.3 1.3-.1 2.9 0 3.1 0 .1.1.1.2.1.1 0 1.4-1.8 1.8-3 .1-.4.6-2.3.6-2.3.3.6 1.2 1.1 2.2 1.1 2.9 0 4.9-2.7 4.9-6.2 0-2.7-2.2-5.2-5.6-5.2z"/></svg>',
+                                'tiktok' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>',
+                                'whatsapp' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
                             );
                             
                             $has_social = false;
-                            foreach ($social_icons as $network => $data) {
-                                $url = get_theme_mod("footer_social_{$network}", $data['fallback']);
+                            foreach ($social_icons as $network => $icon_svg) {
+                                $url = get_theme_mod("footer_social_{$network}", '');
                                 if (!empty($url)) {
                                     $has_social = true;
-                                    echo '<a href="' . esc_url($url) . '" class="social-link-contact" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr(ucfirst($network)) . '">' . $data['icon'] . '</a>';
+                                    echo '<a href="' . esc_url($url) . '" class="social-link-contact" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr(ucfirst($network)) . '">' . $icon_svg . '</a>';
                                 }
                             }
                             

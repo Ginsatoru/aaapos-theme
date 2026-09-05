@@ -3,6 +3,7 @@
    Modern, Clean Design - Using Theme Variables
    
    myaccount-main.css
+   UPDATED: Added myaccount-downloads.css import
    ============================================ */
 
 /* Import all my account component styles */
@@ -10,8 +11,10 @@
 @import 'myaccount-sidebar.css';
 @import 'myaccount-dashboard.css';
 @import 'myaccount-orders.css';
+@import 'myaccount-downloads.css';
 @import 'myaccount-addresses.css';
 @import 'myaccount-forms.css';
+@import 'myaccount-payment.css';
 
 /* ============================================
    Global My Account Styles

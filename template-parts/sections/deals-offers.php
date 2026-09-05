@@ -230,21 +230,6 @@ $total_deals = count($deal_products);
                                 <span class="price-current"><?php echo $deal_product->get_price_html(); ?></span>
                             <?php endif; ?>
                         </div>
-                        
-                        <?php
-                        // Display stock status
-                        $stock_status = $deal_product->get_stock_status();
-                        ?>
-                        <div class="deal-stock">
-                            <?php if ($stock_status === "instock"): ?>
-                                <span class="stock-badge stock-in">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <?php esc_html_e("In Stock", "AAAPOS"); ?>
-                                </span>
-                            <?php endif; ?>
-                        </div>
 
                         <?php if (!empty($deal_end_date)): ?>
                             <div class="deal-countdown">
@@ -299,8 +284,10 @@ $total_deals = count($deal_products);
                                    data-product-id="<?php echo esc_attr(
                                        $deal_product->get_id(),
                                    ); ?>">
-                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                        <line x1="3" y1="6" x2="21" y2="6"/>
+                                        <path d="M16 10a4 4 0 0 1-8 0"/>
                                     </svg>
                                     <?php esc_html_e("Add to Cart", "AAAPOS"); ?>
                                 </a>
@@ -309,9 +296,9 @@ $total_deals = count($deal_products);
                             <a href="<?php echo esc_url(
                                 $deal_product->get_permalink(),
                             ); ?>" class="deal-btn deal-btn-secondary">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
                                 </svg>
                                 <?php esc_html_e("View Details", "AAAPOS"); ?>
                             </a>

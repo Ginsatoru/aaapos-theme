@@ -226,6 +226,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                             'container_class' => 'menu-container',
                             'fallback_cb' => false,
                             'depth' => 3,
+                            'walker' => class_exists('AAAPOS_Nav_Walker') ? new AAAPOS_Nav_Walker() : '',
                         ]);
                     } else {
                         echo '<div id="primary-menu-container" class="menu-container">';
@@ -260,10 +261,16 @@ if (get_theme_mod('enable_page_loader', false)) {
                                 name="s"
                             />
                             <button type="submit" class="search-submit" aria-label="<?php esc_attr_e('Search', 'aaapos'); ?>">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <circle cx="11" cy="11" r="8"/>
-                                    <path d="m21 21-4.35-4.35"/>
-                                </svg>
+                                <span class="icon-roll icon-roll-18">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="m21 21-4.35-4.35"/>
+                                    </svg>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="m21 21-4.35-4.35"/>
+                                    </svg>
+                                </span>
                             </button>
                         </form>
                     </div>
@@ -279,11 +286,20 @@ if (get_theme_mod('enable_page_loader', false)) {
                             <div class="header-account-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="300">
                                 <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" 
                                    class="header-action account-link">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="12" cy="7" r="4"/>
-                                    </svg>
-                                    <span class="account-username"><?php echo esc_html($username); ?></span>
+                                    <span class="icon-roll icon-roll-20">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                    </span>
+                                    <span class="account-username">
+                                        <span class="account-username-inner"><?php echo esc_html($username); ?></span>
+                                        <span class="account-username-inner" aria-hidden="true"><?php echo esc_html($username); ?></span>
+                                    </span>
                                 </a>
                                 
                                 <div class="account-dropdown">
@@ -348,7 +364,10 @@ if (get_theme_mod('enable_page_loader', false)) {
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                         <circle cx="12" cy="7" r="4"/>
                                     </svg>
-                                    <span><?php esc_html_e('Login', 'aaapos'); ?></span>
+                                    <span class="btn-login-text">
+                                        <span class="btn-login-text-inner"><?php esc_html_e('Login', 'aaapos'); ?></span>
+                                        <span class="btn-login-text-inner" aria-hidden="true"><?php esc_html_e('Login', 'aaapos'); ?></span>
+                                    </span>
                                 </a>
                             </div>
                         <?php endif; ?>
@@ -361,11 +380,18 @@ if (get_theme_mod('enable_page_loader', false)) {
                         <div class="header-cart-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="400">
                             <a href="<?php echo esc_url(wc_get_cart_url()); ?>" 
                                class="header-action cart-link cart-style-<?php echo esc_attr($cart_style); ?>">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <circle cx="8" cy="21" r="1"/>
-                                    <circle cx="19" cy="21" r="1"/>
-                                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-                                </svg>
+                                <span class="icon-roll icon-roll-20">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="8" cy="21" r="1"/>
+                                        <circle cx="19" cy="21" r="1"/>
+                                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                    </svg>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="8" cy="21" r="1"/>
+                                        <circle cx="19" cy="21" r="1"/>
+                                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                    </svg>
+                                </span>
                                 
                                 <?php if ($cart_style === 'icon-count' || $cart_style === 'icon-total'): ?>
                                     <span class="cart-count"<?php echo $cart_count === 0 ? ' style="display:none;"' : ''; ?>>
@@ -419,7 +445,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                                         endforeach;
                                     else: ?>
                                         <li class="cart-dropdown-empty">
-                                            <p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
+                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/sad.gif'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
                                         </li>
                                     <?php endif; ?>
                                 </ul>
@@ -430,9 +456,18 @@ if (get_theme_mod('enable_page_loader', false)) {
                                     </div>
                                     <div class="cart-dropdown-actions">
                                         <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="btn btn-secondary btn-block">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <circle cx="8" cy="21" r="1"/>
+                                                <circle cx="19" cy="21" r="1"/>
+                                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                            </svg>
                                             <?php esc_html_e('View Cart', 'aaapos'); ?>
                                         </a>
                                         <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="btn btn-primary btn-block">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <rect x="1" y="4" width="22" height="16" rx="2"/>
+                                                <line x1="1" y1="10" x2="23" y2="10"/>
+                                            </svg>
                                             <?php esc_html_e('Checkout', 'aaapos'); ?>
                                         </a>
                                     </div>

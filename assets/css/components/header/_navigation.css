@@ -99,135 +99,12 @@
 }
 
 /* ==========================================================================
-   DROPDOWN MENUS (All Levels)
+   DESKTOP DROPDOWN MENUS - moved to _dropdowns.css
+   (card-grid layout, JS-driven .is-open state, icon/description support)
+   Removed here to eliminate conflicting duplicate rules for the same
+   .nav-menu .sub-menu selectors. Mobile dropdown behavior below is
+   UNAFFECTED - _dropdowns.css does not handle main-nav mobile toggling.
    ========================================================================== */
-
-.nav-menu .sub-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--color-white);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--color-border-light);
-  border-radius: 8px;
-  min-width: 200px;
-  padding: 8px 0;
-  margin-top: 8px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-8px);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: var(--z-dropdown);
-  list-style: none;
-}
-
-/* Show dropdown on hover and focus */
-.nav-menu li:hover > .sub-menu,
-.nav-menu li:focus-within > .sub-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* Submenu Items */
-.nav-menu .sub-menu li {
-  margin: 0;
-  height: auto;
-  display: block;
-  position: relative;
-}
-
-.nav-menu .sub-menu a {
-  display: block;
-  padding: 10px 20px;
-  white-space: nowrap;
-  height: auto;
-  color: var(--color-text);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.5;
-  transition: all 0.2s ease;
-  border-left: 3px solid transparent;
-}
-
-.nav-menu .sub-menu a::before {
-  display: none;
-}
-
-.nav-menu .sub-menu a:hover,
-.nav-menu .sub-menu a:focus {
-  background-color: var(--color-bg-secondary);
-  color: var(--brand-color);
-  padding-left: 24px;
-  border-left-color: var(--brand-color);
-}
-
-/* Current item in dropdown */
-.nav-menu .sub-menu .current-menu-item > a {
-  background-color: var(--color-bg-secondary);
-  color: var(--brand-color);
-  border-left-color: var(--brand-color);
-}
-
-/* ==========================================================================
-   THIRD LEVEL DROPDOWNS (AND DEEPER)
-   ========================================================================== */
-
-.nav-menu .sub-menu .sub-menu {
-  left: 100%;
-  top: -8px;
-  margin-top: 0;
-  margin-left: 4px;
-}
-
-/* Fourth level and deeper */
-.nav-menu .sub-menu .sub-menu .sub-menu {
-  left: 100%;
-  top: -8px;
-}
-
-/* ==========================================================================
-   DROPDOWN INDICATOR ARROWS
-   ========================================================================== */
-
-/* Top level dropdown indicator - DESKTOP ONLY */
-.nav-menu .menu-item-has-children > a::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 6px;
-  vertical-align: middle;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid currentColor;
-  transition: transform 0.2s ease;
-}
-
-/* Submenu dropdown indicator (right arrow) - DESKTOP ONLY */
-.nav-menu .sub-menu .menu-item-has-children > a::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: auto;
-  margin-right: 0;
-  float: right;
-  border-left: 4px solid currentColor;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-right: 0;
-  transition: transform 0.2s ease;
-}
-
-/* Rotate arrow on hover - DESKTOP ONLY */
-.nav-menu li:hover > a::after {
-  transform: rotate(180deg);
-}
-
-.nav-menu .sub-menu li:hover > a::after {
-  transform: translateX(4px);
-}
 
 /* ==========================================================================
    FOCUS STATES (Accessibility)
@@ -264,7 +141,7 @@
     max-width: 85vw;
     height: 100vh;
     background: var(--color-white);
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+    /* box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1); */
     padding: 80px 0 20px;
     overflow-y: auto;
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -302,7 +179,7 @@
   .mobile-search-wrapper .search-field:focus {
     border-color: var(--brand-color);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1);
+    /* box-shadow: 0 0 0 3px rgba(var(--brand-color-rgb), 0.1); */
   }
 
   .mobile-search-wrapper .search-submit {
@@ -310,9 +187,9 @@
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
-    border: none;
-    padding: 8px;
+    background: none !important;
+    border: none !important;
+    /* padding: 8px; */
     cursor: pointer;
     color: var(--color-text-light);
     transition: color 0.2s ease;
@@ -456,49 +333,68 @@
   }
 
   .nav-menu > li.current-menu-item > a {
-    color: var(--brand-color);
-    background: var(--color-bg-secondary);
+    color: var(--brand-color) !important;
+    background: none !important;
   }
 
-  /* MOBILE-ONLY dropdown arrows - Clean chevron style */
-  .nav-menu .menu-item-has-children > a::after {
+  /* MOBILE-ONLY dropdown arrow - simple text symbol, no image/svg dependency */
+  .nav-menu > li.menu-item-has-children > a::after {
+    content: '▾' !important;
     display: inline-block !important;
-    content: '▼';
-    font-size: 10px;
-    margin-left: 8px;
-    transition: transform 0.2s ease;
-    vertical-align: middle;
+    background: none !important;
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 14px;
+    margin-left: 8px !important;
     line-height: 1;
     opacity: 0.7;
+    transition: transform 0.2s ease;
   }
 
-  .nav-menu .menu-item-has-children.active > a::after {
-    transform: rotate(180deg);
+  .nav-menu > li.menu-item-has-children.active > a::after {
+    transform: rotate(180deg) !important;
   }
 
-  /* Mobile Dropdowns */
+  /* Mobile Dropdowns - max-height driven expand (JS toggles .active
+     class on the parent li via navigation.js) */
   .nav-menu .sub-menu {
     position: static;
     opacity: 1;
     visibility: visible;
     transform: none;
     box-shadow: none;
-    border: none;
+    border: none !important;
     border-radius: 0;
-    margin: 0;
-    padding: 0;
-    background: var(--color-bg-secondary);
-    display: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .nav-menu .sub-menu li {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
   }
 
   .nav-menu .menu-item-has-children.active > .sub-menu {
-    display: block;
+    max-height: 2000px;
   }
 
   .nav-menu .sub-menu a {
-    padding: 12px 20px 12px 40px;
+    display: block !important;
+    padding: 12px 20px 12px 40px !important;
+    color: var(--color-text-dark) !important;
+    background: none !important;
     font-size: 0.9375rem;
+    font-weight: 400 !important;
     border-left: none;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
   }
 
   .nav-menu .sub-menu a::before,
@@ -507,8 +403,10 @@
   }
 
   .nav-menu .sub-menu a:hover {
-    padding-left: 44px;
+    padding-left: 44px !important;
     border-left: none;
+    color: var(--brand-color) !important;
+    background: none !important;
   }
 
   /* Submenu dropdown arrows - Mobile only */
@@ -529,7 +427,7 @@
 
   /* Nested submenus */
   .nav-menu .sub-menu .sub-menu {
-    background: var(--color-bg-tertiary);
+    background: none !important;
     margin-left: 0;
   }
 
@@ -539,6 +437,40 @@
 
   .nav-menu .sub-menu .sub-menu a:hover {
     padding-left: 64px;
+  }
+
+  /* Mega-menu icon/description (desktop card-grid dropdowns, see
+     _dropdowns.css) are display: none on mobile - the sidebar just
+     shows plain title links like every other item, inheriting the
+     !important color/padding from .nav-menu .sub-menu a above so
+     nothing from the desktop-only design can leak through here. */
+  .nav-menu .sub-menu .menu-item-rich__icon,
+  .nav-menu .sub-menu .menu-item-rich__desc {
+    display: none !important;
+  }
+
+  .nav-menu .sub-menu .menu-item-rich__inner {
+    display: block !important;
+    width: 100%;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+
+  .nav-menu .sub-menu .menu-item-rich__text {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+
+  .nav-menu .sub-menu .menu-item-rich__title {
+    display: block !important;
+    color: inherit !important;
+    font: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
 

@@ -16,6 +16,7 @@
 @import '_mobile-menu.css';
 @import '_header-actions.css';
 @import '_dropdowns.css';
+@import '_dropdowns-image-style.css';
 
 /* ==========================================================================
    MAIN HEADER CONTAINER - WITH STICKY CONTROL
@@ -211,14 +212,9 @@ body.has-sticky-header .site-header.is-sticky {
     transition: transform 0.3s ease;
   }
 
-  /* Hover effect - lift up */
+  /* Hover effect - color only, no lift */
   .nav-menu > li > a:hover {
-    transform: translateY(-3px);
     color: var(--color-nav-hover);
-  }
-
-  .nav-menu > li > a:hover::before {
-    transform: scaleY(1);
   }
 
   /* Current page state */

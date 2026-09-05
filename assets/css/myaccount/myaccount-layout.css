@@ -1,5 +1,9 @@
 /* ============================================
    My Account Layout - Grid & Container Styles
+   UPDATED: .woocommerce-MyAccount-content now uses a light gray
+   background and top/bottom spacing (moved here from
+   myaccount-dashboard.css - this wrapper is shared by every
+   My Account page, not just the dashboard, so it belongs here).
    ============================================ */
 
 body.woocommerce-account .site-main,
@@ -24,7 +28,6 @@ body.woocommerce-account .content-area {
   padding-top: var(--space-6);
   background: var(--color-bg-secondary);
   padding-bottom: var(--space-8);
-  min-height: calc(100vh - var(--header-total-height));
 }
 
 .woocommerce-account .container {
@@ -44,16 +47,25 @@ body.woocommerce-account .content-area {
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }
+
+  /* Belt-and-braces: guarantee visible space above the content card even
+     if a negative margin further down the cascade (e.g. the address
+     grid's -1.8rem) eats into the grid gap above it. */
+  .woocommerce-MyAccount-content {
+    margin-top: var(--space-6) !important;
+  }
 }
 
 /* ========================================
    MAIN CONTENT (RIGHT COLUMN - 71%)
+   Base rule - overridden by myaccount-dashboard.css (background,
+   spacing) since that file loads after this one.
    ======================================== */
 
 .woocommerce-MyAccount-content {
   background: var(--color-white);
   border-radius: var(--border-radius-xl);
-  padding: var(--space-8);
+  padding: var(--space-5);
   box-shadow: var(--shadow);
   min-height: 500px;
 }
@@ -100,31 +112,58 @@ body.woocommerce-account .content-area {
   border-top: none !important;
   border-left: none !important;
   box-shadow: none !important;
-  padding: var(--space-12) var(--space-6) !important;
+  padding: var(--space-8) var(--space-6) !important;
   margin: 0 !important;
 
   /* Vertical column layout, centered */
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   text-align: center !important;
   gap: 0 !important;
 
-  /* Minimum height for better centering */
-  min-height: 400px !important;
+  /* No forced minimum height - compact, sized to its own content */
+  min-height: 0 !important;
+}
+
+/* Hide the plain inline success message immediately via CSS (blocks
+   rendering before paint, so there's no flash of the old text) -
+   cart-notifications.js reads its text and shows the animated toast
+   version instead. .woocommerce-info (email confirmation) is
+   unaffected and still displays normally. */
+.woocommerce-MyAccount-content .woocommerce-message {
+  display: none !important;
 }
 
 /* Icon at the top */
-.woocommerce-MyAccount-content .woocommerce-message::before,
-.woocommerce-MyAccount-content .woocommerce-info::before {
+.woocommerce-MyAccount-content .woocommerce-message::before {
+  content: "" !important;
   display: block !important;
   position: static !important;
   margin: 0 0 var(--space-4) 0 !important;
-  font-size: 3rem !important;
-  line-height: 1 !important;
-  color: var(--color-text-light) !important;
+  width: 56px !important;
+  height: 56px !important;
   order: -2 !important;
+}
+
+/* Email icon (animated gif) - now a real <img> injected directly into
+   the notice markup by orders.php (a CSS ::before pseudo-element
+   wasn't rendering reliably), so it's a genuine flex child here rather
+   than a pseudo-element. */
+.woocommerce-MyAccount-content .aaapos-notice-icon {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  order: -2;
+  margin: 0 0 var(--space-6) 0;
+}
+
+.woocommerce-MyAccount-content .aaapos-notice-icon img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 
 /* Title/message text in the middle */
@@ -136,39 +175,42 @@ body.woocommerce-account .content-area {
   line-height: 1.5 !important;
 }
 
-/* Modern button at the bottom - close to title */
+/* Modern button at the bottom - matches the black pill pattern used
+   on the Orders/Downloads empty states */
 .woocommerce-MyAccount-content .woocommerce-message .button,
 .woocommerce-MyAccount-content .woocommerce-info .button,
 .woocommerce-MyAccount-content .woocommerce-message a.button,
 .woocommerce-MyAccount-content .woocommerce-info a.button {
-  /* Spacing - closer to title */
+  /* Spacing */
   margin: var(--space-5) 0 0 0 !important;
 
-  /* Modern styling matching sidebar buttons */
+  /* Layout */
   display: inline-flex !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: var(--space-2) !important;
-  padding: var(--space-3) var(--space-6) !important;
+  height: 2.5rem !important;
+  padding: 0 1.25rem !important;
 
   /* Colors */
-  background: var(--color-primary) !important;
+  background: #000000 !important;
   color: var(--color-white) !important;
 
   /* Typography */
-  font-size: var(--text-sm) !important;
-  font-weight: var(--font-semibold) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
   font-family: var(--font-body) !important;
   text-decoration: none !important;
 
   /* Border and shape */
   border: none !important;
-  border-radius: var(--border-radius) !important;
+  border-radius: 0.625rem !important;
 
-  /* Shadow */
-  box-shadow: var(--shadow-sm) !important;
+  /* No shadow - flat design */
+  box-shadow: none !important;
 
   /* Smooth transitions */
-  transition: all 0.2s ease !important;
+  transition: background-color 0.2s ease !important;
 
   /* Order */
   order: 1 !important;
@@ -179,9 +221,10 @@ body.woocommerce-account .content-area {
 .woocommerce-MyAccount-content .woocommerce-info .button:hover,
 .woocommerce-MyAccount-content .woocommerce-message a.button:hover,
 .woocommerce-MyAccount-content .woocommerce-info a.button:hover {
-  background: var(--color-primary-dark) !important;
-  box-shadow: var(--shadow) !important;
-  transform: translateY(-1px) !important;
+  background: #2a2d33 !important;
+  color: var(--color-white) !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* Button active/focus state */
@@ -189,8 +232,8 @@ body.woocommerce-account .content-area {
 .woocommerce-MyAccount-content .woocommerce-info .button:active,
 .woocommerce-MyAccount-content .woocommerce-message a.button:active,
 .woocommerce-MyAccount-content .woocommerce-info a.button:active {
-  transform: translateY(0) !important;
-  box-shadow: var(--shadow-sm) !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* Ensure the content area has proper layout */

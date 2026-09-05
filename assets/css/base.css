@@ -656,3 +656,13 @@ ins span {
   text-decoration-line: none !important;
   border-bottom: none !important;
 }
+
+::selection {
+  background: var(--brand-color) !important;
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background: var(--brand-color) !important;
+  color: #ffffff !important;
+}

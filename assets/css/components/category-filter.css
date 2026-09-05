@@ -2,11 +2,12 @@
    CATEGORY FILTER - MODERN MINIMALIST DESIGN
    File: category-filter.css
    Location: assets/css/components/
-   Version: 5.0.0
+   Version: 5.1.0
    
    Design: Horizontal rectangular cards with white icon boxes,
    vibrant blue active state, light grey inactive state
    NEW: Dynamic gradient overlays for scroll indicators
+   UPDATED: Hover no longer lifts the card - fills with brand color instead
    ============================================ */
 
 /* ==========================================================================
@@ -63,7 +64,7 @@
 
 /* Disable hover effects during drag */
 .category-filter-buttons.is-dragging .category-filter-btn:hover {
-  background: var(--color-bg-secondary, #f5f5f5);
+  background: #F3F5FA;
   border-color: transparent;
 }
 
@@ -151,7 +152,7 @@
   align-items: center;
   gap: 14px;
   padding: 14px 20px;
-  background: var(--color-bg-secondary, #f5f5f5);
+  background: #F3F5FA;
   border: 1px solid transparent;
   border-radius: 8px;
   text-decoration: none;
@@ -220,21 +221,29 @@
 }
 
 /* ==========================================================================
-   HOVER STATE - SUBTLE HIGHLIGHT
+   HOVER STATE - BRAND COLOR FILL (no lift)
    ========================================================================== */
 
 .category-filter-btn:hover {
-  background: var(--color-bg-tertiary, #e5e7eb);
+  background: var(--brand-color, #0ea5e9);
   border-color: transparent;
-  transform: translateY(-1px);
+}
+
+.category-filter-btn:hover .filter-icon-box {
+  background: var(--color-white, #ffffff);
 }
 
 .category-filter-btn:hover .filter-icon {
-  stroke: var(--color-text-dark, #374151);
+  stroke: var(--brand-color, #0ea5e9);
 }
 
 .category-filter-btn:hover .filter-label {
-  color: var(--color-text-darker, #111827);
+  color: var(--color-white, #ffffff);
+}
+
+.category-filter-btn:hover .filter-count {
+  color: var(--color-white, #ffffff);
+  opacity: 0.95;
 }
 
 /* ==========================================================================
@@ -244,7 +253,6 @@
 .category-filter-btn.active {
   background: var(--brand-color, #0ea5e9);
   border-color: transparent;
-  transform: translateY(0);
 }
 
 .category-filter-btn.active .filter-icon-box {
@@ -264,6 +272,10 @@
 .category-filter-btn.active .filter-count {
   color: var(--color-white, #ffffff);
   opacity: 0.95;
+}
+
+.category-filter-btn.active:hover {
+  background: var(--brand-color-hover, #0284c7);
 }
 
 .category-filter-btn.active:hover .filter-icon {

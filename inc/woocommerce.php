@@ -4,6 +4,7 @@
  * NOW WITH WORKING CATEGORY FILTER FUNCTIONALITY
  * UPDATED: Added fallback background image support
  * FIXED: Removed shipping calculator from cart page
+ * UPDATED: My Account dashboard content moved to inc/myaccount-dashboard.php
  *
  * woocommerce.php
  */
@@ -38,6 +39,13 @@ add_action('woocommerce_single_product_summary', function() {
  * Enable AJAX Add to Cart on Single Product Pages
  */
 add_filter('woocommerce_add_to_cart_redirect', '__return_false');
+
+// Redirect to product page after adding to cart (removes query args)
+add_action('template_redirect', function () {
+    if (is_product() && $_SERVER['REQUEST_METHOD'] === 'GET') {
+        wc_clear_notices();
+    }
+});
 
 
 /**
@@ -241,70 +249,6 @@ function custom_add_stock_to_meta() {
         echo '<span class="stock-wrapper">STATUS: ' . wc_get_stock_html($product) . '</span>';
     }
 }
-
-/**
- * Display Cart Activity Message
- * Shows how many people have added this product to their cart
- * Displays as a full-width bar below the purchase group
- */
-function aaapos_display_cart_activity() {
-    global $product;
-    
-    if (!$product) {
-        return;
-    }
-    
-    // Get product ID
-    $product_id = $product->get_id();
-    
-    // Get or generate cart activity count
-    $cart_count = get_post_meta($product_id, '_cart_activity_count', true);
-    
-    // If no count exists, generate a realistic number based on product data
-    if (empty($cart_count)) {
-        $rating_count = $product->get_rating_count();
-        $review_count = $product->get_review_count();
-        $total_sales = (int) get_post_meta($product_id, 'total_sales', true);
-        
-        // Calculate a realistic number
-        if ($total_sales > 0) {
-            $cart_count = max(5, min(150, floor($total_sales * 0.2) + wp_rand(5, 20)));
-        } else {
-            $cart_count = wp_rand(8, 35);
-        }
-        
-        // Store it for consistency
-        update_post_meta($product_id, '_cart_activity_count', $cart_count);
-    }
-    
-    // Display the message
-    ?>
-    <div class="product-cart-activity">
-        <svg class="product-cart-activity__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="9" cy="21" r="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="20" cy="21" r="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="product-cart-activity__text">
-            <span class="product-cart-activity__count"><?php echo esc_html($cart_count); ?></span>
-            <?php esc_html_e(' people have added this product to their cart', 'aaapos'); ?>
-        </span>
-    </div>
-    <?php
-}
-
-// Add new hook to display after the entire purchase group
-add_action('woocommerce_after_add_to_cart_form', 'aaapos_display_cart_activity', 10);
-
-/**
- * Increment cart activity count when product is added to cart
- */
-function aaapos_track_cart_activity($cart_item_key, $product_id) {
-    $current_count = (int) get_post_meta($product_id, '_cart_activity_count', true);
-    $new_count = max(1, $current_count + 1);
-    update_post_meta($product_id, '_cart_activity_count', $new_count);
-}
-add_action('woocommerce_add_to_cart', 'aaapos_track_cart_activity', 10, 2);
 
 /**
  * Display Product Trust Badges / Benefits
@@ -798,7 +742,6 @@ function aaapos_display_product_share_buttons() {
     // Build share URLs
     $facebook_url = 'https://www.facebook.com/sharer/sharer.php?u=' . $encoded_url;
     $twitter_url = 'https://twitter.com/intent/tweet?url=' . $encoded_url . '&text=' . $encoded_title;
-    $pinterest_url = 'https://pinterest.com/pin/create/button/?url=' . $encoded_url . '&media=' . $encoded_image . '&description=' . $encoded_title;
     $whatsapp_url = 'https://api.whatsapp.com/send?text=' . $encoded_title . ' ' . $encoded_url;
     $telegram_url = 'https://t.me/share/url?url=' . $encoded_url . '&text=' . $encoded_title;
     $email_url = 'mailto:?subject=' . $encoded_title . '&body=' . $encoded_url;
@@ -816,8 +759,8 @@ function aaapos_display_product_share_buttons() {
                class="share-button share-button--facebook" 
                target="_blank" 
                rel="noopener noreferrer"
-               data-tooltip="<?php esc_attr_e('Share on Facebook', 'aaapos'); ?>"
-               aria-label="<?php esc_attr_e('Share on Facebook', 'aaapos'); ?>">
+               data-tooltip="<?php esc_attr_e(' Facebook', 'aaapos'); ?>"
+               aria-label="<?php esc_attr_e('Facebook', 'aaapos'); ?>">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
@@ -835,25 +778,13 @@ function aaapos_display_product_share_buttons() {
                 </svg>
             </a>
             
-            <!-- Pinterest -->
-            <a href="<?php echo esc_url($pinterest_url); ?>" 
-               class="share-button share-button--pinterest" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               data-tooltip="<?php esc_attr_e('Share on Pinterest', 'aaapos'); ?>"
-               aria-label="<?php esc_attr_e('Share on Pinterest', 'aaapos'); ?>">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/>
-                </svg>
-            </a>
-            
             <!-- WhatsApp -->
             <a href="<?php echo esc_url($whatsapp_url); ?>" 
                class="share-button share-button--whatsapp" 
                target="_blank" 
                rel="noopener noreferrer"
-               data-tooltip="<?php esc_attr_e('Share on WhatsApp', 'aaapos'); ?>"
-               aria-label="<?php esc_attr_e('Share on WhatsApp', 'aaapos'); ?>">
+               data-tooltip="<?php esc_attr_e('WhatsApp', 'aaapos'); ?>"
+               aria-label="<?php esc_attr_e('WhatsApp', 'aaapos'); ?>">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                 </svg>
@@ -864,8 +795,8 @@ function aaapos_display_product_share_buttons() {
                class="share-button share-button--telegram" 
                target="_blank" 
                rel="noopener noreferrer"
-               data-tooltip="<?php esc_attr_e('Share on Telegram', 'aaapos'); ?>"
-               aria-label="<?php esc_attr_e('Share on Telegram', 'aaapos'); ?>">
+               data-tooltip="<?php esc_attr_e('Telegram', 'aaapos'); ?>"
+               aria-label="<?php esc_attr_e('Telegram', 'aaapos'); ?>">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                 </svg>
@@ -874,8 +805,8 @@ function aaapos_display_product_share_buttons() {
             <!-- Email -->
             <a href="<?php echo esc_url($email_url); ?>" 
                class="share-button share-button--email"
-               data-tooltip="<?php esc_attr_e('Share via Email', 'aaapos'); ?>"
-               aria-label="<?php esc_attr_e('Share via Email', 'aaapos'); ?>">
+               data-tooltip="<?php esc_attr_e('Email', 'aaapos'); ?>"
+               aria-label="<?php esc_attr_e('Email', 'aaapos'); ?>">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                 </svg>
@@ -1727,11 +1658,23 @@ add_action("wp_head", "aaapos_woocommerce_inline_critical_css", 999);
 
 /**
  * Disable WooCommerce's Default Conflicting Styles
+ * UPDATED: Also removes "woocommerce-smallscreen" - a separate mobile-only
+ * stylesheet WooCommerce core loads independently of "woocommerce-general".
+ * It was still forcing its own legacy float-based grid
+ * (width: 48% !important; float: left !important;) at max-width: 768px,
+ * with higher specificity than our own mobile grid rules (its selector
+ * includes an extra [class*="columns-"] attribute selector), which broke
+ * the entire shop grid on mobile despite "woocommerce-general" already
+ * being removed.
  */
 add_filter("woocommerce_enqueue_styles", function ($styles) {
     // Remove default WooCommerce general styles that add grid conflicts
     if (isset($styles["woocommerce-general"])) {
         unset($styles["woocommerce-general"]);
+    }
+    // Remove WooCommerce's separate mobile-only float-grid stylesheet
+    if (isset($styles["woocommerce-smallscreen"])) {
+        unset($styles["woocommerce-smallscreen"]);
     }
     return $styles;
 });
@@ -1819,6 +1762,38 @@ function aaapos_custom_sale_flash($html, $post, $product)
     return '<span class="onsale">' . esc_html($sale_text) . "</span>";
 }
 add_filter("woocommerce_sale_flash", "aaapos_custom_sale_flash", 10, 3);
+
+/**
+ * Add a "% OFF" pill directly into the price HTML on the single product
+ * page, so it renders as a genuine flex child alongside the del/ins
+ * price elements (same row), instead of the default sale badge that
+ * used to overlay the product image (now hidden via CSS on
+ * .single-product span.onsale).
+ */
+function aaapos_add_sale_percentage_to_price_html($price_html, $product)
+{
+    if (!is_product() || !$product->is_on_sale()) {
+        return $price_html;
+    }
+
+    $regular_price = (float) $product->get_regular_price();
+    $sale_price = (float) $product->get_sale_price();
+
+    if ($regular_price <= 0) {
+        return $price_html;
+    }
+
+    $percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
+
+    if ($percentage <= 0) {
+        return $price_html;
+    }
+
+    $badge = '<span class="aaapos-sale-percentage">' . esc_html($percentage) . '% OFF</span>';
+
+    return $price_html . $badge;
+}
+add_filter('woocommerce_get_price_html', 'aaapos_add_sale_percentage_to_price_html', 10, 2);
 
 /**
  * Custom Image Sizes for WooCommerce
@@ -1922,161 +1897,6 @@ function aaapos_custom_my_account_menu_order()
 add_filter(
     "woocommerce_account_menu_items",
     "aaapos_custom_my_account_menu_order",
-);
-
-/**
- * Custom Dashboard Content with Grid Cards
- */
-function aaapos_custom_dashboard_content()
-{
-    $current_user = wp_get_current_user();
-    $display_name = !empty($current_user->first_name)
-        ? $current_user->first_name
-        : $current_user->display_name;
-    ?>
-    <div class="woocommerce-MyAccount-dashboard-intro">
-    <h2 class="dashboard-greeting">
-        <?php
-        // Get user's Gravatar or profile image
-        $user_id = get_current_user_id();
-        $user_email = $current_user->user_email;
-        
-        // Try to get Gravatar
-        $avatar = get_avatar($user_id, 48, '', $current_user->display_name, array('class' => 'greeting-icon-img'));
-    
-        echo $avatar;
-        ?>
-        Hello <span class="greeting-name"><?php echo esc_html(
-            $display_name,
-        ); ?></span>
-    </h2>
-</div>
-
-    <div class="woocommerce-MyAccount-dashboard-grid">
-        
-        <a href="<?php echo esc_url(
-            wc_get_account_endpoint_url("orders"),
-        ); ?>" class="dashboard-card">
-            <div class="dashboard-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                </svg>
-            </div>
-            <h3 class="dashboard-card__title"><?php esc_html_e(
-                "Orders",
-                "aaapos-prime",
-            ); ?></h3>
-            <p class="dashboard-card__description"><?php esc_html_e(
-                "View your order history",
-                "aaapos-prime",
-            ); ?></p>
-        </a>
-
-        <a href="<?php echo esc_url(
-            wc_get_account_endpoint_url("downloads"),
-        ); ?>" class="dashboard-card">
-            <div class="dashboard-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
-                </svg>
-            </div>
-            <h3 class="dashboard-card__title"><?php esc_html_e(
-                "Downloads",
-                "aaapos-prime",
-            ); ?></h3>
-            <p class="dashboard-card__description"><?php esc_html_e(
-                "Access your downloads",
-                "aaapos-prime",
-            ); ?></p>
-        </a>
-
-        <a href="<?php echo esc_url(
-            wc_get_account_endpoint_url("edit-address"),
-        ); ?>" class="dashboard-card">
-            <div class="dashboard-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-            </div>
-            <h3 class="dashboard-card__title"><?php esc_html_e(
-                "Addresses",
-                "aaapos-prime",
-            ); ?></h3>
-            <p class="dashboard-card__description"><?php esc_html_e(
-                "Manage billing & shipping",
-                "aaapos-prime",
-            ); ?></p>
-        </a>
-
-        <a href="<?php echo esc_url(
-            wc_get_account_endpoint_url("edit-account"),
-        ); ?>" class="dashboard-card">
-            <div class="dashboard-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                </svg>
-            </div>
-            <h3 class="dashboard-card__title"><?php esc_html_e(
-                "Account Details",
-                "aaapos-prime",
-            ); ?></h3>
-            <p class="dashboard-card__description"><?php esc_html_e(
-                "Update your information",
-                "aaapos-prime",
-            ); ?></p>
-        </a>
-
-        <a href="<?php echo esc_url(
-            wc_get_account_endpoint_url("payment-methods"),
-        ); ?>" class="dashboard-card">
-            <div class="dashboard-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                </svg>
-            </div>
-            <h3 class="dashboard-card__title"><?php esc_html_e(
-                "Payment Methods",
-                "aaapos-prime",
-            ); ?></h3>
-            <p class="dashboard-card__description"><?php esc_html_e(
-                "Manage saved payment cards",
-                "aaapos-prime",
-            ); ?></p>
-        </a>
-
-        <?php if (get_page_by_path("contact")): ?>
-            <a href="<?php echo esc_url(
-                home_url("/contact"),
-            ); ?>" class="dashboard-card">
-                <div class="dashboard-card__icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <h3 class="dashboard-card__title"><?php esc_html_e(
-                    "Support",
-                    "aaapos-prime",
-                ); ?></h3>
-                <p class="dashboard-card__description"><?php esc_html_e(
-                    "Get help & contact us",
-                    "aaapos-prime",
-                ); ?></p>
-            </a>
-        <?php endif; ?>
-
-    </div>
-    <?php
-}
-remove_action(
-    "woocommerce_account_dashboard",
-    "woocommerce_account_dashboard",
-    10,
-);
-add_action(
-    "woocommerce_account_dashboard",
-    "aaapos_custom_dashboard_content",
-    10,
 );
 
 /**

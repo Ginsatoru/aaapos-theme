@@ -168,137 +168,13 @@
 
 /* ===================================
    MOBILE & TABLET NAVIGATION (max-width: 1023px)
-   Fixed sidebar navigation
+   NOTE: Sidebar panel, nav-menu, sub-menu, and dropdown arrow styling
+   all live in assets/css/components/header/_navigation.css only.
+   This file used to duplicate that entire system with !important,
+   which fought with and randomly overrode fixes made there.
+   Only non-duplicated mobile nav concerns stay here.
    =================================== */
 @media (max-width: 1023px) {
-  /* Force navigation to be fixed sidebar */
-  .main-navigation {
-    display: block !important;
-    position: fixed !important;
-    top: 0 !important;
-    right: -100% !important;
-    width: 320px !important;
-    max-width: 85vw !important;
-    height: 100vh !important;
-    background: #fff !important;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15) !important;
-    overflow-y: auto !important;
-    transition: right 0.3s ease !important;
-    z-index: 999 !important;
-    margin: 0 !important;
-    padding: 80px 0 2rem !important;
-    flex: none !important;
-  }
-
-  /* Show sidebar when active */
-  .main-navigation.active {
-    right: 0 !important;
-  }
-
-  /* Overlay */
-  .mobile-menu-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    background: rgba(0, 0, 0, 0.5) !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    transition: all 0.3s ease !important;
-    z-index: 998 !important;
-  }
-
-  .mobile-menu-overlay.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  /* Menu container */
-  .main-navigation .menu-container {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    padding: 0 2rem !important;
-    box-shadow: none !important;
-    transform: none !important;
-  }
-
-  /* Stack menu items vertically */
-  .nav-menu {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .nav-menu > li {
-    width: 100% !important;
-    height: auto !important;
-    border-bottom: 1px solid var(--color-light) !important;
-  }
-
-  .nav-menu a {
-    padding: 1rem 0 !important;
-    font-size: 1.05rem !important;
-    height: auto !important;
-  }
-
-  /* Mobile dropdowns */
-  .nav-menu .sub-menu {
-    position: static !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: none !important;
-    box-shadow: none !important;
-    background: var(--color-light) !important;
-    border-radius: 0 !important;
-    padding-left: 1rem !important;
-    margin: 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-    transition: max-height 0.3s ease !important;
-  }
-
-  .nav-menu li.menu-item-has-children > a {
-    position: relative !important;
-    padding-right: 40px !important;
-  }
-
-  .nav-menu li.menu-item-has-children > a::after {
-    content: '\25BC' !important;
-    font-size: 0.7em !important;
-    position: absolute !important;
-    right: 0 !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    transition: transform 0.3s ease !important;
-    display: block !important;
-    background: none !important;
-    height: auto !important;
-    left: auto !important;
-    width: auto !important;
-  }
-
-  .nav-menu li.menu-item-has-children.active > a::after {
-    transform: translateY(-50%) rotate(180deg) !important;
-  }
-
-  .nav-menu li.menu-item-has-children.active > .sub-menu {
-    max-height: 500px !important;
-  }
-
-  .nav-menu .sub-menu li {
-    border-bottom: none !important;
-  }
-
-  .nav-menu .sub-menu a {
-    padding: 0.75rem 1rem !important;
-    font-size: 0.95rem !important;
-  }
-
   /* Show mobile-only sections */
   .mobile-search-wrapper,
   .mobile-account-section {
@@ -310,19 +186,15 @@
     overflow: hidden !important;
   }
 
-  /* Hide dropdowns on mobile */
+  /* Hide desktop dropdowns on mobile */
   .account-dropdown,
   .cart-dropdown {
     display: none !important;
   }
 }
 
-/* Mobile specific padding adjustment */
+/* Mobile specific adjustments */
 @media (max-width: 767px) {
-  .main-navigation {
-    padding: 70px 0 2rem !important;
-  }
-  
   /* Top bar hidden on mobile */
   .top-bar {
     display: none !important;
@@ -339,45 +211,12 @@
 
 /* ===================================
    DESKTOP STYLES (min-width: 1024px)
+   NOTE: .main-navigation and .nav-menu desktop layout already handled
+   in _navigation.css. Only non-duplicated desktop concerns stay here.
    =================================== */
 @media (min-width: 1024px) {
-  /* Reset navigation to normal on desktop */
-  .main-navigation {
-    display: flex !important;
-    position: relative !important;
-    right: auto !important;
-    width: auto !important;
-    height: 100% !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    z-index: auto !important;
-    padding: 0 !important;
-    margin: 0 var(--space-8) !important;
-    flex: 1 !important;
-    max-width: 600px !important;
-    top: auto !important;
-  }
-
-  /* Hide mobile-only elements */
-  .mobile-search-wrapper,
-  .mobile-account-section {
-    display: none !important;
-  }
-
   .mobile-menu-overlay {
     display: none !important;
-  }
-
-  /* Desktop navigation */
-  .nav-menu {
-    flex-direction: row !important;
-    gap: var(--space-2) !important;
-  }
-
-  .nav-menu > li {
-    width: auto !important;
-    border-bottom: none !important;
   }
 }
 
