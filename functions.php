@@ -28,7 +28,7 @@ if (file_exists(AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker
     require_once AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php';
 
     $aaaposUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-        'https://github.com/YOUR-USERNAME/YOUR-REPO/',
+        'https://github.com/Ginsatoru/aaapos-theme',
         AAAPOS_THEME_DIR . '/style.css',
         'aaapos-prime'
     );
