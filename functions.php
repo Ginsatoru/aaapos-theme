@@ -20,22 +20,54 @@ define("MR_THEME_VERSION", AAAPOS_VERSION);
 define("MR_THEME_DIR", AAAPOS_THEME_DIR);
 define("MR_THEME_URI", AAAPOS_THEME_URI);
 
+// Force correct file/folder permissions (755/644) whenever WordPress
+// installs or updates themes/plugins through its own upgrader - ships
+// with the theme itself, so no per-site wp-config.php edit is needed.
+// Guarded with !defined() in case a site's wp-config.php already sets these.
+if (!defined('FS_CHMOD_DIR')) {
+    define('FS_CHMOD_DIR', 0755);
+}
+if (!defined('FS_CHMOD_FILE')) {
+    define('FS_CHMOD_FILE', 0644);
+}
+
 // ==========================================================================
 // Theme Update Checker (GitHub-based "Update available" button in wp-admin)
 // Library: https://github.com/YahnisElsts/plugin-update-checker
 // ==========================================================================
-if (file_exists(AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php')) {
-    require_once AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php';
+if (file_exists(AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php')
+    && is_readable(AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php')) {
+    try {
+        require_once AAAPOS_THEME_DIR . '/plugin-update-checker/plugin-update-checker.php';
 
-    $aaaposUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
-        'https://github.com/Ginsatoru/aaapos-theme',
-        AAAPOS_THEME_DIR . '/style.css',
-        'aaapos-prime'
-    );
+        $aaaposUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+            'https://github.com/Ginsatoru/aaapos-theme',
+            AAAPOS_THEME_DIR . '/style.css',
+            'aaapos-prime',
+            1 // Check for updates every 1 hour instead of the 12-hour default.
+        );
 
-    // Uses GitHub Releases (tags) to detect new versions - no manual zip needed.
-    $aaaposUpdateChecker->getVcsApi()->enableReleaseAssets();
+        // Uses GitHub Releases (tags) to detect new versions - no manual zip needed.
+        $aaaposUpdateChecker->getVcsApi()->enableReleaseAssets();
+    } catch (\Throwable $e) {
+        // Never let an update-checker problem (e.g. bad file permissions
+        // after deploy) take the whole site down.
+        error_log('AAAPOS update checker failed to load: ' . $e->getMessage());
+    }
 }
+
+// TEMPORARY - force an immediate update check for testing, then remove.
+// Visit: https://yourdomain.com/?aaapos-force-check=1 while logged in as admin.
+add_action('init', function() {
+    if (isset($_GET['aaapos-force-check']) && current_user_can('manage_options')) {
+        global $aaaposUpdateChecker;
+        if ($aaaposUpdateChecker) {
+            $aaaposUpdateChecker->checkForUpdates();
+            wp_die('Update check forced. Now go check Appearance > Themes.');
+        }
+        wp_die('Update checker was not initialized - check the error log.');
+    }
+});
 
 // Content Width
 if (!isset($content_width)) {
