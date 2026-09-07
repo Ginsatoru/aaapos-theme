@@ -32,6 +32,50 @@ if (!defined('FS_CHMOD_FILE')) {
 }
 
 // ==========================================================================
+// Self-healing permission fix for the bundled plugin-update-checker
+// library. FS_CHMOD_DIR/FILE above only apply when WP's own upgrader
+// extracts files - which never happens on a brand new customer site's
+// FIRST theme upload, since this functions.php isn't loaded yet during
+// that extraction. This runs automatically in wp-admin instead, so it
+// self-corrects on fresh installs too, with zero manual chmod ever.
+// ==========================================================================
+if (!function_exists('aaapos_fix_bundled_library_permissions')) {
+    function aaapos_fix_bundled_library_permissions() {
+        $target_dir = AAAPOS_THEME_DIR . '/plugin-update-checker';
+
+        if (!is_dir($target_dir)) {
+            return;
+        }
+
+        @chmod($target_dir, 0755);
+
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($target_dir, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $item) {
+            @chmod($item->getPathname(), $item->isDir() ? 0755 : 0644);
+        }
+    }
+}
+
+add_action('admin_init', function () {
+    $marker = 'aaapos_perms_fixed_' . AAAPOS_VERSION;
+
+    if (get_transient($marker)) {
+        return;
+    }
+
+    aaapos_fix_bundled_library_permissions();
+
+    // Re-checks once a day as a safety net, and immediately again after
+    // any version change (fresh install or update), instead of scanning
+    // the folder on every single admin request.
+    set_transient($marker, 1, DAY_IN_SECONDS);
+});
+
+// ==========================================================================
 // Theme Update Checker (GitHub-based "Update available" button in wp-admin)
 // Library: https://github.com/YahnisElsts/plugin-update-checker
 // ==========================================================================
