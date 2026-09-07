@@ -59,8 +59,8 @@ function mr_hero_customizer($wp_customize) {
         'section' => 'mr_hero',
         'type' => 'select',
         'choices' => array(
-            'modern' => __('Modern Test', 'macedon-ranges'),
-            'classic' => __('Classic Test', 'macedon-ranges'),
+            'modern' => __('Modern', 'macedon-ranges'),
+            'classic' => __('Classic', 'macedon-ranges'),
         ),
         'priority' => 2,
     ));
