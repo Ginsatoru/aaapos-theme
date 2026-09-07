@@ -1,0 +1,868 @@
+/* ==========================================================================
+   Hero Section - CLASSIC Design (Product Carousel / Notification Banner)
+   ==========================================================================
+   Selectable via Customizer > Hero Section > Hero Design. Scoped entirely
+   under .hero-classic-mode so it can be loaded on the same page as
+   hero.css (the "Modern" design) without any class-name collisions -
+   both designs use names like .hero-title, .hero-buttons,
+   .hero-btn-primary, .carousel-indicators, .indicator-dot etc.
+
+   @package aaapos-prime
+   @since 1.0.0
+   ========================================================================== */
+
+/* Hero Section (root element) */
+.hero-section.hero-classic-mode {
+  position: relative;
+  height: 75vh;
+  min-height: 560px;
+  overflow: hidden;
+  margin: 0 !important;
+  padding: 0;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  background-color: var(--color-black);
+}
+
+@media (min-width: 768px) {
+  .hero-section.hero-classic-mode {
+    height: 80vh;
+    min-height: 610px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-section.hero-classic-mode {
+    height: 82vh;
+    min-height: 650px;
+  }
+}
+
+/* ==========================================================================
+   Background (Image/Video)
+   ========================================================================== */
+
+.hero-classic-mode .hero-slider,
+.hero-classic-mode .hero-video-background,
+.hero-classic-mode .hero-static-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: var(--color-black);
+}
+
+.hero-classic-mode .hero-slide img,
+.hero-classic-mode .hero-slide-image,
+.hero-classic-mode .hero-static-image,
+.hero-classic-mode .video-fallback-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Dark Overlay */
+.hero-classic-mode .slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  /* Background color set dynamically via inline style */
+}
+
+/* ==========================================================================
+   Content Layout - Split View
+   ========================================================================== */
+
+.hero-classic-mode .hero-content-wrapper {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1.75rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-classic-mode .hero-content-wrapper {
+    padding: 2rem;
+  }
+}
+
+.hero-classic-mode .hero-content-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  .hero-classic-mode .hero-content-container {
+    padding: 0 30px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-classic-mode .hero-content-container {
+    grid-template-columns: 1.6fr 1fr;
+    gap: 3.5rem;
+    padding: 0 40px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-classic-mode .hero-content-container {
+    grid-template-columns: 1.7fr 1fr;
+    gap: 4rem;
+    padding: 0 50px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .hero-classic-mode .hero-content-container {
+    padding: 0 60px;
+  }
+}
+
+/* ==========================================================================
+   Left Side: Content
+   ========================================================================== */
+
+.hero-classic-mode .hero-content {
+  max-width: 100%;
+}
+
+.hero-classic-mode .hero-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-white) !important;
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .hero-classic-mode .hero-title {
+    font-size: 2.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-classic-mode .hero-title {
+    font-size: 3.25rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hero-classic-mode .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+.hero-classic-mode .hero-title-highlight {
+  display: block;
+  color: var(--brand-color) !important;
+  margin-top: 0.75rem;
+}
+
+.hero-classic-mode .hero-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+@media (min-width: 768px) {
+  .hero-classic-mode .hero-subtitle {
+    font-size: 1.0625rem;
+  }
+}
+
+.hero-classic-mode .hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero-classic-mode .hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-classic-mode .hero-btn-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 0.625rem;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.hero-classic-mode .hero-btn-icon-left {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.625rem;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.hero-classic-mode .hero-btn-primary {
+  background-color: var(--brand-color);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.hero-classic-mode .hero-btn-primary:hover {
+  background-color: var(--brand-color-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  color: var(--color-white);
+}
+
+.hero-classic-mode .hero-btn-primary:hover .hero-btn-icon {
+  transform: translateX(4px);
+}
+
+.hero-classic-mode .hero-btn-secondary {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-classic-mode .hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.hero-classic-mode .hero-btn-secondary:hover .hero-btn-icon-left {
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   Notification Banner
+   ========================================================================== */
+
+.hero-classic-mode .hero-notification-banner {
+  margin-top: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.hero-classic-mode .hero-notification-banner:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.hero-classic-mode .notification-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.hero-classic-mode .notification-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-classic-mode .notification-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-classic-mode .notification-text {
+  flex: 1;
+}
+
+.hero-classic-mode .notification-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-white) !important;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.hero-classic-mode .notification-description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.95) !important;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.hero-classic-mode .notification-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hero-classic-mode .notification-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Right Side: Product Carousel
+   (Sliding style matches the Modern design's carousel - plain image,
+   scale/fade transition, vertical dot pill - with a simple name/price
+   caption added underneath since Classic still shows that text.)
+   ========================================================================== */
+
+.hero-classic-mode .hero-product-side {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1023px) {
+  .hero-classic-mode .hero-product-carousel.hero-product-desktop-only {
+    display: none !important;
+  }
+}
+
+.hero-classic-mode .hero-product-side .product-carousel-track {
+  position: relative;
+  width: 100%;
+  max-width: 370px;
+  height: 370px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .hero-classic-mode .hero-product-side .product-carousel-track {
+    max-width: 430px;
+    height: 430px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-classic-mode .hero-product-side .product-carousel-track {
+    max-width: 470px;
+    height: 470px;
+  }
+}
+
+.hero-classic-mode .hero-product-side .product-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.94);
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.9s;
+}
+
+.hero-classic-mode .hero-product-side .product-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.hero-classic-mode .hero-product-side .product-slide-link {
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.hero-classic-mode .hero-product-side .product-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: none;
+  box-shadow: none;
+}
+
+/* Name + price caption underneath the sliding image - glass card,
+   matching the left content's .hero-notification-banner style */
+.hero-classic-mode .product-slide-caption {
+  margin-top: 1rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.hero-classic-mode .product-slide-caption:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.hero-classic-mode .product-slide-name {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-white) !important;
+  line-height: 1.3;
+}
+
+.hero-classic-mode .product-slide-price {
+  display: block;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-white) !important;
+  margin-top: 0.125rem;
+}
+
+/* Vertical Dots (no pill background/border) */
+.hero-classic-mode .hero-product-side .carousel-indicators {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  position: absolute;
+  right: 12px !important;
+  top: 45%;
+  transform: translateY(-50%);
+}
+
+.hero-classic-mode .hero-product-side .indicator-dot {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-classic-mode .hero-product-side .indicator-dot:hover {
+  border-color: var(--brand-color);
+}
+
+.hero-classic-mode .hero-product-side .indicator-dot.active {
+  background: var(--color-white);
+  border-color: var(--color-white);
+}
+
+@media (max-width: 1023px) {
+  .hero-classic-mode .hero-product-side {
+    gap: 0.5rem;
+  }
+
+  .hero-classic-mode .hero-product-side .product-carousel-track {
+    max-width: 130px;
+    height: 130px;
+  }
+
+  .hero-classic-mode .hero-product-side .carousel-indicators {
+    gap: 0.5rem;
+    right: 2px !important;
+  }
+
+  .hero-classic-mode .hero-product-side .indicator-dot {
+    width: 10px !important;
+    height: 10px !important;
+    border-width: 1.5px;
+  }
+
+  .hero-classic-mode .product-slide-caption {
+    padding: 0.5rem 0.875rem;
+    margin-top: 0.625rem;
+  }
+
+  .hero-classic-mode .product-slide-name {
+    font-size: 0.8125rem;
+  }
+
+  .hero-classic-mode .product-slide-price {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-classic-mode .hero-product-side .product-carousel-track {
+    max-width: 100px;
+    height: 100px;
+  }
+}
+
+/* ==========================================================================
+   Video Container (No Controls - Autoplay Only)
+   ========================================================================== */
+
+.hero-classic-mode .hero-video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-classic-mode .hero-video-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.hero-classic-mode .video-controls,
+.hero-classic-mode .video-play-btn,
+.hero-classic-mode .video-pause-btn,
+.hero-classic-mode .video-mute-btn {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Mobile Responsive
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .hero-section.hero-classic-mode {
+    height: auto;
+    min-height: auto;
+    padding: 2.75rem 0;
+  }
+
+  .hero-classic-mode .hero-content {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero-classic-mode .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-classic-mode .hero-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .hero-classic-mode .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-classic-mode .hero-content-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-classic-mode.hero-video-mode[data-mobile-fallback="true"] .hero-video-container video {
+    display: none !important;
+  }
+
+  .hero-classic-mode.hero-video-mode[data-mobile-fallback="true"] .video-fallback-image {
+    display: block !important;
+  }
+
+  .hero-classic-mode .hero-content-container {
+    gap: 2rem;
+  }
+
+  .hero-classic-mode .hero-title {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-classic-mode .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-classic-mode .hero-btn {
+    padding: 0.75rem 1.75rem;
+    font-size: 1rem;
+  }
+
+  .hero-classic-mode .hero-btn-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-classic-mode .hero-btn-icon-left {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-classic-mode .hero-notification-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .hero-classic-mode .notification-content {
+    width: 100%;
+  }
+
+  .hero-classic-mode .notification-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .hero-classic-mode .notification-title {
+    font-size: 1rem;
+  }
+
+  .hero-classic-mode .notification-description {
+    font-size: 0.9375rem;
+  }
+
+  .hero-classic-mode .notification-btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-classic-mode .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-classic-mode .hero-btn {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Loading Indicator
+   ========================================================================== */
+
+.hero-classic-mode .video-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  display: none;
+}
+
+.hero-classic-mode .loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: heroClassicSpin 1s ease-in-out infinite;
+}
+
+.hero-classic-mode .loading-text {
+  color: white;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+}
+
+@keyframes heroClassicSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Slider Animations
+   ========================================================================== */
+
+.hero-classic-mode .hero-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-classic-mode .hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100%);
+  transition:
+    transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1),
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+  z-index: 1;
+}
+
+.hero-classic-mode .hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  z-index: 3;
+}
+
+.hero-classic-mode .hero-slide.prev {
+  transform: translateX(-100%);
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.hero-classic-mode .hero-slide.next {
+  transform: translateX(100%);
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   Hero Content Entrance Animations - Slide In from Left/Right
+   ========================================================================== */
+
+.hero-classic-mode:not(.hero-loaded) .hero-content {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+.hero-classic-mode:not(.hero-loaded) .hero-product-carousel {
+  opacity: 0;
+  transform: translateX(60px);
+}
+
+.hero-classic-mode .hero-content {
+  transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+}
+
+.hero-classic-mode .hero-product-carousel {
+  transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
+}
+
+.hero-classic-mode.hero-loaded .hero-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero-classic-mode.hero-loaded .hero-product-carousel {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero-classic-mode:not(.hero-loaded) .hero-title,
+.hero-classic-mode:not(.hero-loaded) .hero-subtitle,
+.hero-classic-mode:not(.hero-loaded) .hero-buttons,
+.hero-classic-mode:not(.hero-loaded) .hero-notification-banner {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-classic-mode .hero-title {
+  transition: opacity 0.6s ease-out 0.4s, transform 0.6s ease-out 0.4s;
+}
+
+.hero-classic-mode .hero-subtitle {
+  transition: opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s;
+}
+
+.hero-classic-mode .hero-buttons {
+  transition: opacity 0.6s ease-out 0.8s, transform 0.6s ease-out 0.8s;
+}
+
+.hero-classic-mode .hero-notification-banner {
+  transition: opacity 0.6s ease-out 1s, transform 0.6s ease-out 1s;
+}
+
+.hero-classic-mode.hero-loaded .hero-title,
+.hero-classic-mode.hero-loaded .hero-subtitle,
+.hero-classic-mode.hero-loaded .hero-buttons,
+.hero-classic-mode.hero-loaded .hero-notification-banner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1023px) {
+  .hero-classic-mode:not(.hero-loaded) .hero-content {
+    transform: translateY(30px);
+  }
+
+  .hero-classic-mode.hero-loaded .hero-content {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-classic-mode .hero-content,
+  .hero-classic-mode .hero-product-carousel,
+  .hero-classic-mode .hero-title,
+  .hero-classic-mode .hero-subtitle,
+  .hero-classic-mode .hero-buttons,
+  .hero-classic-mode .hero-notification-banner {
+    transition: opacity 0.3s ease-out !important;
+    transform: none !important;
+  }
+}

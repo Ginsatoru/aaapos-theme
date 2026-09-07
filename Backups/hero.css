@@ -1,0 +1,934 @@
+/* ==========================================================================
+   Simplified Hero Section - Clean Modern Design (Optimized Height)
+   ==========================================================================
+   
+   Minimal, clean design with smooth product carousel
+   No complex animations or effects - focus on clarity and usability
+   
+   @package aaapos-prime
+   @since 2.1.0
+   ========================================================================== */
+
+/* Prevent horizontal scrollbar */
+body {
+  overflow-x: hidden;
+}
+
+/* Hero Section - OPTIMIZED HEIGHTS - ✅ FIXED: Removed all margins */
+.hero-section.hero-simple {
+  position: relative;
+  height: 75vh;
+  min-height: 560px;
+  overflow: hidden;
+  margin: 0 !important; /* ✅ Force no margin */
+  padding: 0;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  background-color: var(--color-black);
+}
+
+@media (min-width: 768px) {
+  .hero-section.hero-simple {
+    height: 80vh;
+    min-height: 610px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-section.hero-simple {
+    height: 82vh;
+    min-height: 650px;
+  }
+}
+
+/* ==========================================================================
+   Background (Image/Video)
+   ========================================================================== */
+
+.hero-slider,
+.hero-video-background,
+.hero-static-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: var(--color-black);
+}
+
+.hero-slide img,
+.hero-slide-image,
+.hero-static-image,
+.video-fallback-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Dark Overlay */
+.slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  /* Background color set dynamically via inline style */
+}
+
+/* ==========================================================================
+   Content Layout - Split View
+   ========================================================================== */
+
+.hero-content-wrapper {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1.75rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-content-wrapper {
+    padding: 2rem;
+  }
+}
+
+.hero-content-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  .hero-content-container {
+    padding: 0 30px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-content-container {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 3.5rem;
+    padding: 0 40px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-content-container {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    padding: 0 50px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .hero-content-container {
+    padding: 0 60px;
+  }
+}
+
+/* ==========================================================================
+   Left Side: Content - LARGER SIZES
+   ========================================================================== */
+
+.hero-content {
+  max-width: 100%;
+}
+
+/* Hero Title - OPTIMIZED SIZES */
+.hero-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-white) !important;
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 2.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 3.25rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+.hero-title-highlight {
+  display: block;
+  color: var(--brand-color) !important;
+  margin-top: 0.75rem;
+}
+
+/* Hero Subtitle - OPTIMIZED SPACING */
+.hero-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .hero-subtitle {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Hero Buttons - OPTIMIZED PADDING */
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Button Icons - Modern Style */
+.hero-btn-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 0.625rem;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.hero-btn-icon-left {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.625rem;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Primary Button */
+.hero-btn-primary {
+  background-color: var(--brand-color);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.hero-btn-primary:hover {
+  background-color: var(--brand-color-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  color: var(--color-white);
+}
+
+.hero-btn-primary:hover .hero-btn-icon {
+  transform: translateX(4px);
+}
+
+/* Secondary Button */
+.hero-btn-secondary {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.hero-btn-secondary:hover .hero-btn-icon-left {
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   Notification Banner
+   ========================================================================== */
+
+.hero-notification-banner {
+  margin-top: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.hero-notification-banner:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.notification-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-white) !important;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.notification-description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.95) !important;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.notification-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.notification-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Right Side: Product Carousel - OPTIMIZED HEIGHT & WIDTH
+   ========================================================================== */
+
+.hero-product-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+}
+
+@media (min-width: 1024px) {
+  .hero-product-carousel {
+    margin-right: 0;
+  }
+}
+
+/* ✅ MOBILE HIDE: Hide product carousel on mobile and tablet devices */
+@media (max-width: 1023px) {
+  .hero-product-carousel.hero-product-desktop-only {
+    display: none !important;
+  }
+}
+
+/* Product Carousel Track - LARGER SIZE */
+.product-carousel-track {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .product-carousel-track {
+    height: 520px;
+    max-width: 450px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-carousel-track {
+    margin: 0 0 0 auto;
+    justify-content: flex-end;
+  }
+}
+
+/* Individual Product Slide */
+.product-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.9) translateX(50px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding-right: 10px;
+}
+
+.product-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateX(0);
+  z-index: 2;
+}
+
+/* Product Slide Link Wrapper */
+.product-slide-link {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.product-slide-link:hover .product-info-card {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Product Image Wrapper - LARGER SIZE */
+.product-image-wrapper {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+}
+
+@media (min-width: 768px) {
+  .product-image-wrapper {
+    max-width: 350px;
+    margin-bottom: 1.75rem;
+  }
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Product Info Card - TRANSPARENT GLASSMORPHISM */
+.product-info-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  max-width: 300px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.product-info-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.product-info-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.product-thumbnail {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 0.625rem;
+  overflow: hidden;
+}
+
+.product-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-details {
+  flex: 1;
+  margin-left: -0.5rem;
+}
+
+.product-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-white) !important;
+  margin: 0 0 0.375rem 0;
+  line-height: 1.3;
+}
+
+.product-price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-white) !important;
+  margin: 0;
+}
+
+/* Carousel Indicators - POSITIONED BELOW CAROUSEL */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+@media (min-width: 1024px) {
+  .carousel-indicators {
+    left: auto;
+    right: 10px;
+    max-width: 310px;
+    justify-content: center;
+  }
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.indicator-dot.active {
+  background: var(--color-white);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Video Container (No Controls - Autoplay Only)
+   ========================================================================== */
+
+.hero-video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-video-container video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+/* Hide all video controls */
+.video-controls,
+.video-play-btn,
+.video-pause-btn,
+.video-mute-btn {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Mobile Responsive - OPTIMIZED HEIGHTS & CAROUSEL HIDDEN
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .hero-section.hero-simple {
+    height: auto;
+    min-height: auto;
+    padding: 2.75rem 0;
+  }
+
+  .hero-content {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+  
+  /* ✅ Content takes full width when carousel is hidden */
+  .hero-content-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-video-mode[data-mobile-fallback="true"] .hero-video-container video {
+    display: none !important;
+  }
+
+  .hero-video-mode[data-mobile-fallback="true"] .video-fallback-image {
+    display: block !important;
+  }
+
+  .hero-content-container {
+    gap: 2rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-btn {
+    padding: 0.75rem 1.75rem;
+    font-size: 1rem;
+  }
+
+  .hero-btn-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-btn-icon-left {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Notification Banner Mobile */
+  .hero-notification-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .notification-content {
+    width: 100%;
+  }
+
+  .notification-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .notification-title {
+    font-size: 1rem;
+  }
+
+  .notification-description {
+    font-size: 0.9375rem;
+  }
+
+  .notification-btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-btn {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Loading Indicator
+   ========================================================================== */
+
+.video-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  display: none;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+.loading-text {
+  color: white;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Slider Animations (from existing)
+   ========================================================================== */
+
+.hero-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100%);
+  transition:
+    transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1),
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+  z-index: 1;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  z-index: 3;
+}
+
+.hero-slide.prev {
+  transform: translateX(-100%);
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.hero-slide.next {
+  transform: translateX(100%);
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   ✅ FIXED: Page Spacing - REMOVED ALL HARDCODED PADDINGS
+   ========================================================================== */
+
+/* Homepage has no padding on site-main */
+.home .site-main {
+  padding-top: 0 !important;
+}
+
+/* All other pages - NO padding (handled by .site in layout.css) */
+.page:not(.home) .site-main,
+.single .site-main,
+.archive .site-main,
+.blog .site-main,
+.search .site-main {
+  padding-top: 0 !important;
+}
+
+/* ==========================================================================
+   Hero Content Entrance Animations - Slide In from Left/Right
+   ========================================================================== */
+
+/* Initial hidden state - content slides in from left */
+.hero-section:not(.hero-loaded) .hero-content {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* Initial hidden state - product carousel slides in from right */
+.hero-section:not(.hero-loaded) .hero-product-carousel {
+  opacity: 0;
+  transform: translateX(60px);
+}
+
+/* Animate content when page loads */
+.hero-content {
+  transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+}
+
+.hero-product-carousel {
+  transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
+}
+
+/* Loaded state - everything visible */
+.hero-section.hero-loaded .hero-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero-section.hero-loaded .hero-product-carousel {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Staggered entrance for individual content elements */
+.hero-section:not(.hero-loaded) .hero-title {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-section:not(.hero-loaded) .hero-subtitle {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-section:not(.hero-loaded) .hero-buttons {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-section:not(.hero-loaded) .hero-notification-banner {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Animate individual elements with staggered delays */
+.hero-title {
+  transition: opacity 0.6s ease-out 0.4s, transform 0.6s ease-out 0.4s;
+}
+
+.hero-subtitle {
+  transition: opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s;
+}
+
+.hero-buttons {
+  transition: opacity 0.6s ease-out 0.8s, transform 0.6s ease-out 0.8s;
+}
+
+.hero-notification-banner {
+  transition: opacity 0.6s ease-out 1s, transform 0.6s ease-out 1s;
+}
+
+/* Loaded state for individual elements */
+.hero-section.hero-loaded .hero-title,
+.hero-section.hero-loaded .hero-subtitle,
+.hero-section.hero-loaded .hero-buttons,
+.hero-section.hero-loaded .hero-notification-banner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ensure smooth animation on mobile too */
+@media (max-width: 1023px) {
+  .hero-section:not(.hero-loaded) .hero-content {
+    transform: translateY(30px);
+  }
+  
+  .hero-section.hero-loaded .hero-content {
+    transform: translateY(0);
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .hero-content,
+  .hero-product-carousel,
+  .hero-title,
+  .hero-subtitle,
+  .hero-buttons,
+  .hero-notification-banner {
+    transition: opacity 0.3s ease-out !important;
+    transform: none !important;
+  }
+}
