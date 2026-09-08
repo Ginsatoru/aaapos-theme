@@ -40,7 +40,7 @@ section.product-categories .section-header-text {
 
 section.product-categories .section-title {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--color-dark);
   margin: 0 0 0.75rem;
@@ -68,15 +68,15 @@ section.product-categories .section-header-actions {
 section.product-categories .section-header-link.btn-outline {
   flex-shrink: 0 !important;
   align-self: center !important;
-  min-height: 3rem !important;
-  max-height: 3rem !important;
+  min-height: 2.75rem !important;
+  max-height: 2.75rem !important;
   box-sizing: border-box !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 0.5rem !important;
-  padding: 0 2.5rem !important;
+  padding: 0 2rem !important;
   font-family: var(--font-body) !important;
-  font-size: 1rem !important;
+  font-size: 0.9375rem !important;
   font-weight: 600 !important;
   line-height: 1 !important;
   border: none !important;
@@ -110,12 +110,12 @@ section.product-categories .categories-nav-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  min-width: 3rem;
-  min-height: 3rem;
-  max-width: 3rem;
-  max-height: 3rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  max-width: 2.75rem;
+  max-height: 2.75rem;
   box-sizing: border-box;
   padding: 0;
   border: none;
