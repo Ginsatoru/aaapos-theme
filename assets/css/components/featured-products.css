@@ -52,7 +52,7 @@
 }
 
 .featured-products .section-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--color-text-dark);
   margin: 0 0 0.75rem;
@@ -313,8 +313,9 @@
   display: inline-flex !important;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem 2.5rem;
-  font-size: 1rem;
+  min-height: 2.75rem;
+  padding: 0 2rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   border: none !important;
   border-radius: 0.625rem;

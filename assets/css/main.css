@@ -18,6 +18,7 @@
 @import 'responsive.css';
 @import 'components/blog.css';
 @import 'components/categories.css';
+@import 'components/categories-grid.css';
 @import './components/about.css';
 @import './components/contact.css';
 

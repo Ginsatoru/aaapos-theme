@@ -1,0 +1,168 @@
+/* ===================================
+   PRODUCT CATEGORIES - GRID STYLE
+   categories-grid.css
+   Alternate to categories.css (slider style). Static responsive grid,
+   full-bleed photo cards with a bottom gradient + overlaid name, matching
+   the "Featured Category Grid" reference design. Selected via the
+   "Category Section Style" customizer control - only one of the two
+   styles is ever loaded on a given page.
+   =================================== */
+
+section.product-categories-grid.section {
+  padding: var(--space-16) 0;
+  background: var(--color-white);
+}
+
+section.product-categories-grid .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.aaapos-category-grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: var(--space-12, 3rem);
+}
+
+.aaapos-category-grid-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.aaapos-category-grid-see-all {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 2rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 0.625rem;
+  text-decoration: none;
+  white-space: nowrap;
+  background: #f0f1f3;
+  color: #16181d;
+  transition: background-color 0.2s ease;
+}
+
+.aaapos-category-grid-see-all:hover {
+  background: #e5e7ea;
+  color: #16181d;
+}
+
+.aaapos-category-grid-see-all svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.aaapos-category-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+.aaapos-category-grid-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: #e5e7ea;
+  text-decoration: none;
+  isolation: isolate;
+  transition: transform 0.2s ease;
+}
+
+.aaapos-category-grid-card:hover {
+  transform: translateY(-2px);
+}
+
+.aaapos-category-grid-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.65) 100%);
+  z-index: 0;
+}
+
+.aaapos-category-grid-card__name {
+  position: relative;
+  z-index: 1;
+  padding: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
+  section.product-categories-grid.section {
+    padding: 1.5rem 0;
+  }
+
+  .aaapos-category-grid-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .aaapos-category-grid-title {
+    font-size: 1.125rem;
+  }
+
+  .aaapos-category-grid-see-all {
+    padding: 0 0.625rem;
+    font-size: 0.6875rem;
+    min-height: 2rem;
+    gap: 0.1875rem;
+    border-radius: 0.5rem;
+  }
+
+  .aaapos-category-grid-see-all svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .aaapos-category-grid {
+    gap: 0.625rem;
+  }
+
+  .aaapos-category-grid-card__name {
+    font-size: 0.75rem;
+    padding: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .aaapos-category-grid {
+    gap: 0.375rem;
+  }
+
+  .aaapos-category-grid-card__name {
+    font-size: 0.5625rem;
+    padding: 0.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aaapos-category-grid-card {
+    transition: none;
+  }
+}

@@ -231,13 +231,11 @@
 .hero-classic-mode .hero-btn-primary {
   background-color: var(--brand-color);
   color: var(--color-white);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 .hero-classic-mode .hero-btn-primary:hover {
   background-color: var(--brand-color-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   color: var(--color-white);
 }
 
@@ -365,9 +363,10 @@
   position: relative;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 2.25rem;
 }
 
 @media (max-width: 1023px) {
@@ -478,18 +477,16 @@
 /* Vertical Dots (no pill background/border) */
 .hero-classic-mode .hero-product-side .carousel-indicators {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   background: transparent;
   border: none;
   border-radius: 0;
   padding: 0;
   box-shadow: none;
-  position: absolute;
-  right: 12px !important;
-  top: 45%;
-  transform: translateY(-50%);
+  position: static;
 }
 
 .hero-classic-mode .hero-product-side .indicator-dot {
@@ -514,7 +511,7 @@
 
 @media (max-width: 1023px) {
   .hero-classic-mode .hero-product-side {
-    gap: 0.5rem;
+    gap: 1.5rem;
   }
 
   .hero-classic-mode .hero-product-side .product-carousel-track {
@@ -524,7 +521,6 @@
 
   .hero-classic-mode .hero-product-side .carousel-indicators {
     gap: 0.5rem;
-    right: 2px !important;
   }
 
   .hero-classic-mode .hero-product-side .indicator-dot {

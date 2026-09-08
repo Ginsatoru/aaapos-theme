@@ -59,7 +59,7 @@ get_header();
         get_template_part('template-parts/sections/deals-offers');
     }
 
-    // Testimonials 
+    // Testimonials
     if (get_theme_mod('show_testimonials', true)) {
         get_template_part('template-parts/sections/testimonials');
     }

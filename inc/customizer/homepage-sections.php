@@ -104,6 +104,25 @@ function mr_homepage_sections_customizer($wp_customize)
         "priority" => 40,
     ]);
 
+    // NEW: Toggle between the slider style and the grid style
+    $wp_customize->add_setting("categories_style", [
+        "default" => "slider",
+        "sanitize_callback" => "aaapos_sanitize_categories_style",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("categories_style", [
+        "label" => __("Category Section Style", "macedon-ranges"),
+        "description" => __("Slider: scrollable row with prev/next arrows. Grid: static photo-tile grid with an overlaid name.", "macedon-ranges"),
+        "section" => "mr_homepage_sections",
+        "type" => "radio",
+        "choices" => [
+            "slider" => __("Slider", "macedon-ranges"),
+            "grid"   => __("Grid", "macedon-ranges"),
+        ],
+        "priority" => 45,
+    ]);
+
     $wp_customize->add_setting("categories_title", [
         "default" => "Shop by Category",
         "sanitize_callback" => "sanitize_text_field",
@@ -501,5 +520,14 @@ if (!function_exists("aaapos_sanitize_float")) {
     function aaapos_sanitize_float($input)
     {
         return floatval($input);
+    }
+}
+
+/**
+ * Sanitize Categories Section Style (slider or grid)
+ */
+if (!function_exists("aaapos_sanitize_categories_style")) {
+    function aaapos_sanitize_categories_style($input) {
+        return in_array($input, array('slider', 'grid'), true) ? $input : 'slider';
     }
 }

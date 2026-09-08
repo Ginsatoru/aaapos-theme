@@ -64,7 +64,45 @@ if (empty($categories) || is_wp_error($categories)) {
 
 // Only show prev/next nav buttons if there are more categories than fit in one view (6)
 $show_nav = count($categories) > 6;
+
+// Which style to render - Slider (default) or Grid, set via the
+// "Category Section Style" customizer control under Homepage Sections.
+$categories_style = get_theme_mod('categories_style', 'slider');
 ?>
+
+<?php if ($categories_style === 'grid') : ?>
+
+<section class="product-categories-grid section" id="categories" aria-labelledby="categories-grid-heading">
+    <div class="container">
+
+        <div class="aaapos-category-grid-header">
+            <h2 id="categories-grid-heading" class="aaapos-category-grid-title">
+                <?php echo esc_html($title); ?>
+            </h2>
+            <a href="<?php echo esc_url(get_permalink(wc_get_page_id('shop'))); ?>" class="aaapos-category-grid-see-all">
+                <?php esc_html_e('See all', 'aaapos-prime'); ?>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </a>
+        </div>
+
+        <div class="aaapos-category-grid">
+            <?php foreach ($categories as $category) :
+                $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+                $image = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'large') : wc_placeholder_img_src();
+            ?>
+                <a href="<?php echo esc_url(get_term_link($category)); ?>" class="aaapos-category-grid-card" style="background-image: url('<?php echo esc_url($image); ?>');">
+                    <span class="aaapos-category-grid-card__overlay"></span>
+                    <span class="aaapos-category-grid-card__name"><?php echo esc_html($category->name); ?></span>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+
+<?php else : ?>
 
 <section class="product-categories section" id="categories" aria-labelledby="categories-heading">
     <div class="container">
@@ -171,4 +209,6 @@ $show_nav = count($categories) > 6;
     });
 })();
 </script>
+<?php endif; ?>
+
 <?php endif; ?>
