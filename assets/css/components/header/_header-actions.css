@@ -12,6 +12,26 @@
   /* REMOVED: margin-left: auto; - This was causing the problem! */
 }
 
+@media (min-width: 1024px) {
+  .header-actions {
+    /* Tighter gap between search / account / cart / menu toggle to
+       make more room for nav items before anything needs to wrap */
+    gap: var(--space-2);
+    /* Allow this whole block to shrink - the search bar below is the
+       part that actually gives way, everything else here stays
+       fixed-size via flex-shrink:0 further down */
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .header-account-wrapper,
+  .header-cart-wrapper,
+  .mobile-menu-toggle,
+  .header-auth-buttons {
+    flex-shrink: 0;
+  }
+}
+
 /* CRITICAL FIX: Force search button to always stay centered - override any conflicting styles */
 .header-search-bar .search-submit,
 .search-form .search-submit,
@@ -129,6 +149,127 @@ button.search-submit,
   .account-username {
     display: block;
   }
+}
+
+/* ==========================================================================
+   HEADER SEARCH - COLLAPSE TO ICON (when there isn't enough room)
+   Toggled by JS (header-search-collapse.js) adding .is-collapsed to
+   .header-search-bar when the header actually overflows - not a fixed
+   breakpoint, so it reacts correctly regardless of how many menu items
+   exist. The inline search form hides and a small icon-only toggle
+   button appears instead; clicking it opens .header-search-overlay.
+   ========================================================================== */
+
+.header-search-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.header-search-toggle:hover {
+  background: none;
+  color: var(--brand-color);
+}
+
+.header-search-toggle svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.header-search-bar {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .header-search-bar.is-collapsed {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  .header-search-bar.is-collapsed .search-form {
+    display: none;
+  }
+
+  .header-search-bar.is-collapsed .header-search-toggle {
+    display: flex;
+  }
+}
+
+/* Small dropdown panel - anchored directly under the search icon,
+   not a full-width bar. Same visual weight as the account/cart
+   dropdowns elsewhere in the header. */
+.header-search-dropdown {
+  position: fixed !important;
+  z-index: 99999 !important;
+  width: 260px;
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.header-search-dropdown.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header-search-dropdown .search-form {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.header-search-dropdown .search-field {
+  width: 100%;
+  padding: 10px 42px 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-full);
+  font-size: 0.9rem;
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+}
+
+.header-search-dropdown .search-field:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  background: var(--color-bg-primary);
+}
+
+.header-search-dropdown .search-submit {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--brand-color);
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-white);
+}
+
+.header-search-dropdown .search-submit:hover {
+  background: var(--color-black);
 }
 
 .account-username-inner {
@@ -293,13 +434,7 @@ button.search-submit,
   display: flex;
   align-items: center;
   position: relative;
-  width: 280px;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Expand width smoothly when search field is focused */
-.header-search-bar .search-form:focus-within {
-  width: 310px;
+  width: 250px;
 }
 
 .header-search-bar .search-field {
@@ -401,20 +536,6 @@ button.search-submit,
 @media (prefers-reduced-motion: reduce) {
   .search-form.is-searching .search-submit::after {
     animation-duration: 1.2s;
-  }
-}
-
-/* ==========================================================================
-   SEARCH BAR ANIMATION - REDUCED MOTION SUPPORT
-   ========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .header-search-bar .search-form {
-    transition: none;
-  }
-
-  .header-search-bar .search-form:focus-within {
-    width: 280px;
   }
 }
 

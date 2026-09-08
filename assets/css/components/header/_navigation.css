@@ -23,7 +23,12 @@
   .main-navigation {
     display: flex;
     align-items: center;
-    margin-left: 2rem;
+    margin-left: 1rem;
+    /* Nav stays full-size and never wraps or scrolls internally - that
+       approach clipped dropdown submenus via overflow-y:hidden. The
+       search bar collapsing to an icon (_header-actions.css) is the
+       safety net instead. */
+    flex-shrink: 0;
   }
   
   /* Push navigation right when search bar is hidden */
@@ -79,6 +84,14 @@
   letter-spacing: -0.01em;
   transition: all 0.2s ease;
   position: relative;
+}
+
+@media (min-width: 1024px) {
+  .nav-menu > li > a {
+    /* Tighter horizontal padding per item to fit more menu items
+       before wrapping is ever needed */
+    padding: 0 12px;
+  }
 }
 
 .nav-menu > li > a:hover,

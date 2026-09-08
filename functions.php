@@ -20,6 +20,68 @@ define("MR_THEME_VERSION", AAAPOS_VERSION);
 define("MR_THEME_DIR", AAAPOS_THEME_DIR);
 define("MR_THEME_URI", AAAPOS_THEME_URI);
 
+// ==========================================================================
+// Logo Scale (Customizer > Site Identity)
+// Lets an admin scale the header logo up/down without touching CSS.
+// Outputs a CSS variable that _logo.css multiplies its base sizes by,
+// so 100% (the default) renders identically to the theme's original
+// fixed 50px/40px sizes - nothing changes until this is adjusted.
+// ==========================================================================
+
+if (!function_exists('aaapos_sanitize_logo_scale')) {
+    function aaapos_sanitize_logo_scale($input) {
+        $value = absint($input);
+        if ($value < 25) {
+            $value = 25;
+        }
+        if ($value > 300) {
+            $value = 300;
+        }
+        return $value;
+    }
+}
+
+add_action('customize_register', function ($wp_customize) {
+    $wp_customize->add_setting('aaapos_logo_scale', array(
+        'default'           => 100,
+        'sanitize_callback' => 'aaapos_sanitize_logo_scale',
+        'transport'         => 'postMessage',
+    ));
+
+    $wp_customize->add_control('aaapos_logo_scale', array(
+        'label'       => __('Logo Scale', 'aaapos'),
+        'section'     => 'title_tagline',
+        'type'        => 'range',
+        'input_attrs' => array(
+            'min'  => 25,
+            'max'  => 300,
+            'step' => 5,
+        ),
+        'priority' => 9,
+    ));
+});
+
+// Live-preview: updates the logo size instantly in the Customizer
+// preview iframe as the slider moves, instead of only on Save.
+add_action('customize_preview_init', function () {
+    wp_enqueue_script(
+        'aaapos-logo-scale-preview',
+        AAAPOS_THEME_URI . '/assets/js/logo-scale-preview.js',
+        array('customize-preview'),
+        AAAPOS_VERSION,
+        true
+    );
+});
+
+add_action('wp_head', function () {
+    $logo_scale = absint(get_theme_mod('aaapos_logo_scale', 100));
+    if ($logo_scale === 100) {
+        return; // Default - no override needed, matches the theme's original fixed sizes.
+    }
+    $scale = $logo_scale / 100;
+    echo '<style id="aaapos-logo-scale">:root{--logo-scale:' . esc_html($scale) . ';}</style>' . "\n";
+});
+
 // Force correct file/folder permissions (755/644) whenever WordPress
 // installs or updates themes/plugins through its own upgrader - ships
 // with the theme itself, so no per-site wp-config.php edit is needed.

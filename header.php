@@ -273,6 +273,40 @@ if (get_theme_mod('enable_page_loader', false)) {
                                 </span>
                             </button>
                         </form>
+
+                        <button type="button"
+                                class="header-search-toggle"
+                                aria-label="<?php esc_attr_e('Open search', 'aaapos'); ?>"
+                                aria-expanded="false"
+                                aria-controls="header-search-dropdown">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </button>
+
+                        <div class="header-search-dropdown" id="header-search-dropdown">
+                            <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
+                                <label for="header-search-dropdown-input" class="sr-only">
+                                    <?php esc_html_e('Search for:', 'aaapos'); ?>
+                                </label>
+                                <input 
+                                    type="search" 
+                                    id="header-search-dropdown-input"
+                                    class="search-field" 
+                                    placeholder="<?php esc_attr_e('Search...', 'aaapos'); ?>" 
+                                    value="<?php echo get_search_query(); ?>" 
+                                    name="s"
+                                    autocomplete="off"
+                                />
+                                <button type="submit" class="search-submit" aria-label="<?php esc_attr_e('Search', 'aaapos'); ?>">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <path d="m21 21-4.35-4.35"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                     <?php endif; ?>
 

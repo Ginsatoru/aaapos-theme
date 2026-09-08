@@ -77,18 +77,18 @@ body.has-sticky-header .top-bar {
   align-items: center;
   max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 26px 0 34px;
+  padding: 0 27px 0 33px;
 }
 
 @media (min-width: 768px) {
   .top-bar .container {
-    padding: 0 26px 0 40px;
+    padding: 0 22px 0 39px;
   }
 }
 
 @media (min-width: 1024px) {
   .top-bar .container {
-    padding: 0 20px 0 52px;
+    padding: 0 43px 0 49px;
   }
 }
 
@@ -98,15 +98,22 @@ body.has-sticky-header .top-bar {
   align-items: center;
   height: 100%;
   width: 100%;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .top-bar-left,
 .top-bar-right {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
-  flex: 0 0 auto;
+  gap: var(--space-4);
+  /* Allow these to shrink instead of forcing the row past the
+     container's width when there are enough items to get tight -
+     the announce slider in the middle (flex:1 1 auto, min-width:0)
+     already absorbs most of the squeeze, but this is the safety net
+     for widths where the slider is hidden (<900px) and only these
+     two sides need to fit. */
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .promo-text {
@@ -181,7 +188,7 @@ body.has-sticky-header .top-bar {
   margin: 0 auto;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .top-bar-announce {
     display: flex;
   }

@@ -266,6 +266,9 @@ wp_enqueue_script(
     true
 );
 
+// Header Search Collapse Styles
+wp_enqueue_script('aaapos-header-search-collapse', get_template_directory_uri() . '/assets/js/header-search-collapse.js', array(), AAAPOS_VERSION, true);
+
     // Main theme stylesheet (for theme metadata)
     wp_enqueue_style("mr-style", get_stylesheet_uri(), [], MR_THEME_VERSION);
 
@@ -393,6 +396,15 @@ function mr_enqueue_scripts()
         wp_enqueue_script(
     'aaapos-header-dropdowns',
     get_template_directory_uri() . '/assets/js/header-dropdowns.js',
+    [],
+    AAAPOS_VERSION,
+    true
+);
+
+// Logo scale Preview
+wp_enqueue_script(
+    'aaapos-logo-scale-preview',
+    get_template_directory_uri() . '/assets/js/logo-scale-preview.js',
     [],
     AAAPOS_VERSION,
     true

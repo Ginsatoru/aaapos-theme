@@ -29,14 +29,19 @@
 
 /* ==========================================================================
    LOGO SIZE FIX - Applied to ALL pages
+   Sizes multiply by --logo-scale (set via Customizer > Site Identity >
+   Logo Scale, functions.php). Defaults to 1 (100%) when the control
+   hasn't been touched, so this renders identically to the theme's
+   original fixed 50px/40px sizes.
    ========================================================================== */
 
 .site-logo img,
 .custom-logo,
 .custom-logo-link img {
-  height: 50px !important;
+  height: calc(50px * var(--logo-scale, 1)) !important;
   width: auto !important;
-  max-width: 200px !important;
+  max-width: calc(200px * var(--logo-scale, 1)) !important;
+  max-height: 64px !important;
   object-fit: contain !important;
   border-radius: 0;
 }
@@ -45,7 +50,8 @@
   .site-logo img,
   .custom-logo,
   .custom-logo-link img {
-    height: 50px !important;
+    height: calc(50px * var(--logo-scale, 1)) !important;
+    max-height: 74px !important;
   }
 }
 
@@ -53,7 +59,8 @@
   .site-logo img,
   .custom-logo,
   .custom-logo-link img {
-    height: 40px !important;
+    height: calc(40px * var(--logo-scale, 1)) !important;
+    max-height: 64px !important;
   }
 }
 
@@ -77,9 +84,10 @@
 .single-product .site-logo img,
 .single-product .custom-logo,
 .single-product .custom-logo-link img {
-  height: 50px !important;
+  height: calc(50px * var(--logo-scale, 1)) !important;
   width: auto !important;
-  max-width: 200px !important;
+  max-width: calc(200px * var(--logo-scale, 1)) !important;
+  max-height: 74px !important;
   object-fit: contain !important;
 }
 
@@ -90,9 +98,10 @@
 body:not(.home) .site-logo img,
 body:not(.home) .custom-logo,
 body:not(.home) .custom-logo-link img {
-  height: 50px !important;
+  height: calc(50px * var(--logo-scale, 1)) !important;
   width: auto !important;
-  max-width: 200px !important;
+  max-width: calc(200px * var(--logo-scale, 1)) !important;
+  max-height: 74px !important;
   object-fit: contain !important;
 }
 
