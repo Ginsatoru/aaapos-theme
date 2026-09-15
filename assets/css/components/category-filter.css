@@ -43,7 +43,7 @@
   font-family: var(--font-heading, inherit);
   font-size: 1.25rem;
   font-weight: 700;
-  color: black;
+  color: #000000;
   margin: 0;
 }
 
@@ -100,7 +100,7 @@
   border: none;
   border-radius: 10px;
   background: #f0f1f3;
-  color: #000000;
+  color: #16181d;
   cursor: pointer;
   flex-shrink: 0;
   transition: background-color 0.2s ease, opacity 0.2s ease;
@@ -177,11 +177,12 @@
   text-decoration: none;
   font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
   transition: all 0.25s ease;
   box-shadow: none;
-  min-width: 140px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* ==========================================================================
@@ -240,15 +241,19 @@
   flex-direction: column;
   gap: 3px;
   line-height: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .category-filter-btn .filter-label {
   font-size: 15px;
-  font-weight: 700;
-  color: #000000;
+  font-weight: var(--font-bold, 700);
+  color: var(--color-text-dark, #1f2937);
   transition: all 0.25s ease;
   margin: 0;
   line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .category-filter-btn .filter-count {
