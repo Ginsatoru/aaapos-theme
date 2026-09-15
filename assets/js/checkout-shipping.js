@@ -36,9 +36,7 @@
         $shippingMethodSection.show();
         
         if (hasShippingMethods()) {
-            console.log('✅ Shipping methods available');
         } else {
-            console.log('🚫 No shipping methods - showing WooCommerce message');
         }
     }
 
@@ -46,7 +44,6 @@
      * Trigger checkout update
      */
     function triggerCheckoutUpdate(source) {
-        console.log('🔄 Triggering checkout update from:', source);
         
         // Block both order review and shipping section with loading overlay
         $('#order_review, .shipping-method-options').block({
@@ -73,8 +70,6 @@
             const fieldId = $(this).attr('id');
             const fieldValue = $(this).val();
             
-            console.log(`📍 ${fieldId} changed to: ${fieldValue}`);
-            
             clearTimeout(countryUpdateTimer);
             
             countryUpdateTimer = setTimeout(function() {
@@ -91,7 +86,6 @@
             
             postcodeUpdateTimer = setTimeout(function() {
                 if (fieldValue.length >= 3) {
-                    console.log(`📮 ${fieldId} changed to: ${fieldValue}`);
                     triggerCheckoutUpdate(fieldId);
                 }
             }, 1000);
@@ -107,7 +101,6 @@
             
             cityUpdateTimer = setTimeout(function() {
                 if (fieldValue.length >= 3) {
-                    console.log(`🏙️ ${fieldId} changed to: ${fieldValue}`);
                     triggerCheckoutUpdate(fieldId);
                 }
             }, 1000);
@@ -127,7 +120,6 @@
         
         // Watch for checkout updates
         $(document.body).on('updated_checkout', function() {
-            console.log('✅ Checkout updated - refreshing shipping visibility');
             
             // Unblock both sections
             $('#order_review, .shipping-method-options').unblock();
@@ -151,27 +143,21 @@
             const $shippingMethods = $('.woocommerce-shipping-methods');
             if ($shippingMethods.length) {
                 const methodCount = $shippingMethods.find('input.shipping_method').length;
-                console.log(`🚚 Found ${methodCount} shipping method(s)`);
                 
                 // Log each method for debugging
                 $shippingMethods.find('input.shipping_method').each(function() {
                     const label = $(this).next('label').text().trim();
-                    console.log(`  - ${label}`);
                 });
-            } else {
-                console.log('🚫 No shipping methods container');
             }
         });
         
         // Watch for shipping calculator updates
         $(document.body).on('updated_shipping_method', function() {
-            console.log('🚚 Shipping method updated');
             setTimeout(updateShippingVisibility, 50);
         });
         
         // Handle checkout errors
         $(document.body).on('checkout_error', function() {
-            console.error('❌ Checkout update error');
             $('#order_review, .shipping-method-options').unblock();
         });
         
@@ -198,7 +184,6 @@
             });
             
             if (shouldCheck) {
-                console.log('🔍 DOM mutation detected - checking shipping');
                 setTimeout(updateShippingVisibility, 50);
             }
         });
@@ -212,7 +197,6 @@
             });
         }
         
-        console.log('✨ Shipping visibility & real-time updates initialized');
     }
 
     /**

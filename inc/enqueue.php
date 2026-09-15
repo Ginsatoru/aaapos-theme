@@ -142,14 +142,6 @@ function mr_enqueue_styles()
         MR_THEME_VERSION,
     );
 
-    // Auth Modal CSS
-    wp_enqueue_style(
-        "mr-auth-modal",
-        MR_THEME_URI . "/assets/css/auth-modal.css",
-        [],
-        MR_THEME_VERSION,
-    );
-
     // Cart Notifications CSS
     wp_enqueue_style(
         "aaapos-cart-notifications",
@@ -640,15 +632,6 @@ add_action('wp_enqueue_scripts', 'aaapos_enqueue_checkout_shipping_handler', 100
         true,
     );
 
-    // Auth Modal - Standalone (needs localization)
-    wp_enqueue_script(
-        "mr-auth-modal",
-        get_template_directory_uri() . "/assets/js/auth-modal.js",
-        ["jquery"],
-        MR_THEME_VERSION,
-        true,
-    );
-
     // Deals Rotation Script - ALWAYS LOAD (Both production and development)
 if (is_front_page()) {
     wp_enqueue_script(
@@ -659,30 +642,6 @@ if (is_front_page()) {
         true // Load in footer
     );
 }
-
-    // Get custom image directly from customizer
-    $login_image_id = get_theme_mod('auth_modal_login_image', '');
-    $login_image_url = '';
-    $has_custom_image = false;
-    
-    if (!empty($login_image_id)) {
-        $image_data = wp_get_attachment_image_src($login_image_id, 'full');
-        if ($image_data && isset($image_data[0])) {
-            $login_image_url = $image_data[0];
-            $has_custom_image = true;
-        }
-    }
-
-    // Localize auth modal (ALWAYS - both modes)
-    wp_localize_script("mr-auth-modal", "mr_auth", [
-        "ajax_url" => admin_url("admin-ajax.php"),
-        "nonce" => wp_create_nonce("mr_auth_nonce"),
-        "login_image" => $login_image_url,
-        "has_custom_image" => $has_custom_image,
-        "login_subtitle" => get_theme_mod('auth_modal_login_subtitle', __('Welcome back! Please enter your details', 'aaapos')),
-        "register_subtitle" => get_theme_mod('auth_modal_register_subtitle', __('Create your account to get started', 'aaapos')),
-        "lost_password_url" => wp_lostpassword_url(),
-    ]);
 
     // Cart Notifications - Standalone
     if (

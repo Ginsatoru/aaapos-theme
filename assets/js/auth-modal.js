@@ -5,6 +5,41 @@
  * @package AAAPOS
  * @since 1.0.4
  */
+/**
+ * reCAPTCHA (Login / Register) - explicit render.
+ *
+ * The login/register containers are injected into the DOM by this script
+ * (at DOMContentLoaded), not present in the page's initial server-rendered
+ * HTML. Google's default auto-render only scans the page once, when its own
+ * script finishes loading - which can happen before this script has had a
+ * chance to build the modal, leaving the containers empty forever. Explicit
+ * render sidesteps that: render is called from two places (whichever runs
+ * last actually renders, the other becomes a no-op via the empty-container
+ * check) - once here after the modal HTML is inserted, and again from
+ * aaaposInitAuthRecaptcha, which Google's script calls once it finishes
+ * loading.
+ */
+function aaaposRenderAuthRecaptchas() {
+    if (typeof grecaptcha === 'undefined' || !grecaptcha.render) {
+        return;
+    }
+
+    ['auth-login-recaptcha', 'auth-register-recaptcha'].forEach((id) => {
+        const container = document.getElementById(id);
+
+        if (!container || container.childElementCount > 0) {
+            return;
+        }
+
+        grecaptcha.render(container, {
+            sitekey: (typeof mr_auth !== 'undefined') ? mr_auth.recaptcha_site_key : ''
+        });
+    });
+}
+
+// Called by Google's script once it finishes loading (api.js?onload=...&render=explicit).
+window.aaaposInitAuthRecaptcha = aaaposRenderAuthRecaptchas;
+
 class AuthModal {
     constructor() {
         this.modal = null;
@@ -39,6 +74,14 @@ class AuthModal {
         const rightPanelClass = hasCustomImage ? 'auth-modal-right' : 'auth-modal-right no-image';
         const rightPanelStyle = hasCustomImage
             ? `background-image: url('${loginImage}'); background-size: cover; background-position: center; background-repeat: no-repeat;`
+            : '';
+
+        const recaptchaEnabled = mr_auth.recaptcha_enabled === 'yes';
+        const recaptchaLoginHTML = recaptchaEnabled
+            ? `<div class="auth-form-group"><div id="auth-login-recaptcha"></div></div>`
+            : '';
+        const recaptchaRegisterHTML = recaptchaEnabled
+            ? `<div class="auth-form-group"><div id="auth-register-recaptcha"></div></div>`
             : '';
 
         const modalHTML = `
@@ -84,6 +127,7 @@ class AuthModal {
                                         </div>
                                     </div>
                                     <button type="button" class="auth-forgot-link" id="open-forgot-password">forgot password?</button>
+                                    ${recaptchaLoginHTML}
                                     <button type="submit" class="auth-submit-btn">Log in</button>
                                     <p class="auth-footer-text">Don't have an account? <a href="#" class="switch-to-register">Sign up</a></p>
                                 </form>
@@ -130,6 +174,7 @@ class AuthModal {
                                             <li data-rule="special"><span class="rule-icon"><span class="rule-icon-default">○</span><span class="rule-icon-pass">✓</span><span class="rule-icon-fail">✕</span></span>One special character (!@#$%^&*)</li>
                                         </ul>
                                     </div>
+                                    ${recaptchaRegisterHTML}
                                     <button type="submit" class="auth-submit-btn">Create Account</button>
                                     <p class="auth-footer-text">Already have an account? <a href="#" class="switch-to-login">Sign in</a></p>
                                 </form>
@@ -217,6 +262,8 @@ class AuthModal {
         document.body.insertAdjacentHTML('beforeend', modalHTML);
         this.modal    = document.querySelector('.auth-modal');
         this.backdrop = document.querySelector('.auth-modal-backdrop');
+
+        aaaposRenderAuthRecaptchas();
     }
 
     bindEvents() {
@@ -484,6 +531,7 @@ class AuthModal {
                     username:   formData.get('username'),
                     password:   formData.get('password'),
                     rememberme: formData.get('rememberme') || '',
+                    recaptcha:  formData.get('g-recaptcha-response') || '',
                     nonce:      mr_auth.nonce
                 })
             });
@@ -524,11 +572,12 @@ class AuthModal {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body:    new URLSearchParams({
-                    action:   'mr_ajax_register',
-                    username: formData.get('username'),
-                    email:    formData.get('email'),
-                    password: password,
-                    nonce:    mr_auth.nonce
+                    action:    'mr_ajax_register',
+                    username:  formData.get('username'),
+                    email:     formData.get('email'),
+                    password:  password,
+                    recaptcha: formData.get('g-recaptcha-response') || '',
+                    nonce:     mr_auth.nonce
                 })
             });
 

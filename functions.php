@@ -1570,3 +1570,90 @@ function aaapos_enqueue_tyro_assets()
     );
 }
 add_action('wp_enqueue_scripts', 'aaapos_enqueue_tyro_assets');
+
+/* ==========================================================================
+   CHECKOUT RECAPTCHA
+   Uses the shared secret/site key from Customizer > reCAPTCHA, gated by its
+   own "Enable reCAPTCHA on Checkout" checkbox. Uses WooCommerce's own
+   checkout hooks so no checkout template needs to be overridden.
+
+   WooCommerce refreshes the order-review panel (which is where our widget
+   lives) via AJAX shortly after page load and again on any totals change.
+   Google's default auto-render only scans the page once, so a widget added
+   that way goes dead the moment WooCommerce swaps the panel's HTML. To
+   handle that, the widget is rendered explicitly by assets/js/checkout-
+   recaptcha.js, which re-renders it every time WooCommerce fires its
+   "updated_checkout" event.
+   ========================================================================== */
+
+add_action('wp_enqueue_scripts', function () {
+    if (
+        function_exists('is_checkout') &&
+        is_checkout() &&
+        !is_user_logged_in() &&
+        get_theme_mod('recaptcha_enable_checkout', false) &&
+        get_theme_mod('recaptcha_site_key', '')
+    ) {
+        wp_enqueue_script(
+            'aaapos-checkout-recaptcha',
+            get_template_directory_uri() . '/assets/js/checkout-recaptcha.js',
+            array('jquery'),
+            AAAPOS_VERSION,
+            true
+        );
+
+        wp_localize_script('aaapos-checkout-recaptcha', 'aaapos_checkout_recaptcha', array(
+            'site_key' => esc_attr(get_theme_mod('recaptcha_site_key', '')),
+        ));
+
+        wp_enqueue_script(
+            'google-recaptcha-checkout',
+            'https://www.google.com/recaptcha/api.js?onload=aaaposInitCheckoutRecaptcha&render=explicit',
+            array('aaapos-checkout-recaptcha'),
+            null,
+            true
+        );
+    }
+});
+
+add_action('woocommerce_review_order_before_submit', function () {
+    if (!is_user_logged_in() && get_theme_mod('recaptcha_enable_checkout', false) && get_theme_mod('recaptcha_site_key', '')) {
+        echo '<div class="form-field checkout-recaptcha-field">';
+        echo '<div id="aaapos-checkout-recaptcha"></div>';
+        echo '</div>';
+        echo '<style>
+            /* Scale + center the reCAPTCHA checkbox to better fill the form
+               width (native widget is a fixed 304px iframe, so this scales
+               it up instead of stretching it, which would distort it). */
+            #aaapos-checkout-recaptcha {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            #aaapos-checkout-recaptcha > div {
+                transform: scale(1.15);
+                transform-origin: center;
+                margin: 10px 0;
+            }
+        </style>';
+    }
+});
+
+add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
+    if (is_user_logged_in() || !get_theme_mod('recaptcha_enable_checkout', false) || !get_theme_mod('recaptcha_secret_key', '')) {
+        return;
+    }
+
+    $recaptcha_response = isset($_POST['g-recaptcha-response'])
+        ? sanitize_text_field($_POST['g-recaptcha-response'])
+        : '';
+
+    if (empty($recaptcha_response)) {
+        $errors->add('validation', __('Please complete the reCAPTCHA checkbox before placing your order.', 'AAAPOS'));
+        return;
+    }
+
+    if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response)) {
+        $errors->add('validation', __('reCAPTCHA verification failed. Please try again.', 'AAAPOS'));
+    }
+}, 10, 2);

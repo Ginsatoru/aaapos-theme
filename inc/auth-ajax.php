@@ -65,19 +65,32 @@ function mr_enqueue_auth_scripts() {
             'mr-auth-modal',
             get_template_directory_uri() . '/assets/css/auth-modal.css',
             array(),
-            '1.0.4'
+            AAAPOS_VERSION
         );
 
         wp_enqueue_script(
             'mr-auth-modal',
             get_template_directory_uri() . '/assets/js/auth-modal.js',
             array(),
-            '1.0.4',
+            AAAPOS_VERSION,
             true
         );
 
         $login_image     = mr_get_auth_modal_image_url();
         $raw_image_value = get_theme_mod('auth_modal_login_image');
+
+        $recaptcha_site_key = get_theme_mod('recaptcha_site_key', '');
+        $recaptcha_enabled  = get_theme_mod('recaptcha_enable_auth', false) && !empty($recaptcha_site_key);
+
+        if ($recaptcha_enabled) {
+            wp_enqueue_script(
+                'google-recaptcha-auth',
+                'https://www.google.com/recaptcha/api.js?onload=aaaposInitAuthRecaptcha&render=explicit',
+                array('mr-auth-modal'),
+                null,
+                true
+            );
+        }
 
         wp_localize_script('mr-auth-modal', 'mr_auth', array(
             'ajax_url'          => admin_url('admin-ajax.php'),
@@ -86,6 +99,8 @@ function mr_enqueue_auth_scripts() {
             'login_subtitle'    => get_theme_mod('auth_modal_login_subtitle', __('Welcome back! Please enter your details', 'aaapos')),
             'register_subtitle' => get_theme_mod('auth_modal_register_subtitle', __('Create your account to get started', 'aaapos')),
             'has_custom_image'  => (!empty($raw_image_value)) ? 'yes' : 'no',
+            'recaptcha_enabled' => $recaptcha_enabled ? 'yes' : 'no',
+            'recaptcha_site_key' => esc_attr($recaptcha_site_key),
         ));
     }
 }
@@ -99,6 +114,16 @@ function mr_ajax_login() {
         wp_send_json_error(array(
             'message' => __('Security check failed. Please refresh the page and try again.', 'aaapos')
         ));
+    }
+
+    if (get_theme_mod('recaptcha_enable_auth', false) && get_theme_mod('recaptcha_secret_key', '')) {
+        $recaptcha_response = isset($_POST['recaptcha']) ? sanitize_text_field($_POST['recaptcha']) : '';
+
+        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response)) {
+            wp_send_json_error(array(
+                'message' => __('reCAPTCHA verification failed. Please try again.', 'aaapos')
+            ));
+        }
     }
 
     $username = sanitize_user($_POST['username']);
@@ -146,6 +171,16 @@ function mr_ajax_register() {
         wp_send_json_error(array(
             'message' => __('User registration is currently disabled.', 'aaapos')
         ));
+    }
+
+    if (get_theme_mod('recaptcha_enable_auth', false) && get_theme_mod('recaptcha_secret_key', '')) {
+        $recaptcha_response = isset($_POST['recaptcha']) ? sanitize_text_field($_POST['recaptcha']) : '';
+
+        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response)) {
+            wp_send_json_error(array(
+                'message' => __('reCAPTCHA verification failed. Please try again.', 'aaapos')
+            ));
+        }
     }
 
     $username = sanitize_user($_POST['username']);
