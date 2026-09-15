@@ -298,6 +298,10 @@
     border: 1px solid var(--color-border-light);
 }
 
+.contact-info-link:hover {
+    border-color: solid 0.5px var(--brand-color);
+}
+
 .contact-info-link__icon {
     flex-shrink: 0;
     width: 40px;

@@ -69,8 +69,11 @@ if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_ke
                 </div>
                 <?php endif; ?>
                 
-                <?php if (get_theme_mod('contact_show_stat3', true)) : ?>
-                <div class="quick-stat" data-animate="fade-up" data-animate-delay="300">
+                <?php if (get_theme_mod('contact_show_stat3', true)) :
+                    $stat3_url = get_theme_mod('contact_stat3_url', '');
+                    $stat3_tag = !empty($stat3_url) ? 'a' : 'div';
+                ?>
+                <<?php echo $stat3_tag; ?> class="quick-stat" data-animate="fade-up" data-animate-delay="300"<?php echo !empty($stat3_url) ? ' href="' . esc_url($stat3_url) . '" target="_blank" rel="noopener"' : ''; ?>>
                     <svg class="quick-stat__icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
@@ -79,7 +82,7 @@ if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_ke
                         <strong><?php echo esc_html(get_theme_mod('contact_stat3_title', 'Visit Us')); ?></strong>
                         <span><?php echo esc_html(get_theme_mod('contact_stat3_text', 'AAAPOS')); ?></span>
                     </div>
-                </div>
+                </<?php echo $stat3_tag; ?>>
                 <?php endif; ?>
             </div>
             <?php endif; ?>
@@ -256,9 +259,11 @@ if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_ke
                             <!-- Address -->
                             <?php 
                             $address = get_theme_mod('contact_address', '123 Farm Road, AAAPOS VIC 3440');
+                            $address_url = get_theme_mod('contact_address_url', '');
+                            $address_tag = !empty($address_url) ? 'a' : 'div';
                             if (!empty($address)) : 
                             ?>
-                            <div class="contact-info-link">
+                            <<?php echo $address_tag; ?> class="contact-info-link"<?php echo !empty($address_url) ? ' href="' . esc_url($address_url) . '" target="_blank" rel="noopener"' : ''; ?>>
                                 <div class="contact-info-link__icon">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -269,7 +274,7 @@ if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_ke
                                     <span class="contact-info-link__label">Address</span>
                                     <span class="contact-info-link__value"><?php echo esc_html($address); ?></span>
                                 </div>
-                            </div>
+                            </<?php echo $address_tag; ?>>
                             <?php endif; ?>
                             
                         </div>

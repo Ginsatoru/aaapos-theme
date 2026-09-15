@@ -86,6 +86,18 @@ function aaapos_contact_page_customizer($wp_customize) {
         'priority' => 7,
     ));
 
+    $wp_customize->add_setting('contact_address_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    $wp_customize->add_control('contact_address_url', array(
+        'label'       => __('Address - Link URL', 'aaapos-prime'),
+        'section'     => 'aaapos_contact_page',
+        'type'        => 'url',
+        'priority'    => 8,
+    ));
+
     // ===================================
     // EMAIL SETTINGS
     // ===================================
@@ -290,6 +302,18 @@ function aaapos_contact_page_customizer($wp_customize) {
         'priority' => 50,
     ));
 
+    $wp_customize->add_setting('contact_stat3_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+    $wp_customize->add_control('contact_stat3_url', array(
+        'label'       => __('Quick Stat 3 - Link URL', 'aaapos-prime'),
+        'section'     => 'aaapos_contact_page',
+        'type'        => 'url',
+        'priority'    => 51,
+    ));
+
     // ===================================
     // CONTACT FORM SECTION
     // ===================================
@@ -483,7 +507,6 @@ function aaapos_contact_page_customizer($wp_customize) {
     ));
     $wp_customize->add_control('contact_social_text', array(
         'label'       => __('Social Block - Text', 'aaapos-prime'),
-        'description' => __('Social media links are managed in Footer settings', 'aaapos-prime'),
         'section'     => 'aaapos_contact_page',
         'type'        => 'text',
         'priority'    => 150,
@@ -515,7 +538,6 @@ function aaapos_contact_page_customizer($wp_customize) {
     
     $wp_customize->add_control('contact_map_embed', array(
         'label'       => __('Google Maps Embed', 'aaapos-prime'),
-        'description' => __('Paste your Google Maps iframe code or embed URL here', 'aaapos-prime'),
         'section'     => 'aaapos_contact_page',
         'type'        => 'textarea',
         'priority'    => 160,

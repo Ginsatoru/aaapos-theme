@@ -54,8 +54,14 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
                 <div class="top-bar-left">
                     <?php if ($phone) : ?>
                         <a href="tel:<?php echo esc_attr(str_replace(' ', '', $phone)); ?>" class="top-bar-item">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                            <svg width="16" height="16" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M94.811,21.696c-35.18,22.816-42.091,94.135-28.809,152.262c10.344,45.266,32.336,105.987,69.42,163.165
+                                    c34.886,53.79,83.557,102.022,120.669,129.928c47.657,35.832,115.594,58.608,150.774,35.792
+                                    c17.789-11.537,44.218-43.058,45.424-48.714c0,0-15.498-23.896-18.899-29.14l-51.972-80.135
+                                    c-3.862-5.955-28.082-0.512-40.386,6.457c-16.597,9.404-31.882,34.636-31.882,34.636c-11.38,6.575-20.912,0.024-40.828-9.142
+                                    c-24.477-11.262-51.997-46.254-73.9-77.947c-20.005-32.923-40.732-72.322-41.032-99.264c-0.247-21.922-2.341-33.296,8.304-41.006
+                                    c0,0,29.272-3.666,44.627-14.984c11.381-8.392,26.228-28.286,22.366-34.242l-51.972-80.134c-3.401-5.244-18.899-29.14-18.899-29.14
+                                    C152.159-1.117,112.6,10.159,94.811,21.696z"/>
                             </svg>
                             <span><?php echo esc_html($phone); ?></span>
                         </a>
@@ -76,9 +82,14 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
             <!-- Center: Live Update Slider (only if announcements actually exist) -->
             <?php if ($has_announcements) : ?>
                 <div class="top-bar-announce" data-items='<?php echo esc_attr(wp_json_encode($announcements)); ?>' data-interval="5000">
-                    <svg class="announce-icon" width="15" height="15" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M10 2a6 6 0 00-6 6c0 3.5-1.5 5-1.5 5h15S16 11.5 16 8a6 6 0 00-6-6z"/>
-                        <path d="M8.5 16a1.5 1.5 0 003 0h-3z"/>
+                    <svg class="announce-icon" width="15" height="15" viewBox="0 0 207.238 207.238" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M197.032,167.624c-0.461,2.344-2.517,4.035-4.906,4.035H15.112c-2.39,0-4.445-1.691-4.906-4.035
+                            c-0.461-2.345,0.802-4.688,3.013-5.593c0.114-0.047,12.24-5.128,22.93-16c9.53-9.692,14.163-31.721,14.163-67.348
+                            c0-30.658,12.725-45.569,23.398-52.679c3.934-2.62,7.961-4.449,11.742-5.738c-0.071-0.653-0.113-1.315-0.113-1.987
+                            c0-10.08,8.2-18.28,18.28-18.28s18.28,8.201,18.28,18.28c0,0.672-0.042,1.333-0.113,1.987c3.781,1.288,7.809,3.118,11.743,5.739
+                            c10.674,7.11,23.396,22.021,23.396,52.677c0,35.625,4.633,57.655,14.163,67.348c10.767,10.949,22.81,15.951,22.931,16
+                            C196.23,162.936,197.493,165.279,197.032,167.624z M121.826,179.03H85.412c-2.762,0-5,2.239-5,5
+                            c0,12.797,10.41,23.208,23.207,23.208s23.207-10.411,23.207-23.208C126.826,181.269,124.588,179.03,121.826,179.03z"/>
                     </svg>
                     <div class="announce-viewport" aria-live="polite">
                         <a href="<?php echo esc_url($announcements[0]['url']); ?>" class="announce-link">
@@ -93,8 +104,11 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
                 <div class="top-bar-right">
                     <?php if ($has_promo) : ?>
                         <div class="promo-text">
-                            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12,0C5.373,0,0,5.373,0,12s5.373,12,12,12s12-5.373,12-12S18.627,0,12,0z M12,19.66
+                                    c-0.938,0-1.58-0.723-1.58-1.66c0-0.964,0.669-1.66,1.58-1.66c0.963,0,1.58,0.696,1.58,1.66C13.58,18.938,12.963,19.66,12,19.66z
+                                    M12.622,13.321c-0.239,0.815-0.992,0.829-1.243,0c-0.289-0.956-1.316-4.585-1.316-6.942c0-3.11,3.891-3.125,3.891,0
+                                    C13.953,8.75,12.871,12.473,12.622,13.321z"/>
                             </svg>
                             <span><?php echo esc_html($promo_text); ?></span>
                         </div>
