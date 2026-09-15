@@ -40,7 +40,7 @@ function mr_woocommerce_customizer($wp_customize)
         new WP_Customize_Image_Control($wp_customize, "shop_header_bg_image", [
             "label" => __("Shop Header Background Image", "macedon-ranges"),
             "description" => __(
-                "Upload a high-quality greenhouse or plant nursery image for the shop header. Recommended: Bright, airy interior with lush green plants.",
+                "Background image for the shop header.",
                 "macedon-ranges",
             ),
             "section" => "mr_woocommerce_settings",
@@ -128,7 +128,7 @@ function mr_woocommerce_customizer($wp_customize)
             [
                 "label" => __("Select Categories to Display", "macedon-ranges"),
                 "description" => __(
-                    'Check categories to show in filter. Use "Select All" to show all categories. Unchecking all will hide the filter.',
+                    "Choose which categories appear in the filter.",
                     "macedon-ranges",
                 ),
                 "section" => "mr_woocommerce_settings",
@@ -151,10 +151,7 @@ function mr_woocommerce_customizer($wp_customize)
 
     $wp_customize->add_control("products_per_page", [
         "label" => __("Products Per Page", "macedon-ranges"),
-        "description" => __(
-            "Number of products to display per page in shop",
-            "macedon-ranges",
-        ),
+        "description" => __("Products shown per page.", "macedon-ranges"),
         "section" => "mr_woocommerce_settings",
         "type" => "number",
         "input_attrs" => [
@@ -163,48 +160,6 @@ function mr_woocommerce_customizer($wp_customize)
             "step" => 1,
         ],
         "priority" => 10,
-    ]);
-
-    // Shop Layout
-    $wp_customize->add_setting("shop_layout", [
-        "default" => "grid",
-        "sanitize_callback" => "sanitize_text_field",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control("shop_layout", [
-        "label" => __("Shop Layout", "macedon-ranges"),
-        "section" => "mr_woocommerce_settings",
-        "type" => "select",
-        "choices" => [
-            "grid" => __("Grid", "macedon-ranges"),
-            "list" => __("List", "macedon-ranges"),
-        ],
-        "priority" => 15,
-    ]);
-
-    // Products Per Row
-    $wp_customize->add_setting("products_per_row", [
-        "default" => 3,
-        "sanitize_callback" => "absint",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control("products_per_row", [
-        "label" => __("Products Per Row", "macedon-ranges"),
-        "description" => __(
-            "Number of product columns in grid layout",
-            "macedon-ranges",
-        ),
-        "section" => "mr_woocommerce_settings",
-        "type" => "select",
-        "choices" => [
-            "2" => __("2 Columns", "macedon-ranges"),
-            "3" => __("3 Columns", "macedon-ranges"),
-            "4" => __("4 Columns", "macedon-ranges"),
-            "5" => __("5 Columns", "macedon-ranges"),
-        ],
-        "priority" => 20,
     ]);
 
     // Show/Hide Product Rating
@@ -219,20 +174,6 @@ function mr_woocommerce_customizer($wp_customize)
         "section" => "mr_woocommerce_settings",
         "type" => "checkbox",
         "priority" => 25,
-    ]);
-
-    // Show/Hide Quick View
-    $wp_customize->add_setting("show_quick_view", [
-        "default" => true,
-        "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control("show_quick_view", [
-        "label" => __("Enable Quick View", "macedon-ranges"),
-        "section" => "mr_woocommerce_settings",
-        "type" => "checkbox",
-        "priority" => 30,
     ]);
 
     // Sale Badge Text
@@ -259,7 +200,7 @@ function mr_woocommerce_customizer($wp_customize)
     $wp_customize->add_control("related_products_count", [
         "label" => __("Related Products Count", "macedon-ranges"),
         "description" => __(
-            "Number of related products to show on single product page",
+            "Related products shown on the product page.",
             "macedon-ranges",
         ),
         "section" => "mr_woocommerce_settings",
@@ -270,20 +211,6 @@ function mr_woocommerce_customizer($wp_customize)
             "step" => 1,
         ],
         "priority" => 40,
-    ]);
-
-    // Show/Hide Product Sidebar
-    $wp_customize->add_setting("show_shop_sidebar", [
-        "default" => false,
-        "sanitize_callback" => "wp_validate_boolean",
-        "transport" => "refresh",
-    ]);
-
-    $wp_customize->add_control("show_shop_sidebar", [
-        "label" => __("Show Shop Sidebar", "macedon-ranges"),
-        "section" => "mr_woocommerce_settings",
-        "type" => "checkbox",
-        "priority" => 45,
     ]);
 
     // Cart Icon Style

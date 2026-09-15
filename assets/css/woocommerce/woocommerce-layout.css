@@ -1,7 +1,7 @@
 /* ============================================
    WooCommerce Layout Styles
    Page structure, containers, headers, toolbars
-   Version: 2.1 - Fixed container alignment with global layout
+   Version: 2.2 - Toolbar redesigned with breadcrumb + search + filters
    ============================================ */
 
 /* === PAGE BACKGROUND & WRAPPER === */
@@ -39,27 +39,11 @@
 }
 
 /* === BREADCRUMB ===
-   FIXED: Also aligned to --container-max-width to match header/footer.
+   Layout/position only - visual pill styling lives in breadcrumb-shop.css
 */
 .woocommerce-breadcrumb,
 .woocommerce .woocommerce-breadcrumb {
-  max-width: var(--container-max-width) !important;
-  width: 100% !important;
-  margin: 0 auto 0.75rem auto !important;
-  padding: 0.5rem var(--container-padding) !important;
-  font-size: var(--text-sm);
-  color: var(--color-text-light);
-  margin-top: 0.75rem !important;
-}
-
-.woocommerce-breadcrumb a {
-  color: var(--color-text-light);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.woocommerce-breadcrumb a:hover {
-  color: var(--color-primary);
+  margin: 0 !important;
 }
 
 /* === TOP SPACING CONTROL === */
@@ -277,7 +261,10 @@
   }
 }
 
-/* === SHOP TOOLBAR === */
+/* === SHOP TOOLBAR ===
+   UPDATED: Now holds breadcrumb (left) + search/filters/columns (right)
+   instead of result-count + sort dropdown.
+*/
 .shop-toolbar {
   display: flex;
   justify-content: space-between;
@@ -288,6 +275,21 @@
   border-radius: 8px;
   border: none;
   box-shadow: none;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.shop-toolbar__left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.shop-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .woocommerce-result-count {
@@ -303,7 +305,10 @@
   gap: 1rem;
 }
 
-/* === SORTING DROPDOWN === */
+/* === SORTING DROPDOWN ===
+   No longer rendered in the toolbar (moved into the Filters panel),
+   kept here unused/harmless in case it's needed again elsewhere.
+*/
 .woocommerce-ordering {
   margin: 0;
 }
@@ -343,9 +348,11 @@
   align-items: center;
   gap: 0.5rem;
   background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 0.25rem;
+  border: none;
+  border-radius: 999px;
+  height: 42px;
+  padding: 0 0.25rem;
+  box-sizing: border-box;
   position: relative;
 }
 
@@ -356,7 +363,7 @@
   padding: 0.5rem;
   background: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: 999px;
   color: var(--color-text-light);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -370,7 +377,7 @@
 
 .column-toggle.active {
   color: var(--color-white);
-  background: var(--color-primary);
+  background: #111;
 }
 
 .column-toggle svg {
@@ -422,12 +429,19 @@
 /* === MOBILE TOOLBAR === */
 @media (max-width: 767px) {
   .shop-toolbar {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
     padding: 0.75rem 1rem;
+  }
+
+  .shop-toolbar__left,
+  .shop-toolbar__right {
+    width: 100%;
+  }
+
+  .shop-toolbar__right {
+    justify-content: space-between;
   }
 
   .woocommerce-result-count {
@@ -457,15 +471,6 @@
     background-position: right 0.5rem center;
     background-size: 12px;
     text-overflow: ellipsis;
-  }
-
-  .column-toggle-wrapper {
-    display: none !important;
-  }
-
-  .column-toggle::before,
-  .column-toggle::after {
-    display: none;
   }
 }
 

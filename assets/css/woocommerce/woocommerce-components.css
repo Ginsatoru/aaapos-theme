@@ -1,6 +1,9 @@
 /* ============================================
    WooCommerce Components Styles
    Buttons, badges, ratings, pagination
+   UPDATED: Pagination redesigned - circular pills, black active page,
+   light-gray inactive numbers, plain-text ellipsis, arrow as a light
+   circle with chevron icon, no hover-lift.
    ============================================ */
 
 /* === ADD TO CART BUTTON === */
@@ -230,6 +233,7 @@
 
 .woocommerce-pagination ul {
   display: inline-flex;
+  align-items: center;
   gap: 0.5rem;
   list-style: none;
   padding: 0;
@@ -262,34 +266,63 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 40px;
-  height: 40px;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: 8px;
-  background: var(--color-white);
-  color: var(--color-text, #374151);
+  min-width: 36px;
+  height: 36px;
+  padding: 0 0.5rem;
+  border: none;
+  border-radius: 999px;
+  background: #eef0f4;
+  color: #111;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .woocommerce-pagination .page-numbers:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: var(--color-white);
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #e2e5eb;
+  color: #111;
 }
 
 .woocommerce-pagination .page-numbers.current {
-  background: var(--color-primary);
-  color: var(--color-white);
-  border-color: var(--color-primary);
+  background: #111;
+  color: #fff;
 }
 
 .woocommerce-pagination .page-numbers.current:hover {
-  transform: none;
-  box-shadow: none;
+  background: #111;
+}
+
+.woocommerce-pagination .page-numbers.dots {
+  background: transparent;
+  color: #a5aab1;
+  font-weight: 700;
+  width: auto;
+  min-width: auto;
+  padding: 0 0.25rem;
+}
+
+.woocommerce-pagination .page-numbers.dots:hover {
+  background: transparent;
+}
+
+/* Prev/next arrow buttons - light circle with a chevron icon */
+.woocommerce-pagination .page-numbers.next,
+.woocommerce-pagination .page-numbers.prev {
+  background: #eef0f4;
+  color: #111;
+}
+
+.woocommerce-pagination .page-numbers.next svg,
+.woocommerce-pagination .page-numbers.prev svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.woocommerce-pagination .page-numbers.next:hover,
+.woocommerce-pagination .page-numbers.prev:hover {
+  background: #e2e5eb;
 }

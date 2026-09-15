@@ -3,7 +3,9 @@
    Modern, Clean Design - Using Theme Variables
    
    myaccount-main.css
-   UPDATED: Added myaccount-downloads.css import
+   UPDATED: Added missing myaccount-responsive.css import - it existed
+   as a file but was never actually imported, so none of its mobile
+   fixes (orders table stacking, dashboard grid, etc.) were loading.
    ============================================ */
 
 /* Import all my account component styles */
@@ -15,6 +17,7 @@
 @import 'myaccount-addresses.css';
 @import 'myaccount-forms.css';
 @import 'myaccount-payment.css';
+@import 'myaccount-responsive.css';
 
 /* ============================================
    Global My Account Styles

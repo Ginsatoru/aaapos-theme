@@ -72,8 +72,7 @@ body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coup
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.button:hover,
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coupon-btn:hover {
-  background: var(--brand-color-hover, #1a3320);
-  transform: translateY(-1px);
+  background: black;
 }
 
 /* Right side actions - Compact */
@@ -92,8 +91,7 @@ body.woocommerce-cart table.shop_table.cart td.actions button.update-cart-btn {
 
 body.woocommerce-cart table.shop_table.cart td.actions button[name="update_cart"]:hover:not(:disabled),
 body.woocommerce-cart table.shop_table.cart td.actions button.update-cart-btn:hover:not(:disabled) {
-  background: var(--brand-color-hover, #1a3320);
-  transform: translateY(-1px);
+  background: black;
 }
 
 body.woocommerce-cart table.shop_table.cart td.actions button[name="update_cart"]:disabled,
@@ -158,7 +156,6 @@ body.woocommerce-cart .clear-cart-link svg {
 body.woocommerce-cart .clear-cart-link:hover {
   background: var(--brand-color);
   color: var(--color-white, #ffffff);
-  transform: translateY(-1px);
 }
 
 body.woocommerce-cart .clear-cart-link:active {
@@ -184,7 +181,7 @@ body.woocommerce-cart .cart_totals {
 body.woocommerce-cart .cart_totals > h2 {
   font-size: 1.375rem;
   font-weight: 700;
-  color: var(--color-text-dark, #212529);
+  color: #000000;
   margin-bottom: 1rem;
   padding-bottom: 0.875rem;
   border-bottom: 1px solid var(--color-border-light, #EDEDED);
@@ -245,13 +242,13 @@ body.woocommerce-cart .cart_totals table.shop_table td {
 body.woocommerce-cart .cart_totals table.shop_table th {
   text-align: left;
   font-weight: 400;
-  color: var(--color-text-light, #6C757D);
+  color: #000000;
 }
 
 body.woocommerce-cart .cart_totals table.shop_table td {
   text-align: right;
   font-weight: 600;
-  color: var(--color-text-dark, #212529);
+  color: #000000;
 }
 
 /* ==========================================================================
@@ -262,7 +259,7 @@ body.woocommerce-cart .cart_totals table.shop_table td {
 body.woocommerce-cart .cart_totals table.shop_table td {
   text-align: right;
   font-weight: 700 !important;
-  color: var(--color-text-dark, #212529);
+  color: #000000;
 }
 
 body.woocommerce-cart .cart_totals table.shop_table td * {
@@ -283,7 +280,7 @@ body.woocommerce-cart .cart_totals table.shop_table td .woocommerce-Price-curren
 /* Tax row - ULTRA SPECIFIC targeting exact HTML structure */
 body.woocommerce-cart .cart_totals .tax-total th,
 body.woocommerce-cart .cart_totals .tax-rate th {
-  color: var(--color-text-light, #6C757D);
+  color: #000000;
   font-weight: 400;
 }
 
@@ -294,7 +291,7 @@ body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-amount
 body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-amount.amount,
 body.woocommerce-cart .cart_totals tr.tax-total td bdi,
 body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-currencySymbol {
-  color: var(--color-text-dark, #212529);
+  color: #000000;
   font-weight: 700 !important;
 }
 
@@ -311,21 +308,21 @@ body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-curren
 
 /* Coupon discount row - Simple styling like other rows */
 body.woocommerce-cart .cart_totals .cart-discount th {
-  color: var(--color-text-light, #6C757D);
+  color: #000000;
   font-weight: 400;
 }
 
 body.woocommerce-cart .cart_totals .cart-discount td,
 body.woocommerce-cart .cart_totals .cart-discount td span,
 body.woocommerce-cart .cart_totals .cart-discount td bdi {
-  color: var(--color-text-dark, #212529);
+  color: #000000;
   font-weight: 700 !important;
 }
 
-/* When no coupon applied - show $0.00 in muted gray */
+/* When no coupon applied - still pure black, matching the rest */
 body.woocommerce-cart .cart_totals .cart-discount.no-coupon td span,
 body.woocommerce-cart .cart_totals .cart-discount.no-coupon td .woocommerce-Price-amount {
-  color: var(--color-text-lighter, #ADB5BD);
+  color: #000000;
 }
 
 /* ==========================================================================
@@ -336,14 +333,14 @@ body.woocommerce-cart .cart_totals .cart-discount.no-coupon td .woocommerce-Pric
 body.woocommerce-cart .cart_totals tr.order-total th {
   font-weight: 700 !important;
   font-size: 1.125rem;
-  color: var(--color-text-dark, #212529);
+  color: #000000;
 }
 
 /* Make Total amount bold - Target ALL nested elements */
 body.woocommerce-cart .cart_totals tr.order-total td {
   font-weight: 700 !important;
   font-size: 1.125rem;
-  color: var(--color-text-dark, #212529);
+  color: #000000;
 }
 
 /* Target the strong tag wrapper */
@@ -416,8 +413,7 @@ body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button::before {
 }
 
 body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button:hover {
-  background: var(--brand-color-hover, #1a3320);
-  transform: translateY(-2px);
+  background: black !important;
 }
 
 /* ==========================================================================

@@ -4,6 +4,10 @@
    background and top/bottom spacing (moved here from
    myaccount-dashboard.css - this wrapper is shared by every
    My Account page, not just the dashboard, so it belongs here).
+   UPDATED: Mobile fix - explicitly reset .woocommerce-MyAccount-
+   navigation's width/float, since WooCommerce core's default
+   float:left;width:30% can still win inside our 1-column grid
+   track if never explicitly overridden.
    ============================================ */
 
 body.woocommerce-account .site-main,
@@ -46,6 +50,21 @@ body.woocommerce-account .content-area {
   .woocommerce-MyAccount-wrapper {
     grid-template-columns: 1fr;
     gap: var(--space-6);
+  }
+
+  /* WooCommerce core's default .woocommerce-MyAccount-navigation
+     { float: left; width: 30%; } and .woocommerce-MyAccount-content
+     { float: left; width: 68%; margin-left: 4%; } can still win
+     inside our 1-column grid track unless explicitly reset here. */
+  .woocommerce-MyAccount-navigation {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  .woocommerce-MyAccount-content {
+    width: 100% !important;
+    float: none !important;
+    margin-left: 0 !important;
   }
 
   /* Belt-and-braces: guarantee visible space above the content card even

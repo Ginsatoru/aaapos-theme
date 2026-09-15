@@ -4,6 +4,9 @@
    no box-shadow, no lift-hover, icon circle in the header
    (matching dashboard-action-card), flat pill edit button,
    and a clean text-only "not set up yet" empty state.
+   UPDATED: Mobile address body content gets more top padding
+   (space-4 -> space-6), moving it down slightly from the Edit
+   button.
    ============================================ */
 
 /* ==========================================================================
@@ -243,7 +246,7 @@
   /* Adjust address content padding */
   .woocommerce-Address address,
   .aaapos-address-card__body {
-    padding: var(--space-4) var(--space-5) var(--space-5) var(--space-5) !important;
+    padding: var(--space-6) var(--space-5) var(--space-5) var(--space-5) !important;
   }
 }
 

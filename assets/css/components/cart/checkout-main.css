@@ -52,7 +52,7 @@ body.woocommerce-checkout #main.site-main article .entry-title {
   margin-top: -105px;
   font-size: 2.75rem;
   font-weight: 700;
-  color: #212529;
+  color: #000000;
   margin-bottom: var(--space-5);
   font-family: var(--font-heading);
 }
@@ -84,7 +84,6 @@ body.woocommerce-checkout #main.site-main article .entry-title {
   padding: 1.5rem;
   margin-bottom: 1.25rem;
   border: 1px solid #E5E5E5;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .checkout-section:last-child {
@@ -100,7 +99,7 @@ body.woocommerce-checkout .section-title,
   gap: 0.625rem;
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-text-dark);
+  color: #000000;
   margin-bottom: 1.25rem;
   padding-bottom: 0.875rem;
   border-bottom: 1px solid var(--color-border-light);
@@ -114,8 +113,8 @@ body.woocommerce-checkout .section-title,
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--brand-color);
-  color: var(--color-white);
+  background: #000000;
+  color: #ffffff;
   flex-shrink: 0;
 }
 
@@ -140,7 +139,7 @@ body.woocommerce-checkout .section-title,
 
 .woocommerce-checkout .select2-container .select2-selection--single {
   height: 46px !important;
-  border: 2px solid var(--color-gray-300) !important;
+  border: 0.5px solid var(--color-gray-300) !important;
   border-radius: 12px !important;
   background: var(--color-white) !important;
   transition: border-color 0.2s ease !important;
@@ -152,7 +151,7 @@ body.woocommerce-checkout .section-title,
   line-height: 42px !important;
   padding-left: 0.875rem !important;
   padding-right: 2.5rem !important;
-  color: var(--color-text) !important;
+  color: #000000;
   font-size: 0.9375rem !important;
 }
 
@@ -190,12 +189,12 @@ body.woocommerce-checkout .section-title,
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
   background-color: var(--brand-color) !important;
-  color: var(--color-white) !important;
+  color: #ffffff;
 }
 
 /* Search Field Inside Dropdown */
 .select2-search--dropdown .select2-search__field {
-  border: 2px solid var(--color-gray-300) !important;
+  border: 0.5px solid var(--color-gray-300) !important;
   border-radius: 8px !important;
   padding: 0.5rem 0.75rem !important;
   font-size: 0.9375rem !important;
@@ -208,7 +207,7 @@ body.woocommerce-checkout .section-title,
 
 /* Dropdown Container */
 .select2-container--default .select2-dropdown {
-  border: 2px solid var(--color-gray-300) !important;
+  border: 0.5px solid var(--color-gray-300) !important;
   border-radius: 12px !important;
   margin-top: 4px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
@@ -219,9 +218,40 @@ body.woocommerce-checkout .section-title,
   border-color: var(--brand-color) !important;
 }
 
+/* Merge the search field into the same visual spot as the closed box,
+   so typing feels like it happens in the main field itself instead of
+   a separate box appearing below it. */
+.select2-container--open .select2-dropdown--below {
+  margin-top: -46px !important;
+}
+
+.woocommerce-checkout .select2-container--open .select2-selection--single {
+  border-color: transparent !important;
+}
+
+.woocommerce-checkout .select2-container--open .select2-selection--single .select2-selection__rendered,
+.woocommerce-checkout .select2-container--open .select2-selection--single .select2-selection__arrow {
+  visibility: hidden !important;
+}
+
+.select2-search--dropdown {
+  padding: 0 !important;
+}
+
+.select2-search--dropdown .select2-search__field {
+  height: 46px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border: 0.5px solid #000000 !important;
+  border-radius: 12px !important;
+  padding: 0 0.875rem !important;
+  margin: 0 !important;
+  font-size: 0.9375rem !important;
+}
+
 /* Placeholder Text */
 .woocommerce-checkout .select2-container .select2-selection--single .select2-selection__placeholder {
-  color: var(--color-text-lighter) !important;
+  color: #000000;
   font-size: 0.875rem !important;
 }
 

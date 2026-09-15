@@ -5,12 +5,151 @@
  * UPDATED: Added fallback background image support
  * FIXED: Removed shipping calculator from cart page
  * UPDATED: My Account dashboard content moved to inc/myaccount-dashboard.php
+ * UPDATED: Category filter icons use the category's own product image,
+ * falling back to the WooCommerce placeholder, then the default icon
  *
  * woocommerce.php
  */
 
 if (!defined("ABSPATH")) {
     exit();
+}
+
+/**
+ * Keep single-result product searches on the search results page
+ * instead of WooCommerce's default behavior of redirecting straight
+ * to that one product.
+ */
+add_filter('woocommerce_redirect_single_search_result', '__return_false');
+
+/**
+ * Give shop-page pagination the same SVG chevron prev/next icons used
+ * on search.php, instead of WooCommerce's default plain arrow text.
+ */
+add_filter('woocommerce_pagination_args', function ($args) {
+    $args['prev_text'] = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+    $args['next_text'] = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+    return $args;
+});
+
+/**
+ * Move the default breadcrumb out of woocommerce_before_main_content -
+ * it now renders manually inside the shop heading box in
+ * archive-product.php instead of printing above the whole page.
+ */
+add_action('wp', function () {
+    remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+});
+
+/**
+ * Highest product price in the catalog, used as the max attribute for
+ * the shop heading's price range slider. Cached for an hour so the
+ * shop page doesn't run this query on every load.
+ */
+function aaapos_get_shop_max_price()
+{
+    $cached = get_transient('aaapos_shop_max_price');
+    if (false !== $cached) {
+        return (int) $cached;
+    }
+
+    global $wpdb;
+    $max_price = (int) ceil((float) $wpdb->get_var("
+        SELECT MAX( CAST( meta_value AS DECIMAL(10,2) ) )
+        FROM {$wpdb->postmeta}
+        WHERE meta_key = '_price'
+        AND meta_value REGEXP '^[0-9]+(\\.[0-9]+)?$'
+    "));
+
+    if ($max_price <= 0 || $max_price > 100000) {
+        $max_price = 10000;
+    }
+
+    set_transient('aaapos_shop_max_price', $max_price, HOUR_IN_SECONDS);
+
+    return $max_price;
+}
+
+/**
+ * Highest price among products matching the CURRENT listing's own
+ * query args (category, search term, catalog visibility, etc.) -
+ * used instead of aaapos_get_shop_max_price() so the price range
+ * slider reflects what's actually in view, not the whole catalog.
+ *
+ * Pass the same base args used to build the listing (before pagination/
+ * price-filter/orderby are applied) - those three are stripped here
+ * regardless, since we always want the unfiltered max for the current
+ * category/search scope, sorted by price desc, one result.
+ *
+ * @param array $args Base WP_Query args for the current listing.
+ * @return int
+ */
+function aaapos_get_context_max_price($args)
+{
+    unset($args['paged'], $args['posts_per_page'], $args['meta_query'], $args['orderby'], $args['order'], $args['meta_key'], $args['fields']);
+
+    $args = wp_parse_args($args, [
+        'post_type'   => 'product',
+        'post_status' => 'publish',
+    ]);
+
+    $args['posts_per_page'] = 1;
+    $args['orderby']        = 'meta_value_num';
+    $args['meta_key']       = '_price';
+    $args['order']          = 'DESC';
+
+    $query = new WP_Query($args);
+
+    if (empty($query->posts)) {
+        return 0;
+    }
+
+    $product = wc_get_product($query->posts[0]->ID);
+
+    return $product ? (int) ceil((float) $product->get_price()) : 0;
+}
+
+/**
+ * Image URLs for a wbr-card slideshow: main image first, then gallery
+ * images, capped at 4 - falls back to the WooCommerce placeholder if
+ * the product has no image at all.
+ *
+ * Lives here (not in content-product.php) so it's available to any
+ * template that builds a wbr-card - content-product.php only loads
+ * during the shop loop, but the homepage featured-products section
+ * needs this too and runs independently of that loop.
+ */
+if (!function_exists("aaapos_get_wbr_card_slide_urls")) {
+    function aaapos_get_wbr_card_slide_urls($product)
+    {
+        $urls = [];
+
+        $main_id = $product->get_image_id();
+        if ($main_id) {
+            $url = wp_get_attachment_image_url($main_id, "woocommerce_thumbnail");
+            if ($url) {
+                $urls[] = $url;
+            }
+        }
+
+        foreach ($product->get_gallery_image_ids() as $gallery_id) {
+            if (count($urls) >= 4) {
+                break;
+            }
+            $url = wp_get_attachment_image_url($gallery_id, "woocommerce_thumbnail");
+            if ($url) {
+                $urls[] = $url;
+            }
+        }
+
+        $urls = array_slice(array_unique($urls), 0, 4);
+
+        if (empty($urls)) {
+            $urls[] = wc_placeholder_img_src("woocommerce_thumbnail");
+        }
+
+        return $urls;
+    }
 }
 
 /**
@@ -24,6 +163,60 @@ function aaapos_woocommerce_setup()
     add_theme_support("wc-product-gallery-slider");
 }
 add_action("after_setup_theme", "aaapos_woocommerce_setup");
+
+/**
+ * Get a product category's image URL, always falling back to the
+ * WooCommerce placeholder if no thumbnail is set OR the attachment
+ * no longer resolves to a valid URL (e.g. deleted media / missing size).
+ *
+ * Use this everywhere a category image is needed instead of writing
+ * the thumbnail_id ternary inline - keeps the fallback consistent
+ * across every section/template.
+ */
+function aaapos_get_category_image_url($category, $size = 'full')
+{
+    $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+    $image = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, $size) : false;
+
+    return $image ? $image : wc_placeholder_img_src();
+}
+
+/**
+ * Resolve the icon markup for a single category filter button.
+ *
+ * Priority:
+ *   1. The category's own product image, if one is set
+ *      (falls back to the WooCommerce placeholder via
+ *      aaapos_get_category_image_url() if none is set)
+ *   2. The default folder icon passed in as $default_svg
+ *      (last resort - should rarely be reached)
+ *
+ * @param WP_Term $category
+ * @param string  $default_svg Fallback SVG markup.
+ * @return array{html: string, is_image: bool}
+ */
+function aaapos_get_category_filter_icon($category, $default_svg)
+{
+    // Category's own product image, falling back to the WooCommerce
+    // placeholder image (via aaapos_get_category_image_url()) if the
+    // category has no thumbnail of its own set.
+    $image_url = aaapos_get_category_image_url($category, 'thumbnail');
+
+    if ($image_url) {
+        return [
+            'html' => '<img src="' . esc_url($image_url) . '" alt="" class="filter-icon filter-icon--image" loading="lazy">',
+            'is_image' => true,
+        ];
+    }
+
+    // Default folder icon (last resort - should rarely be reached,
+    // since aaapos_get_category_image_url() always returns a placeholder)
+    return [
+        'html' => $default_svg,
+        'is_image' => false,
+    ];
+}
+
 /**
  * Reorganize single product layout
  */
@@ -276,9 +469,9 @@ function aaapos_display_product_trust_badges() {
         
         <?php if ($badge_1_enable && !empty($badge_1_text)): ?>
         <div class="trust-badge-item">
-            <svg class="trust-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="trust-badge-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m14.25 8.75c-.5 2.5-2.3849 4.85363-5.03069 5.37991-2.64578.5263-5.33066-.7044-6.65903-3.0523-1.32837-2.34784-1.00043-5.28307.81336-7.27989 1.81379-1.99683 4.87636-2.54771 7.37636-1.54771"/>
+                <polyline points="5.75 7.75,8.25 10.25,14.25 3.75"/>
             </svg>
             <span class="trust-badge-text"><?php echo esc_html($badge_1_text); ?></span>
         </div>
@@ -286,9 +479,9 @@ function aaapos_display_product_trust_badges() {
         
         <?php if ($badge_2_enable && !empty($badge_2_text)): ?>
         <div class="trust-badge-item">
-            <svg class="trust-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="trust-badge-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m14.25 8.75c-.5 2.5-2.3849 4.85363-5.03069 5.37991-2.64578.5263-5.33066-.7044-6.65903-3.0523-1.32837-2.34784-1.00043-5.28307.81336-7.27989 1.81379-1.99683 4.87636-2.54771 7.37636-1.54771"/>
+                <polyline points="5.75 7.75,8.25 10.25,14.25 3.75"/>
             </svg>
             <span class="trust-badge-text"><?php echo esc_html($badge_2_text); ?></span>
         </div>
@@ -296,9 +489,9 @@ function aaapos_display_product_trust_badges() {
         
         <?php if ($badge_3_enable && !empty($badge_3_text)): ?>
         <div class="trust-badge-item">
-            <svg class="trust-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="trust-badge-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m14.25 8.75c-.5 2.5-2.3849 4.85363-5.03069 5.37991-2.64578.5263-5.33066-.7044-6.65903-3.0523-1.32837-2.34784-1.00043-5.28307.81336-7.27989 1.81379-1.99683 4.87636-2.54771 7.37636-1.54771"/>
+                <polyline points="5.75 7.75,8.25 10.25,14.25 3.75"/>
             </svg>
             <span class="trust-badge-text"><?php echo esc_html($badge_3_text); ?></span>
         </div>
@@ -1058,7 +1251,8 @@ if ( ! function_exists( 'aaapos_render_category_filter' ) ) {
         $current_cat = is_product_category() ? get_queried_object()->term_id : 0;
         $shop_url    = get_permalink( wc_get_page_id( 'shop' ) );
 
-        // Folder icon SVG (reused per category)
+        // Folder icon SVG (default fallback for categories with no custom
+        // icon and no product image set - see aaapos_get_category_filter_icon())
         $folder_icon = '<svg class="filter-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M16 7V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1066,9 +1260,34 @@ if ( ! function_exists( 'aaapos_render_category_filter' ) ) {
 
         ?>
         <div class="shop-category-filter">
-            <div class="category-filter-buttons">
 
-                <!-- All Products -->
+            <div class="category-filter-header">
+                <h3 class="category-filter-title"><?php esc_html_e( 'Categories Filter', 'aaapos-prime' ); ?></h3>
+                <div class="category-filter-nav">
+                    <button type="button" class="category-filter-nav-btn category-filter-nav-prev" aria-label="<?php esc_attr_e( 'Previous categories', 'aaapos-prime' ); ?>" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button type="button" class="category-filter-nav-btn category-filter-nav-next" aria-label="<?php esc_attr_e( 'Next categories', 'aaapos-prime' ); ?>">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="category-filter-buttons">
+                <?php
+                // Build markup for every filter item (All Products first,
+                // then each category), then chunk into pages of 10 items
+                // (5 columns x 2 rows) so each row reads left-to-right in
+                // natural order, with overflow paged horizontally via the
+                // prev/next buttons instead of one continuous auto-flow grid.
+                $items_html = [];
+
+                ob_start();
+                ?>
                 <a href="<?php echo esc_url( $shop_url ); ?>"
                    class="category-filter-btn<?php echo ! $current_cat ? ' active' : ''; ?>"
                    aria-current="<?php echo ! $current_cat ? 'page' : 'false'; ?>">
@@ -1083,25 +1302,74 @@ if ( ! function_exists( 'aaapos_render_category_filter' ) ) {
                         <span class="filter-count"><?php printf( esc_html( _n( '%s Item', '%s Items', $all_count, 'aaapos-prime' ) ), number_format_i18n( $all_count ) ); ?></span>
                     </div>
                 </a>
+                <?php
+                $items_html[] = ob_get_clean();
 
-                <?php foreach ( $categories as $category ) :
+                foreach ( $categories as $category ) {
                     $url = get_term_link( $category );
                     if ( is_wp_error( $url ) ) continue;
                     $is_active = $current_cat === $category->term_id;
-                ?>
-                <a href="<?php echo esc_url( $url ); ?>"
-                   class="category-filter-btn<?php echo $is_active ? ' active' : ''; ?>"
-                   aria-current="<?php echo $is_active ? 'page' : 'false'; ?>">
-                    <div class="filter-icon-box"><?php echo $folder_icon; ?></div>
-                    <div class="filter-content">
-                        <span class="filter-label"><?php echo esc_html( $category->name ); ?></span>
-                        <span class="filter-count"><?php printf( esc_html( _n( '%s Item', '%s Items', $category->count, 'aaapos-prime' ) ), number_format_i18n( $category->count ) ); ?></span>
-                    </div>
-                </a>
-                <?php endforeach; ?>
+                    $icon = aaapos_get_category_filter_icon( $category, $folder_icon );
 
+                    ob_start();
+                    ?>
+                    <a href="<?php echo esc_url( $url ); ?>"
+                       class="category-filter-btn<?php echo $is_active ? ' active' : ''; ?>"
+                       aria-current="<?php echo $is_active ? 'page' : 'false'; ?>">
+                        <div class="filter-icon-box<?php echo $icon['is_image'] ? ' filter-icon-box--image' : ''; ?>"><?php echo $icon['html']; ?></div>
+                        <div class="filter-content">
+                            <span class="filter-label"><?php echo esc_html( $category->name ); ?></span>
+                            <span class="filter-count"><?php printf( esc_html( _n( '%s Item', '%s Items', $category->count, 'aaapos-prime' ) ), number_format_i18n( $category->count ) ); ?></span>
+                        </div>
+                    </a>
+                    <?php
+                    $items_html[] = ob_get_clean();
+                }
+
+                $pages = array_chunk( $items_html, 10 );
+                foreach ( $pages as $page_items ) :
+                ?>
+                    <div class="category-filter-page">
+                        <?php echo implode( '', $page_items ); ?>
+                    </div>
+                <?php endforeach; ?>
             </div><!-- .category-filter-buttons -->
+
         </div><!-- .shop-category-filter -->
+        <script>
+        (function () {
+            document.querySelectorAll('.shop-category-filter').forEach(function (wrap) {
+                var track = wrap.querySelector('.category-filter-buttons');
+                var prevBtn = wrap.querySelector('.category-filter-nav-prev');
+                var nextBtn = wrap.querySelector('.category-filter-nav-next');
+
+                if (!track || !prevBtn || !nextBtn) {
+                    return;
+                }
+
+                function updateButtons() {
+                    var maxScroll = track.scrollWidth - track.clientWidth;
+                    var needsScroll = maxScroll > 4;
+                    wrap.classList.toggle('has-scroll', needsScroll);
+                    prevBtn.disabled = track.scrollLeft <= 4;
+                    nextBtn.disabled = track.scrollLeft >= maxScroll - 4;
+                }
+
+                function scrollByPage(direction) {
+                    track.scrollBy({
+                        left: direction * track.clientWidth,
+                        behavior: 'smooth'
+                    });
+                }
+
+                prevBtn.addEventListener('click', function () { scrollByPage(-1); });
+                nextBtn.addEventListener('click', function () { scrollByPage(1); });
+                track.addEventListener('scroll', updateButtons, { passive: true });
+                window.addEventListener('resize', updateButtons);
+                updateButtons();
+            });
+        })();
+        </script>
         <?php
     }
 }
@@ -1240,6 +1508,18 @@ function aaapos_woocommerce_nuclear_styles()
             "aaapos-category-filter",
             get_template_directory_uri() .
                 "/assets/css/components/categories-shop.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION . "." . time(),
+            "all",
+        );
+    }
+
+    // Shop heading (title, breadcrumb, search + filter dropdown)
+    if (is_shop() || is_product_category() || is_search()) {
+        wp_enqueue_style(
+            "aaapos-shop-heading",
+            get_template_directory_uri() .
+                "/assets/css/components/shop-heading.css",
             ["aaapos-woocommerce-base"],
             AAAPOS_VERSION . "." . time(),
             "all",
@@ -2299,10 +2579,6 @@ function aaapos_cart_suggested_products()
                     "You May Also Like",
                     "aaapos",
                 ); ?></h2>
-                <p class="cart-suggested-products__subtitle"><?php esc_html_e(
-                    "Customers who bought these items also bought",
-                    "aaapos",
-                ); ?></p>
             </div>
             
             <!-- Use WooCommerce standard structure with products class -->
@@ -2310,155 +2586,12 @@ function aaapos_cart_suggested_products()
                 <?php while ($suggested_products->have_posts()):
 
                     $suggested_products->the_post();
-                    global $product;
 
-                    // Get rating data
-                    $average_rating = $product->get_average_rating();
-                    $rating_count = $product->get_rating_count();
-                    ?>
-                    
-                    <li <?php wc_product_class("", $product); ?>>
-                        
-                        <!-- Product Image Link (Image + Badge ONLY) -->
-                        <a href="<?php echo esc_url(
-                            $product->get_permalink(),
-                        ); ?>" class="woocommerce-LoopProduct-link">
-                            
-                            <!-- Product Image -->
-                            <?php echo $product->get_image(
-                                "woocommerce_thumbnail",
-                            ); ?>
-                            
-                            <!-- Sale Badge with Custom Text -->
-                            <?php if ($product->is_on_sale()): ?>
-                                <span class="onsale"><?php echo esc_html(
-                                    $sale_badge_text,
-                                ); ?></span>
-                            <?php endif; ?>
-                            
-                        </a>
-                        
-                        <!-- Product Info Container (Outside image link) -->
-                        <div class="product-info">
-                            
-                            <!-- Product Title with Link -->
-                            <h2 class="woocommerce-loop-product__title">
-                                <a href="<?php echo esc_url(
-                                    $product->get_permalink(),
-                                ); ?>">
-                                    <?php echo esc_html(
-                                        $product->get_name(),
-                                    ); ?>
-                                </a>
-                            </h2>
-                            
-                            <!-- Star Rating Section (Conditional based on Customizer) -->
-                            <?php if ($show_rating && $average_rating > 0): ?>
-                                <div class="product-rating">
-                                    <div class="rating-stars" aria-label="<?php echo esc_attr(
-                                        sprintf(
-                                            __("Rated %s out of 5", "aaapos"),
-                                            number_format($average_rating, 2),
-                                        ),
-                                    ); ?>">
-                                        <?php
-                                        // Generate unique ID for gradient
-                                        $gradient_id =
-                                            "half-fill-" . $product->get_id();
+                    // Reuse the shared card template (wbr-card design) instead
+                    // of duplicating markup here - keeps this section in sync
+                    // with the shop grid and homepage automatically.
+                    wc_get_template_part('content', 'product');
 
-                                        // Display 5 stars
-                                        for ($i = 1; $i <= 5; $i++) {
-                                            if ($i <= floor($average_rating)) {
-                                                // Full star
-                                                echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                            } elseif (
-                                                $i == ceil($average_rating) &&
-                                                $average_rating -
-                                                    floor($average_rating) >=
-                                                    0.5
-                                            ) {
-                                                // Half star
-                                                echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="' .
-                                                    esc_attr($gradient_id) .
-                                                    '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
-                                                    esc_attr($gradient_id) .
-                                                    ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                            } else {
-                                                // Empty star
-                                                echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                    <?php if ($rating_count > 0): ?>
-                                        <span class="rating-count">(<?php echo esc_html(
-                                            $rating_count,
-                                        ); ?>)</span>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-                            
-                            <!-- Price -->
-                            <div class="product-price-wrapper">
-                                <?php echo $product->get_price_html(); ?>
-                            </div>
-                            
-                        </div>
-                        
-                       <!-- Quick View Button (Conditional based on Customizer) -->
-<?php if ($show_quick_view): ?>
-    <button type="button" 
-            class="quick-view-button" 
-            data-product-id="<?php echo esc_attr($product->get_id()); ?>"
-            aria-label="<?php echo esc_attr(
-                sprintf(__("Quick view %s", "aaapos"), $product->get_name()),
-            ); ?>"
-            style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-bottom: 0.875rem; line-height: 1; background: transparent; border: none;"
-            onmouseover="this.style.color='var(--brand-color, #0ea5e9)'; this.style.transform='translateY(-2px)';"
-            onmouseout="this.style.color='#374151'; this.style.transform='translateY(0)';">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-        </svg>
-        <span><?php esc_html_e("Quick View", "aaapos"); ?></span>
-    </button>
-<?php endif; ?>
-                        
-                        <!-- Add to Cart Button with Icon -->
-<?php if ($product->is_type("variable")): ?>
-    <a href="<?php echo esc_url($product->get_permalink()); ?>" 
-       class="button product_type_variable"
-       style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        <span><?php esc_html_e("Select options", "aaapos"); ?></span>
-    </a>
-<?php else: ?>
-    <a href="<?php echo esc_url("?add-to-cart=" . $product->get_id()); ?>" 
-       data-quantity="1" 
-       class="button product_type_simple add_to_cart_button ajax_add_to_cart" 
-       data-product_id="<?php echo esc_attr($product->get_id()); ?>" 
-       data-product_sku="<?php echo esc_attr($product->get_sku()); ?>" 
-       aria-label="<?php echo esc_attr(
-           sprintf(__('Add "%s" to your cart', "aaapos"), $product->get_name()),
-       ); ?>" 
-       rel="nofollow"
-       style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        <span><?php echo esc_html($product->add_to_cart_text()); ?></span>
-    </a>
-<?php endif; ?>
-                        
-                    </li>
-                    
-                <?php
                 endwhile; ?>
             </ul>
         </div>
@@ -2524,153 +2657,22 @@ function aaapos_empty_cart_recommended_products()
     <div class="cart-empty-recommended">
         <div class="cart-empty-recommended-inner">
             <div class="cart-empty-recommended__header">
-                <span class="cart-empty-recommended__badge"><?php esc_html_e(
-                    "START SHOPPING",
-                    "aaapos",
-                ); ?></span>
                 <h2 class="cart-empty-recommended__title"><?php esc_html_e(
                     "Popular Products",
                     "aaapos",
                 ); ?></h2>
-                <p class="cart-empty-recommended__subtitle"><?php esc_html_e(
-                    "Check out our most popular items to get started",
-                    "aaapos",
-                ); ?></p>
             </div>
             
             <ul class="products columns-4">
                 <?php while ($recommended_products->have_posts()):
 
                     $recommended_products->the_post();
-                    global $product;
 
-                    // Get rating data
-                    $average_rating = $product->get_average_rating();
-                    $rating_count = $product->get_rating_count();
-                    ?>
-                
-                <li <?php wc_product_class("", $product); ?>>
-                    
-                    <!-- Product Image Link -->
-                    <a href="<?php echo esc_url(
-                        $product->get_permalink(),
-                    ); ?>" class="woocommerce-LoopProduct-link">
-                        <?php echo $product->get_image(
-                            "woocommerce_thumbnail",
-                        ); ?>
-                        
-                        <?php if ($product->is_on_sale()): ?>
-                            <span class="onsale"><?php echo esc_html(
-                                $sale_badge_text,
-                            ); ?></span>
-                        <?php endif; ?>
-                    </a>
-                    
-                    <!-- Product Info -->
-                    <div class="product-info">
-                        <h2 class="woocommerce-loop-product__title">
-                            <a href="<?php echo esc_url(
-                                $product->get_permalink(),
-                            ); ?>">
-                                <?php echo esc_html($product->get_name()); ?>
-                            </a>
-                        </h2>
-                        
-                        <!-- Rating -->
-                        <?php if ($show_rating && $average_rating > 0): ?>
-                            <div class="product-rating">
-                                <div class="rating-stars">
-                                    <?php
-                                    $gradient_id =
-                                        "half-fill-empty-cart-" .
-                                        $product->get_id();
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        if ($i <= floor($average_rating)) {
-                                            echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                        } elseif (
-                                            $i == ceil($average_rating) &&
-                                            $average_rating -
-                                                floor($average_rating) >=
-                                                0.5
-                                        ) {
-                                            echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="' .
-                                                esc_attr($gradient_id) .
-                                                '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
-                                                esc_attr($gradient_id) .
-                                                ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                        } else {
-                                            echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <?php if ($rating_count > 0): ?>
-                                    <span class="rating-count">(<?php echo esc_html(
-                                        $rating_count,
-                                    ); ?>)</span>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <!-- Price -->
-                        <div class="product-price-wrapper">
-                            <?php echo $product->get_price_html(); ?>
-                        </div>
-                    </div>
-                    
-                    <!-- Quick View Button -->
-                    <?php if ($show_quick_view): ?>
-                        <button type="button" class="quick-view-button" data-product-id="<?php echo esc_attr(
-                            $product->get_id(),
-                        ); ?>" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; width: 100%; margin-bottom: 0.875rem; line-height: 1; background: transparent; border: none;" onmouseover="this.style.color='var(--brand-color, #0ea5e9)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#374151'; this.style.transform='translateY(0)';">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            <span><?php esc_html_e(
-                                "Quick View",
-                                "aaapos",
-                            ); ?></span>
-                        </button>
-                    <?php endif; ?>
-                    
-                    <!-- Add to Cart Button -->
-                    <?php if ($product->is_type("variable")): ?>
-                        <a href="<?php echo esc_url(
-                            $product->get_permalink(),
-                        ); ?>" class="button product_type_variable" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
-                            <span><?php esc_html_e(
-                                "Select options",
-                                "aaapos",
-                            ); ?></span>
-                        </a>
-                    <?php else: ?>
-                        <a href="<?php echo esc_url(
-                            "?add-to-cart=" . $product->get_id(),
-                        ); ?>" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="<?php echo esc_attr(
-    $product->get_id(),
-); ?>" data-product_sku="<?php echo esc_attr(
-    $product->get_sku(),
-); ?>" rel="nofollow" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
-                            <span><?php echo esc_html(
-                                $product->add_to_cart_text(),
-                            ); ?></span>
-                        </a>
-                    <?php endif; ?>
-                    
-                </li>
-                
-                <?php
+                    // Reuse the shared card template (wbr-card design) instead
+                    // of duplicating markup here - keeps this section in sync
+                    // with the shop grid and homepage automatically.
+                    wc_get_template_part('content', 'product');
+
                 endwhile; ?>
             </ul>
         </div>

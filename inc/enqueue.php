@@ -550,15 +550,6 @@ if (get_theme_mod('enable_page_loader', false)) {
                 );
             }
 
-            // Category filter drag
-            wp_enqueue_script(
-                "aaapos-category-filter-drag",
-                get_template_directory_uri() . "/assets/js/category-filter-drag.js",
-                [],
-                MR_THEME_VERSION,
-                true,
-            );
-
             // Product Share - ONLY on single product pages
 if (is_product()) {
     wp_enqueue_script(
@@ -569,6 +560,18 @@ if (is_product()) {
         true
     );
 }
+
+    // Shop heading search bar + filter dropdown (price range, sort by)
+    if (is_shop() || is_product_category()) {
+        wp_enqueue_style(
+            "aaapos-shop-heading",
+            get_template_directory_uri() .
+                "/assets/css/components/shop-heading.css",
+            ["aaapos-woocommerce-base"],
+            AAAPOS_VERSION . "." . time(),
+            "all",
+        );
+    }
 
 // Cart styles - ONLY on cart page
 if (is_cart()) {

@@ -2,6 +2,9 @@
    My Account Downloads - Table & Empty State
    Matches orders table design language -
    no box-shadow, no lift-hover, flat #F3F5FA pill buttons.
+   UPDATED: Added mobile-only stacked-card layout (max-width: 767px),
+   mirroring the orders table's mobile treatment. Desktop styling
+   above is untouched.
    ============================================ */
 
 /* ==========================================================================
@@ -222,4 +225,82 @@
 .aaapos-empty-downloads__btn:hover {
   background: #2a2d33;
   color: var(--color-white);
+}
+
+/* ==========================================================================
+   MOBILE - stacked card layout (max-width: 767px)
+   Table becomes an unlabelled grid of block rows; each cell gets its
+   column header as a ::before label via data-title, same pattern used
+   for the orders table. Desktop styling above is untouched.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .woocommerce-table--order-downloads,
+  .woocommerce-table--order-downloads thead,
+  .woocommerce-table--order-downloads tbody,
+  .woocommerce-table--order-downloads tbody tr,
+  .woocommerce-table--order-downloads tbody td,
+  .woocommerce-table--order-downloads tbody th {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .woocommerce-table--order-downloads thead {
+    display: none !important;
+  }
+
+  .woocommerce-table--order-downloads tbody tr {
+    background: var(--color-white) !important;
+    border-radius: var(--border-radius-lg) !important;
+    margin-bottom: var(--space-3) !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  .woocommerce-table--order-downloads tbody tr:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .woocommerce-table--order-downloads tbody td,
+  .woocommerce-table--order-downloads tbody th {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: var(--space-3) !important;
+    padding: var(--space-3) var(--space-4) !important;
+    border-bottom: 1px solid var(--color-border-light) !important;
+    text-align: left !important;
+    border-radius: 0 !important;
+  }
+
+  .woocommerce-table--order-downloads tbody tr:last-child td,
+  .woocommerce-table--order-downloads tbody tr:last-child th {
+    border-bottom: none !important;
+  }
+
+  .woocommerce-table--order-downloads tbody td::before,
+  .woocommerce-table--order-downloads tbody th::before {
+    content: attr(data-title) !important;
+    font-weight: var(--font-semibold) !important;
+    color: var(--color-text-dark) !important;
+    text-transform: uppercase !important;
+    font-size: var(--text-xs) !important;
+    letter-spacing: 0.5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .woocommerce-table--order-downloads tbody td.download-file,
+  .woocommerce-table--order-downloads tbody th.download-file {
+    justify-content: center !important;
+  }
+
+  .woocommerce-table--order-downloads tbody td.download-file::before,
+  .woocommerce-table--order-downloads tbody th.download-file::before {
+    display: none !important;
+  }
+
+  .woocommerce-table--order-downloads .download-file a.woocommerce-MyAccount-downloads-file {
+    width: 100% !important;
+    max-width: 220px !important;
+  }
 }

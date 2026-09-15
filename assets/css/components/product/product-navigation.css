@@ -73,7 +73,7 @@
     background: #f3f4f6;
     border: none;
     border-radius: 8px;
-    color: #6b7280;
+    color: #000000 !important;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -84,7 +84,7 @@
 
 .product-nav-btn:hover {
     background: #e5e7eb;
-    color: #374151;
+    color: #000000 !important;
 }
 
 /* Disabled state */

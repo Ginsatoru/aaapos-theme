@@ -3,13 +3,15 @@
  * Shop breadcrumb
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/global/breadcrumb.php.
- * 
- * CUSTOM: Arrow-style breadcrumbs with home icon
+ *
+ * UPDATED: WBR-style design - standalone circular home icon badge,
+ * plain text crumbs, chevron separators. "Home" is now a normal text
+ * crumb (previously the icon replaced it entirely).
  * Works on ALL WooCommerce pages EXCEPT cart page
  *
  * @see         https://docs.woocommerce.com/document/template-structure/
  * @package     WooCommerce\Templates
- * @version     2.3.0
+ * @version     3.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,29 +24,23 @@ if ( is_cart() ) {
 }
 
 if ( ! empty( $breadcrumb ) ) {
-	
-	// Empty separator - we're using CSS arrows instead
-	$separator = '';
 
 	echo $args['wrap_before'];
+
+	// Standalone icon badge - decorative, always first, not tied to
+	// any single breadcrumb item (all crumbs including "Home" render
+	// as plain text below).
+	echo '<span class="woocommerce-breadcrumb__icon" aria-hidden="true">';
+	echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>';
+	echo '</span>';
 
 	foreach ( $breadcrumb as $key => $crumb ) {
 
 		echo $args['before'];
 
 		if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
-			// It's a linked breadcrumb item
-			
-			if ( $key === 0 ) {
-				// First item (Home) - use SVG icon
-				echo '<a href="' . esc_url( $crumb[1] ) . '">';
-				echo '<svg class="breadcrumb-home-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
-				echo '</a>';
-			} else {
-				// All other links - show the text
-				echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
-			}
-			
+			// Linked breadcrumb item - plain text link (Home included)
+			echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
 		} else {
 			// Last item (current page) - truncate to first 2 words + ellipsis if longer
 			$full_title = $crumb[0];
@@ -58,9 +54,9 @@ if ( ! empty( $breadcrumb ) ) {
 
 		echo $args['after'];
 
-		// No separator needed - CSS handles the arrows
+		// Chevron separator between items (not after the last one)
 		if ( sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo $separator;
+			echo '<span class="woocommerce-breadcrumb__sep" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>';
 		}
 	}
 

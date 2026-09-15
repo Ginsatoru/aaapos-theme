@@ -149,7 +149,6 @@ body.woocommerce-order-received .content-area {
 .overview-card:hover {
   border-color: var(--brand-color);
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
 }
 
 .overview-card .card-icon {
@@ -500,7 +499,6 @@ body.woocommerce-order-received .content-area {
 
 .order-not-found .button:hover {
   background: var(--brand-color-dark);
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 

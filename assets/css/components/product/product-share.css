@@ -2,6 +2,8 @@
    PRODUCT SOCIAL SHARE BUTTONS
    Displays share buttons below secure payments
    Pill-morph hover animation (matches header nav style)
+   UPDATED: Title text switched to pure #000000 (icon/brand colors
+   left unchanged - not body text)
    ============================================ */
 
 .single-product .product-share-section {
@@ -19,7 +21,7 @@
 
 .single-product .product-share-title {
   font-size: 0.875rem !important;
-  color: #374151 !important;
+  color: #000000 !important;
   font-weight: 500 !important;
   flex-shrink: 0 !important;
   text-align: center !important;

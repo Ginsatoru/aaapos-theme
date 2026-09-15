@@ -142,7 +142,6 @@ body.has-sticky-header .top-bar {
 
 .top-bar-item:hover {
   color: rgba(255, 255, 255, 0.8);
-  transform: translateY(-1px);
 }
 
 /* Hide email first on tighter desktop widths so the slider keeps room */
@@ -171,7 +170,6 @@ body.has-sticky-header .top-bar {
 .social-link:hover {
   color: var(--color-white);
   background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
 }
 
 /* ==========================================================================

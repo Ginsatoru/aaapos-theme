@@ -3,6 +3,8 @@
    ==========================================================================
    
    ⚠️ LOGO SIZE FIX: Forces consistent sizing across all pages
+   UPDATED: Mobile logo size is now always fixed, ignoring --logo-scale -
+   the customizer Logo Scale control only affects desktop/tablet.
    
    @package aaapos-prime
    @since 1.0.0
@@ -110,4 +112,40 @@ body:not(.home) .custom-logo-link img {
   margin: 0;
   font-size: 1.5rem;
   font-weight: var(--font-extrabold);
+}
+
+/* ==========================================================================
+   MOBILE LOGO - ALWAYS FIXED, IGNORES --logo-scale
+   Placed last so it wins over the WooCommerce/inner-page blocks above,
+   which apply the scaled size with no mobile guard of their own.
+   The Logo Scale customizer control only affects desktop/tablet.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .site-logo img,
+  .custom-logo,
+  .custom-logo-link img,
+  .woocommerce .site-logo img,
+  .woocommerce .custom-logo,
+  .woocommerce .custom-logo-link img,
+  .woocommerce-page .site-logo img,
+  .woocommerce-page .custom-logo,
+  .woocommerce-page .custom-logo-link img,
+  .post-type-archive-product .site-logo img,
+  .post-type-archive-product .custom-logo,
+  .post-type-archive-product .custom-logo-link img,
+  .tax-product_cat .site-logo img,
+  .tax-product_cat .custom-logo,
+  .tax-product_cat .custom-logo-link img,
+  .single-product .site-logo img,
+  .single-product .custom-logo,
+  .single-product .custom-logo-link img,
+  body:not(.home) .site-logo img,
+  body:not(.home) .custom-logo,
+  body:not(.home) .custom-logo-link img {
+    height: 40px !important;
+    max-height: 40px !important;
+    width: auto !important;
+    max-width: 160px !important;
+  }
 }

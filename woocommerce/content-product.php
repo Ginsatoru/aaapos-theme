@@ -2,10 +2,15 @@
 /**
  * The template for displaying product content within loops
  *
- * UPDATED: Quick View button removed completely
+ * UPDATED: Redesigned to match the "wbr-card" design - image slideshow
+ * with dots (main image + gallery images), short description, price
+ * pill, and pill-shaped add-to-cart button. AJAX add-to-cart classes/
+ * data attributes are preserved on the button so cart functionality
+ * (aaapos-cart-notifications, wc-add-to-cart, etc.) keeps working.
+ * Star rating dropped - no styled slot for it in the new design.
  *
  * @package AAAPOS_Prime
- * @version 1.1.0
+ * @version 2.0.0
  */
 
 defined("ABSPATH") || exit();
@@ -17,139 +22,117 @@ if (empty($product) || !$product->is_visible()) {
     return;
 }
 
-// Get customizer settings
-$show_rating = get_theme_mod("show_product_rating", true);
 $sale_badge_text = get_theme_mod("sale_badge_text", __("Sale", "aaapos-prime"));
 
-// Get rating data
-$average_rating = $product->get_average_rating();
-$rating_count = $product->get_rating_count();
+/**
+ * Image URLs for the card slideshow (main image + gallery, capped at 4)
+ * come from aaapos_get_wbr_card_slide_urls() in inc/woocommerce.php,
+ * shared with the homepage featured-products section.
+ */
+$wbr_slide_urls = aaapos_get_wbr_card_slide_urls($product);
+
+// Short description for the card - trimmed product short description,
+// falling back to the full description if no short one is set.
+$wbr_desc_source = $product->get_short_description();
+if ("" === trim(wp_strip_all_tags($wbr_desc_source))) {
+    $wbr_desc_source = $product->get_description();
+}
+$wbr_card_desc = wp_trim_words(wp_strip_all_tags($wbr_desc_source), 16);
 ?>
 <li <?php wc_product_class("", $product); ?>>
-    
-    <!-- Product Image Link (Image + Badge ONLY) -->
-    <a href="<?php echo esc_url(
-        get_permalink(),
-    ); ?>" class="woocommerce-LoopProduct-link">
-        
-        <!-- Product Image -->
-        <?php echo $product->get_image("woocommerce_thumbnail"); ?>
-        
-        <!-- Sale Badge with Custom Text -->
-        <?php if ($product->is_on_sale()): ?>
-            <span class="onsale"><?php echo esc_html(
-                $sale_badge_text,
-            ); ?></span>
-        <?php endif; ?>
-        
-    </a>
-    
-    <!-- Product Info Container (Outside image link) -->
-    <div class="product-info">
-        
-        <!-- Product Title with Link -->
-        <h2 class="woocommerce-loop-product__title">
-            <a href="<?php echo esc_url(get_permalink()); ?>">
-                <?php echo esc_html($product->get_name()); ?>
-            </a>
-        </h2>
-        
-        <!-- Star Rating Section (Conditional based on Customizer) -->
-        <?php if ($show_rating && $average_rating > 0): ?>
-            <div class="product-rating">
-                <div class="rating-stars" aria-label="<?php echo esc_attr(
-                    sprintf(
-                        __("Rated %s out of 5", "aaapos-prime"),
-                        number_format($average_rating, 2),
-                    ),
-                ); ?>">
-                    <?php
-                    // Generate unique ID for gradient
-                    $gradient_id = "half-fill-" . $product->get_id();
+    <div class="wbr-card">
 
-                    // Display 5 stars
-                    for ($i = 1; $i <= 5; $i++) {
-                        if ($i <= floor($average_rating)) {
-                            // Full star
-                            echo '<svg class="star star-full" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                        } elseif (
-                            $i == ceil($average_rating) &&
-                            $average_rating - floor($average_rating) >= 0.5
-                        ) {
-                            // Half star
-                            echo '<svg class="star star-half" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="' .
-                                esc_attr($gradient_id) .
-                                '"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#d1d5db" stop-opacity="1"/></linearGradient></defs><path fill="url(#' .
-                                esc_attr($gradient_id) .
-                                ')" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                        } else {
-                            // Empty star
-                            echo '<svg class="star star-empty" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#d1d5db"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                        }
-                    }
-                    ?>
-                </div>
-                <?php if ($rating_count > 0): ?>
-                    <span class="rating-count">(<?php echo esc_html(
-                        $rating_count,
-                    ); ?>)</span>
-                <?php endif; ?>
+        <!-- Image slideshow -->
+        <a href="<?php echo esc_url(get_permalink()); ?>" class="wbr-card__img-wrap">
+
+            <?php if ($product->is_on_sale()): ?>
+                <span class="wbr-card__badge wbr-card__badge--sale"><?php echo esc_html($sale_badge_text); ?></span>
+            <?php endif; ?>
+
+            <div class="wbr-card__slides">
+                <?php foreach ($wbr_slide_urls as $i => $img_url) : ?>
+                    <div class="wbr-card__slide<?php echo $i === 0 ? ' is-active' : ''; ?>">
+                        <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($product->get_name()); ?>" loading="lazy" />
+                    </div>
+                <?php endforeach; ?>
             </div>
-        <?php endif; ?>
-        
-        <!-- Price -->
-        <div class="product-price-wrapper">
-            <?php echo $product->get_price_html(); ?>
+
+            <?php if (count($wbr_slide_urls) > 1) : ?>
+                <div class="wbr-card__dots">
+                    <?php foreach ($wbr_slide_urls as $i => $img_url) : ?>
+                        <span class="wbr-card__dot<?php echo $i === 0 ? ' is-active' : ''; ?>"></span>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+        </a>
+
+        <!-- Body -->
+        <div class="wbr-card__body">
+
+            <h2 class="wbr-card__title">
+                <a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html($product->get_name()); ?></a>
+            </h2>
+
+            <?php if (!empty($wbr_card_desc)) : ?>
+                <p class="wbr-card__desc"><?php echo esc_html($wbr_card_desc); ?></p>
+            <?php endif; ?>
+
+            <div class="wbr-card__footer">
+
+                <span class="wbr-card__price"><?php echo $product->get_price_html(); ?></span>
+
+                <?php if ($product->is_type("variable")): ?>
+                    <a href="<?php echo esc_url($product->get_permalink()); ?>"
+                       class="wbr-card__btn button product_type_variable">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
+                        </svg>
+                        <span><?php esc_html_e("Select options", "aaapos-prime"); ?></span>
+                    </a>
+                <?php else: ?>
+                    <a href="<?php echo esc_url("?add-to-cart=" . $product->get_id()); ?>"
+                       data-quantity="1"
+                       class="wbr-card__btn button product_type_simple add_to_cart_button ajax_add_to_cart"
+                       data-product_id="<?php echo esc_attr($product->get_id()); ?>"
+                       data-product_sku="<?php echo esc_attr($product->get_sku()); ?>"
+                       aria-label="<?php echo esc_attr(sprintf(__('Add "%s" to your cart', "aaapos-prime"), $product->get_name())); ?>"
+                       rel="nofollow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
+                        </svg>
+                        <span><?php echo esc_html($product->add_to_cart_text()); ?></span>
+                    </a>
+                <?php endif; ?>
+
+            </div>
+
         </div>
-        
+
     </div>
-    
-    <!-- Add to Cart Button with Icon -->
-<?php if ($product->is_type("variable")): ?>
-    <a href="<?php echo esc_url($product->get_permalink()); ?>" 
-       class="button product_type_variable"
-       style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        <span><?php esc_html_e("Select options", "aaapos-prime"); ?></span>
-    </a>
-<?php else: ?>
-    <a href="<?php echo esc_url("?add-to-cart=" . $product->get_id()); ?>" 
-       data-quantity="1" 
-       class="button product_type_simple add_to_cart_button ajax_add_to_cart" 
-       data-product_id="<?php echo esc_attr($product->get_id()); ?>" 
-       data-product_sku="<?php echo esc_attr($product->get_sku()); ?>" 
-       aria-label="<?php echo esc_attr(
-           sprintf(
-               __('Add "%s" to your cart', "aaapos-prime"),
-               $product->get_name(),
-           ),
-       ); ?>" 
-       rel="nofollow"
-       style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        <span><?php echo esc_html($product->add_to_cart_text()); ?></span>
-    </a>
-<?php endif; ?>
-    
 </li>
 
-<style>
-/* ============================================
-   ADD TO CART BUTTON - FULL WIDTH
-   Isolated to product cards only
-   (Quick View button and its styles removed)
-   ============================================ */
-.woocommerce ul.products li.product .button.add_to_cart_button {
-    width: 100%;
-    margin: 0;
-    box-sizing: border-box;
-}
-</style>
+<?php
+// Slideshow-cycling script - printed once per page load (not once per
+// card), guarded with define() since this template runs once per product.
+if (!defined("AAAPOS_WBR_CARD_SCRIPT_PRINTED")) :
+    define("AAAPOS_WBR_CARD_SCRIPT_PRINTED", true);
+?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.wbr-card__img-wrap').forEach(function(card){
+        var slides = card.querySelectorAll('.wbr-card__slide');
+        var dots   = card.querySelectorAll('.wbr-card__dot');
+        if ( slides.length <= 1 ) return;
+        var current = 0;
+        setInterval(function(){
+            slides[current].classList.remove('is-active');
+            dots[current] && dots[current].classList.remove('is-active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('is-active');
+            dots[current] && dots[current].classList.add('is-active');
+        }, 2500);
+    });
+});
+</script>
+<?php endif; ?>

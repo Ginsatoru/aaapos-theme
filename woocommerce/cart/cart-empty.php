@@ -30,21 +30,7 @@ add_filter('body_class', function($classes) {
 			<div class="cart-empty-content">
 				<!-- Shopping Cart Icon -->
 				<div class="cart-empty-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-						<!-- Cart Body -->
-						<path d="M8 8h6l8 32h28l6-20H16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-						<!-- Wheels -->
-						<circle cx="26" cy="52" r="4" stroke-width="2"/>
-						<circle cx="46" cy="52" r="4" stroke-width="2"/>
-						<!-- Cart Grid Lines for Modern Look -->
-						<line x1="24" y1="24" x2="50" y2="24" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-						<line x1="24" y1="30" x2="50" y2="30" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-						<line x1="24" y1="36" x2="48" y2="36" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-						<!-- Items in Cart (3D effect) -->
-						<rect x="28" y="14" width="8" height="8" rx="1" stroke-width="1.5" opacity="0.3"/>
-						<rect x="38" y="14" width="8" height="8" rx="1" stroke-width="1.5" opacity="0.3"/>
-						<rect x="28" y="6" width="8" height="6" rx="1" stroke-width="1.5" opacity="0.2"/>
-					</svg>
+					<img src="<?php echo esc_url( get_template_directory_uri() . '/images/cart.png' ); ?>" alt="" width="64" height="64" />
 				</div>
 				
 				<!-- Main Heading -->

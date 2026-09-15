@@ -1,0 +1,426 @@
+/* =============================================================
+   assets/css/components/shop-heading.css
+
+   Shop page heading: title + breadcrumb + description on the left,
+   result count + search + filter dropdown (price range, sort by)
+   on the right. The breadcrumb itself keeps its existing arrow-pill
+   styling from breadcrumb-shop.css - this file only wraps it.
+   ============================================================= */
+
+.shop-heading {
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    background: #e8ecf0;
+    border-radius: 12px;
+}
+
+.shop-heading__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+/* ── Left: title, breadcrumb, description ── */
+.shop-heading__left {
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.shop-heading__title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 12px;
+    line-height: 1.2;
+}
+
+.shop-heading__breadcrumb-wrap {
+    margin-bottom: 8px;
+}
+
+.shop-heading__breadcrumb-wrap .woocommerce-breadcrumb {
+    margin-bottom: 0;
+}
+
+.shop-heading__description {
+    font-size: 0.82rem;
+    color: #000000;
+    margin-top: 8px;
+    max-width: 480px;
+    line-height: 1.5;
+}
+
+/* ── Right: result count, search, filter ── */
+.shop-heading__right {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.shop-heading__result-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #000000;
+}
+
+.shop-heading__result-count svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.shop-heading__controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ── Search form ── */
+.shop-filter__search-form {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.shop-filter__search {
+    position: relative;
+    width: 220px;
+    height: 42px;
+}
+
+.shop-filter__input {
+    width: 100%;
+    height: 42px;
+    padding: 0 42px 3px 18px !important;
+    border: none !important;
+    border-radius: 999px !important;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #000000;
+    background: #ffffff;
+    box-sizing: border-box;
+    outline: none;
+    transition: box-shadow 0.15s ease;
+}
+
+.shop-filter__input::placeholder {
+    color: #4b5563;
+    font-size: 0.8rem;
+    opacity: 1;
+}
+
+.shop-filter__input:focus {
+    box-shadow: 0 0 0 0.5px var(--brand-color, #0ea5e9);
+}
+
+.shop-filter__search-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    border: none;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background 0.15s ease;
+}
+
+.shop-filter__search-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.shop-filter__search-btn:hover {
+    background: var(--brand-color, #0ea5e9);
+}
+
+/* ── Filter toggle button ── */
+.shop-filter__dropdown-wrap {
+    position: relative;
+}
+
+.shop-filter__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 16px;
+    background: #111;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+    outline: none;
+}
+
+.shop-filter__toggle svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
+.shop-filter__toggle:hover,
+.shop-filter__toggle[aria-expanded="true"],
+.shop-filter__toggle.has-filters {
+    background: var(--brand-color, #0ea5e9);
+    color: #fff;
+}
+
+/* ── Dropdown panel ── */
+.shop-filter__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 320px;
+    background: #fff;
+    border: 1.5px solid #e3e3e3;
+    border-radius: 18px;
+    padding: 22px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.shop-filter__panel[hidden] {
+    display: none;
+}
+
+.shop-filter__group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.shop-filter__label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.shop-filter__select-wrap {
+    position: relative;
+}
+
+.shop-filter__select {
+    width: 100%;
+    height: 38px;
+    padding: 0 34px 0 14px;
+    border: 1.5px solid #d7d7d7;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: #111;
+    background: #f8f8f8;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.shop-filter__select:focus {
+    border-color: var(--brand-color, #0ea5e9);
+    background: #fff;
+}
+
+.shop-filter__chevron {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    color: #000000;
+    pointer-events: none;
+}
+
+/* ── Price range ── */
+.shop-filter__price-display {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #111;
+    padding: 0 2px;
+}
+
+.shop-filter__range-wrap {
+    position: relative;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.shop-filter__range-track {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: #e3e3e3;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.shop-filter__range-fill {
+    position: absolute;
+    height: 100%;
+    background: var(--brand-color, #0ea5e9);
+    border-radius: 999px;
+}
+
+.shop-filter__range {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    pointer-events: none;
+    outline: none;
+}
+
+.shop-filter__range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--brand-color, #0ea5e9);
+    border: 2px solid #fff;
+    cursor: pointer;
+    pointer-events: all;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.shop-filter__range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--brand-color, #0ea5e9);
+    border: 2px solid #fff;
+    cursor: pointer;
+    pointer-events: all;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Panel actions ── */
+.shop-filter__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 2px;
+    border-top: 1px solid #efefef;
+}
+
+.shop-filter__btn {
+    flex: 1;
+    height: 38px;
+    background: #111;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    line-height: 1;
+    padding: 0 18px;
+    box-sizing: border-box;
+}
+
+.shop-filter__btn:hover {
+    background: var(--brand-color, #0ea5e9);
+}
+
+.shop-filter__clear {
+    font-size: 0.75rem;
+    color: #999;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+    flex-shrink: 0;
+}
+
+.shop-filter__clear:hover {
+    color: #cc2200;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .shop-heading {
+        padding: 18px 16px;
+    }
+
+    .shop-heading__top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .shop-heading__title {
+        font-size: 1.2rem;
+    }
+
+    .shop-heading__right {
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .shop-heading__controls {
+        width: 100%;
+    }
+
+    .shop-filter__search {
+        flex: 1;
+        width: auto;
+    }
+
+    .shop-filter__search-form {
+        flex: 1;
+    }
+
+    .shop-filter__panel {
+        right: auto;
+        left: 0;
+        width: calc(100vw - 40px);
+    }
+}

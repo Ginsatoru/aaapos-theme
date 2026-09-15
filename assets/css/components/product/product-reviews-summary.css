@@ -1,9 +1,11 @@
 /**
  * Product Reviews Summary & Review Cards - LIGHT GRAY VERSION
  * Location: assets/css/components/product/product-reviews-summary.css
+ * UPDATED: All text colors forced to pure #000000 (decorative icon
+ * colors - gold stars, green verified checkmark - left unchanged)
  * 
  * @package AAAPOS_Prime
- * @version 2.0.4
+ * @version 2.0.5
  */
 
 /* ============================================
@@ -30,7 +32,7 @@
 .summary-rating-number {
     font-size: 4rem;
     font-weight: 700;
-    color: #1a1a1a;
+    color: #000000;
     line-height: 1;
     margin-bottom: 0.5rem;
 }
@@ -56,7 +58,7 @@
 /* Rating count text */
 .summary-rating-count {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #000000;
     margin-bottom: 0;
 }
 
@@ -78,7 +80,7 @@
 
 .rating-breakdown-item .stars-label {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #000000;
     min-width: 35px;
     text-align: left;
 }
@@ -100,7 +102,7 @@
 
 .rating-breakdown-item .percentage {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #000000;
     min-width: 40px;
     text-align: right;
 }
@@ -112,7 +114,7 @@
 #comments h2 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #000000;
     margin-bottom: 1.5rem;
 }
 
@@ -230,7 +232,7 @@
 .commentlist .woocommerce-review__author {
     font-size: 1.0625rem !important;
     font-weight: 600 !important;
-    color: #1a1a1a !important;
+    color: #000000 !important;
     display: inline !important;
 }
 
@@ -272,7 +274,7 @@
 /* Published date - Now on second line below name */
 .commentlist .woocommerce-review__published-date {
     font-size: 0.8125rem !important;
-    color: #6b7280 !important;
+    color: #000000 !important;
     font-weight: 400;
     display: block !important;
     margin-top: 0.25rem;
@@ -286,7 +288,7 @@
 .commentlist .description p {
     font-size: 0.9375rem !important;
     line-height: 1.7 !important;
-    color: #4b5563 !important;
+    color: #000000 !important;
     margin: 0 !important;
     font-weight: 400;
 }
@@ -301,7 +303,7 @@
     border-radius: 20px;
     padding: 3rem 2rem;
     text-align: center;
-    color: #6b7280;
+    color: #000000;
     font-size: 0.9375rem;
 }
 

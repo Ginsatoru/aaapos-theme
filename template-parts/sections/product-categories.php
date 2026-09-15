@@ -6,6 +6,9 @@
  * UPDATED: Now respects drag-and-drop order from customizer
  * UPDATED: Displays as a slider - 6 visible at a time on desktop, with
  * prev/next controls in the section header and mouse drag support.
+ * UPDATED: Category image now resolved via aaapos_get_category_image_url()
+ * (inc/woocommerce.php) so a broken/deleted thumbnail attachment always
+ * falls back to the WooCommerce placeholder instead of a broken image.
  * 
  * @package Macedon_Ranges
  */
@@ -89,8 +92,7 @@ $categories_style = get_theme_mod('categories_style', 'slider');
 
         <div class="aaapos-category-grid">
             <?php foreach ($categories as $category) :
-                $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
-                $image = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'large') : wc_placeholder_img_src();
+                $image = aaapos_get_category_image_url($category, 'large');
             ?>
                 <a href="<?php echo esc_url(get_term_link($category)); ?>" class="aaapos-category-grid-card" style="background-image: url('<?php echo esc_url($image); ?>');">
                     <span class="aaapos-category-grid-card__overlay"></span>
@@ -151,9 +153,8 @@ $categories_style = get_theme_mod('categories_style', 'slider');
                 <div class="categories-track" data-animate="zoom-in" data-animate-delay="200">
                     <?php 
                     foreach ($categories as $category) : 
-                        // Get category thumbnail
-                        $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
-                        $image = $thumbnail_id ? wp_get_attachment_image_url($thumbnail_id, 'full') : wc_placeholder_img_src();
+                        // Get category thumbnail (falls back to WooCommerce placeholder)
+                        $image = aaapos_get_category_image_url($category);
                     ?>
                         <a href="<?php echo esc_url(get_term_link($category)); ?>" class="category-card">
                             <span class="category-card__image-wrap">

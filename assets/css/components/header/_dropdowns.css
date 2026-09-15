@@ -53,7 +53,7 @@
   display: block;
   font-weight: 600;
   font-size: 0.9375rem;
-  color: var(--color-text-dark);
+  color: black ;
   margin-bottom: 2px;
   line-height: 1.4;
 }
@@ -61,7 +61,7 @@
 .account-email {
   display: block;
   font-size: 0.8125rem;
-  color: var(--color-text-light);
+  color: black;
   line-height: 1.4;
 }
 
@@ -94,7 +94,7 @@
   gap: 12px;
   padding: 10px 16px;
   margin: 0 8px;
-  color: var(--color-text);
+  color: black;
   text-decoration: none;
   font-size: 0.875rem;
   border-radius: var(--border-radius-full);
@@ -170,12 +170,12 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--color-text-dark);
+  color: black ;
 }
 
 .cart-item-count {
   font-size: 0.8125rem;
-  color: var(--color-text-light);
+  color: black;
   font-weight: 500;
 }
 
@@ -262,7 +262,7 @@
   align-items: center;
   gap: 8px;
   font-size: 0.8125rem;
-  color: var(--color-text-light);
+  color: black;
   line-height: 1.4;
 }
 
@@ -288,12 +288,12 @@
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   padding: 0;
+  color: black;
 }
 
 .cart-item-remove:hover {
-  background: var(--color-danger);
+  background: black;
   color: var(--color-white);
-  transform: scale(1.2) rotate(90deg);
 }
 
 .cart-item-remove svg {
@@ -333,12 +333,12 @@
 }
 
 .cart-subtotal span {
-  color: var(--color-text);
+  color: black;
   font-weight: 500;
 }
 
 .cart-subtotal strong {
-  color: var(--color-text-dark);
+  color: black;
   font-size: 1.125rem;
   font-weight: 700;
 }

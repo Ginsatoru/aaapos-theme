@@ -1,9 +1,13 @@
 <?php
 /**
  * The template for displaying search results
- * Reuses the shop archive markup/classes (see archive-product.php) so
- * styling is inherited from the shared shop/woocommerce CSS instead of
- * a duplicated stylesheet.
+ * UPDATED: Toolbar (breadcrumb, search, filters, column toggle) now
+ * lives in template-parts/shop/toolbar.php, shared with
+ * archive-product.php, instead of being duplicated in both files.
+ *
+ * NOTE: This page builds its own WP_Query (not the main query), so
+ * WooCommerce's core price/sort filtering (WC_Query) never reaches it -
+ * orderby and price range are applied manually below.
  *
  * @package aaapos-prime
  */
@@ -11,13 +15,28 @@
 get_header();
 
 $header_bg_image = aaapos_get_shop_header_bg_image();
-
 $paged = (get_query_var('paged')) ? get_query_var('paged') : (get_query_var('page') ? get_query_var('page') : 1);
 
 // get_search_query() defaults to esc_html output, which turns "&" into
 // "&amp;" and breaks WP_Query's search matching against the raw DB value.
-// Always use the unescaped raw term for the query; escape only on output.
-$raw_search_query = get_search_query( false );
+$raw_search_query = get_search_query(false);
+
+// Variables consumed by template-parts/shop/toolbar.php
+$current_orderby   = ! empty($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : '';
+$current_min_price = isset($_GET['min_price']) ? (int) $_GET['min_price'] : 0;
+
+$max_product_price = function_exists('aaapos_get_context_max_price')
+    ? aaapos_get_context_max_price(['s' => $raw_search_query, 'post_type' => 'product', 'post_status' => 'publish'])
+    : 10000;
+if ($max_product_price <= 0) {
+    $max_product_price = 10000;
+}
+
+$current_max_price = isset($_GET['max_price']) ? (int) $_GET['max_price'] : $max_product_price;
+if ($current_max_price <= 0 || $current_max_price > $max_product_price) {
+    $current_max_price = $max_product_price;
+}
+$has_active_filters = $current_orderby || $current_min_price > 0 || $current_max_price < $max_product_price;
 
 $product_search_args = array(
     's'              => $raw_search_query,
@@ -27,7 +46,53 @@ $product_search_args = array(
     'posts_per_page' => wc_get_default_products_per_row() * wc_get_default_product_rows_per_page(),
 );
 
+// Sort/price range applied manually - this is a secondary query, so
+// WooCommerce's core filtering (which only hooks the main query) can't
+// reach it.
+switch ($current_orderby) {
+    case 'popularity':
+        $product_search_args['meta_key'] = 'total_sales';
+        $product_search_args['orderby']  = 'meta_value_num';
+        $product_search_args['order']    = 'DESC';
+        break;
+    case 'rating':
+        $product_search_args['meta_key'] = '_wc_average_rating';
+        $product_search_args['orderby']  = 'meta_value_num';
+        $product_search_args['order']    = 'DESC';
+        break;
+    case 'date':
+        $product_search_args['orderby'] = 'date';
+        $product_search_args['order']   = 'DESC';
+        break;
+    case 'price':
+        $product_search_args['meta_key'] = '_price';
+        $product_search_args['orderby']  = 'meta_value_num';
+        $product_search_args['order']    = 'ASC';
+        break;
+    case 'price-desc':
+        $product_search_args['meta_key'] = '_price';
+        $product_search_args['orderby']  = 'meta_value_num';
+        $product_search_args['order']    = 'DESC';
+        break;
+}
+
+if ($current_min_price > 0 || $current_max_price < $max_product_price) {
+    $product_search_args['meta_query'] = array(
+        array(
+            'key'     => '_price',
+            'value'   => array($current_min_price, $current_max_price),
+            'compare' => 'BETWEEN',
+            'type'    => 'NUMERIC',
+        ),
+    );
+}
+
 $product_search_query = new WP_Query($product_search_args);
+
+$shop_search_url = function_exists('wc_get_page_id') ? get_permalink(wc_get_page_id('shop')) : home_url('/');
+$base_archive_url = get_pagenum_link(1);
+$current_archive_url = esc_url($base_archive_url);
+$clear_filters_url = esc_url(remove_query_arg(['min_price', 'max_price', 'orderby'], $base_archive_url));
 ?>
 
 <div class="woocommerce">
@@ -70,106 +135,7 @@ $product_search_query = new WP_Query($product_search_args);
                         </div>
                     </header>
 
-                    <div class="shop-toolbar">
-
-                        <div class="woocommerce-result-count">
-                            <?php
-                            printf(
-                                esc_html__('Showing all %d results', 'aaapos-prime'),
-                                $product_search_query->found_posts
-                            );
-                            ?>
-                        </div>
-
-                        <div class="toolbar-controls">
-
-                            <form class="woocommerce-ordering" method="get" action="#">
-                                <select name="orderby" class="orderby" aria-label="<?php esc_attr_e('Shop order', 'aaapos-prime'); ?>">
-                                    <?php
-                                    $orderby_options = array(
-                                        'menu_order' => __('Default sorting', 'aaapos-prime'),
-                                        'popularity' => __('Sort by popularity', 'aaapos-prime'),
-                                        'rating'     => __('Sort by average rating', 'aaapos-prime'),
-                                        'date'       => __('Sort by latest', 'aaapos-prime'),
-                                        'price'      => __('Sort by price: low to high', 'aaapos-prime'),
-                                        'price-desc' => __('Sort by price: high to low', 'aaapos-prime'),
-                                    );
-
-                                    $current_orderby = isset($_GET['orderby']) ? wc_clean($_GET['orderby']) : 'menu_order';
-
-                                    foreach ($orderby_options as $id => $name) {
-                                        echo '<option value="' . esc_attr($id) . '" ' . selected($current_orderby, $id, false) . '>' . esc_html($name) . '</option>';
-                                    }
-                                    ?>
-                                </select>
-                                <input type="hidden" name="s" value="<?php echo esc_attr(get_search_query()); ?>" />
-                                <input type="hidden" name="post_type" value="product" />
-                            </form>
-
-                            <div class="column-toggle-wrapper">
-                                <button
-                                    type="button"
-                                    class="column-toggle"
-                                    data-columns="2"
-                                    data-tooltip="<?php esc_attr_e('2 columns', 'aaapos-prime'); ?>"
-                                    aria-label="<?php esc_attr_e('2 columns view', 'aaapos-prime'); ?>">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <rect x="3" y="3" width="8" height="8" rx="1"></rect>
-                                        <rect x="13" y="3" width="8" height="8" rx="1"></rect>
-                                        <rect x="3" y="13" width="8" height="8" rx="1"></rect>
-                                        <rect x="13" y="13" width="8" height="8" rx="1"></rect>
-                                    </svg>
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="column-toggle"
-                                    data-columns="3"
-                                    data-tooltip="<?php esc_attr_e('3 columns', 'aaapos-prime'); ?>"
-                                    aria-label="<?php esc_attr_e('3 columns view', 'aaapos-prime'); ?>">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <rect x="2" y="3" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="9.5" y="3" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="17" y="3" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="2" y="10" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="9.5" y="10" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="17" y="10" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="2" y="17" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="9.5" y="17" width="5" height="5" rx="0.5"></rect>
-                                        <rect x="17" y="17" width="5" height="5" rx="0.5"></rect>
-                                    </svg>
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="column-toggle active"
-                                    data-columns="4"
-                                    data-tooltip="<?php esc_attr_e('4 columns', 'aaapos-prime'); ?>"
-                                    aria-label="<?php esc_attr_e('4 columns view', 'aaapos-prime'); ?>">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                        <rect x="2" y="3" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="7.5" y="3" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="13" y="3" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="18.5" y="3" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="2" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="7.5" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="13" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="18.5" y="8.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="2" y="14" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="7.5" y="14" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="13" y="14" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="18.5" y="14" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="2" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="7.5" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="13" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                        <rect x="18.5" y="19.5" width="3.5" height="3.5" rx="0.5"></rect>
-                                    </svg>
-                                </button>
-                            </div>
-
-                        </div>
-
-                    </div>
+                    <?php get_template_part('template-parts/shop/toolbar'); ?>
 
                     <ul class="products" data-columns="4">
                         <?php
@@ -206,14 +172,8 @@ $product_search_query = new WP_Query($product_search_args);
                             <div class="no-results-icon">
                                 <img src="<?php echo esc_url( AAAPOS_ASSETS_URI ); ?>/../images/icons/sad.gif" alt="<?php esc_attr_e('No results', 'aaapos-prime'); ?>" width="64" height="64" />
                             </div>
-
-                            <h2 class="no-results-title">
-                                <?php esc_html_e('No results found', 'aaapos-prime'); ?>
-                            </h2>
-
-                            <p class="no-results-text">
-                                <?php esc_html_e('We couldn\'t find anything matching your search. Try adjusting your keywords.', 'aaapos-prime'); ?>
-                            </p>
+                            <h2 class="no-results-title"><?php esc_html_e('No results found', 'aaapos-prime'); ?></h2>
+                            <p class="no-results-text"><?php esc_html_e('We couldn\'t find anything matching your search. Try adjusting your keywords.', 'aaapos-prime'); ?></p>
                         </div>
                     </div>
 
@@ -227,31 +187,21 @@ $product_search_query = new WP_Query($product_search_args);
 </div><!-- .shop-page-wrapper -->
 </div><!-- .woocommerce -->
 
-<!-- Initialize column preference on page load (shared with shop page) -->
 <script>
 (function() {
     'use strict';
-
     var savedColumns = localStorage.getItem('shopColumnsView');
-
     if (!savedColumns || savedColumns === 'undefined' || savedColumns === 'null') {
         savedColumns = '4';
         localStorage.setItem('shopColumnsView', '4');
     }
-
     var productsGrid = document.querySelector('.woocommerce ul.products, .woocommerce-page ul.products');
     if (productsGrid) {
         productsGrid.setAttribute('data-columns', savedColumns);
     }
-
-    var columnToggles = document.querySelectorAll('.column-toggle');
-    columnToggles.forEach(function(toggle) {
+    document.querySelectorAll('.column-toggle').forEach(function(toggle) {
         var toggleColumns = toggle.getAttribute('data-columns');
-        if (toggleColumns === savedColumns) {
-            toggle.classList.add('active');
-        } else {
-            toggle.classList.remove('active');
-        }
+        toggle.classList.toggle('active', toggleColumns === savedColumns);
     });
 })();
 </script>

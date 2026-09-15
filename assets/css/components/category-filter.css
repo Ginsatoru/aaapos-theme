@@ -2,12 +2,18 @@
    CATEGORY FILTER - MODERN MINIMALIST DESIGN
    File: category-filter.css
    Location: assets/css/components/
-   Version: 5.1.0
+   Version: 8.0.0
    
    Design: Horizontal rectangular cards with white icon boxes,
    vibrant blue active state, light grey inactive state
-   NEW: Dynamic gradient overlays for scroll indicators
    UPDATED: Hover no longer lifts the card - fills with brand color instead
+   UPDATED: Icon box supports image-based icons (custom upload or category
+   image) via .filter-icon-box--image - removes the white background/padding
+   so the image renders edge-to-edge instead of sitting in a white square
+   UPDATED: Now paged in discrete blocks (.category-filter-page) of 5 columns
+   x 2 rows each, in natural left-to-right reading order, scrolled with
+   prev/next nav buttons - replaces the old column-major single grid, which
+   paired unrelated categories vertically instead of reading row by row
    ============================================ */
 
 /* ==========================================================================
@@ -25,22 +31,38 @@
    CATEGORY FILTER BUTTONS CONTAINER - DRAG SCROLLABLE
    ========================================================================== */
 
+.category-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.category-filter-title {
+  font-family: var(--font-heading, inherit);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: black;
+  margin: 0;
+}
+
+.category-filter-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .category-filter-buttons {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 16px;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 0;
-  cursor: grab;
-  user-select: none;
-  position: relative;
-  z-index: 1;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
 
 /* Hide scrollbar */
@@ -49,61 +71,58 @@
   height: 0;
 }
 
-/* Active dragging state */
-.category-filter-buttons.is-dragging {
-  cursor: grabbing !important;
-  scroll-behavior: auto;
-  user-select: none;
+/* One "page" = 5 columns x 2 rows, natural left-to-right reading order.
+   Pages sit side by side and are paged with the prev/next buttons below -
+   each button click scrolls exactly one page width. */
+.category-filter-page {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+  grid-template-rows: repeat(2, auto);
+  gap: 16px;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
 }
 
-.category-filter-buttons.is-dragging * {
-  cursor: grabbing !important;
-  user-select: none;
-  pointer-events: none;
+/* ==========================================================================
+   NAV BUTTONS (Prev/Next) - flat pill, matches homepage slider nav buttons.
+   Hidden by default; shown only when there's more than one page of
+   categories (.shop-category-filter.has-scroll), via JS.
+   ========================================================================== */
+
+.category-filter-nav-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  border: none;
+  border-radius: 10px;
+  background: #f0f1f3;
+  color: #000000;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
-/* Disable hover effects during drag */
-.category-filter-buttons.is-dragging .category-filter-btn:hover {
-  background: #F3F5FA;
-  border-color: transparent;
+.shop-category-filter.has-scroll .category-filter-nav-btn {
+  display: inline-flex;
 }
 
-.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-icon-box {
-  background: var(--color-white, #ffffff);
+.category-filter-nav-btn:hover:not(:disabled) {
+  background: #e5e7ea;
 }
 
-.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-icon {
-  stroke: var(--color-text-light, #6b7280);
+.category-filter-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-label {
-  color: var(--color-text-dark, #1f2937);
-}
-
-.category-filter-buttons.is-dragging .category-filter-btn:hover .filter-count {
-  color: var(--color-text-light, #6b7280);
-}
-
-/* Keep active state during drag */
-.category-filter-buttons.is-dragging .category-filter-btn.active {
-  background: var(--brand-color, #0ea5e9);
-  border-color: transparent;
-}
-
-.category-filter-buttons.is-dragging .category-filter-btn.active .filter-icon-box {
-  background: var(--color-white, #ffffff);
-}
-
-.category-filter-buttons.is-dragging .category-filter-btn.active .filter-icon {
-  stroke: var(--brand-color, #0ea5e9);
-}
-
-.category-filter-buttons.is-dragging .category-filter-btn.active .filter-label {
-  color: var(--color-white, #ffffff);
-}
-
-.category-filter-buttons.is-dragging .category-filter-btn.active .filter-count {
-  color: var(--color-white, #ffffff);
+.category-filter-nav-btn svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -191,6 +210,27 @@
   transition: all 0.25s ease;
 }
 
+/* --------------------------------------------------------------------
+   IMAGE-BASED ICON (custom upload or category image)
+   No white background/padding - the image fills the box edge-to-edge
+   instead of sitting inside a white square like the default SVG icon.
+   -------------------------------------------------------------------- */
+
+.category-filter-btn .filter-icon-box.filter-icon-box--image {
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+}
+
+.category-filter-btn .filter-icon.filter-icon--image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  stroke: none;
+  display: block;
+}
+
 /* ==========================================================================
    TEXT CONTENT (Right Side) - BOLD TITLE + ITEM COUNT
    ========================================================================== */
@@ -204,8 +244,8 @@
 
 .category-filter-btn .filter-label {
   font-size: 15px;
-  font-weight: var(--font-bold, 700);
-  color: var(--color-text-dark, #1f2937);
+  font-weight: 700;
+  color: #000000;
   transition: all 0.25s ease;
   margin: 0;
   line-height: 1.2;
@@ -225,25 +265,8 @@
    ========================================================================== */
 
 .category-filter-btn:hover {
-  background: var(--brand-color, #0ea5e9);
+  background: #E7EAF3;
   border-color: transparent;
-}
-
-.category-filter-btn:hover .filter-icon-box {
-  background: var(--color-white, #ffffff);
-}
-
-.category-filter-btn:hover .filter-icon {
-  stroke: var(--brand-color, #0ea5e9);
-}
-
-.category-filter-btn:hover .filter-label {
-  color: var(--color-white, #ffffff);
-}
-
-.category-filter-btn:hover .filter-count {
-  color: var(--color-white, #ffffff);
-  opacity: 0.95;
 }
 
 /* ==========================================================================
@@ -257,6 +280,10 @@
 
 .category-filter-btn.active .filter-icon-box {
   background: var(--color-white, #ffffff);
+}
+
+.category-filter-btn.active .filter-icon-box.filter-icon-box--image {
+  background: transparent;
 }
 
 .category-filter-btn.active .filter-icon {
@@ -300,6 +327,10 @@
    ========================================================================== */
 
 @media (min-width: 768px) and (max-width: 1023px) {
+  .category-filter-page {
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+  }
+
   .category-filter-buttons {
     gap: 14px;
   }
@@ -342,7 +373,19 @@
   .shop-category-filter {
     margin-bottom: 1.25rem;
   }
+
+  .category-filter-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .category-filter-title {
+    font-size: 1rem;
+  }
   
+  .category-filter-page {
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+  }
+
   .category-filter-buttons {
     gap: 10px;
   }
@@ -388,6 +431,10 @@
     margin-bottom: 1rem;
   }
   
+  .category-filter-page {
+    grid-template-columns: repeat(2, minmax(90px, 1fr));
+  }
+
   .category-filter-buttons {
     gap: 8px;
   }

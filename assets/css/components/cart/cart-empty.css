@@ -40,7 +40,6 @@ body.woocommerce-cart .woocommerce:has(.cart-empty-wrapper) .woocommerce-cart-fo
   margin: 0 !important;
   padding: 2rem 0 !important;
   margin-bottom: -100px !important;
-  border-bottom: 1px solid var(--color-border, #E5E7EB);
 }
 
 body.woocommerce-cart .cart-empty-wrapper {
@@ -64,7 +63,6 @@ body.woocommerce-cart .cart-empty-content {
    CART ICON - SVG Shopping Cart
    ========================================================================== */
 body.woocommerce-cart .cart-empty-icon {
-  padding-right: 40px;
   width: 360px;
   height: 360px;
   margin: 0 auto 0rem;
@@ -73,6 +71,7 @@ body.woocommerce-cart .cart-empty-icon {
   justify-content: center;
   position: relative;
   margin-top: -60PX;
+  background: none;
 }
 
 body.woocommerce-cart .cart-empty-icon svg {
@@ -83,6 +82,15 @@ body.woocommerce-cart .cart-empty-icon svg {
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
+}
+
+body.woocommerce-cart .cart-empty-icon img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  background: none;
 }
 
 /* ==========================================================================
@@ -130,13 +138,12 @@ body.woocommerce-cart .cart-empty-button {
 }
 
 body.woocommerce-cart .cart-empty-button:hover {
-  background: var(--color-primary-dark, #1a3320);
-  transform: translateY(-2px);
+  background: #000000;
   color: var(--color-white, #ffffff);
 }
 
 body.woocommerce-cart .cart-empty-button:active {
-  transform: translateY(0);
+  background: #000000;
 }
 
 body.woocommerce-cart .cart-empty-button svg {
@@ -186,6 +193,11 @@ body.woocommerce-cart .cart-empty-button svg {
     height: 180px !important;
   }
 
+  body.woocommerce-cart .cart-empty-icon img {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
   body.woocommerce-cart .cart-empty-title {
     font-size: 1.5rem;
   }
@@ -227,6 +239,11 @@ body.woocommerce-cart .cart-empty-button svg {
   body.woocommerce-cart .cart-empty-icon svg {
     width: 160px !important;
     height: 160px !important;
+  }
+
+  body.woocommerce-cart .cart-empty-icon img {
+    width: 140px !important;
+    height: 140px !important;
   }
 
   body.woocommerce-cart .cart-empty-title {

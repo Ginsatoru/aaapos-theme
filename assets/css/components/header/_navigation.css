@@ -77,7 +77,7 @@
   align-items: center;
   height: 100%;
   padding: 0 16px;
-  color: var(--color-nav-link);
+  color: #000000 !important;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9375rem;
@@ -96,14 +96,14 @@
 
 .nav-menu > li > a:hover,
 .nav-menu > li > a:focus {
-  color: var(--color-nav-hover);
+  color: var(--color-nav-hover) !important;
 }
 
 /* Active/Current Menu Item */
 .nav-menu > li.current-menu-item > a,
 .nav-menu > li.current-menu-ancestor > a,
 .nav-menu > li.current_page_item > a {
-  color: var(--color-nav-active);
+  color: var(--color-nav-active) !important;
 }
 
 /* Remove Underline Effect */

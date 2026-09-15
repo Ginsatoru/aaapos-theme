@@ -18,11 +18,10 @@
   display: flex !important;
   gap: 0.75rem !important;
   margin: 0 0 1.5rem 0 !important;
-  padding: 0 !important;
+  padding: 0.5rem 0 !important;
   list-style: none !important;
   border-bottom: none !important;
   background: #f5f5f5 !important;
-  padding: 0.5rem !important;
   border-radius: 12px !important;
   width: fit-content !important;
 }
@@ -34,10 +33,10 @@
 
 .single-product .woocommerce-tabs .tabs li a {
   display: block !important;
-  padding: 0.5rem 1.5rem !important;
+  padding: 0.5rem 1rem !important;
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
-  color: var(--color-text-light, #6b7280) !important;
+  color: #000000 !important;
   text-decoration: none !important;
   border-radius: 50px !important;
   transition: all 0.2s ease !important;
@@ -46,14 +45,14 @@
 }
 
 .single-product .woocommerce-tabs .tabs li a:hover {
-  color: var(--color-primary, #0ea5e9) !important;
-  background: rgba(14, 165, 233, 0.08) !important;
+  color: #ffffff !important;
+  background: #000000 !important;
 }
 
 .single-product .woocommerce-tabs .tabs li.active a {
-  color: var(--color-primary, #0ea5e9) !important;
-  background: #ffffff !important;
-  border: 1px solid var(--color-border, #e5e7eb) !important;
+  color: #ffffff !important;
+  background: #000000 !important;
+  border: none !important;
 }
 
 /* === TAB PANELS === */
@@ -71,7 +70,7 @@
   font-size: 1.25rem !important;
   font-weight: 700 !important;
   margin: 0 0 1.25rem 0 !important;
-  color: var(--color-text-dark, #1f2937) !important;
+  color: #000000 !important;
 }
 
 /* ============================================
@@ -91,7 +90,7 @@
   font-size: 1.625rem !important;
   font-weight: 700 !important;
   margin: 0 0 1.5rem 0 !important;
-  color: var(--color-text-dark, #1f2937) !important;
+  color: #000000 !important;
   text-align: center !important;
 }
 
@@ -150,13 +149,14 @@
 
   .single-product .woocommerce-tabs .tabs li a {
     width: 100% !important;
-    padding: 0.625rem 1rem !important;
+    padding: 0.625rem 0.75rem !important;
     border-radius: 50px !important;
     background: #f5f5f5 !important;
   }
 
   .single-product .woocommerce-tabs .tabs li.active a {
-    background: #ffffff !important;
+    background: #000000 !important;
+    color: #ffffff !important;
   }
 
   .single-product .woocommerce-tabs .panel {

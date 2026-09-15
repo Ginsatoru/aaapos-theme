@@ -45,7 +45,7 @@ button.search-submit,
 }
 
 .header-action {
-  color: var(--color-header-text);
+  color: #000000;
   padding: var(--space-2);
   border-radius: var(--border-radius);
   transition: var(--transition);
