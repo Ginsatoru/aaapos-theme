@@ -6,6 +6,9 @@
  * Customizer > Hero Section > Hero Design = Modern (the default).
  * Relies on aaapos_resolve_media_url() and aaapos_ascend_words(),
  * defined in the dispatcher file that includes this one.
+ *
+ * Performance: the background image is preloaded by inc/enqueue.php, and the
+ * first product image loads eagerly with high priority (later ones stay lazy).
  */
 
     // =========================================================================
@@ -160,6 +163,10 @@
                 <div class="hero-product-carousel hero-product-side hero-product-desktop-only">
                     <div class="product-carousel-track">
                         <?php foreach ($hardcoded_product_images as $index => $img_url): ?>
+                            <?php
+                            // First (visible) product image loads now; the rest stay lazy
+                            $slide_loading = $index === 0 ? 'loading="eager" fetchpriority="high" decoding="async"' : 'loading="lazy"';
+                            ?>
                             <div class="product-slide <?php echo $index === 0 ? 'active' : ''; ?>">
                                 <?php $slide_link = $hardcoded_product_links[$index]; ?>
                                 <?php if (!empty($slide_link)): ?>
@@ -167,13 +174,13 @@
                                         <img src="<?php echo esc_url($img_url); ?>"
                                              alt="<?php echo esc_attr($hero_title_line1 . ' - image ' . ($index + 1)); ?>"
                                              class="product-slide-img"
-                                             loading="lazy">
+                                             <?php echo $slide_loading; ?>>
                                     </a>
                                 <?php else: ?>
                                     <img src="<?php echo esc_url($img_url); ?>"
                                          alt="<?php echo esc_attr($hero_title_line1 . ' - image ' . ($index + 1)); ?>"
                                          class="product-slide-img"
-                                         loading="lazy">
+                                         <?php echo $slide_loading; ?>>
                                 <?php endif; ?>
                             </div>
                         <?php endforeach; ?>

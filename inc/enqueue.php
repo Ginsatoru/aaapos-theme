@@ -806,6 +806,62 @@ add_action("wp_enqueue_scripts", "mr_enqueue_google_fonts", 5);
 
 
 /**
+ * The hero's first visible image (the homepage's main content / LCP), as a
+ * <link rel="preload"> tag, matching whichever hero design and mode is active.
+ * Returns '' when the homepage doesn't show the theme hero.
+ */
+function aaapos_hero_preload_tag()
+{
+    if (
+        !is_front_page() ||
+        !is_page_template('page-templates/homepage-sections.php') ||
+        !get_theme_mod('show_hero', true)
+    ) {
+        return '';
+    }
+
+    $default_url = get_template_directory_uri() . '/images/herobg.png';
+    $url = '';
+    $srcset = '';
+    $sizes = '';
+
+    if (get_theme_mod('hero_layout_style', 'modern') === 'classic') {
+        if (get_theme_mod('hero_media_type', 'image') === 'video') {
+            // Video mode: the fallback image shows first (plain <img src>)
+            $fallback_id = get_theme_mod('hero_video_fallback', '');
+            $url = $fallback_id ? wp_get_attachment_image_url($fallback_id, 'full') : '';
+        } else {
+            // Image mode (slideshow or static): slide 1, rendered by wp_get_attachment_image()
+            $slide_id = get_theme_mod('hero_slide_1');
+            if ($slide_id) {
+                $url = wp_get_attachment_image_url($slide_id, 'full');
+                $srcset = wp_get_attachment_image_srcset($slide_id, 'full');
+                $sizes = wp_get_attachment_image_sizes($slide_id, 'full');
+            }
+        }
+    } else {
+        // Modern: CSS background image on the hero section
+        $bg_id = get_theme_mod('hero_bg_image', '');
+        $url = $bg_id ? wp_get_attachment_image_url($bg_id, 'full') : '';
+    }
+
+    if (!$url) {
+        $url = $default_url;
+        $srcset = '';
+        $sizes = '';
+    }
+
+    $tag = '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url($url) . '"';
+    if ($srcset) {
+        $tag .= ' imagesrcset="' . esc_attr($srcset) . '"';
+        if ($sizes) {
+            $tag .= ' imagesizes="' . esc_attr($sizes) . '"';
+        }
+    }
+    return $tag . ">\n";
+}
+
+/**
  * Preload critical assets
  */
 function mr_preload_critical_assets()
@@ -850,16 +906,8 @@ function mr_preload_critical_assets()
         }
     }
 
-    // Preload hero image on homepage
-    if (is_front_page()) {
-        $hero_image = get_theme_mod("mr_hero_image");
-        if ($hero_image) {
-            echo '<link rel="preload" href="' .
-                esc_url($hero_image) .
-                '" as="image">' .
-                "\n";
-        }
-    }
+    // Preload the hero's first visible image on the homepage (its LCP element)
+    echo aaapos_hero_preload_tag();
 }
 add_action("wp_head", "mr_preload_critical_assets", 1);
 

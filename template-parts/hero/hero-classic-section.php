@@ -6,6 +6,10 @@
  * Customizer > Hero Section > Hero Design = Classic. Relies on
  * aaapos_resolve_media_url() and aaapos_ascend_words(), defined in the
  * dispatcher file that includes this one.
+ *
+ * Performance: the first visible hero image (video fallback, first slide, or
+ * static image) loads eagerly with high priority, since it is the page's main
+ * content (LCP). Later slides stay lazy. inc/enqueue.php preloads the same image.
  */
 
     // =========================================================================
@@ -99,6 +103,10 @@
             $hero_class .= ' hero-static';
         }
     }
+
+    // The first visible hero image: load now, with high priority
+    $hero_img_priority = 'loading="eager" fetchpriority="high" decoding="async"';
+    $hero_img_priority_args = array('loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async');
     ?>
 
     <section class="<?php echo esc_attr($hero_class); ?>" <?php echo $video_data_attrs; ?>>
@@ -112,12 +120,12 @@
                             <img src="<?php echo esc_url($fallback_image_url); ?>"
                                  alt="<?php echo esc_attr($hero_title); ?>"
                                  class="video-fallback-image"
-                                 loading="lazy">
+                                 <?php echo $hero_img_priority; ?>>
                         <?php else: ?>
                             <img src="<?php echo esc_url($default_images[0]); ?>"
                                  alt="<?php echo esc_attr($hero_title); ?>"
                                  class="video-fallback-image"
-                                 loading="lazy">
+                                 <?php echo $hero_img_priority; ?>>
                         <?php endif; ?>
 
                         <div class="video-controls">
@@ -150,12 +158,12 @@
                             <img src="<?php echo esc_url($fallback_image_url); ?>"
                                  alt="<?php echo esc_attr($hero_title); ?>"
                                  class="hero-static-image"
-                                 loading="lazy">
+                                 <?php echo $hero_img_priority; ?>>
                         <?php else: ?>
                             <img src="<?php echo esc_url($default_images[0]); ?>"
                                  alt="<?php echo esc_attr($hero_title); ?>"
                                  class="hero-static-image"
-                                 loading="lazy">
+                                 <?php echo $hero_img_priority; ?>>
                         <?php endif; ?>
                         <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
                     </div>
@@ -176,23 +184,26 @@
                      data-loop="true">
                     <div class="hero-slides">
                         <?php foreach ($slides as $index => $slide_id): ?>
+                            <?php $is_first = ($index === 0); ?>
                             <div class="hero-slide">
                                 <?php if ($slide_id): ?>
                                     <?php echo wp_get_attachment_image(
                                         $slide_id,
                                         'full',
                                         false,
-                                        array(
-                                            'alt' => esc_attr($hero_title),
-                                            'loading' => 'lazy',
-                                            'class' => 'hero-slide-image',
+                                        array_merge(
+                                            array(
+                                                'alt' => esc_attr($hero_title),
+                                                'class' => 'hero-slide-image',
+                                            ),
+                                            $is_first ? $hero_img_priority_args : array('loading' => 'lazy'),
                                         ),
                                     ); ?>
                                 <?php else: ?>
                                     <img src="<?php echo esc_url($default_images[$index]); ?>"
                                          alt="<?php echo esc_attr($hero_title); ?>"
                                          class="hero-slide-image"
-                                         loading="lazy">
+                                         <?php echo $is_first ? $hero_img_priority : 'loading="lazy"'; ?>>
                                 <?php endif; ?>
                                 <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
                             </div>
@@ -202,16 +213,15 @@
             <?php else: ?>
                 <div class="hero-static-background">
                     <?php if ($hero_slide_1): ?>
-                        <?php echo wp_get_attachment_image($hero_slide_1, 'full', false, array(
+                        <?php echo wp_get_attachment_image($hero_slide_1, 'full', false, array_merge(array(
                             'alt' => esc_attr($hero_title),
                             'class' => 'hero-static-image',
-                            'loading' => 'lazy',
-                        )); ?>
+                        ), $hero_img_priority_args)); ?>
                     <?php else: ?>
                         <img src="<?php echo esc_url($default_images[0]); ?>"
                              alt="<?php echo esc_attr($hero_title); ?>"
                              class="hero-static-image"
-                             loading="lazy">
+                             <?php echo $hero_img_priority; ?>>
                     <?php endif; ?>
                     <div class="slide-overlay" style="background: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity); ?>);"></div>
                 </div>
