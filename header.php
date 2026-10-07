@@ -413,7 +413,8 @@ if (get_theme_mod('enable_page_loader', false)) {
                     ?>
                         <div class="header-cart-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="400">
                             <a href="<?php echo esc_url(wc_get_cart_url()); ?>" 
-                               class="header-action cart-link cart-style-<?php echo esc_attr($cart_style); ?>">
+                               class="header-action cart-link cart-style-<?php echo esc_attr($cart_style); ?>"
+                               aria-label="<?php esc_attr_e('Shopping cart', 'aaapos'); ?>">
                                 <span class="icon-roll icon-roll-20">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                         <circle cx="8" cy="21" r="1"/>
@@ -479,7 +480,8 @@ if (get_theme_mod('enable_page_loader', false)) {
                                         endforeach;
                                     else: ?>
                                         <li class="cart-dropdown-empty">
-                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/sad.gif'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
+                                            <?php // Lazy: the dropdown is hidden until opened, so most visitors never download this ?>
+                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/sad.gif'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon" loading="lazy" decoding="async"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

@@ -808,15 +808,34 @@ add_action("wp_enqueue_scripts", "mr_enqueue_google_fonts", 5);
 /**
  * The hero's first visible image (the homepage's main content / LCP), as a
  * <link rel="preload"> tag, matching whichever hero design and mode is active.
- * Returns '' when the homepage doesn't show the theme hero.
+ * Returns '' when the current page doesn't show the theme hero.
  */
+function aaapos_page_shows_hero()
+{
+    // Homepage using the "Custom Homepage" template (theme renders the hero)
+    if (is_front_page() && is_page_template('page-templates/homepage-sections.php')) {
+        return true;
+    }
+
+    // Any page that places the hero with the [hero_section] shortcode
+    // (in the editor content, or inside an Elementor layout)
+    if (is_singular()) {
+        $post = get_post();
+        if ($post && has_shortcode($post->post_content, 'hero_section')) {
+            return true;
+        }
+        $elementor_data = $post ? get_post_meta($post->ID, '_elementor_data', true) : '';
+        if (is_string($elementor_data) && strpos($elementor_data, '[hero_section') !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function aaapos_hero_preload_tag()
 {
-    if (
-        !is_front_page() ||
-        !is_page_template('page-templates/homepage-sections.php') ||
-        !get_theme_mod('show_hero', true)
-    ) {
+    if (!get_theme_mod('show_hero', true) || !aaapos_page_shows_hero()) {
         return '';
     }
 
@@ -906,7 +925,7 @@ function mr_preload_critical_assets()
         }
     }
 
-    // Preload the hero's first visible image on the homepage (its LCP element)
+    // Preload the hero's first visible image (its LCP element) on pages that show the hero
     echo aaapos_hero_preload_tag();
 }
 add_action("wp_head", "mr_preload_critical_assets", 1);

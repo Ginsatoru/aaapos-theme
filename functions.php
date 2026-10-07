@@ -1434,13 +1434,9 @@ add_shortcode('hero_section', 'aaapos_hero_section_shortcode');
 function aaapos_enqueue_hero_assets() {
     $is_production = mr_is_production_mode();
     
-    // Hero CSS
-    wp_enqueue_style(
-        'aaapos-hero',
-        get_template_directory_uri() . '/assets/css/components/hero.css',
-        $is_production ? array('mr-main') : array('mr-components'),
-        AAAPOS_VERSION
-    );
+    // Hero CSS: hero-modern.css / hero-classic.css already load with the theme's
+    // main styles. (The old assets/css/components/hero.css no longer exists -
+    // enqueuing it only caused a 404 on every page using this shortcode.)
     
     // Hero JS - Image slideshow
     $media_type = get_theme_mod('hero_media_type', 'image');
