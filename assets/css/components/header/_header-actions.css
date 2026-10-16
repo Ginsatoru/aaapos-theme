@@ -277,6 +277,24 @@ button.search-submit,
   }
 }
 
+/* Custom button inside the mobile menu (header-cta-wrapper is desktop only) */
+.mobile-cta-section {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .mobile-cta-section {
+    display: block;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .mobile-cta-section .btn-header-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Custom header button wrapper (Customizer: Use Custom Header Button) */
 .header-cta-wrapper {
   display: none;
@@ -342,6 +360,7 @@ button.search-submit,
   height: 42px;
   padding: 0 20px 0 24px;
   border-radius: 999px;
+  font-size: 0.8rem;
 }
 
 /* Only when the custom button is in use (body.has-header-cta), match the
@@ -381,7 +400,7 @@ button.search-submit,
 }
 
 /* Duplicate text (was used by the old hover swap) - not shown */
-.btn-login-text-inner:last-child {
+.btn-login-text-inner:last-child:not(:first-child) {
   display: none;
 }
 

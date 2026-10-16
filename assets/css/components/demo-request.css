@@ -1,0 +1,576 @@
+/* ==========================================================================
+   Request a Demo popup - split-screen, matches the Login popup
+   All selectors are prefixed .demo-modal so nothing here can clash with
+   the theme's own modal / button / form styles.
+   ========================================================================== */
+
+.demo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.demo-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.demo-modal [hidden] {
+  display: none !important;
+}
+
+.demo-modal,
+.demo-modal * {
+  box-sizing: border-box;
+}
+
+/* Container - rounded on every corner, no inner scrollbar
+   (the page behind scrolls if the screen is very short) */
+.demo-modal {
+  position: relative;
+  width: 90%;
+  max-width: 1000px;
+  margin: 0;
+  padding: 0;
+  border-radius: 32px;
+  background: var(--color-white, #fff);
+  color: #000000;
+  text-align: left;
+  font-family: inherit;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.demo-modal-overlay.active .demo-modal {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.demo-modal.demo-modal--no-image {
+  max-width: 560px;
+}
+
+.demo-modal .demo-modal-split {
+  display: flex;
+  width: 100%;
+}
+
+/* Left - form */
+.demo-modal .demo-modal-left {
+  position: relative;
+  flex: 0 0 50%;
+  width: 50%;
+  padding: 40px 44px 34px;
+  font-size: 0.88rem;
+}
+
+.demo-modal.demo-modal--no-image .demo-modal-left {
+  flex-basis: 100%;
+  width: 100%;
+}
+
+/* Right - image */
+.demo-modal .demo-modal-right {
+  flex: 0 0 50%;
+  width: 50%;
+  background-color: #f3f4f6;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0 32px 32px 0;
+}
+
+/* Close button */
+.demo-modal .demo-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: none;
+}
+
+.demo-modal .demo-modal-close:hover,
+.demo-modal .demo-modal-close:focus {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.demo-modal .demo-modal-close:hover svg {
+  opacity: 0.6;
+}
+
+.demo-modal .demo-modal-close svg {
+  width: 20px;
+  height: 20px;
+  color: #000000;
+  transition: opacity 0.3s ease;
+}
+
+/* Header */
+.demo-modal .demo-modal-header {
+  height: auto;
+  margin: 0 0 22px;
+  padding: 0;
+  text-align: center;
+}
+
+.demo-modal .demo-modal-header h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 0 40px;
+  font-size: 1.55rem;
+  font-weight: var(--font-bold, 700);
+  line-height: 1.2;
+  color: #000000;
+}
+
+.demo-modal .demo-modal-header p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #000000;
+}
+
+/* Form */
+.demo-modal .demo-modal-form {
+  margin: 0;
+  padding: 0;
+  transition: opacity 0.25s ease;
+}
+
+.demo-modal .demo-modal-form.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.demo-modal .demo-modal-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 14px;
+}
+
+.demo-modal .demo-modal-field {
+  min-width: 0;
+}
+
+.demo-modal .demo-modal-full {
+  grid-column: 1 / -1;
+}
+
+.demo-modal label {
+  display: block;
+  margin: 0 0 7px;
+  font-size: 0.8rem;
+  font-weight: var(--font-semibold, 600);
+  color: #000000;
+}
+
+.demo-modal .demo-optional {
+  font-weight: 400;
+  color: #000000;
+}
+
+.demo-modal input,
+.demo-modal select,
+.demo-modal textarea {
+  display: block;
+  width: 100%;
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: var(--color-white, #fff);
+  color: #000000;
+  font-family: inherit;
+  font-size: 0.84rem;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+.demo-modal textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.demo-modal input::placeholder,
+.demo-modal textarea::placeholder {
+  font-size: 0.84rem;
+  color: #9ca3af;
+}
+
+/* Active field: brand-colour border, no focus ring */
+.demo-modal input:focus,
+.demo-modal select:focus,
+.demo-modal textarea:focus,
+.demo-modal input:focus-visible,
+.demo-modal select:focus-visible,
+.demo-modal textarea:focus-visible {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--brand-color, #0f8abe);
+}
+
+.demo-modal .demo-modal-close:focus-visible,
+.demo-modal .demo-modal-submit:focus-visible {
+  outline: 2px solid var(--brand-color, #0f8abe);
+  outline-offset: 2px;
+}
+
+/* Fields flagged by the browser after a failed submit */
+.demo-modal .demo-modal-form.was-validated input:invalid,
+.demo-modal .demo-modal-form.was-validated select:invalid {
+  border-color: #ef4444;
+}
+
+/* Select with custom chevron */
+.demo-modal .demo-modal-select {
+  position: relative;
+}
+
+.demo-modal .demo-modal-select select {
+  appearance: none;
+  padding-right: 40px;
+}
+
+.demo-modal .demo-modal-select svg {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 15px;
+  height: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #9ca3af;
+}
+
+/* Honeypot - off-screen, not display:none (bots skip display:none) */
+.demo-modal .demo-modal-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* reCAPTCHA checkbox */
+.demo-modal .demo-modal-recaptcha {
+  margin-bottom: 14px;
+}
+
+/* Footer + submit */
+.demo-modal .demo-modal-footer {
+  margin-top: 18px;
+}
+
+.demo-modal .demo-modal-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: auto;
+  margin: 0;
+  padding: 6px 26px 6px 6px;
+  border: none;
+  border-radius: 999px;
+  background: var(--brand-color, #0f8abe);
+  color: var(--color-white, #fff);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: var(--font-semibold, 600);
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.3s ease;
+}
+
+.demo-modal .demo-modal-submit:hover {
+  background: #000;
+}
+
+.demo-modal .demo-modal-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* White circle holding the arrow, arrow in the brand colour */
+.demo-modal .demo-modal-submit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brand-color, #0f8abe);
+  transition: color 0.3s ease;
+}
+
+.demo-modal .demo-modal-submit:hover .demo-modal-submit-icon {
+  color: #000;
+}
+
+.demo-modal .demo-modal-btn-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.demo-modal .demo-modal-submit:hover .demo-modal-btn-icon {
+  transform: translateX(2px);
+}
+
+/* Error message */
+.demo-modal .demo-modal-status {
+  display: none;
+  margin-top: 14px;
+  padding: 11px 15px;
+  border-left: 3px solid #ef4444;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.demo-modal .demo-modal-status.show {
+  display: block;
+}
+
+/* Success panel */
+.demo-modal .demo-modal-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  text-align: center;
+  animation: demoSuccessIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Circle draws itself, tick draws after it, the whole icon pops in */
+.demo-modal .demo-modal-success svg {
+  animation: demoSuccessPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+.demo-modal .demo-modal-success svg circle {
+  stroke-dasharray: 63;
+  stroke-dashoffset: 63;
+  animation: demoSuccessDraw 0.6s ease 0.15s forwards;
+}
+
+.demo-modal .demo-modal-success svg path {
+  stroke-dasharray: 14;
+  stroke-dashoffset: 14;
+  animation: demoSuccessDraw 0.4s ease 0.65s forwards;
+}
+
+.demo-modal .demo-modal-success h3 {
+  animation: demoSuccessUp 0.5s ease 0.5s both;
+}
+
+.demo-modal .demo-modal-success p {
+  animation: demoSuccessUp 0.5s ease 0.6s both;
+}
+
+@keyframes demoSuccessIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes demoSuccessPop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes demoSuccessDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes demoSuccessUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.demo-modal .demo-modal-success svg {
+  width: 56px;
+  height: 56px;
+  color: #22c55e;
+}
+
+.demo-modal .demo-modal-success h3 {
+  margin: 18px 0 8px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.demo-modal .demo-modal-success p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #000000;
+}
+
+/* Tablet / mobile - image hidden, single column card */
+@media (max-width: 768px) {
+  .demo-modal {
+    width: 95%;
+    max-width: 520px;
+    border-radius: 24px;
+  }
+
+  .demo-modal .demo-modal-left {
+    flex: 1 1 100%;
+    width: 100%;
+    padding: 34px 28px 28px;
+  }
+
+  .demo-modal .demo-modal-right {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .demo-modal-overlay {
+    padding: 10px;
+    align-items: start;
+  }
+
+  .demo-modal .demo-modal-left {
+    padding: 30px 22px 24px;
+  }
+
+  .demo-modal .demo-modal-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .demo-modal .demo-modal-fields {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .demo-modal .demo-modal-full {
+    grid-column: auto;
+  }
+}
+
+/* ==========================================================================
+   First-open entrance animation (same sequence as the login popup)
+   ========================================================================== */
+
+.demo-modal.first-open .demo-modal-left {
+  transform: translateX(-30px);
+  opacity: 0;
+  animation: demoSlideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+}
+
+.demo-modal.first-open .demo-modal-right {
+  transform: translateX(30px);
+  opacity: 0;
+  animation: demoSlideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+}
+
+.demo-modal.first-open .demo-modal-close {
+  opacity: 0;
+  transform: scale(0.8) rotate(-90deg);
+  animation: demoRotateIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+}
+
+.demo-modal.first-open .demo-modal-header {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: demoFadeInDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+
+.demo-modal.first-open .demo-modal-field {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: demoFadeInStagger 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.demo-modal.first-open .demo-modal-field:nth-child(1) { animation-delay: 0.35s; }
+.demo-modal.first-open .demo-modal-field:nth-child(2) { animation-delay: 0.4s; }
+.demo-modal.first-open .demo-modal-field:nth-child(3) { animation-delay: 0.45s; }
+.demo-modal.first-open .demo-modal-field:nth-child(4) { animation-delay: 0.5s; }
+.demo-modal.first-open .demo-modal-field:nth-child(5) { animation-delay: 0.55s; }
+.demo-modal.first-open .demo-modal-field:nth-child(6) { animation-delay: 0.6s; }
+
+.demo-modal.first-open .demo-modal-footer {
+  opacity: 0;
+  animation: demoFadeInSimple 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
+}
+
+@keyframes demoSlideInLeft {
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes demoSlideInRight {
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes demoRotateIn {
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes demoFadeInDown {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes demoFadeInStagger {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes demoFadeInSimple {
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-modal-overlay,
+  .demo-modal,
+  .demo-modal * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .demo-modal .demo-modal-success svg circle,
+  .demo-modal .demo-modal-success svg path {
+    stroke-dashoffset: 0;
+  }
+
+  .demo-modal.first-open .demo-modal-left,
+  .demo-modal.first-open .demo-modal-right,
+  .demo-modal.first-open .demo-modal-close,
+  .demo-modal.first-open .demo-modal-header,
+  .demo-modal.first-open .demo-modal-field,
+  .demo-modal.first-open .demo-modal-footer {
+    opacity: 1;
+    transform: none;
+  }
+}

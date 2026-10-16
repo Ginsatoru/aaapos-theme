@@ -35,10 +35,15 @@
         $body_classes[] = 'has-sticky-header';
     }
     
-    // Add custom header button class if enabled (needs both title and URL)
-    if (get_theme_mod('header_cta_enable', false)
-        && trim((string) get_theme_mod('header_cta_text', '')) !== ''
-        && (string) get_theme_mod('header_cta_url', '') !== '') {
+    // Custom header button: needs a title, plus a URL unless it opens the demo form
+    $header_cta_text = trim((string) get_theme_mod('header_cta_text', ''));
+    $header_cta_url  = (string) get_theme_mod('header_cta_url', '');
+    $header_cta_demo = (bool) get_theme_mod('header_cta_demo_form', true);
+    $use_header_cta  = get_theme_mod('header_cta_enable', false)
+        && $header_cta_text !== ''
+        && ($header_cta_demo || $header_cta_url !== '');
+
+    if ($use_header_cta) {
         $body_classes[] = 'has-header-cta';
     }
     
@@ -222,6 +227,24 @@ if (get_theme_mod('enable_page_loader', false)) {
                         </div>
                     <?php endif; ?>
                     
+                    <?php if ($use_header_cta): ?>
+                        <div class="mobile-cta-section">
+                            <?php if ($header_cta_demo): ?>
+                            <a href="#request-demo" class="btn-auth btn-header-cta" data-demo-form-open aria-haspopup="dialog" aria-controls="demo-modal">
+                            <?php else: ?>
+                            <a href="<?php echo esc_url($header_cta_url); ?>" class="btn-auth btn-header-cta">
+                            <?php endif; ?>
+                                <span class="btn-login-text">
+                                    <span class="btn-login-text-inner"><?php echo esc_html($header_cta_text); ?></span>
+                                </span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="7" y1="17" x2="17" y2="7"/>
+                                    <polyline points="7 7 17 7 17 17"/>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
                     <?php
                     if (has_nav_menu('primary')) {
                         wp_nav_menu([
@@ -322,13 +345,6 @@ if (get_theme_mod('enable_page_loader', false)) {
                         </div>
                     </div>
                     <?php endif; ?>
-
-                    <?php
-                    // Custom header button (replaces the Login button when enabled)
-                    $header_cta_text = trim((string) get_theme_mod('header_cta_text', ''));
-                    $header_cta_url  = (string) get_theme_mod('header_cta_url', '');
-                    $use_header_cta  = get_theme_mod('header_cta_enable', false) && $header_cta_text !== '' && $header_cta_url !== '';
-                    ?>
 
                     <?php if (class_exists('WooCommerce') && get_theme_mod('show_account_icon', true)): ?>
                         <?php if (is_user_logged_in()): 
@@ -551,7 +567,11 @@ if (get_theme_mod('enable_page_loader', false)) {
                     
                     <?php if ($use_header_cta): ?>
                         <div class="header-cta-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="500">
+                            <?php if ($header_cta_demo): ?>
+                            <a href="#request-demo" class="btn-auth btn-header-cta" data-demo-form-open aria-haspopup="dialog" aria-controls="demo-modal">
+                            <?php else: ?>
                             <a href="<?php echo esc_url($header_cta_url); ?>" class="btn-auth btn-header-cta">
+                            <?php endif; ?>
                                 <span class="btn-login-text">
                                     <span class="btn-login-text-inner"><?php echo esc_html($header_cta_text); ?></span>
                                     <span class="btn-login-text-inner" aria-hidden="true"><?php echo esc_html($header_cta_text); ?></span>

@@ -413,6 +413,22 @@ $wp_customize->add_control("topbar_promo_text", [
         "priority" => 59,
     ]);
 
+    $wp_customize->add_setting("header_cta_demo_form", [
+        "default" => true,
+        "sanitize_callback" => "wp_validate_boolean",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("header_cta_demo_form", [
+        "label" => __("Open Request a Demo Form", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "checkbox",
+        "priority" => 60,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value();
+        },
+    ]);
+
     $wp_customize->add_setting("header_cta_text", [
         "default" => "",
         "sanitize_callback" => "sanitize_text_field",
@@ -423,7 +439,7 @@ $wp_customize->add_control("topbar_promo_text", [
         "label" => __("Custom Button Title", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "text",
-        "priority" => 60,
+        "priority" => 61,
         "active_callback" => function($control) {
             return (bool) $control->manager->get_setting("header_cta_enable")->value();
         },
@@ -439,10 +455,50 @@ $wp_customize->add_control("topbar_promo_text", [
         "label" => __("Custom Button URL", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "url",
-        "priority" => 61,
+        "priority" => 62,
         "active_callback" => function($control) {
-            return (bool) $control->manager->get_setting("header_cta_enable")->value();
+            return (bool) $control->manager->get_setting("header_cta_enable")->value()
+                && !$control->manager->get_setting("header_cta_demo_form")->value();
         },
     ]);
+
+    $wp_customize->add_setting("demo_request_email", [
+        "default" => "",
+        "sanitize_callback" => "sanitize_email",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("demo_request_email", [
+        "label" => __("Send Demo Requests To", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "email",
+        "priority" => 63,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value()
+                && (bool) $control->manager->get_setting("header_cta_demo_form")->value();
+        },
+    ]);
+
+    $wp_customize->add_setting("demo_request_image", [
+        "default" => "",
+        "sanitize_callback" => "absint",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, "demo_request_image", [
+        "label" => __("Demo Form Image", "macedon-ranges"),
+        "section" => "mr_header",
+        "mime_type" => "image",
+        "priority" => 64,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value()
+                && (bool) $control->manager->get_setting("header_cta_demo_form")->value();
+        },
+    ]));
 }
 add_action("customize_register", "mr_header_customizer");
+
+// Request a Demo popup form (front-end markup, assets and email handler)
+if (!function_exists("aaapos_demo_form_enabled")) {
+    require_once get_template_directory() . "/inc/demo-request.php";
+}

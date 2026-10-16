@@ -59,6 +59,19 @@ function aaapos_recaptcha_customizer($wp_customize) {
         'priority'    => 16,
     ));
 
+    $wp_customize->add_setting('recaptcha_enable_demo', array(
+        'default'           => false,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('recaptcha_enable_demo', array(
+        'label'       => __('Enable reCAPTCHA on Request a Demo Form', 'aaapos-prime'),
+        'section'     => 'aaapos_recaptcha',
+        'type'        => 'checkbox',
+        'priority'    => 17,
+    ));
+
     $wp_customize->add_setting('recaptcha_site_key', array(
         'default'           => '',
         'sanitize_callback' => 'sanitize_text_field',
