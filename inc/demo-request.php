@@ -130,6 +130,8 @@ function aaapos_demo_enqueue_assets() {
         'sending'  => __('Sending…', 'aaapos'),
         'error'    => __('Sorry, something went wrong. Please try again.', 'aaapos'),
         'recaptcha_site_key'  => aaapos_demo_recaptcha_enabled() ? get_theme_mod('recaptcha_site_key', '') : '',
+        'product_required'    => __('Please select at least one product.', 'aaapos'),
+        'source_required'     => __('Please tell us how you heard about us.', 'aaapos'),
         'recaptcha_required'  => __('Please tick the "I\'m not a robot" box.', 'aaapos'),
     ]);
 }
@@ -185,32 +187,41 @@ function aaapos_demo_render_modal() {
                     </div>
 
                     <div class="demo-modal-field">
-                        <label for="demo-product"><?php esc_html_e('Product of interest', 'aaapos'); ?></label>
-                        <div class="demo-modal-select">
-                            <select id="demo-product" name="product" required>
-                                <option value="" selected disabled><?php esc_html_e('Select a product', 'aaapos'); ?></option>
+                        <label for="demo-product-toggle"><?php esc_html_e('Product of interest', 'aaapos'); ?></label>
+                        <div class="demo-modal-multi" id="demo-product">
+                            <button type="button" class="demo-modal-multi-toggle" id="demo-product-toggle" aria-haspopup="true" aria-expanded="false">
+                                <span class="demo-modal-multi-text" data-placeholder="<?php esc_attr_e('Select products', 'aaapos'); ?>"><?php esc_html_e('Select products', 'aaapos'); ?></span>
+                                <?php echo $chevron; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+                            </button>
+                            <div class="demo-modal-multi-panel" role="group" aria-label="<?php esc_attr_e('Product of interest', 'aaapos'); ?>" hidden>
                                 <?php foreach (aaapos_demo_products() as $product) : ?>
-                                    <option value="<?php echo esc_attr($product); ?>"><?php echo esc_html($product); ?></option>
+                                    <label class="demo-modal-check">
+                                        <input type="checkbox" name="product[]" value="<?php echo esc_attr($product); ?>">
+                                        <span><?php echo esc_html($product); ?></span>
+                                    </label>
                                 <?php endforeach; ?>
-                            </select>
-                            <?php echo $chevron; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+                            </div>
                         </div>
                     </div>
 
                     <div class="demo-modal-field demo-modal-full">
-                        <label for="demo-source"><?php esc_html_e('How did you hear about us?', 'aaapos'); ?></label>
-                        <div class="demo-modal-select">
-                            <select id="demo-source" name="source" required>
-                                <option value="" selected disabled><?php esc_html_e('Select an option', 'aaapos'); ?></option>
+                        <label for="demo-source-toggle"><?php esc_html_e('How did you hear about us?', 'aaapos'); ?></label>
+                        <div class="demo-modal-multi" id="demo-source">
+                            <button type="button" class="demo-modal-multi-toggle" id="demo-source-toggle" aria-haspopup="true" aria-expanded="false">
+                                <span class="demo-modal-multi-text" data-placeholder="<?php esc_attr_e('Select an option', 'aaapos'); ?>"><?php esc_html_e('Select an option', 'aaapos'); ?></span>
+                                <?php echo $chevron; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+                            </button>
+                            <div class="demo-modal-multi-panel" role="group" aria-label="<?php esc_attr_e('How did you hear about us?', 'aaapos'); ?>" hidden>
                                 <?php foreach (aaapos_demo_sources() as $group => $options) : ?>
-                                    <optgroup label="<?php echo esc_attr($group); ?>">
-                                        <?php foreach ($options as $value => $label) : ?>
-                                            <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($label); ?></option>
-                                        <?php endforeach; ?>
-                                    </optgroup>
+                                    <div class="demo-modal-multi-group"><?php echo esc_html($group); ?></div>
+                                    <?php foreach ($options as $value => $label) : ?>
+                                        <label class="demo-modal-check">
+                                            <input type="radio" name="source" value="<?php echo esc_attr($value); ?>" data-label="<?php echo esc_attr($label); ?>">
+                                            <span><?php echo esc_html($label); ?></span>
+                                        </label>
+                                    <?php endforeach; ?>
                                 <?php endforeach; ?>
-                            </select>
-                            <?php echo $chevron; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+                            </div>
                         </div>
                     </div>
 
@@ -282,7 +293,20 @@ function aaapos_demo_request_handler() {
     $email    = sanitize_email($field('email'));
     $phone    = preg_replace('/[^0-9+()\-\s.]/', '', $field('phone'));
     $phone    = mb_substr(trim($phone), 0, 40);
-    $product  = $field('product');
+
+    // Product(s) of interest - multiple allowed, only known options accepted
+    $products_raw = isset($_POST['product']) ? (array) wp_unslash($_POST['product']) : [];
+    $products     = [];
+    foreach ($products_raw as $item) {
+        if (!is_scalar($item)) {
+            continue;
+        }
+        $item = sanitize_text_field((string) $item);
+        if (in_array($item, aaapos_demo_products(), true) && !in_array($item, $products, true)) {
+            $products[] = $item;
+        }
+    }
+
     $source   = $field('source');
     $message  = isset($_POST['message']) ? sanitize_textarea_field(wp_unslash($_POST['message'])) : '';
     $message  = mb_substr($message, 0, 2000);
@@ -294,7 +318,7 @@ function aaapos_demo_request_handler() {
     }
 
     if ($name === '' || $business === '' || !is_email($email)
-        || !in_array($product, aaapos_demo_products(), true)
+        || empty($products)
         || !isset($source_labels[$source])) {
         wp_send_json_error(['message' => __('Please fill in all required fields with valid details.', 'aaapos')]);
     }
@@ -324,14 +348,15 @@ function aaapos_demo_request_handler() {
         $to = get_option('admin_email');
     }
 
-    $subject = sprintf('New demo request: %s (%s)', $business, $product);
+    $products_text = implode(', ', $products);
+    $subject       = sprintf('New demo request: %s (%s)', $business, $products_text);
 
     $body  = "A new demo request was submitted on " . wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES) . ".\n\n";
     $body .= "Name: {$name}\n";
     $body .= "Business: {$business}\n";
     $body .= "Email: {$email}\n";
     $body .= 'Phone: ' . ($phone !== '' ? $phone : 'Not provided') . "\n";
-    $body .= "Product of interest: {$product}\n";
+    $body .= "Product(s) of interest: {$products_text}\n";
     $body .= 'Heard about us via: ' . $source_labels[$source] . "\n\n";
     $body .= "Message:\n" . ($message !== '' ? $message : 'None') . "\n";
 

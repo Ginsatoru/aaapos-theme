@@ -26,6 +26,91 @@
 
     var config = window.aaaposDemo || {};
 
+    // Custom dropdowns (checkbox / radio list in a panel).
+    // "Product of interest" allows several choices, "How did you hear" just one.
+    var dropdowns = [];
+
+    function initDropdown(wrapId, toggleId, inputSelector, single) {
+        var wrap = document.getElementById(wrapId);
+        if (!wrap) {
+            return null;
+        }
+
+        var toggle = document.getElementById(toggleId);
+        var panel = wrap.querySelector('.demo-modal-multi-panel');
+        var text = wrap.querySelector('.demo-modal-multi-text');
+
+        var api = {
+            selected: function () {
+                return Array.prototype.map.call(
+                    form.querySelectorAll(inputSelector + ':checked'),
+                    function (el) {
+                        return el.getAttribute('data-label') || el.value;
+                    }
+                );
+            },
+            updateText: function () {
+                var chosen = api.selected();
+                if (!chosen.length) {
+                    text.textContent = text.getAttribute('data-placeholder');
+                } else {
+                    text.textContent = chosen[0] + (chosen.length > 1 ? ' +' + (chosen.length - 1) : '');
+                    toggle.classList.remove('is-invalid');
+                }
+            },
+            setOpen: function (open) {
+                if (open) {
+                    dropdowns.forEach(function (d) {
+                        if (d !== api) {
+                            d.setOpen(false);
+                        }
+                    });
+                }
+                panel.hidden = !open;
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                wrap.classList.toggle('is-open', open);
+            },
+            markInvalid: function (flag) {
+                toggle.classList.toggle('is-invalid', flag);
+            }
+        };
+
+        toggle.addEventListener('click', function () {
+            api.setOpen(panel.hidden);
+        });
+
+        panel.addEventListener('change', function () {
+            api.updateText();
+            if (single) {
+                api.setOpen(false);
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!panel.hidden && !wrap.contains(e.target)) {
+                api.setOpen(false);
+            }
+        });
+
+        dropdowns.push(api);
+        return api;
+    }
+
+    var productsDropdown = initDropdown('demo-product', 'demo-product-toggle', 'input[name="product[]"]', false);
+    var sourceDropdown = initDropdown('demo-source', 'demo-source-toggle', 'input[name="source"]', true);
+
+    function closeDropdowns() {
+        dropdowns.forEach(function (d) {
+            d.setOpen(false);
+        });
+    }
+
+    function updateDropdownTexts() {
+        dropdowns.forEach(function (d) {
+            d.updateText();
+        });
+    }
+
     // reCAPTCHA (only when enabled in the Customizer). Rendered the first
     // time the popup opens. If another script (login popup) already loaded
     // Google's api.js we reuse it, otherwise we load it ourselves.
@@ -89,6 +174,7 @@
         lastFocused = document.activeElement;
 
         // Fresh state each time it opens
+        closeDropdowns();
         form.hidden = false;
         successEl.hidden = true;
         clearError();
@@ -122,6 +208,7 @@
     }
 
     function closeModal() {
+        closeDropdowns();
         overlay.classList.remove('active');
         document.body.style.overflow = '';
         clearError();
@@ -181,9 +268,29 @@
         e.preventDefault();
         clearError();
 
-        if (!form.checkValidity()) {
+        var hasProducts = !productsDropdown || productsDropdown.selected().length > 0;
+        var hasSource = !sourceDropdown || sourceDropdown.selected().length > 0;
+        var fieldsOk = form.checkValidity();
+
+        if (!fieldsOk || !hasProducts || !hasSource) {
             form.classList.add('was-validated');
-            form.reportValidity();
+
+            if (!hasProducts) {
+                productsDropdown.markInvalid(true);
+            }
+            if (!hasSource) {
+                sourceDropdown.markInvalid(true);
+            }
+
+            if (!fieldsOk) {
+                form.reportValidity();
+            } else if (!hasProducts) {
+                productsDropdown.setOpen(true);
+                showError(config.product_required || 'Please select at least one product.');
+            } else {
+                sourceDropdown.setOpen(true);
+                showError(config.source_required || 'Please tell us how you heard about us.');
+            }
             return;
         }
 
@@ -216,6 +323,7 @@
                     var formHeight = form.offsetHeight;
 
                     form.reset();
+                    updateDropdownTexts();
                     form.classList.remove('was-validated');
                     form.classList.add('is-leaving');
 

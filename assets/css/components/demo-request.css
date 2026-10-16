@@ -269,6 +269,129 @@
   color: #9ca3af;
 }
 
+/* Multi-select (Product of interest) */
+.demo-modal .demo-modal-multi {
+  position: relative;
+}
+
+.demo-modal .demo-modal-multi-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 40px 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: var(--color-white, #fff);
+  color: #000000;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+.demo-modal .demo-modal-multi-toggle:hover,
+.demo-modal .demo-modal-multi.is-open .demo-modal-multi-toggle,
+.demo-modal .demo-modal-multi-toggle:focus,
+.demo-modal .demo-modal-multi-toggle:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--color-white, #fff);
+  border-color: var(--brand-color, #0f8abe);
+}
+
+.demo-modal .demo-modal-multi-toggle.is-invalid {
+  border-color: #ef4444;
+}
+
+.demo-modal .demo-modal-multi-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.demo-modal .demo-modal-multi-toggle svg {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 15px;
+  height: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #9ca3af;
+  transition: transform 0.3s ease;
+}
+
+.demo-modal .demo-modal-multi.is-open .demo-modal-multi-toggle svg {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.demo-modal .demo-modal-multi-panel {
+  max-height: 240px;
+  overflow-y: auto;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: var(--color-white, #fff);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.demo-modal .demo-modal-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 400;
+  color: #000000;
+  cursor: pointer;
+}
+
+.demo-modal .demo-modal-check:hover {
+  background: #f3f4f6;
+}
+
+.demo-modal .demo-modal-multi-group {
+  padding: 8px 10px 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.demo-modal input[type="checkbox"],
+.demo-modal input[type="radio"] {
+  appearance: auto;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border-radius: 4px;
+  accent-color: var(--brand-color, #0f8abe);
+  cursor: pointer;
+}
+
+.demo-modal input[type="radio"] {
+  border-radius: 50%;
+}
+
 /* Honeypot - off-screen, not display:none (bots skip display:none) */
 .demo-modal .demo-modal-hp {
   position: absolute;
