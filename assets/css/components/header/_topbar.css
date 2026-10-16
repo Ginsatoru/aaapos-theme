@@ -69,6 +69,8 @@ body.has-sticky-header .top-bar {
 
 /* ==========================================================================
    TOPBAR INNER STRUCTURE
+   Side padding matches .header-inner (header-main.css) so the topbar's
+   right-hand text lines up with the right edge of the header.
    ========================================================================== */
 
 .top-bar .container {
@@ -82,13 +84,13 @@ body.has-sticky-header .top-bar {
 
 @media (min-width: 768px) {
   .top-bar .container {
-    padding: 0 22px 0 39px;
+    padding: 0 30px 0 39px;
   }
 }
 
 @media (min-width: 1024px) {
   .top-bar .container {
-    padding: 0 43px 0 49px;
+    padding: 0 60px 0 49px;
   }
 }
 

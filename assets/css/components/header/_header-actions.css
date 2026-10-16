@@ -27,7 +27,8 @@
   .header-account-wrapper,
   .header-cart-wrapper,
   .mobile-menu-toggle,
-  .header-auth-buttons {
+  .header-auth-buttons,
+  .header-cta-wrapper {
     flex-shrink: 0;
   }
 }
@@ -89,13 +90,11 @@ button.search-submit,
 
 .icon-roll svg {
   display: block;
-  transform: translateY(0);
-  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Duplicate icon (was used by the old hover swap) - not shown */
 .icon-roll svg:last-child {
-  position: absolute;
-  left: 0;
+  display: none;
 }
 
 .icon-roll-20 {
@@ -103,37 +102,12 @@ button.search-submit,
   height: 20px;
 }
 
-.icon-roll-20 svg:last-child {
-  top: 20px;
-}
-
-.header-action:hover .icon-roll-20 svg {
-  transform: translateY(-20px);
-}
 
 .icon-roll-18 {
   width: 18px;
   height: 18px;
 }
 
-.icon-roll-18 svg:last-child {
-  top: 18px;
-}
-
-.header-search-bar .search-submit:hover .icon-roll-18 svg {
-  transform: translateY(-18px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .icon-roll svg {
-    transition: none;
-  }
-
-  .header-action:hover .icon-roll-20 svg,
-  .header-search-bar .search-submit:hover .icon-roll-18 svg {
-    transform: translateY(0);
-  }
-}
 
 .account-username {
   position: relative;
@@ -160,30 +134,11 @@ button.search-submit,
    button appears instead; clicking it opens .header-search-overlay.
    ========================================================================== */
 
+/* Collapsed search icon: markup also carries .header-action, so it gets
+   the exact same look as the profile and cart icons (colour, size,
+   hover background, icon roll). Only the show/hide behaviour is here. */
 .header-search-toggle {
   display: none;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: none;
-  color: var(--color-text);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
-}
-
-.header-search-toggle:hover {
-  background: none;
-  color: var(--brand-color);
-}
-
-.header-search-toggle svg {
-  width: 20px;
-  height: 20px;
   flex-shrink: 0;
 }
 
@@ -192,6 +147,11 @@ button.search-submit,
 }
 
 @media (min-width: 1024px) {
+  /* Step 1 (JS adds only when header overflows): narrower search bar */
+  .header-search-bar.is-compact .search-form {
+    width: 170px;
+  }
+
   .header-search-bar.is-collapsed {
     flex: 0 0 auto;
     min-width: 0;
@@ -277,28 +237,11 @@ button.search-submit,
   height: 16px;
   line-height: 16px;
   white-space: nowrap;
-  transform: translateY(0);
-  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Duplicate text (was used by the old hover swap) - not shown */
 .account-username-inner:last-child {
-  position: absolute;
-  top: 22px;
-  left: 0;
-}
-
-.account-link:hover .account-username-inner {
-  transform: translateY(-22px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .account-username-inner {
-    transition: none;
-  }
-
-  .account-link:hover .account-username-inner {
-    transform: translateY(0);
-  }
+  display: none;
 }
 
 .cart-count {
@@ -334,6 +277,18 @@ button.search-submit,
   }
 }
 
+/* Custom header button wrapper (Customizer: Use Custom Header Button) */
+.header-cta-wrapper {
+  display: none;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .header-cta-wrapper {
+    display: flex;
+  }
+}
+
 .btn-auth {
   display: inline-flex;
   align-items: center;
@@ -359,13 +314,15 @@ button.search-submit,
   transition: transform 0.3s ease;
 }
 
-.btn-login {
+.btn-login,
+.btn-header-cta {
   background: var(--brand-color);
   color: var(--color-white);
   border: 1px solid var(--brand-color);
 }
 
-.btn-login:hover {
+.btn-login:hover,
+.btn-header-cta:hover {
   background: var(--color-black);
   border-color: var(--color-black);
   color: var(--color-white);
@@ -374,6 +331,39 @@ button.search-submit,
 
 .btn-login:hover svg {
   transform: scale(1.1);
+}
+
+/* Custom header button - boxier shape */
+.btn-header-cta {
+  /* Fixed 42px height so it lines up with the search bar. Right side is
+     4px smaller to offset the empty space inside the arrow icon's
+     viewBox, so visible left/right padding match */
+  box-sizing: border-box;
+  height: 42px;
+  padding: 0 20px 0 24px;
+  border-radius: 999px;
+}
+
+/* Only when the custom button is in use (body.has-header-cta), match the
+   search bar to the button's 42px height. Other sites are untouched. */
+@media (min-width: 1024px) {
+  body.has-header-cta .header-search-bar .search-field {
+    box-sizing: border-box;
+    height: 42px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* Perfect circle for the icon inside the search bar */
+  body.has-header-cta .header-search-bar .search-submit {
+    width: 30px;
+    height: 30px;
+    padding: 0 !important;
+  }
+}
+
+.btn-header-cta:hover svg {
+  transform: translate(2px, -2px);
 }
 
 .btn-login-text {
@@ -388,32 +378,28 @@ button.search-submit,
   height: 16px;
   line-height: 16px;
   white-space: nowrap;
-  transform: translateY(0);
-  transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* Duplicate text (was used by the old hover swap) - not shown */
 .btn-login-text-inner:last-child {
-  position: absolute;
-  top: 22px;
-  left: 0;
-}
-
-.btn-login:hover .btn-login-text-inner {
-  transform: translateY(-22px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn-login-text-inner {
-    transition: none;
-  }
-
-  .btn-login:hover .btn-login-text-inner {
-    transform: translateY(0);
-  }
+  display: none;
 }
 
 .btn-login:active {
   transform: translateY(0);
+}
+
+/* Login as person icon only (when custom header button is in use) */
+.btn-login.btn-login-icon-only {
+  background: none;
+  border: none;
+  color: #000000;
+  text-decoration: none;
+}
+
+.btn-login.btn-login-icon-only:hover {
+  background: var(--color-bg-tertiary);
+  color: var(--brand-color);
 }
 
 /* ==========================================================================
@@ -559,7 +545,8 @@ button.search-submit,
   }
 
   /* Hide auth buttons on mobile - use mobile menu instead */
-  .header-auth-buttons {
+  .header-auth-buttons,
+  .header-cta-wrapper {
     display: none !important;
   }
 }
@@ -592,13 +579,6 @@ button.search-submit,
     height: 24px !important;
   }
 
-  .icon-roll-20 svg:last-child {
-    top: 24px !important;
-  }
-
-  .header-action:hover .icon-roll-20 svg {
-    transform: translateY(-24px) !important;
-  }
 
   .cart-count {
     top: -2px !important;
@@ -612,7 +592,8 @@ button.search-submit,
 
 @media (prefers-contrast: high) {
   .btn-login,
-  .btn-register {
+  .btn-register,
+  .btn-header-cta {
     border-width: 2px;
   }
 }
@@ -620,6 +601,7 @@ button.search-submit,
 @media (prefers-reduced-motion: reduce) {
   .btn-login:hover,
   .btn-register:hover,
+  .btn-header-cta:hover,
   .header-action:hover {
     transform: none;
   }

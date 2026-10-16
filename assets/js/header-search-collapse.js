@@ -6,6 +6,11 @@
  * there isn't enough room for it alongside the nav menu. Clicking the
  * toggle opens a full-width overlay search panel instead.
  *
+ * Two steps, only applied when the header genuinely overflows:
+ *   1. .is-compact   - search bar shrinks to a narrower width
+ *   2. .is-collapsed - search bar becomes an icon-only toggle
+ * Headers that already fit are left completely untouched.
+ *
  * Self-contained - only touches .header-search-bar / .header-search-overlay,
  * so it can't conflict with other header scripts (navigation.js, etc.).
  *
@@ -62,13 +67,87 @@
         }
 
         /**
+         * Element width including its horizontal margins.
+         * Uses offsetWidth (layout width) so load-in animation
+         * transforms (scale/translate) don't skew the measurement.
+         */
+        function outerWidth(el) {
+            if (!el) {
+                return 0;
+            }
+            var cs = getComputedStyle(el);
+            return el.offsetWidth +
+                (parseFloat(cs.marginLeft) || 0) +
+                (parseFloat(cs.marginRight) || 0);
+        }
+
+        /**
+         * Width the header actions actually NEED (sum of their visible
+         * children + gaps). .header-actions is allowed to flex-shrink,
+         * so its own box can be narrower than its contents when the
+         * header is overflowing - measuring the box alone hides the
+         * overflow.
+         */
+        function actionsContentWidth(actions) {
+            if (!actions) {
+                return 0;
+            }
+            var total = 0;
+            var visible = 0;
+            Array.prototype.forEach.call(actions.children, function (child) {
+                if (child.offsetWidth > 0) {
+                    total += outerWidth(child);
+                    visible++;
+                }
+            });
+            var cs = getComputedStyle(actions);
+            var gap = parseFloat(cs.columnGap || cs.gap || 0) || 0;
+            if (visible > 1) {
+                total += gap * (visible - 1);
+            }
+            return total;
+        }
+
+        /**
+         * True if branding + nav + actions don't fit inside the header's
+         * content area. We sum the three flex children's own widths
+         * rather than using headerInner.scrollWidth, because scrollWidth
+         * also counts hidden dropdown mega-menu panels (if they're
+         * hidden via opacity/visibility rather than display:none),
+         * which falsely inflates it regardless of real available space.
+         */
+        function isHeaderOverflowing() {
+            var branding = document.querySelector('.site-branding');
+            var mainNav = document.querySelector('.main-navigation');
+            var actions = document.querySelector('.header-actions');
+
+            var innerStyle = getComputedStyle(headerInner);
+
+            // clientWidth includes padding - subtract it to get the
+            // real space available for content.
+            var available = headerInner.clientWidth -
+                (parseFloat(innerStyle.paddingLeft) || 0) -
+                (parseFloat(innerStyle.paddingRight) || 0);
+
+            var gapValue = parseFloat(innerStyle.columnGap || innerStyle.gap || 0) || 0;
+
+            var totalWidth = outerWidth(branding) +
+                outerWidth(mainNav) +
+                actionsContentWidth(actions) +
+                gapValue * 2; // 2 gaps between the 3 children
+
+            return totalWidth > available + 1;
+        }
+
+        /**
          * Decide whether the header is actually overflowing and toggle
-         * the collapsed state accordingly. Only applies at desktop
-         * widths (matches the >=1024px breakpoint in _header-actions.css).
+         * the compact / collapsed state accordingly. Only applies at
+         * desktop widths (matches the >=1024px breakpoint in
+         * _header-actions.css).
          */
         function checkOverflow() {
             if (window.innerWidth < 1024) {
-                searchBar.classList.remove('is-collapsed');
+                searchBar.classList.remove('is-collapsed', 'is-compact');
                 if (toggleBtn) {
                     toggleBtn.setAttribute('aria-expanded', 'false');
                 }
@@ -76,39 +155,23 @@
                 return;
             }
 
-            // Measure with the search bar expanded first, so we get an
-            // accurate read on whether it actually fits. We sum the
-            // three flex children's own rendered widths rather than
-            // using headerInner.scrollWidth, because scrollWidth also
-            // counts hidden dropdown mega-menu panels (if they're
-            // hidden via opacity/visibility rather than display:none),
-            // which falsely inflates it regardless of real available space.
+            // Measure with the search bar at full size first, so we get
+            // an accurate read on whether it actually fits.
             var wasCollapsed = searchBar.classList.contains('is-collapsed');
-            searchBar.classList.remove('is-collapsed');
+            searchBar.classList.remove('is-collapsed', 'is-compact');
 
-            var branding = document.querySelector('.site-branding');
-            var mainNav = document.querySelector('.main-navigation');
-            var actions = document.querySelector('.header-actions');
+            if (isHeaderOverflowing()) {
+                // Step 1: try a narrower search bar
+                searchBar.classList.add('is-compact');
 
-            var totalWidth = 0;
-            [branding, mainNav, actions].forEach(function (el) {
-                if (el) {
-                    totalWidth += el.getBoundingClientRect().width;
+                if (isHeaderOverflowing()) {
+                    // Step 2: still no room - collapse to icon
+                    searchBar.classList.remove('is-compact');
+                    searchBar.classList.add('is-collapsed');
                 }
-            });
+            }
 
-            var gapValue = parseFloat(
-                getComputedStyle(headerInner).columnGap ||
-                getComputedStyle(headerInner).gap ||
-                0
-            ) || 0;
-            totalWidth += gapValue * 2; // 2 gaps between the 3 children
-
-            var isOverflowing = totalWidth > headerInner.clientWidth + 1;
-
-            if (isOverflowing) {
-                searchBar.classList.add('is-collapsed');
-            } else if (wasCollapsed) {
+            if (wasCollapsed && !searchBar.classList.contains('is-collapsed')) {
                 closeDropdown();
             }
         }
@@ -191,6 +254,11 @@
         if (window.ResizeObserver) {
             var observer = new ResizeObserver(debounce(checkOverflow, 150));
             observer.observe(headerInner);
+        }
+
+        // Webfonts can change menu text widths after first paint.
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(checkOverflow);
         }
 
         checkOverflow();

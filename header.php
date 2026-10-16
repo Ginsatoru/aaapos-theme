@@ -35,6 +35,13 @@
         $body_classes[] = 'has-sticky-header';
     }
     
+    // Add custom header button class if enabled (needs both title and URL)
+    if (get_theme_mod('header_cta_enable', false)
+        && trim((string) get_theme_mod('header_cta_text', '')) !== ''
+        && (string) get_theme_mod('header_cta_url', '') !== '') {
+        $body_classes[] = 'has-header-cta';
+    }
+    
     body_class($body_classes); 
 ?>>
 <?php wp_body_open(); ?>
@@ -275,14 +282,20 @@ if (get_theme_mod('enable_page_loader', false)) {
                         </form>
 
                         <button type="button"
-                                class="header-search-toggle"
+                                class="header-action header-search-toggle"
                                 aria-label="<?php esc_attr_e('Open search', 'aaapos'); ?>"
                                 aria-expanded="false"
                                 aria-controls="header-search-dropdown">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="m21 21-4.35-4.35"/>
-                            </svg>
+                            <span class="icon-roll icon-roll-20">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="m21 21-4.35-4.35"/>
+                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="m21 21-4.35-4.35"/>
+                                </svg>
+                            </span>
                         </button>
 
                         <div class="header-search-dropdown" id="header-search-dropdown">
@@ -309,6 +322,13 @@ if (get_theme_mod('enable_page_loader', false)) {
                         </div>
                     </div>
                     <?php endif; ?>
+
+                    <?php
+                    // Custom header button (replaces the Login button when enabled)
+                    $header_cta_text = trim((string) get_theme_mod('header_cta_text', ''));
+                    $header_cta_url  = (string) get_theme_mod('header_cta_url', '');
+                    $use_header_cta  = get_theme_mod('header_cta_enable', false) && $header_cta_text !== '' && $header_cta_url !== '';
+                    ?>
 
                     <?php if (class_exists('WooCommerce') && get_theme_mod('show_account_icon', true)): ?>
                         <?php if (is_user_logged_in()): 
@@ -381,7 +401,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                                         <li>
                                             <a href="<?php echo esc_url(wc_get_account_endpoint_url('customer-logout')); ?>">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2h4"/>
+                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                                                     <polyline points="16 17 21 12 16 7"/>
                                                     <line x1="21" y1="12" x2="9" y2="12"/>
                                                 </svg>
@@ -393,6 +413,22 @@ if (get_theme_mod('enable_page_loader', false)) {
                             </div>
                         <?php else: ?>
                             <div class="header-auth-buttons" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="300">
+                                <?php if ($use_header_cta): ?>
+                                    <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" 
+                                       class="header-action btn-login btn-login-icon-only"
+                                       aria-label="<?php esc_attr_e('Login', 'aaapos'); ?>">
+                                        <span class="icon-roll icon-roll-20">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                                <circle cx="12" cy="7" r="4"/>
+                                            </svg>
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                                <circle cx="12" cy="7" r="4"/>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                <?php else: ?>
                                 <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" class="btn-auth btn-login">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -403,6 +439,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                                         <span class="btn-login-text-inner" aria-hidden="true"><?php esc_html_e('Login', 'aaapos'); ?></span>
                                     </span>
                                 </a>
+                                <?php endif; ?>
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -512,6 +549,21 @@ if (get_theme_mod('enable_page_loader', false)) {
                         </div>
                     <?php endif; ?>
                     
+                    <?php if ($use_header_cta): ?>
+                        <div class="header-cta-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="500">
+                            <a href="<?php echo esc_url($header_cta_url); ?>" class="btn-auth btn-header-cta">
+                                <span class="btn-login-text">
+                                    <span class="btn-login-text-inner"><?php echo esc_html($header_cta_text); ?></span>
+                                    <span class="btn-login-text-inner" aria-hidden="true"><?php echo esc_html($header_cta_text); ?></span>
+                                </span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="7" y1="17" x2="17" y2="7"/>
+                                    <polyline points="7 7 17 7 17 17"/>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
                     <button class="mobile-menu-toggle" 
                             aria-expanded="false"
                             aria-controls="site-navigation"

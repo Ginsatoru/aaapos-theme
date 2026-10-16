@@ -286,7 +286,6 @@ function mr_header_customizer($wp_customize)
 
 $wp_customize->add_control("topbar_promo_text", [
     "label" => __("Top Bar Promo Text", "macedon-ranges"),
-    "description" => __("Leave blank to hide this text entirely.", "macedon-ranges"),
     "section" => "mr_header",
     "type" => "text",
     "priority" => 40,
@@ -305,7 +304,6 @@ $wp_customize->add_control("topbar_promo_text", [
     $wp_customize->add_control(
         new MR_Announcements_Control($wp_customize, "topbar_announcements", [
             "label" => __("Top Bar Live Update Slider", "macedon-ranges"),
-            "description" => __("Add, remove, and drag to reorder the rotating announcements. Leave URL blank to use #.", "macedon-ranges"),
             "section" => "mr_header",
             "priority" => 45,
         ])
@@ -323,7 +321,6 @@ $wp_customize->add_control("topbar_promo_text", [
 
     $wp_customize->add_control("sticky_header", [
         "label" => __("Sticky Header", "macedon-ranges"),
-        "description" => __("Keep header visible when scrolling down", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "checkbox",
         "priority" => 50,
@@ -341,7 +338,6 @@ $wp_customize->add_control("topbar_promo_text", [
 
     $wp_customize->add_control("show_search_bar", [
         "label" => __("Show Search Bar", "macedon-ranges"),
-        "description" => __("Display search bar in header", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "checkbox",
         "priority" => 55,
@@ -356,7 +352,6 @@ $wp_customize->add_control("topbar_promo_text", [
 
     $wp_customize->add_control("show_account_icon", [
         "label" => __("Show Account/Profile Icon", "macedon-ranges"),
-        "description" => __("Display account login/profile link in header", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "checkbox",
         "priority" => 56,
@@ -371,7 +366,6 @@ $wp_customize->add_control("topbar_promo_text", [
 
     $wp_customize->add_control("show_cart_icon", [
         "label" => __("Show Shopping Cart Icon", "macedon-ranges"),
-        "description" => __("Display shopping cart in header (WooCommerce required)", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "checkbox",
         "priority" => 57,
@@ -389,7 +383,6 @@ $wp_customize->add_control("topbar_promo_text", [
 
     $wp_customize->add_control("cart_icon_style", [
         "label" => __("Cart Icon Style", "macedon-ranges"),
-        "description" => __("Choose how to display the cart icon", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "select",
         "choices" => [
@@ -400,6 +393,55 @@ $wp_customize->add_control("topbar_promo_text", [
         "priority" => 58,
         "active_callback" => function() {
             return get_theme_mod("show_cart_icon", true);
+        },
+    ]);
+
+    // ===================================
+    // HEADER CUSTOM BUTTON (replaces Login button)
+    // ===================================
+
+    $wp_customize->add_setting("header_cta_enable", [
+        "default" => false,
+        "sanitize_callback" => "wp_validate_boolean",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("header_cta_enable", [
+        "label" => __("Use Custom Header Button", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "checkbox",
+        "priority" => 59,
+    ]);
+
+    $wp_customize->add_setting("header_cta_text", [
+        "default" => "",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("header_cta_text", [
+        "label" => __("Custom Button Title", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "text",
+        "priority" => 60,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value();
+        },
+    ]);
+
+    $wp_customize->add_setting("header_cta_url", [
+        "default" => "",
+        "sanitize_callback" => "esc_url_raw",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("header_cta_url", [
+        "label" => __("Custom Button URL", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "url",
+        "priority" => 61,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value();
         },
     ]);
 }
