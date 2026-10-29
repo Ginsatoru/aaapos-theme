@@ -2680,3 +2680,15 @@ function aaapos_empty_cart_recommended_products()
     
     <?php wp_reset_postdata();
 }
+
+/**
+ * Keep private products out of the shop, category, tag and product search
+ * listings. WordPress shows private products in these lists to logged-in
+ * admins, which breaks the grid; they stay editable in wp-admin and
+ * viewable on their own product page. Customers never saw them anyway.
+ */
+add_action('woocommerce_product_query', function ($q) {
+    if (!is_admin()) {
+        $q->set('post_status', 'publish');
+    }
+});
