@@ -103,7 +103,7 @@
 }
 
 .account-dropdown-menu a:hover {
-  background: var(--color-black);
+  background: var(--color-primary, #0ea5e9);
   color: var(--color-white);
 }
 
@@ -292,7 +292,7 @@
 }
 
 .cart-item-remove:hover {
-  background: black;
+  background: var(--color-primary, #0ea5e9);
   color: var(--color-white);
 }
 
@@ -388,14 +388,14 @@
 }
 
 .cart-dropdown-actions .btn-secondary:hover {
-  background: var(--color-black);
+  background: var(--color-primary, #0ea5e9);
   color: var(--color-white);
   transform: none !important;
   transition: none !important;
 }
 
 .cart-dropdown-actions .btn-primary:hover {
-  background: var(--color-black);
+  background: var(--color-primary-hover, #0284c7);
   transform: none !important;
   transition: none !important;
 }
@@ -558,7 +558,7 @@
 }
 
 .nav-menu .sub-menu a:hover {
-  background: var(--color-black);
+  background: var(--color-primary, #0ea5e9);
   color: var(--color-white);
 }
 

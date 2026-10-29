@@ -136,7 +136,7 @@ body.woocommerce-cart table.shop_table.cart td.product-remove a.remove {
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-remove a.remove:hover {
-  background: #000000;
+  background: var(--color-primary, #0ea5e9);
   color: #ffffff;
 }
 
@@ -164,7 +164,7 @@ body.woocommerce-cart table.shop_table.cart td.product-thumbnail img.attachment-
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-thumbnail a:hover img {
-  border-color: #000000;
+  border-color: var(--color-primary, #0ea5e9);
 }
 
 /* ==========================================================================
@@ -339,7 +339,7 @@ body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-
 
 body.woocommerce-cart table.shop_table.cart td.product-quantity button:hover,
 body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn:hover {
-  background: #000000;
+  background: var(--color-primary, #0ea5e9);
   color: #FFFFFF;
 }
 

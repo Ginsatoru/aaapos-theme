@@ -72,7 +72,7 @@ body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coup
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.button:hover,
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coupon-btn:hover {
-  background: black;
+  background: var(--brand-color-hover, #0284c7);
 }
 
 /* Right side actions - Compact */
@@ -91,7 +91,7 @@ body.woocommerce-cart table.shop_table.cart td.actions button.update-cart-btn {
 
 body.woocommerce-cart table.shop_table.cart td.actions button[name="update_cart"]:hover:not(:disabled),
 body.woocommerce-cart table.shop_table.cart td.actions button.update-cart-btn:hover:not(:disabled) {
-  background: black;
+  background: var(--brand-color-hover, #0284c7);
 }
 
 body.woocommerce-cart table.shop_table.cart td.actions button[name="update_cart"]:disabled,
@@ -413,7 +413,7 @@ body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button::before {
 }
 
 body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button:hover {
-  background: black !important;
+  background: var(--brand-color-hover, #0284c7) !important;
 }
 
 /* ==========================================================================

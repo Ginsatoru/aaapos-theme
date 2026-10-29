@@ -871,7 +871,7 @@
 
 
 .auth-submit-btn:hover {
-  background-color: black !important;
+  background-color: var(--brand-color-hover, #0284c7) !important;
   box-shadow: none !important;
 }
 

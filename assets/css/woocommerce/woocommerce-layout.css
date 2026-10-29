@@ -377,7 +377,7 @@
 
 .column-toggle.active {
   color: var(--color-white);
-  background: #111;
+  background: var(--color-primary, #0ea5e9);
 }
 
 .column-toggle svg {

@@ -85,7 +85,7 @@
 .single-product .price .aaapos-sale-percentage {
   display: inline-flex !important;
   align-items: center !important;
-  background: #000000 !important;
+  background: var(--color-primary, #0ea5e9) !important;
   color: #ffffff !important;
   font-size: 0.75rem !important;
   font-weight: 700 !important;

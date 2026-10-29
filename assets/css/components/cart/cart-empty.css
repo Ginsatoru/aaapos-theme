@@ -138,12 +138,12 @@ body.woocommerce-cart .cart-empty-button {
 }
 
 body.woocommerce-cart .cart-empty-button:hover {
-  background: #000000;
+  background: var(--color-primary-hover, #0284c7);
   color: var(--color-white, #ffffff);
 }
 
 body.woocommerce-cart .cart-empty-button:active {
-  background: #000000;
+  background: var(--color-primary-dark, #0369a1);
 }
 
 body.woocommerce-cart .cart-empty-button svg {

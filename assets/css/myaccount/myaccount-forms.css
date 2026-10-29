@@ -313,7 +313,7 @@ button[name="save_address"] {
   gap: var(--space-2) !important;
   height: 2.5rem !important;
   padding: 0 var(--space-6) !important;
-  background: #000000 !important;
+  background: var(--color-primary, #0ea5e9) !important;
   color: #FFFFFF !important;
   border: none !important;
   border-radius: 0.625rem !important;
@@ -333,7 +333,7 @@ button[name="save_address"] {
 .woocommerce-form input[type="submit"]:hover,
 button[name="save_account_details"]:hover,
 button[name="save_address"]:hover {
-  background: #1a1a1a !important;
+  background: var(--color-primary-hover, #0284c7) !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
@@ -344,7 +344,7 @@ button[name="save_address"]:hover {
 .woocommerce-form input[type="submit"]:active,
 button[name="save_account_details"]:active,
 button[name="save_address"]:active {
-  background: #000000 !important;
+  background: var(--color-primary-dark, #0369a1) !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }

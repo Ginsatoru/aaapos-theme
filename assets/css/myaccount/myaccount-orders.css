@@ -316,7 +316,7 @@
   justify-content: center;
   height: 2.5rem;
   padding: 0 1.25rem;
-  background: #000000;
+  background: var(--color-primary, #0ea5e9);
   color: var(--color-white);
   font-size: 0.875rem;
   font-weight: 600;
@@ -328,7 +328,7 @@
 }
 
 .aaapos-empty-orders__btn:hover {
-  background: #2a2d33;
+  background: var(--color-primary-hover, #0284c7);
   color: var(--color-white);
 }
 
@@ -385,7 +385,7 @@
   justify-content: center;
   height: 2.5rem;
   padding: 0 1.25rem;
-  background: #000000;
+  background: var(--color-primary, #0ea5e9);
   color: var(--color-white);
   font-size: 0.875rem;
   font-weight: 600;
@@ -398,7 +398,7 @@
 
 .woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.button:hover,
 .woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.woocommerce-Button:hover {
-  background: #2a2d33;
+  background: var(--color-primary-hover, #0284c7);
   color: var(--color-white);
 }
 
@@ -636,7 +636,7 @@
   justify-content: center !important;
   height: 2.5rem !important;
   padding: 0 1.25rem !important;
-  background: #000000 !important;
+  background: var(--color-primary, #0ea5e9) !important;
   color: var(--color-white) !important;
   font-size: 0.875rem !important;
   font-weight: 600 !important;
@@ -648,6 +648,6 @@
 }
 
 .woocommerce-order-details .order-again .button:hover {
-  background: #2a2d33 !important;
+  background: var(--color-primary-hover, #0284c7) !important;
   color: var(--color-white) !important;
 }

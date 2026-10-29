@@ -285,7 +285,7 @@
 }
 
 .coupon-apply-btn:hover {
-  background: #000000 !important;
+  background: var(--color-primary-hover, #0284c7) !important;
 }
 
 /* Remove button styling (when coupon is applied) */
@@ -414,7 +414,7 @@
 }
 
 #place_order:hover {
-  background: #000000 !important;
+  background: var(--color-primary-hover, #0284c7) !important;
   color: #ffffff !important;
 }
 

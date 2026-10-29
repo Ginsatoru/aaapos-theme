@@ -212,7 +212,7 @@ body.woocommerce-account .content-area {
   padding: 0 1.25rem !important;
 
   /* Colors */
-  background: #000000 !important;
+  background: var(--color-primary, #0ea5e9) !important;
   color: var(--color-white) !important;
 
   /* Typography */
@@ -240,7 +240,7 @@ body.woocommerce-account .content-area {
 .woocommerce-MyAccount-content .woocommerce-info .button:hover,
 .woocommerce-MyAccount-content .woocommerce-message a.button:hover,
 .woocommerce-MyAccount-content .woocommerce-info a.button:hover {
-  background: #2a2d33 !important;
+  background: var(--color-primary-hover, #0284c7) !important;
   color: var(--color-white) !important;
   box-shadow: none !important;
   transform: none !important;

@@ -46,12 +46,12 @@
 
 .single-product .woocommerce-tabs .tabs li a:hover {
   color: #ffffff !important;
-  background: #000000 !important;
+  background: var(--color-primary, #0ea5e9) !important;
 }
 
 .single-product .woocommerce-tabs .tabs li.active a {
   color: #ffffff !important;
-  background: #000000 !important;
+  background: var(--color-primary, #0ea5e9) !important;
   border: none !important;
 }
 
@@ -155,7 +155,7 @@
   }
 
   .single-product .woocommerce-tabs .tabs li.active a {
-    background: #000000 !important;
+    background: var(--color-primary, #0ea5e9) !important;
     color: #ffffff !important;
   }
 

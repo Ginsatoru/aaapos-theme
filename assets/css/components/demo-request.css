@@ -432,7 +432,7 @@
 }
 
 .demo-modal .demo-modal-submit:hover {
-  background: #000;
+  background: var(--brand-color-hover, #0b6e96);
 }
 
 .demo-modal .demo-modal-submit:disabled {

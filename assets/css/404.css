@@ -108,7 +108,7 @@
 }
 
 .btn-404-home:hover {
-  background: black;
+  background: var(--color-primary-hover, #0284c7);
   color: var(--color-white);
 }
 

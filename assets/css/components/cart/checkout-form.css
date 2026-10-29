@@ -650,7 +650,7 @@ border: 0.5px solid var(--color-border);
 }
 
 .coupon-form-bottom button.coupon-apply-btn:hover {
-  background: #000000;
+  background: var(--color-primary-hover, #0284c7);
 }
 
 /* ==========================================================================

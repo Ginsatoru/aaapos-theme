@@ -228,12 +228,12 @@ body {
 
 /* Primary Button - solid black pill */
 .hero-btn-primary {
-  background-color: #16181d;
+  background-color: var(--color-primary, #0ea5e9);
   color: #ffffff;
 }
 
 .hero-btn-primary:hover {
-  background-color: #2a2d33;
+  background-color: var(--color-primary-hover, #0284c7);
   color: #ffffff;
 }
 

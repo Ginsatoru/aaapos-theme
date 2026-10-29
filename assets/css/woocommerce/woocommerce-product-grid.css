@@ -350,7 +350,7 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 5px !important;
-  background: #111 !important;
+  background: var(--color-primary, #0ea5e9) !important;
   color: #fff !important;
   font-size: 0.75rem !important;
   font-weight: 700 !important;
@@ -380,7 +380,7 @@
 .woocommerce ul.products li.product .wbr-card__btn:focus,
 .woocommerce-page ul.products li.product .wbr-card__btn:hover,
 .woocommerce-page ul.products li.product .wbr-card__btn:focus {
-  background: var(--color-primary, #0ea5e9) !important;
+  background: var(--color-primary-hover, #0284c7) !important;
   color: #fff !important;
   transform: none !important;
   box-shadow: none !important;

@@ -254,7 +254,7 @@
 
 .form-submit input[type="submit"]:hover,
 .form-submit button:hover {
-    background: black;
+    background: var(--color-primary-hover, #0284c7);
 }
 
 .form-submit input[type="submit"]:active,
