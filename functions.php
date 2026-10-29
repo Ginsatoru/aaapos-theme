@@ -893,8 +893,8 @@ function aaapos_handle_contact_form_submission()
         exit();
     }
 
-    // reCAPTCHA v2 verification (only enforced when enabled + configured
-    // in Customizer > reCAPTCHA)
+    // reCAPTCHA verification, v2 checkbox or v3 invisible (only enforced when
+    // enabled + configured in Customizer > reCAPTCHA)
     if (get_theme_mod("recaptcha_enable", false) && get_theme_mod("recaptcha_secret_key", "")) {
         $recaptcha_response = isset($_POST["g-recaptcha-response"])
             ? sanitize_text_field($_POST["g-recaptcha-response"])
@@ -902,30 +902,12 @@ function aaapos_handle_contact_form_submission()
 
         if (empty($recaptcha_response)) {
             wp_safe_redirect(
-                add_query_arg("form_error", "recaptcha_missing", wp_get_referer()),
+                add_query_arg("form_error", aaapos_recaptcha_version() === "v3" ? "recaptcha_failed" : "recaptcha_missing", wp_get_referer()),
             );
             exit();
         }
 
-        $recaptcha_verify = wp_remote_post(
-            "https://www.google.com/recaptcha/api/siteverify",
-            [
-                "body" => [
-                    "secret"   => get_theme_mod("recaptcha_secret_key", ""),
-                    "response" => $recaptcha_response,
-                    "remoteip" => isset($_SERVER["REMOTE_ADDR"]) ? sanitize_text_field($_SERVER["REMOTE_ADDR"]) : "",
-                ],
-            ],
-        );
-
-        $recaptcha_success = false;
-
-        if (!is_wp_error($recaptcha_verify)) {
-            $recaptcha_body = json_decode(wp_remote_retrieve_body($recaptcha_verify), true);
-            $recaptcha_success = !empty($recaptcha_body["success"]);
-        }
-
-        if (!$recaptcha_success) {
+        if (!aaapos_verify_recaptcha_response($recaptcha_response, "contact_form")) {
             wp_safe_redirect(
                 add_query_arg("form_error", "recaptcha_failed", wp_get_referer()),
             );
@@ -1600,20 +1582,25 @@ add_action('wp_enqueue_scripts', function () {
 
         wp_localize_script('aaapos-checkout-recaptcha', 'aaapos_checkout_recaptcha', array(
             'site_key' => esc_attr(get_theme_mod('recaptcha_site_key', '')),
+            'version'  => aaapos_recaptcha_version(),
         ));
 
-        wp_enqueue_script(
-            'google-recaptcha-checkout',
-            'https://www.google.com/recaptcha/api.js?onload=aaaposInitCheckoutRecaptcha&render=explicit',
-            array('aaapos-checkout-recaptcha'),
-            null,
-            true
-        );
+        if (aaapos_recaptcha_version() === 'v3') {
+            wp_enqueue_script('aaapos-recaptcha-v3');
+        } else {
+            wp_enqueue_script(
+                'google-recaptcha-checkout',
+                'https://www.google.com/recaptcha/api.js?onload=aaaposInitCheckoutRecaptcha&render=explicit',
+                array('aaapos-checkout-recaptcha'),
+                null,
+                true
+            );
+        }
     }
 });
 
 add_action('woocommerce_review_order_before_submit', function () {
-    if (!is_user_logged_in() && get_theme_mod('recaptcha_enable_checkout', false) && get_theme_mod('recaptcha_site_key', '')) {
+    if (!is_user_logged_in() && get_theme_mod('recaptcha_enable_checkout', false) && get_theme_mod('recaptcha_site_key', '') && aaapos_recaptcha_version() !== 'v3') {
         echo '<div class="form-field checkout-recaptcha-field">';
         echo '<div id="aaapos-checkout-recaptcha"></div>';
         echo '</div>';
@@ -1645,11 +1632,13 @@ add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
         : '';
 
     if (empty($recaptcha_response)) {
-        $errors->add('validation', __('Please complete the reCAPTCHA checkbox before placing your order.', 'AAAPOS'));
+        $errors->add('validation', aaapos_recaptcha_version() === 'v3'
+            ? __('reCAPTCHA verification failed. Please try again.', 'AAAPOS')
+            : __('Please complete the reCAPTCHA checkbox before placing your order.', 'AAAPOS'));
         return;
     }
 
-    if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response)) {
+    if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response, 'checkout')) {
         $errors->add('validation', __('reCAPTCHA verification failed. Please try again.', 'AAAPOS'));
     }
 }, 10, 2);

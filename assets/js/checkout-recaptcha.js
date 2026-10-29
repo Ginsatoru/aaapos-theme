@@ -11,6 +11,41 @@
 (function () {
     'use strict';
 
+    var cfg = (typeof aaapos_checkout_recaptcha !== 'undefined') ? aaapos_checkout_recaptcha : {};
+
+    // v3: no widget. Get an invisible token when the customer clicks Place Order,
+    // add it to the form, then let WooCommerce submit as normal.
+    if (cfg.version === 'v3') {
+        if (typeof jQuery !== 'undefined') {
+            jQuery(function ($) {
+                var passed = false;
+
+                $('form.checkout').on('checkout_place_order', function () {
+                    var $form = $(this);
+
+                    if (passed) {
+                        passed = false;
+                        return true;
+                    }
+
+                    window.aaaposRecaptchaV3(cfg.site_key, 'checkout').then(function (token) {
+                        var $field = $form.find('input[name="g-recaptcha-response"]');
+                        if (!$field.length) {
+                            $field = $('<input type="hidden" name="g-recaptcha-response">').appendTo($form);
+                        }
+                        $field.val(token);
+                    }, function () {}).then(function () {
+                        passed = true;
+                        $form.trigger('submit');
+                    });
+
+                    return false;
+                });
+            });
+        }
+        return;
+    }
+
     function renderWidget() {
         if (typeof grecaptcha === 'undefined' || !grecaptcha.render) {
             return;

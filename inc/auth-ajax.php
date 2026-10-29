@@ -82,7 +82,11 @@ function mr_enqueue_auth_scripts() {
         $recaptcha_site_key = get_theme_mod('recaptcha_site_key', '');
         $recaptcha_enabled  = get_theme_mod('recaptcha_enable_auth', false) && !empty($recaptcha_site_key);
 
-        if ($recaptcha_enabled) {
+        $recaptcha_v3 = $recaptcha_enabled && aaapos_recaptcha_version() === 'v3';
+
+        if ($recaptcha_v3) {
+            wp_enqueue_script('aaapos-recaptcha-v3');
+        } elseif ($recaptcha_enabled) {
             wp_enqueue_script(
                 'google-recaptcha-auth',
                 'https://www.google.com/recaptcha/api.js?onload=aaaposInitAuthRecaptcha&render=explicit',
@@ -101,6 +105,7 @@ function mr_enqueue_auth_scripts() {
             'has_custom_image'  => (!empty($raw_image_value)) ? 'yes' : 'no',
             'recaptcha_enabled' => $recaptcha_enabled ? 'yes' : 'no',
             'recaptcha_site_key' => esc_attr($recaptcha_site_key),
+            'recaptcha_version' => $recaptcha_v3 ? 'v3' : 'v2',
         ));
     }
 }
@@ -119,7 +124,7 @@ function mr_ajax_login() {
     if (get_theme_mod('recaptcha_enable_auth', false) && get_theme_mod('recaptcha_secret_key', '')) {
         $recaptcha_response = isset($_POST['recaptcha']) ? sanitize_text_field($_POST['recaptcha']) : '';
 
-        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response)) {
+        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response, 'login')) {
             wp_send_json_error(array(
                 'message' => __('reCAPTCHA verification failed. Please try again.', 'aaapos')
             ));
@@ -176,7 +181,7 @@ function mr_ajax_register() {
     if (get_theme_mod('recaptcha_enable_auth', false) && get_theme_mod('recaptcha_secret_key', '')) {
         $recaptcha_response = isset($_POST['recaptcha']) ? sanitize_text_field($_POST['recaptcha']) : '';
 
-        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response)) {
+        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($recaptcha_response, 'register')) {
             wp_send_json_error(array(
                 'message' => __('reCAPTCHA verification failed. Please try again.', 'aaapos')
             ));

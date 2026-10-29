@@ -12,7 +12,12 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_key', '')) {
+$aaapos_rc_on = get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_key', '');
+$aaapos_rc_v3 = $aaapos_rc_on && aaapos_recaptcha_version() === 'v3';
+
+if ($aaapos_rc_v3) {
+    wp_enqueue_script('aaapos-recaptcha-v3');
+} elseif ($aaapos_rc_on) {
     wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true);
 }
 ?>
@@ -187,7 +192,23 @@ if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_ke
                                 required></textarea>
                         </div>
                         
-                        <?php if (get_theme_mod('recaptcha_enable', false) && get_theme_mod('recaptcha_site_key', '')) : ?>
+                        <?php if ($aaapos_rc_v3) : ?>
+                        <input type="hidden" name="g-recaptcha-response" value="">
+                        <script>
+                        (function () {
+                            var f = document.currentScript.closest('form'), t = f.querySelector('[name="g-recaptcha-response"]');
+                            f.addEventListener('submit', function (e) {
+                                if (t.value) { return; }
+                                e.preventDefault();
+                                var b = f.querySelector('[type="submit"]');
+                                if (b) { b.disabled = true; }
+                                window.aaaposRecaptchaV3(<?php echo wp_json_encode(get_theme_mod('recaptcha_site_key', '')); ?>, 'contact_form')
+                                    .then(function (v) { t.value = v; }, function () {})
+                                    .then(function () { f.submit(); t.value = ''; });
+                            });
+                        })();
+                        </script>
+                        <?php elseif ($aaapos_rc_on) : ?>
                         <div class="form-field">
                             <div class="g-recaptcha" data-sitekey="<?php echo esc_attr(get_theme_mod('recaptcha_site_key', '')); ?>"></div>
                         </div>

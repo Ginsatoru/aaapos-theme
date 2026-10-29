@@ -76,7 +76,7 @@ class AuthModal {
             ? `background-image: url('${loginImage}'); background-size: cover; background-position: center; background-repeat: no-repeat;`
             : '';
 
-        const recaptchaEnabled = mr_auth.recaptcha_enabled === 'yes';
+        const recaptchaEnabled = mr_auth.recaptcha_enabled === 'yes' && mr_auth.recaptcha_version !== 'v3'; // v3 has no visible widget
         const recaptchaLoginHTML = recaptchaEnabled
             ? `<div class="auth-form-group"><div id="auth-login-recaptcha"></div></div>`
             : '';
@@ -515,6 +515,18 @@ class AuthModal {
     // AJAX Handlers
     // -------------------------------------------------------------------------
 
+    // v3: invisible token fetched at submit time. v2: the checkbox response.
+    async getRecaptchaToken(formData, action) {
+        if (mr_auth.recaptcha_enabled === 'yes' && mr_auth.recaptcha_version === 'v3' && window.aaaposRecaptchaV3) {
+            try {
+                return await window.aaaposRecaptchaV3(mr_auth.recaptcha_site_key, action);
+            } catch (e) {
+                return '';
+            }
+        }
+        return formData.get('g-recaptcha-response') || '';
+    }
+
     async handleLogin(form) {
         const formData  = new FormData(form);
         const submitBtn = form.querySelector('.auth-submit-btn');
@@ -531,7 +543,7 @@ class AuthModal {
                     username:   formData.get('username'),
                     password:   formData.get('password'),
                     rememberme: formData.get('rememberme') || '',
-                    recaptcha:  formData.get('g-recaptcha-response') || '',
+                    recaptcha:  await this.getRecaptchaToken(formData, 'login'),
                     nonce:      mr_auth.nonce
                 })
             });
@@ -576,7 +588,7 @@ class AuthModal {
                     username:  formData.get('username'),
                     email:     formData.get('email'),
                     password:  password,
-                    recaptcha: formData.get('g-recaptcha-response') || '',
+                    recaptcha: await this.getRecaptchaToken(formData, 'register'),
                     nonce:     mr_auth.nonce
                 })
             });

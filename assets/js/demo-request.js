@@ -116,6 +116,7 @@
     // Google's api.js we reuse it, otherwise we load it ourselves.
     var recaptchaBox = document.getElementById('demo-recaptcha');
     var recaptchaKey = config.recaptcha_site_key || '';
+    var recaptchaV3 = config.recaptcha_version === 'v3'; // v3 = invisible, no widget to render
     var recaptchaId = null;
 
     function loadRecaptchaScript() {
@@ -129,6 +130,13 @@
     }
 
     function renderRecaptcha(tries) {
+        if (recaptchaV3) {
+            if (recaptchaKey && window.aaaposRecaptchaV3) {
+                window.aaaposRecaptchaV3.preload(recaptchaKey).catch(function () {});
+            }
+            return;
+        }
+
         if (!recaptchaBox || !recaptchaKey || recaptchaId !== null) {
             return;
         }
@@ -294,7 +302,7 @@
             return;
         }
 
-        if (recaptchaKey && !recaptchaToken()) {
+        if (recaptchaKey && !recaptchaV3 && !recaptchaToken()) {
             showError(config.recaptcha_required || 'Please tick the reCAPTCHA box.');
             return;
         }
@@ -305,11 +313,19 @@
         var body = new URLSearchParams(new FormData(form));
         body.append('action', 'aaapos_demo_request');
 
-        fetch(config.ajax_url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body
-        })
+        // v3: get an invisible token now. v2: the checkbox token is already in the form data.
+        var tokenReady = (recaptchaV3 && recaptchaKey && window.aaaposRecaptchaV3)
+            ? window.aaaposRecaptchaV3(recaptchaKey, 'demo_request').then(function (t) { body.set('g-recaptcha-response', t); }, function () {})
+            : Promise.resolve();
+
+        tokenReady
+            .then(function () {
+                return fetch(config.ajax_url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: body
+                });
+            })
             .then(function (response) {
                 return response.json();
             })

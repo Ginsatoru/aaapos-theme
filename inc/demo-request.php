@@ -120,7 +120,7 @@ function aaapos_demo_enqueue_assets() {
     wp_enqueue_script(
         'aaapos-demo-request',
         $uri . '/assets/js/demo-request.js',
-        [],
+        (aaapos_demo_recaptcha_enabled() && aaapos_recaptcha_version() === 'v3') ? ['aaapos-recaptcha-v3'] : [],
         file_exists($js_path) ? filemtime($js_path) : null,
         true
     );
@@ -130,6 +130,7 @@ function aaapos_demo_enqueue_assets() {
         'sending'  => __('Sending…', 'aaapos'),
         'error'    => __('Sorry, something went wrong. Please try again.', 'aaapos'),
         'recaptcha_site_key'  => aaapos_demo_recaptcha_enabled() ? get_theme_mod('recaptcha_site_key', '') : '',
+        'recaptcha_version'   => aaapos_recaptcha_version(),
         'product_required'    => __('Please select at least one product.', 'aaapos'),
         'source_required'     => __('Please tell us how you heard about us.', 'aaapos'),
         'recaptcha_required'  => __('Please tick the "I\'m not a robot" box.', 'aaapos'),
@@ -239,7 +240,7 @@ function aaapos_demo_render_modal() {
                 </div>
 
                 <div class="demo-modal-footer">
-                    <?php if (aaapos_demo_recaptcha_enabled()) : ?>
+                    <?php if (aaapos_demo_recaptcha_enabled() && aaapos_recaptcha_version() === 'v2') : ?>
                         <div class="demo-modal-recaptcha" id="demo-recaptcha"></div>
                     <?php endif; ?>
                     <button class="demo-modal-submit" type="submit">
@@ -327,7 +328,7 @@ function aaapos_demo_request_handler() {
     if (aaapos_demo_recaptcha_enabled()) {
         $token = isset($_POST['g-recaptcha-response']) ? sanitize_text_field(wp_unslash($_POST['g-recaptcha-response'])) : '';
 
-        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($token)) {
+        if (!function_exists('aaapos_verify_recaptcha_response') || !aaapos_verify_recaptcha_response($token, 'demo_request')) {
             wp_send_json_error(['message' => __('reCAPTCHA verification failed. Please try again.', 'aaapos')]);
         }
     }
