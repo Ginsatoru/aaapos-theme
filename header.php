@@ -229,19 +229,18 @@ if (get_theme_mod('enable_page_loader', false)) {
                     
                     <?php if ($use_header_cta): ?>
                         <div class="mobile-cta-section">
+                            <span class="cta-glow">
                             <?php if ($header_cta_demo): ?>
                             <a href="#request-demo" class="btn-auth btn-header-cta" data-demo-form-open aria-haspopup="dialog" aria-controls="demo-modal">
                             <?php else: ?>
                             <a href="<?php echo esc_url($header_cta_url); ?>" class="btn-auth btn-header-cta">
                             <?php endif; ?>
-                                <span class="btn-login-text">
-                                    <span class="btn-login-text-inner"><?php echo esc_html($header_cta_text); ?></span>
+                                <span class="cta-text"><?php echo esc_html($header_cta_text); ?></span>
+                                <span class="cta-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 10h11.17l-4.58-4.59L12 4l8 8-8 8-1.41-1.41L15.17 14H4v-4z"/></svg>
                                 </span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <line x1="7" y1="17" x2="17" y2="7"/>
-                                    <polyline points="7 7 17 7 17 17"/>
-                                </svg>
                             </a>
+                            </span>
                         </div>
                     <?php endif; ?>
 
@@ -567,20 +566,18 @@ if (get_theme_mod('enable_page_loader', false)) {
                     
                     <?php if ($use_header_cta): ?>
                         <div class="header-cta-wrapper" data-animate="fade-left" data-animate-duration="normal" data-animate-delay="500">
+                            <span class="cta-glow">
                             <?php if ($header_cta_demo): ?>
                             <a href="#request-demo" class="btn-auth btn-header-cta" data-demo-form-open aria-haspopup="dialog" aria-controls="demo-modal">
                             <?php else: ?>
                             <a href="<?php echo esc_url($header_cta_url); ?>" class="btn-auth btn-header-cta">
                             <?php endif; ?>
-                                <span class="btn-login-text">
-                                    <span class="btn-login-text-inner"><?php echo esc_html($header_cta_text); ?></span>
-                                    <span class="btn-login-text-inner" aria-hidden="true"><?php echo esc_html($header_cta_text); ?></span>
+                                <span class="cta-text"><?php echo esc_html($header_cta_text); ?></span>
+                                <span class="cta-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 10h11.17l-4.58-4.59L12 4l8 8-8 8-1.41-1.41L15.17 14H4v-4z"/></svg>
                                 </span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <line x1="7" y1="17" x2="17" y2="7"/>
-                                    <polyline points="7 7 17 7 17 17"/>
-                                </svg>
                             </a>
+                            </span>
                         </div>
                     <?php endif; ?>
 

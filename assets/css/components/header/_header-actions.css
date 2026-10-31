@@ -353,36 +353,113 @@ button.search-submit,
 
 /* Custom header button - boxier shape */
 .btn-header-cta {
-  /* Fixed 42px height so it lines up with the search bar. Right side is
+  /* Fixed 38px height so it lines up with the search bar. Right side is
      4px smaller to offset the empty space inside the arrow icon's
      viewBox, so visible left/right padding match */
   box-sizing: border-box;
-  height: 42px;
+  height: 38px;
   padding: 0 20px 0 24px;
   border-radius: 999px;
   font-size: 0.8rem;
 }
 
 /* Only when the custom button is in use (body.has-header-cta), match the
-   search bar to the button's 42px height. Other sites are untouched. */
+   search bar to the button's 38px height. Other sites are untouched. */
 @media (min-width: 1024px) {
   body.has-header-cta .header-search-bar .search-field {
     box-sizing: border-box;
-    height: 42px;
+    height: 38px;
     padding-top: 0;
     padding-bottom: 0;
   }
 
   /* Perfect circle for the icon inside the search bar */
-  body.has-header-cta .header-search-bar .search-submit {
+  body.has-header-cta .header-search-bar .search-form .search-submit {
     width: 30px;
     height: 30px;
     padding: 0 !important;
+    right: 4px !important;
   }
 }
 
-.btn-header-cta:hover svg {
-  transform: translate(2px, -2px);
+/* Shine sweep (header "Request a Demo" button) */
+.cta-glow {
+  display: inline-flex;
+  border-radius: 999px;
+}
+
+.mobile-cta-section .cta-glow {
+  display: block;
+}
+
+.btn-header-cta {
+  position: relative;
+  border: 0;
+  padding: 0 24px;
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
+}
+
+.btn-header-cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 10%, rgba(255, 255, 255, 0.55) 50%, transparent 90%);
+  transform: translateX(-150%);
+  pointer-events: none;
+  animation: cta-shine 3.5s ease-in-out infinite;
+}
+
+.cta-text {
+  display: inline-block;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms ease;
+}
+
+.cta-icon {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 100%;
+  opacity: 0;
+  transform: translateX(14px);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms ease;
+}
+
+.btn-header-cta .cta-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.btn-header-cta:hover .cta-text {
+  transform: translateX(-12px);
+}
+
+.btn-header-cta:hover .cta-icon {
+  opacity: 1;
+  transform: translateX(-8px);
+}
+
+/* Click: slide out */
+.btn-header-cta:active .cta-text,
+.btn-header-cta:active .cta-icon {
+  transform: translateX(-60px);
+  opacity: 0;
+}
+
+@keyframes cta-shine {
+  0%, 40% { transform: translateX(-150%); }
+  100% { transform: translateX(300%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-header-cta::before { animation: none; }
 }
 
 .btn-login-text {
