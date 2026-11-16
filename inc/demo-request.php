@@ -247,6 +247,29 @@ function aaapos_demo_render_modal() {
                         <span class="demo-modal-submit-icon"><?php echo $arrow; // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
                         <span class="demo-modal-submit-label"><?php esc_html_e('Submit Demo Request', 'aaapos'); ?></span>
                     </button>
+                    <?php
+                    $terms_id    = absint(get_theme_mod('demo_request_terms_page', 0));
+                    $privacy_id  = absint(get_theme_mod('demo_request_privacy_page', 0));
+                    $privacy_url = $privacy_id ? get_permalink($privacy_id) : get_privacy_policy_url();
+                    $legal_links = [];
+                    if ($terms_id) {
+                        $legal_links[] = '<a href="' . esc_url(get_permalink($terms_id)) . '" target="_blank" rel="noopener">' . esc_html__('Terms of Service', 'aaapos') . '</a>';
+                    }
+                    if ($privacy_url) {
+                        $legal_links[] = '<a href="' . esc_url($privacy_url) . '" target="_blank" rel="noopener">' . esc_html__('Privacy Policy', 'aaapos') . '</a>';
+                    }
+                    if ($legal_links) :
+                    ?>
+                    <p class="demo-modal-legal">
+                        <?php
+                        printf(
+                            /* translators: %s: Terms of Service and/or Privacy Policy links */
+                            esc_html__('By submitting this form you agree to our %s.', 'aaapos'),
+                            implode(' ' . esc_html__('and', 'aaapos') . ' ', $legal_links) // phpcs:ignore WordPress.Security.EscapeOutput
+                        );
+                        ?>
+                    </p>
+                    <?php endif; ?>
                     <div class="demo-modal-status" id="demo-modal-status" role="status" aria-live="polite"></div>
                 </div>
             </form>

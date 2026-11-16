@@ -495,6 +495,47 @@ $wp_customize->add_control("topbar_promo_text", [
                 && (bool) $control->manager->get_setting("header_cta_demo_form")->value();
         },
     ]));
+
+    $demo_page_choices = ["0" => __("Select a page", "macedon-ranges")];
+    foreach (get_pages(["sort_column" => "post_title"]) as $demo_page) {
+        $demo_page_choices[$demo_page->ID] = $demo_page->post_title;
+    }
+
+    $wp_customize->add_setting("demo_request_terms_page", [
+        "default" => 0,
+        "sanitize_callback" => "absint",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("demo_request_terms_page", [
+        "label" => __("Demo Form Terms Page", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "select",
+        "choices" => $demo_page_choices,
+        "priority" => 65,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value()
+                && (bool) $control->manager->get_setting("header_cta_demo_form")->value();
+        },
+    ]);
+
+    $wp_customize->add_setting("demo_request_privacy_page", [
+        "default" => 0,
+        "sanitize_callback" => "absint",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("demo_request_privacy_page", [
+        "label" => __("Demo Form Privacy Policy Page", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "select",
+        "choices" => $demo_page_choices,
+        "priority" => 66,
+        "active_callback" => function($control) {
+            return (bool) $control->manager->get_setting("header_cta_enable")->value()
+                && (bool) $control->manager->get_setting("header_cta_demo_form")->value();
+        },
+    ]);
 }
 add_action("customize_register", "mr_header_customizer");
 

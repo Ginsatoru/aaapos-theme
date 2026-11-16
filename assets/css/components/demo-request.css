@@ -469,6 +469,23 @@
   transform: translateX(2px);
 }
 
+/* Terms + privacy notice under the submit button */
+.demo-modal .demo-modal-legal {
+  margin: 12px 0 0;
+  color: #6b7280;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.demo-modal .demo-modal-legal a {
+  color: var(--brand-color, #0f8abe);
+  text-decoration: none;
+}
+
+.demo-modal .demo-modal-legal a:hover {
+  color: var(--brand-color-hover, #0b6e96);
+}
+
 /* Error message */
 .demo-modal .demo-modal-status {
   display: none;
