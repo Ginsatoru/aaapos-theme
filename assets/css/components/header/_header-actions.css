@@ -554,10 +554,12 @@ button.search-submit,
   display: none;
 }
 
-.header-search-bar .search-field:focus {
+.header-search-bar .search-field:focus,
+.header-search-bar .search-field:focus-visible {
   outline: none;
-  border-color: var(--brand-color);
-  background: var(--color-bg-primary);
+  box-shadow: none;
+  border-color: var(--color-border);
+  background: var(--color-bg-secondary);
 }
 
 .header-search-bar .search-field::placeholder {

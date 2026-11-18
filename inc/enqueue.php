@@ -258,8 +258,11 @@ wp_enqueue_script(
     true
 );
 
-// Header Search Collapse Styles
+// Header Search Collapse (shrinks the navbar search bar to an icon when space is tight)
 wp_enqueue_script('aaapos-header-search-collapse', get_template_directory_uri() . '/assets/js/header-search-collapse.js', array(), AAAPOS_VERSION, true);
+
+// Header Search Modal
+wp_enqueue_script('aaapos-search-modal', get_template_directory_uri() . '/assets/js/search-modal.js', array(), AAAPOS_VERSION, true);
 
     // Main theme stylesheet (for theme metadata)
     wp_enqueue_style("mr-style", get_stylesheet_uri(), [], MR_THEME_VERSION);

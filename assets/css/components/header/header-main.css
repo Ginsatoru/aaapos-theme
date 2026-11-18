@@ -17,6 +17,7 @@
 @import '_header-actions.css';
 @import '_dropdowns.css';
 @import '_dropdowns-image-style.css';
+@import '_search-modal.css';
 
 /* ==========================================================================
    MAIN HEADER CONTAINER - WITH STICKY CONTROL

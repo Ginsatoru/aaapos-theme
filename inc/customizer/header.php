@@ -377,6 +377,20 @@ $wp_customize->add_control("topbar_promo_text", [
         "priority" => 55,
     ]);
 
+    $wp_customize->add_setting("search_popular_terms", [
+        "default" => "",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("search_popular_terms", [
+        "label" => __("Popular Searches", "macedon-ranges"),
+        "description" => __("Comma separated, e.g. RetailManager, barcode scanner, receipt printer", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "text",
+        "priority" => 55,
+    ]);
+
     // Show/Hide Account Icon
     $wp_customize->add_setting("show_account_icon", [
         "default" => true,

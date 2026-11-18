@@ -278,7 +278,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                     
                     <?php if (get_theme_mod('show_search_bar', true)): ?>
                     <div class="header-search-bar" data-animate="zoom-in" data-animate-duration="normal" data-animate-delay="200">
-                        <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
+                        <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>" data-search-open>
                             <label for="header-search-input" class="sr-only">
                                 <?php esc_html_e('Search for:', 'aaapos'); ?>
                             </label>
@@ -289,8 +289,9 @@ if (get_theme_mod('enable_page_loader', false)) {
                                 placeholder="<?php esc_attr_e('Search...', 'aaapos'); ?>" 
                                 value="<?php echo get_search_query(); ?>" 
                                 name="s"
+                                readonly
                             />
-                            <button type="submit" class="search-submit" aria-label="<?php esc_attr_e('Search', 'aaapos'); ?>">
+                            <button type="button" class="search-submit" aria-label="<?php esc_attr_e('Search', 'aaapos'); ?>">
                                 <span class="icon-roll icon-roll-18">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                         <circle cx="11" cy="11" r="8"/>
@@ -308,7 +309,8 @@ if (get_theme_mod('enable_page_loader', false)) {
                                 class="header-action header-search-toggle"
                                 aria-label="<?php esc_attr_e('Open search', 'aaapos'); ?>"
                                 aria-expanded="false"
-                                aria-controls="header-search-dropdown">
+                                aria-controls="site-search-modal"
+                                data-search-open>
                             <span class="icon-roll icon-roll-20">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                     <circle cx="11" cy="11" r="8"/>
@@ -321,28 +323,6 @@ if (get_theme_mod('enable_page_loader', false)) {
                             </span>
                         </button>
 
-                        <div class="header-search-dropdown" id="header-search-dropdown">
-                            <form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
-                                <label for="header-search-dropdown-input" class="sr-only">
-                                    <?php esc_html_e('Search for:', 'aaapos'); ?>
-                                </label>
-                                <input 
-                                    type="search" 
-                                    id="header-search-dropdown-input"
-                                    class="search-field" 
-                                    placeholder="<?php esc_attr_e('Search...', 'aaapos'); ?>" 
-                                    value="<?php echo get_search_query(); ?>" 
-                                    name="s"
-                                    autocomplete="off"
-                                />
-                                <button type="submit" class="search-submit" aria-label="<?php esc_attr_e('Search', 'aaapos'); ?>">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                        <circle cx="11" cy="11" r="8"/>
-                                        <path d="m21 21-4.35-4.35"/>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
                     </div>
                     <?php endif; ?>
 
@@ -602,6 +582,8 @@ if (get_theme_mod('enable_page_loader', false)) {
             </div>
         </div>
     </header>
+
+    <?php if (get_theme_mod('show_search_bar', true)) { get_template_part('template-parts/header/search-modal'); } ?>
 
     <div class="mobile-menu-overlay"></div>
 
