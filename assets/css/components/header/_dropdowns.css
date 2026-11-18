@@ -621,6 +621,8 @@
   height: 20px;
   object-fit: contain;
   display: block;
+  border-radius: 0;
+  background: transparent;
   transition: filter 0.2s ease;
 }
 
