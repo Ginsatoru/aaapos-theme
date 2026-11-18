@@ -113,7 +113,7 @@ if (!function_exists('aaapos_get_nav_icon_custom_url')) {
             return '';
         }
 
-        $url = wp_get_attachment_image_url($attachment_id, 'thumbnail');
+        $url = wp_get_attachment_image_url($attachment_id, 'medium');
 
         return $url ? $url : (string) wp_get_attachment_url($attachment_id);
     }
