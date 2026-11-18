@@ -96,14 +96,14 @@
 
 .nav-menu > li > a:hover,
 .nav-menu > li > a:focus {
-  color: var(--color-nav-hover) !important;
+  color: #000000 !important;
 }
 
 /* Active/Current Menu Item */
 .nav-menu > li.current-menu-item > a,
 .nav-menu > li.current-menu-ancestor > a,
 .nav-menu > li.current_page_item > a {
-  color: var(--color-nav-active) !important;
+  color: #000000 !important;
 }
 
 /* Remove Underline Effect */
@@ -123,10 +123,13 @@
    FOCUS STATES (Accessibility)
    ========================================================================== */
 
+.nav-menu > li > a:focus,
 .nav-menu > li > a:focus-visible {
-  outline: 2px solid var(--brand-color);
-  outline-offset: 4px;
-  border-radius: 4px;
+  outline: none;
+}
+
+.nav-menu > li > a:focus-visible::before {
+  opacity: 1;
 }
 
 .nav-menu .sub-menu a:focus-visible {
@@ -155,7 +158,7 @@
     height: 100vh;
     background: var(--color-white);
     /* box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1); */
-    padding: 80px 0 20px;
+    padding: 64px 0 20px;
     overflow-y: auto;
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: calc(var(--z-fixed) + 1);
@@ -251,7 +254,7 @@
 
   .mobile-account-name {
     display: block;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 0.9375rem;
     line-height: 1.4;
     margin-bottom: 2px;

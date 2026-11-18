@@ -152,7 +152,7 @@
     border-radius: var(--border-radius);
     text-decoration: none;
     color: var(--color-text-dark);
-    font-weight: var(--font-semibold);
+    font-weight: var(--font-normal);
     transition: background 0.2s ease;
   }
 

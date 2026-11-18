@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+    <script>(function(){if(document.cookie.indexOf('aaapos_cta_shine=1')>-1){document.documentElement.classList.add('cta-shine-seen');}else{document.cookie='aaapos_cta_shine=1; path=/; SameSite=Lax';}})();</script>
     <?php wp_head(); ?>
 </head>
 
@@ -373,8 +374,11 @@ if (get_theme_mod('enable_page_loader', false)) {
                                 
                                 <div class="account-dropdown">
                                     <div class="account-dropdown-header">
-                                        <span class="account-name"><?php echo esc_html($current_user->display_name); ?></span>
-                                        <span class="account-email"><?php echo esc_html($current_user->user_email); ?></span>
+                                        <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/profile-icon.png'); ?>" alt="" class="account-avatar" width="40" height="40">
+                                        <div class="account-dropdown-info">
+                                            <span class="account-name"><?php echo esc_html($current_user->display_name); ?></span>
+                                            <span class="account-email"><?php echo esc_html($current_user->user_email); ?></span>
+                                        </div>
                                     </div>
                                     <ul class="account-dropdown-menu">
                                         <li>

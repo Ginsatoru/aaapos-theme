@@ -265,6 +265,40 @@ function mr_header_customizer($wp_customize)
         "priority" => 20,
     ]);
 
+    $wp_customize->add_setting("topbar_phone_2", [
+        "default" => "",
+        "sanitize_callback" => "sanitize_text_field",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("topbar_phone_2", [
+        "label" => __("Top Bar Phone 2", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "text",
+        "priority" => 20,
+    ]);
+
+    $wp_customize->add_setting("topbar_phone_2_icon", [
+        "default" => "phone",
+        "sanitize_callback" => function($value) {
+            return in_array($value, ["phone", "globe", "headset", "mobile"], true) ? $value : "phone";
+        },
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control("topbar_phone_2_icon", [
+        "label" => __("Top Bar Phone 2 Icon", "macedon-ranges"),
+        "section" => "mr_header",
+        "type" => "select",
+        "choices" => [
+            "phone" => __("Phone", "macedon-ranges"),
+            "globe" => __("Globe (International)", "macedon-ranges"),
+            "headset" => __("Headset (Sales / Support)", "macedon-ranges"),
+            "mobile" => __("Mobile", "macedon-ranges"),
+        ],
+        "priority" => 20,
+    ]);
+
     $wp_customize->add_setting("topbar_email", [
         "default" => "info@macedonrangesproduce.com",
         "sanitize_callback" => "sanitize_email",

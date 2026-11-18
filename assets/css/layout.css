@@ -15,20 +15,20 @@
 @media (min-width: 768px) {
   /* Sticky enabled - content needs spacing */
   body.has-sticky-header.has-topbar .site {
-    padding-top: 135px; /* 45px topbar + 90px header */
+    padding-top: 114px; /* 38px topbar + 76px header */
   }
   
   body.has-sticky-header:not(.has-topbar) .site {
-    padding-top: 90px; /* Just header */
+    padding-top: 76px; /* Just header */
   }
   
   /* Admin bar adjustments for sticky */
   body.has-sticky-header.admin-bar.has-topbar .site {
-    padding-top: 167px; /* 32px admin + 45px topbar + 90px header */
+    padding-top: 146px; /* 32px admin + 38px topbar + 76px header */
   }
   
   body.has-sticky-header.admin-bar:not(.has-topbar) .site {
-    padding-top: 122px; /* 32px admin + 90px header */
+    padding-top: 108px; /* 32px admin + 76px header */
   }
   
   /* ✅ NOT sticky - no padding needed (header/topbar are in document flow) */
@@ -41,11 +41,11 @@
 @media (max-width: 767px) {
   /* Mobile - no topbar shown, just header */
   body.has-sticky-header .site {
-    padding-top: 80px; /* Just mobile header height */
+    padding-top: 64px; /* Just mobile header height */
   }
   
   body.has-sticky-header.admin-bar .site {
-    padding-top: 126px; /* 46px mobile admin + 80px header */
+    padding-top: 110px; /* 46px mobile admin + 64px header */
   }
   
   /* ✅ NOT sticky - no padding */

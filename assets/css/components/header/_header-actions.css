@@ -47,8 +47,8 @@ button.search-submit,
 
 .header-action {
   color: #000000;
-  padding: var(--space-2);
-  border-radius: var(--border-radius);
+  padding: 9px;
+  border-radius: 10px;
   transition: var(--transition);
   position: relative;
   background: none;
@@ -60,9 +60,18 @@ button.search-submit,
   gap: var(--space-2);
 }
 
-.header-action:hover {
-  color: var(--brand-color);
-  background: var(--color-bg-tertiary);
+.header-actions .account-link {
+  padding: 9px var(--space-3);
+}
+
+.header-action:focus {
+  outline: none;
+}
+
+.header-action:hover,
+.header-action:focus-visible {
+  color: #000000;
+  background: var(--color-bg-hover);
   /* transform: translateY(-2px); */
 }
 
@@ -114,7 +123,7 @@ button.search-submit,
   overflow: hidden;
   height: 16px;
   font-size: 0.9rem;
-  font-weight: var(--font-semibold);
+  font-weight: var(--font-normal);
   white-space: nowrap;
   display: none;
 }
@@ -217,7 +226,7 @@ button.search-submit,
   right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  background: var(--brand-color);
+  background: transparent;
   border: none;
   cursor: pointer;
   padding: 6px;
@@ -225,11 +234,11 @@ button.search-submit,
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--color-white);
+  color: #000000;
 }
 
 .header-search-dropdown .search-submit:hover {
-  background: var(--color-black);
+  background: var(--color-bg-hover);
 }
 
 .account-username-inner {
@@ -314,7 +323,7 @@ button.search-submit,
   gap: 7px;
   padding: 9px 18px;
   font-size: 0.9rem;
-  font-weight: var(--font-semibold);
+  font-weight: var(--font-normal);
   font-family: var(--font-body);
   text-decoration: none;
   border-radius: 20px;
@@ -370,7 +379,7 @@ button.search-submit,
     box-sizing: border-box;
     height: 38px;
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 1px;
   }
 
   /* Perfect circle for the icon inside the search bar */
@@ -407,10 +416,10 @@ button.search-submit,
   left: 0;
   width: 60%;
   height: 100%;
-  background: linear-gradient(105deg, transparent 10%, rgba(255, 255, 255, 0.55) 50%, transparent 90%);
+  background: linear-gradient(105deg, transparent 10%, rgba(255, 255, 255, 0.4) 50%, transparent 90%);
   transform: translateX(-150%);
   pointer-events: none;
-  animation: cta-shine 3.5s ease-in-out infinite;
+  animation: cta-shine 5s ease-in-out 3;
 }
 
 .cta-text {
@@ -454,8 +463,12 @@ button.search-submit,
 }
 
 @keyframes cta-shine {
-  0%, 40% { transform: translateX(-150%); }
+  0%, 64% { transform: translateX(-150%); }
   100% { transform: translateX(300%); }
+}
+
+.cta-shine-seen .btn-header-cta::before {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -530,6 +543,17 @@ button.search-submit,
   color: var(--color-text);
 }
 
+.site-header .search-field::-webkit-search-cancel-button,
+.site-header .search-field::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.site-header .search-field::-ms-clear {
+  display: none;
+}
+
 .header-search-bar .search-field:focus {
   outline: none;
   border-color: var(--brand-color);
@@ -545,7 +569,7 @@ button.search-submit,
   right: 8px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
-  background: var(--brand-color);
+  background: transparent;
   border: none;
   cursor: pointer;
   padding: 6px;
@@ -558,19 +582,19 @@ button.search-submit,
 }
 
 .header-search-bar .search-submit:hover {
-  background: var(--color-black);
+  background: var(--color-bg-hover);
 }
 
 .header-search-bar .search-submit img {
   width: 18px;
   height: 18px;
-  filter: brightness(0) saturate(100%) invert(1);
+  filter: brightness(0);
 }
 
 .header-search-bar .search-submit svg {
   width: 18px;
   height: 18px;
-  color: var(--color-white);
+  color: #000000;
 }
 
 /* ==========================================================================
@@ -603,8 +627,8 @@ button.search-submit,
   width: 16px;
   height: 16px;
   margin: -8px 0 0 -8px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: var(--color-white);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #000000;
   border-radius: 50%;
   animation: search-spin 0.6s linear infinite;
 }

@@ -6,7 +6,7 @@
   background: var(--brand-color);
   color: var(--color-white);
   font-size: var(--text-sm);
-  height: 45px;
+  height: 38px;
   display: none;
   position: relative;
   z-index: 1001;
@@ -122,7 +122,7 @@ body.has-sticky-header .top-bar {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-weight: var(--font-medium);
+  font-weight: var(--font-normal);
   white-space: nowrap;
 }
 
@@ -130,6 +130,12 @@ body.has-sticky-header .top-bar {
   .promo-text {
     display: none;
   }
+}
+
+.top-bar-phones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .top-bar-item {
@@ -196,7 +202,6 @@ body.has-sticky-header .top-bar {
 
 .announce-icon {
   flex: 0 0 auto;
-  opacity: 0.85;
 }
 
 .announce-viewport {
@@ -219,7 +224,7 @@ body.has-sticky-header .top-bar {
 
 .announce-text {
   display: inline-block;
-  font-weight: var(--font-medium);
+  font-weight: var(--font-normal);
   font-size: var(--text-sm);
   white-space: nowrap;
   overflow: hidden;

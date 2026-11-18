@@ -261,7 +261,7 @@
     // Topbar content
     wp.customize('topbar_phone', function(value) {
         value.bind(function(newval) {
-            $('.top-bar-left a[href^="tel:"]').find('span').text(newval);
+            $('.top-bar-left a[href^="tel:"]').first().find('span').text(newval);
         });
     });
 

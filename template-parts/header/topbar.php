@@ -11,11 +11,20 @@ if (!get_theme_mod('show_top_bar', true)) {
 }
 
 $phone = get_theme_mod('topbar_phone', '+61 3 8400 3083');
+$phone_2 = get_theme_mod('topbar_phone_2', '');
+$phone_icon = '<svg width="16" height="16" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path d="M94.811,21.696c-35.18,22.816-42.091,94.135-28.809,152.262c10.344,45.266,32.336,105.987,69.42,163.165 c34.886,53.79,83.557,102.022,120.669,129.928c47.657,35.832,115.594,58.608,150.774,35.792 c17.789-11.537,44.218-43.058,45.424-48.714c0,0-15.498-23.896-18.899-29.14l-51.972-80.135 c-3.862-5.955-28.082-0.512-40.386,6.457c-16.597,9.404-31.882,34.636-31.882,34.636c-11.38,6.575-20.912,0.024-40.828-9.142 c-24.477-11.262-51.997-46.254-73.9-77.947c-20.005-32.923-40.732-72.322-41.032-99.264c-0.247-21.922-2.341-33.296,8.304-41.006 c0,0,29.272-3.666,44.627-14.984c11.381-8.392,26.228-28.286,22.366-34.242l-51.972-80.134c-3.401-5.244-18.899-29.14-18.899-29.14 C152.159-1.117,112.6,10.159,94.811,21.696z"/> </svg>';
+$phone_2_icons = [
+    'phone'   => $phone_icon,
+    'globe'   => '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',
+    'headset' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h4v1h-7v2h6c1.66 0 3-1.34 3-3V10c0-4.97-4.03-9-9-9z"/></svg>',
+    'mobile'  => '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>',
+];
+$phone_2_icon = $phone_2_icons[get_theme_mod('topbar_phone_2_icon', 'phone')] ?? $phone_icon;
 $email = get_theme_mod('topbar_email', 'support@aaapos.com');
 
 // Live update announcements (rotating slider), managed via Customizer drag & drop.
 // NOTE: If the user removes all announcements in the Customizer, this stays an
-// empty array on purpose — we do NOT fall back to defaults, so the slider
+// empty array on purpose, we do NOT fall back to defaults, so the slider
 // correctly disappears when intentionally cleared.
 $announcements_json = get_theme_mod('topbar_announcements', wp_json_encode(mr_default_topbar_announcements()));
 $announcements = json_decode($announcements_json, true);
@@ -24,11 +33,11 @@ if (!is_array($announcements)) {
     $announcements = [];
 }
 
-// Static promo text (right side, not part of the slider) — fully customizable.
+// Static promo text (right side, not part of the slider), fully customizable.
 $promo_text = get_theme_mod('topbar_promo_text', 'New Home of MYOB RetailManager');
 
 // Check if there's anything at all to show, so we can skip rendering an empty bar.
-$has_contact = $phone || $email;
+$has_contact = $phone || $phone_2 || $email;
 $has_announcements = !empty($announcements);
 $has_promo = !empty($promo_text);
 
@@ -52,24 +61,26 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
             <!-- Left Side: Contact Info -->
             <?php if ($has_contact) : ?>
                 <div class="top-bar-left">
+                    <?php if ($phone || $phone_2) : ?>
+                    <div class="top-bar-phones">
                     <?php if ($phone) : ?>
                         <a href="tel:<?php echo esc_attr(str_replace(' ', '', $phone)); ?>" class="top-bar-item">
-                            <svg width="16" height="16" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M94.811,21.696c-35.18,22.816-42.091,94.135-28.809,152.262c10.344,45.266,32.336,105.987,69.42,163.165
-                                    c34.886,53.79,83.557,102.022,120.669,129.928c47.657,35.832,115.594,58.608,150.774,35.792
-                                    c17.789-11.537,44.218-43.058,45.424-48.714c0,0-15.498-23.896-18.899-29.14l-51.972-80.135
-                                    c-3.862-5.955-28.082-0.512-40.386,6.457c-16.597,9.404-31.882,34.636-31.882,34.636c-11.38,6.575-20.912,0.024-40.828-9.142
-                                    c-24.477-11.262-51.997-46.254-73.9-77.947c-20.005-32.923-40.732-72.322-41.032-99.264c-0.247-21.922-2.341-33.296,8.304-41.006
-                                    c0,0,29.272-3.666,44.627-14.984c11.381-8.392,26.228-28.286,22.366-34.242l-51.972-80.134c-3.401-5.244-18.899-29.14-18.899-29.14
-                                    C152.159-1.117,112.6,10.159,94.811,21.696z"/>
-                            </svg>
+                            <?php echo $phone_icon; // phpcs:ignore WordPress.Security.EscapeOutput ?>
                             <span><?php echo esc_html($phone); ?></span>
                         </a>
+                    <?php endif; ?>
+                    <?php if ($phone_2) : ?>
+                        <a href="tel:<?php echo esc_attr(str_replace(' ', '', $phone_2)); ?>" class="top-bar-item">
+                            <?php echo $phone_2_icon; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+                            <span><?php echo esc_html($phone_2); ?></span>
+                        </a>
+                    <?php endif; ?>
+                    </div>
                     <?php endif; ?>
 
                     <?php if ($email) : ?>
                         <a href="mailto:<?php echo esc_attr($email); ?>" class="top-bar-item top-bar-item--email">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="16" height="16" viewBox="2 2 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                             </svg>
@@ -82,7 +93,7 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
             <!-- Center: Live Update Slider (only if announcements actually exist) -->
             <?php if ($has_announcements) : ?>
                 <div class="top-bar-announce" data-items='<?php echo esc_attr(wp_json_encode($announcements)); ?>' data-interval="5000">
-                    <svg class="announce-icon" width="15" height="15" viewBox="0 0 207.238 207.238" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <svg class="announce-icon" width="16" height="16" viewBox="0 0 207.238 207.238" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M197.032,167.624c-0.461,2.344-2.517,4.035-4.906,4.035H15.112c-2.39,0-4.445-1.691-4.906-4.035
                             c-0.461-2.345,0.802-4.688,3.013-5.593c0.114-0.047,12.24-5.128,22.93-16c9.53-9.692,14.163-31.721,14.163-67.348
                             c0-30.658,12.725-45.569,23.398-52.679c3.934-2.62,7.961-4.449,11.742-5.738c-0.071-0.653-0.113-1.315-0.113-1.987
@@ -104,7 +115,7 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
                 <div class="top-bar-right">
                     <?php if ($has_promo) : ?>
                         <div class="promo-text">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12,0C5.373,0,0,5.373,0,12s5.373,12,12,12s12-5.373,12-12S18.627,0,12,0z M12,19.66
                                     c-0.938,0-1.58-0.723-1.58-1.66c0-0.964,0.669-1.66,1.58-1.66c0.963,0,1.58,0.696,1.58,1.66C13.58,18.938,12.963,19.66,12,19.66z
                                     M12.622,13.321c-0.239,0.815-0.992,0.829-1.243,0c-0.289-0.956-1.316-4.585-1.316-6.942c0-3.11,3.891-3.125,3.891,0

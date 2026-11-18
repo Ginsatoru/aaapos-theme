@@ -253,7 +253,7 @@
 }
 
 .admin-bar .site-header {
-  top: 77px !important;
+  top: 70px !important;
 }
 
 .admin-bar.scrolled .site-header {
@@ -276,7 +276,7 @@
   
   .admin-bar .main-navigation {
     top: 0 !important;
-    padding-top: 116px !important;
+    padding-top: 100px !important;
   }
 }
 
@@ -284,7 +284,7 @@
 @media screen and (min-width: 783px) and (max-width: 1023px) {
   .admin-bar .main-navigation {
     top: 0 !important;
-    padding-top: 122px !important;
+    padding-top: 108px !important;
   }
 }
 
