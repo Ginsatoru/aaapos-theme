@@ -70,9 +70,9 @@ form.woocommerce-form {
   padding: var(--space-2) var(--space-4) !important;
   font-size: var(--text-base) !important;
   color: var(--color-text) !important;
-  background: var(--color-bg-secondary) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: 8px !important;
+  background: #F3F5FA !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
   transition: all 0.2s ease !important;
   font-family: var(--font-body) !important;
   line-height: 1.5 !important;
@@ -89,7 +89,7 @@ form.woocommerce-form {
 .form-row textarea:focus,
 .woocommerce-EditAccountForm input:focus {
   outline: none !important;
-  border-color: var(--color-primary) !important;
+  border-color: #000000 !important;
   background: var(--color-white) !important;
   box-shadow: none !important;
 }
@@ -131,9 +131,9 @@ form.woocommerce-form {
   height: 2.75rem !important;
   display: flex !important;
   align-items: center !important;
-  background: var(--color-bg-secondary) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: 8px !important;
+  background: #F3F5FA !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
   transition: all 0.2s ease !important;
   padding: 0 !important;
 }
@@ -172,7 +172,7 @@ form.woocommerce-form {
 .select2-container--default.select2-container--focus .select2-selection--single,
 .select2-container--default.select2-container--open .select2-selection--single {
   outline: none !important;
-  border-color: var(--color-primary) !important;
+  border-color: #000000 !important;
   background: var(--color-white) !important;
   box-shadow: none !important;
 }
@@ -180,7 +180,7 @@ form.woocommerce-form {
 /* Dropdown panel */
 .select2-container--default .select2-dropdown {
   border: 1px solid var(--color-border) !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
   overflow: hidden !important;
   font-family: var(--font-body) !important;
@@ -200,7 +200,7 @@ form.woocommerce-form {
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field:focus {
-  border-color: var(--color-primary) !important;
+  border-color: #000000 !important;
 }
 
 .select2-container--default .select2-results__option {
@@ -209,7 +209,7 @@ form.woocommerce-form {
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background: var(--color-primary) !important;
+  background: #000000 !important;
   color: var(--color-white) !important;
 }
 
@@ -226,7 +226,7 @@ form.woocommerce-form {
   width: auto !important;
   margin-right: var(--space-2) !important;
   cursor: pointer !important;
-  accent-color: var(--color-primary) !important;
+  accent-color: #000000 !important;
 }
 
 /* Checkbox/Radio label inline */
@@ -313,7 +313,7 @@ button[name="save_address"] {
   gap: var(--space-2) !important;
   height: 2.5rem !important;
   padding: 0 var(--space-6) !important;
-  background: var(--color-primary, #0ea5e9) !important;
+  background: #000000 !important;
   color: #FFFFFF !important;
   border: none !important;
   border-radius: 0.625rem !important;
@@ -333,7 +333,7 @@ button[name="save_address"] {
 .woocommerce-form input[type="submit"]:hover,
 button[name="save_account_details"]:hover,
 button[name="save_address"]:hover {
-  background: var(--color-primary-hover, #0284c7) !important;
+  background: #333333 !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
@@ -344,7 +344,7 @@ button[name="save_address"]:hover {
 .woocommerce-form input[type="submit"]:active,
 button[name="save_account_details"]:active,
 button[name="save_address"]:active {
-  background: var(--color-primary-dark, #0369a1) !important;
+  background: #000000 !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
@@ -355,6 +355,6 @@ button[name="save_address"]:active {
 .woocommerce-form input[type="submit"]:focus,
 button[name="save_account_details"]:focus,
 button[name="save_address"]:focus {
-  outline: 2px solid var(--color-primary) !important;
+  outline: 2px solid #000000 !important;
   outline-offset: 2px !important;
 }

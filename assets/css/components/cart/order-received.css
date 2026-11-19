@@ -24,12 +24,12 @@ body.woocommerce-order-received .content-area {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  background: var(--brand-color);
-  color: var(--color-white);
+  background: #F3F5FA;
+  color: #111111;
   padding: 2rem;
   border-radius: 16px;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .success-icon {
@@ -39,7 +39,8 @@ body.woocommerce-order-received .content-area {
   justify-content: center;
   width: 80px;
   height: 80px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #dcfce7;
+  color: #16a34a;
   border-radius: 50%;
   backdrop-filter: blur(10px);
 }
@@ -70,14 +71,14 @@ body.woocommerce-order-received .content-area {
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   font-family: var(--font-heading);
-  color: var(--color-white) !important;
+  color: #111111 !important;
 }
 
 .success-content p {
   font-size: 1rem;
   margin: 0;
   opacity: 0.95;
-  color: var(--color-white) !important;
+  color: var(--color-text-light, #6b7280) !important;
 }
 
 .woocommerce-order-received .woocommerce-checkout-progress {
@@ -90,7 +91,7 @@ body.woocommerce-order-received .content-area {
   align-items: center;
   gap: 1.25rem;
   background: #fef2f2;
-  border: 2px solid #fecaca;
+  border: 1px solid #fecaca;
   color: #dc2626;
   padding: 1.5rem;
   border-radius: 14px;
@@ -135,20 +136,21 @@ body.woocommerce-order-received .content-area {
 }
 
 .overview-card {
-  background: var(--color-white);
-  border: 1px solid var(--color-border-light);
+  background: #F3F5FA;
+  border: 1px solid transparent;
   border-radius: 12px;
   padding: 1.125rem 1.25rem;
   display: flex;
   align-items: flex-start;
   gap: 0.875rem;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 
 .overview-card:hover {
-  border-color: var(--brand-color);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+  border-color: transparent;
+  background: #eceef3;
+  box-shadow: none;
 }
 
 .overview-card .card-icon {
@@ -158,9 +160,9 @@ body.woocommerce-order-received .content-area {
   justify-content: center;
   width: 42px;
   height: 42px;
-  background: var(--brand-color);
+  background: #ffffff;
   border-radius: 10px;
-  color: var(--color-white);
+  color: #374151;
   margin-top: 0.125rem;
 }
 
@@ -222,12 +224,13 @@ body.woocommerce-order-received .content-area {
 
 /* ORDER DETAILS SECTION */
 .order-details-section {
-  background: var(--color-white);
-  border: 1px solid var(--color-border-light);
+  background: #ffffff;
+  border: 1px solid var(--color-border-light, #EDEDED);
   border-radius: 14px;
-  padding: 2rem;
+  overflow: hidden;
+  padding: 0;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 
 .order-details-section .section-title {
@@ -239,7 +242,7 @@ body.woocommerce-order-received .content-area {
   color: var(--color-text-dark);
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid var(--color-border-light);
+  border-bottom: 1px solid #e5e7eb;
   font-family: var(--font-heading);
 }
 
@@ -250,8 +253,8 @@ body.woocommerce-order-received .content-area {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--brand-color);
-  color: var(--color-white);
+  background: #ffffff;
+  color: #374151;
   flex-shrink: 0;
 }
 
@@ -263,8 +266,9 @@ body.woocommerce-order-received .content-area {
 /* ORDER TABLE */
 .order-table-wrapper {
   overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid var(--color-border-light);
+  border: 0;
+  border-radius: 0;
+  background: #ffffff;
 }
 
 .woocommerce-table--order-details {
@@ -285,7 +289,7 @@ body.woocommerce-order-received .content-area {
   color: var(--color-text-dark);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 2px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .woocommerce-table--order-details tbody tr {
@@ -350,7 +354,7 @@ body.woocommerce-order-received .content-area {
 }
 
 .product-name-text a:hover {
-  color: var(--brand-color);
+  color: #6b7280;
 }
 
 .product-quantity {
@@ -405,10 +409,10 @@ body.woocommerce-order-received .content-area {
 .woocommerce-table--order-details tfoot tr:last-child td {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--brand-color);
+  color: #111111;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  border-top: 2px solid var(--color-border-light);
+  border-top: 1px solid var(--color-border-light);
 }
 
 /* CUSTOMER DETAILS SECTION */
@@ -420,11 +424,11 @@ body.woocommerce-order-received .content-area {
 }
 
 .woocommerce-customer-details {
-  background: var(--color-white);
-  border: 1px solid var(--color-border-light);
+  background: #F3F5FA;
+  border: 0;
   border-radius: 14px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 
 .woocommerce-customer-details h2,
@@ -434,7 +438,7 @@ body.woocommerce-order-received .content-area {
   color: var(--color-text-dark);
   margin: 0 0 1rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid #e5e7eb;
   font-family: var(--font-heading);
 }
 
@@ -489,8 +493,8 @@ body.woocommerce-order-received .content-area {
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: var(--brand-color);
-  color: var(--color-white);
+  background: #F3F5FA;
+  color: #111111;
   text-decoration: none;
   border-radius: 10px;
   font-weight: 600;
@@ -498,8 +502,8 @@ body.woocommerce-order-received .content-area {
 }
 
 .order-not-found .button:hover {
-  background: var(--brand-color-dark);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: #e5e7ea;
+  box-shadow: none;
 }
 
 /* RESPONSIVE */
@@ -533,7 +537,7 @@ body.woocommerce-order-received .content-area {
   }
 
   .order-details-section {
-    padding: 1.5rem;
+    padding: 0;
   }
 
   .order-details-section .section-title {
@@ -585,7 +589,7 @@ body.woocommerce-order-received .content-area {
   }
 
   .order-details-section {
-    padding: 1.25rem;
+    padding: 0;
     border-radius: 12px;
   }
 
@@ -596,4 +600,15 @@ body.woocommerce-order-received .content-area {
   .product-thumbnail {
     height: 120px;
   }
+}
+
+/* Discount in green (a saving), tax in red (a charge) */
+.woocommerce-table--order-details tfoot tr.order-totals-discount td,
+.woocommerce-table--order-details tfoot tr.order-totals-discount td * {
+  color: #16a34a !important;
+}
+
+.woocommerce-table--order-details tfoot tr.order-totals-tax td,
+.woocommerce-table--order-details tfoot tr.order-totals-tax td * {
+  color: #dc2626 !important;
 }

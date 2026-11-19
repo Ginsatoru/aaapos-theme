@@ -103,7 +103,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
 }
 
 .color-swatch:hover {
@@ -150,7 +150,7 @@
 /* Individual Size Button */
 .size-button {
     padding: 10px 20px;
-    border: 2px solid #e5e7eb;
+    border: 1px solid #e5e7eb;
     background: #fff;
     border-radius: 6px;
     cursor: pointer;

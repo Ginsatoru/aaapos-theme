@@ -157,11 +157,11 @@
 .woocommerce-checkout select {
   width: 100%;
   padding: 0.625rem 0.875rem;
-  border: 0.5px solid var(--color-gray-300);
-  border-radius: 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   font-size: 0.9375rem;
   transition: var(--transition);
-  background: var(--color-white);
+  background: #F3F5FA;
   color: #000000;
   min-height: 46px;
   height: 46px;
@@ -172,7 +172,17 @@
 .woocommerce-checkout textarea:focus,
 .woocommerce-checkout select:focus {
   outline: none;
-  border-color: var(--brand-color);
+  border-color: #374151;
+  background: var(--color-white);
+}
+
+/* Green tick on filled, valid fields */
+.woocommerce-checkout .form-row.woocommerce-validated.has-value input.input-text {
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23dcfce7'/%3E%3Cpath d='m7 12.5 3.2 3.2L17 9' fill='none' stroke='%2316a34a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 18px 18px;
 }
 
 .woocommerce-checkout input::placeholder,
@@ -267,14 +277,14 @@ border: 0.5px solid #D1D5DB;
 
 /* Hover state */
 .ship-different-checkbox:hover .custom-checkbox-box {
-  border-color: var(--brand-color);
-  background: rgba(var(--brand-color-rgb), 0.05);
+  border-color: #d1d5db;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Checked state */
 .ship-different-checkbox input.custom-checkbox:checked + .custom-checkbox-box {
-  background: var(--brand-color);
-  border-color: var(--brand-color);
+  background: #374151;
+  border-color: #374151;
 }
 
 .ship-different-checkbox input.custom-checkbox:checked + .custom-checkbox-box .checkmark {
@@ -284,7 +294,7 @@ border: 0.5px solid #D1D5DB;
 
 /* Focus state for accessibility */
 .ship-different-checkbox input.custom-checkbox:focus + .custom-checkbox-box {
-  outline: 2px solid var(--brand-color);
+  outline: 2px solid #374151;
   outline-offset: 2px;
 }
 
@@ -455,13 +465,13 @@ border: 0.5px solid #D1D5DB !important;
 }
 
 .woocommerce-shipping-methods li label:hover {
-  border-color: var(--brand-color) !important;
-  background: rgba(var(--brand-color-rgb), 0.03) !important;
+  border-color: #d1d5db !important;
+  background: rgba(0, 0, 0, 0.03) !important;
 }
 
 .woocommerce-shipping-methods li input[type="radio"]:checked + label {
-  border-color: var(--brand-color) !important;
-  background: rgba(var(--brand-color-rgb), 0.06) !important;
+  border-color: #374151 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
 }
 
 /* Custom radio button - IMPROVED VISIBILITY */
@@ -481,11 +491,11 @@ border: 0.5px solid #9CA3AF;
 }
 
 .woocommerce-shipping-methods li label:hover::before {
-  border-color: var(--brand-color);
+  border-color: #d1d5db;
 }
 
 .woocommerce-shipping-methods li input[type="radio"]:checked + label::before {
-  border-color: var(--brand-color);
+  border-color: #374151;
   border-width: 2.5px;
   background: var(--color-white);
 }
@@ -500,7 +510,7 @@ border: 0.5px solid #9CA3AF;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--brand-color);
+  background: #374151;
   box-shadow: 0 0 0 2px var(--color-white);
 }
 
@@ -543,7 +553,7 @@ border: 0.5px solid #9CA3AF;
 .woocommerce-form__label-for-checkbox input[type="checkbox"] {
   margin-top: 0.125rem;
   flex-shrink: 0;
-  accent-color: var(--brand-color);
+  accent-color: #374151;
   width: 16px;
   height: 16px;
 }
@@ -626,7 +636,7 @@ border: 0.5px solid var(--color-border);
 }
 
 .coupon-form-bottom input.input-text:focus {
-  border-color: var(--brand-color);
+  border-color: #374151;
   outline: none;
 }
 
@@ -637,7 +647,7 @@ border: 0.5px solid var(--color-border);
 
 .coupon-form-bottom button.coupon-apply-btn {
   padding: 0.625rem 1.5rem;
-  background: var(--color-primary);
+  background: #000000;
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -650,7 +660,7 @@ border: 0.5px solid var(--color-border);
 }
 
 .coupon-form-bottom button.coupon-apply-btn:hover {
-  background: var(--color-primary-hover, #0284c7);
+  background: #333333;
 }
 
 /* ==========================================================================
@@ -680,8 +690,8 @@ border: 0.5px solid #D1D5DB !important;
 }
 
 .wc_payment_methods li.wc_payment_method:hover {
-  border-color: var(--brand-color) !important;
-  background: rgba(var(--brand-color-rgb), 0.03) !important;
+  border-color: #d1d5db !important;
+  background: rgba(0, 0, 0, 0.03) !important;
 }
 
 /* Hide default radio button */
@@ -742,12 +752,12 @@ border: 0.5px solid #9CA3AF !important;
 
 /* Hover state for radio button */
 .wc_payment_methods li.wc_payment_method:hover > label::before {
-  border-color: var(--brand-color) !important;
+  border-color: #d1d5db !important;
 }
 
 /* Checked state - outer circle */
 .wc_payment_methods input[type="radio"].input-radio:checked + label::before {
-  border-color: var(--brand-color) !important;
+  border-color: #374151 !important;
   border-width: 2.5px !important;
   background: var(--color-white) !important;
 }
@@ -762,7 +772,7 @@ border: 0.5px solid #9CA3AF !important;
   width: 10px !important;
   height: 10px !important;
   border-radius: 50% !important;
-  background: var(--brand-color) !important;
+  background: #374151 !important;
   box-shadow: 0 0 0 2px var(--color-white) !important;
 }
 
@@ -783,8 +793,8 @@ border: 0.5px solid #9CA3AF !important;
 
 /* Checked payment method - highlight the entire card */
 .wc_payment_methods li.wc_payment_method:has(input[type="radio"]:checked) {
-  border-color: var(--brand-color) !important;
-  background: rgba(var(--brand-color-rgb), 0.06) !important;
+  border-color: #374151 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
 }
 
 /* Focus state for accessibility */
@@ -797,7 +807,7 @@ border: 0.5px solid #9CA3AF !important;
   padding: 1.25rem !important;
   margin: 0 !important;
   border-top: 1px solid var(--color-border-light) !important;
-  background: rgba(var(--brand-color-rgb), 0.02) !important;
+  background: rgba(0, 0, 0, 0.02) !important;
   border-radius: 0 0 10px 10px !important;
 }
 
@@ -847,13 +857,13 @@ border: 0.5px solid var(--color-gray-300) !important;
 
 /* Hover state */
 .wc_payment_methods .payment_box .__PrivateStripeElement:hover {
-  border-color: var(--color-primary) !important;
+  border-color: #d1d5db !important;
 }
 
 /* Focus state - NO BOX SHADOW */
 .wc_payment_methods .payment_box .__PrivateStripeElement:focus-within,
 .wc_payment_methods .payment_box .wc-stripe-upe-element:focus-within .__PrivateStripeElement {
-  border-color: var(--color-primary) !important;
+  border-color: #374151 !important;
   outline: none !important;
   box-shadow: none !important;
 }
@@ -918,7 +928,7 @@ border: 0.5px solid var(--color-gray-300) !important;
 
 /* Klarna specific messaging */
 .wc_payment_methods .payment_method_stripe_klarna .payment_box {
-  background: rgba(var(--brand-color-rgb), 0.03) !important;
+  background: rgba(0, 0, 0, 0.03) !important;
 }
 
 /* Remove any default WooCommerce/Stripe shadows */
@@ -931,7 +941,7 @@ border: 0.5px solid var(--color-gray-300) !important;
 
 /* Ensure clean focus states throughout */
 .wc_payment_methods .payment_box *:focus-visible {
-  outline: 2px solid var(--color-primary) !important;
+  outline: 2px solid #374151 !important;
   outline-offset: 2px !important;
   box-shadow: none !important;
 }

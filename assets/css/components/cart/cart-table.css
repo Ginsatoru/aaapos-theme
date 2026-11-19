@@ -17,7 +17,7 @@ body.woocommerce-cart table.shop_table.cart {
 
 /* Table Header - Primary Color Background with Light Border */
 body.woocommerce-cart table.shop_table.cart thead {
-  background: var(--color-primary);
+  background: #ffffff;
   /* FIX: border-radius removed from thead — it doesn't clip child <th> cells
      with border-collapse: separate, causing the thumbnail <th> to show its
      own rogue border-radius. Radius is now applied directly to the first
@@ -26,7 +26,7 @@ body.woocommerce-cart table.shop_table.cart thead {
 }
 
 body.woocommerce-cart table.shop_table.cart thead tr {
-  background: var(--color-primary);
+  background: #ffffff;
   border: none !important;
   border-bottom: none !important;
 }
@@ -35,7 +35,7 @@ body.woocommerce-cart table.shop_table.cart thead th {
   padding: 0.875rem 1.25rem;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--color-white);
+  color: #000000;
   text-align: left;
   text-transform: none;
   letter-spacing: 0;
@@ -136,8 +136,8 @@ body.woocommerce-cart table.shop_table.cart td.product-remove a.remove {
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-remove a.remove:hover {
-  background: var(--color-primary, #0ea5e9);
-  color: #ffffff;
+  background: #e5e7ea;
+  color: #000000;
 }
 
 /* ==========================================================================
@@ -164,7 +164,7 @@ body.woocommerce-cart table.shop_table.cart td.product-thumbnail img.attachment-
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-thumbnail a:hover img {
-  border-color: var(--color-primary, #0ea5e9);
+  border-color: #d1d5db;
 }
 
 /* ==========================================================================
@@ -181,7 +181,7 @@ body.woocommerce-cart table.shop_table.cart td.product-name a {
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-name a:hover {
-  color: var(--brand-color);
+  color: #6b7280;
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-name .wc-item-meta,
@@ -339,8 +339,8 @@ body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-
 
 body.woocommerce-cart table.shop_table.cart td.product-quantity button:hover,
 body.woocommerce-cart table.shop_table.cart td.product-quantity button.quantity-btn:hover {
-  background: var(--color-primary, #0ea5e9);
-  color: #FFFFFF;
+  background: #e5e7ea;
+  color: #000000;
 }
 
 body.woocommerce-cart table.shop_table.cart td.product-quantity button:active,

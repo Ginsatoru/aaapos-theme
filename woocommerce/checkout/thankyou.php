@@ -126,17 +126,6 @@ defined('ABSPATH') || exit;
 		<!-- ORDER DETAILS SECTION -->
 		<div class="order-details-section">
 			
-			<h3 class="section-title">
-				<span class="title-icon">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<circle cx="9" cy="21" r="1"></circle>
-						<circle cx="20" cy="21" r="1"></circle>
-						<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-					</svg>
-				</span>
-				<?php esc_html_e('Order details', 'woocommerce'); ?>
-			</h3>
-
 			<?php do_action('woocommerce_order_details_before_order_table', $order); ?>
 
 			<!-- ORDER TABLE -->
@@ -212,7 +201,7 @@ defined('ABSPATH') || exit;
 						<?php
 						foreach ($order->get_order_item_totals() as $key => $total):
 						?>
-							<tr>
+							<tr class="order-totals-<?php echo esc_attr($key); ?>">
 								<th scope="row"><?php echo esc_html($total['label']); ?></th>
 								<td><?php echo ('payment_method' === $key) ? esc_html($total['value']) : wp_kses_post($total['value']); ?></td>
 							</tr>

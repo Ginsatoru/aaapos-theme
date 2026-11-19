@@ -73,7 +73,7 @@
   background: #F3F5FA;
   color: #000000;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 0.625rem;
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   text-decoration: none;
@@ -86,8 +86,8 @@
 }
 
 .aaapos-payment-card__add:hover {
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: #e5e7ea;
+  color: #000000;
 }
 
 /* Body: holds the table or the empty state */

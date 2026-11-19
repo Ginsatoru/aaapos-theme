@@ -27,7 +27,16 @@ body.woocommerce-cart table.shop_table.cart td.actions .cart-actions-wrapper {
 body.woocommerce-cart table.shop_table.cart td.actions .coupon {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem;
+  padding: 4px;
+  border: 1px solid #d1d5db !important;
+  border-radius: 999px !important;
+  background: var(--color-white, #ffffff);
+  transition: border-color 0.2s ease;
+}
+
+body.woocommerce-cart table.shop_table.cart td.actions .coupon:focus-within {
+  border-color: #000000 !important;
 }
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon label {
@@ -35,11 +44,11 @@ body.woocommerce-cart table.shop_table.cart td.actions .coupon label {
 }
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon input[type="text"] {
-  min-width: 240px;
-  height: 44px;
-  padding: 0 1rem;
-  border: 2px solid var(--color-border-light, #EDEDED);
-  border-radius: 24px;
+  min-width: 220px;
+  height: 38px;
+  padding: 0 0.75rem 0 1rem;
+  border: 0;
+  border-radius: 999px;
   font-size: 0.875rem;
   transition: all 0.2s ease;
   background: var(--color-white, #ffffff);
@@ -52,17 +61,17 @@ body.woocommerce-cart table.shop_table.cart td.actions .coupon input[type="text"
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon input[type="text"]:focus {
   outline: none;
-  border-color: var(--brand-color, #224229);
+  box-shadow: none;
 }
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.button,
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coupon-btn {
-  height: 44px;
-  padding: 0 1.75rem;
-  background: var(--brand-color, #224229);
+  height: 38px;
+  padding: 0 1.5rem;
+  background: #000000;
   color: var(--color-white, #ffffff);
   border: none;
-  border-radius: 24px;
+  border-radius: 999px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -72,7 +81,7 @@ body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coup
 
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.button:hover,
 body.woocommerce-cart table.shop_table.cart td.actions .coupon button.apply-coupon-btn:hover {
-  background: var(--brand-color-hover, #0284c7);
+  background: #333333;
 }
 
 /* Right side actions - Compact */
@@ -91,7 +100,7 @@ body.woocommerce-cart table.shop_table.cart td.actions button.update-cart-btn {
 
 body.woocommerce-cart table.shop_table.cart td.actions button[name="update_cart"]:hover:not(:disabled),
 body.woocommerce-cart table.shop_table.cart td.actions button.update-cart-btn:hover:not(:disabled) {
-  background: var(--brand-color-hover, #0284c7);
+  background: #333333;
 }
 
 body.woocommerce-cart table.shop_table.cart td.actions button[name="update_cart"]:disabled,
@@ -115,7 +124,7 @@ body.woocommerce-cart form.woocommerce-cart-form.cart-updating::after {
   width: 36px;
   height: 36px;
   border: 3px solid var(--color-border-light, #EDEDED);
-  border-top-color: var(--brand-color, #224229);
+  border-top-color: #000000;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -133,9 +142,9 @@ body.woocommerce-cart .clear-cart-link {
   gap: 0.5rem;
   height: 44px;
   padding: 0 1.5rem;
-  background: transparent;
-  color: var(--brand-color);
-  border: 1px solid var(--brand-color);
+  background: #F3F5FA;
+  color: #000000;
+  border: 1px solid transparent;
   border-radius: 24px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -154,8 +163,8 @@ body.woocommerce-cart .clear-cart-link svg {
 }
 
 body.woocommerce-cart .clear-cart-link:hover {
-  background: var(--brand-color);
-  color: var(--color-white, #ffffff);
+  background: #e5e7ea;
+  color: #000000;
 }
 
 body.woocommerce-cart .clear-cart-link:active {
@@ -172,9 +181,10 @@ body.woocommerce-cart .cart-collaterals {
 
 body.woocommerce-cart .cart_totals {
   width: 100% !important;
-  background: var(--color-white, #ffffff);
-  border-radius: 12px;
-  border: 1px solid #E5E5E5;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.05);
   padding: 1.75rem;
 }
 
@@ -291,18 +301,18 @@ body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-amount
 body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-amount.amount,
 body.woocommerce-cart .cart_totals tr.tax-total td bdi,
 body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-currencySymbol {
-  color: #000000;
+  color: #dc2626;
   font-weight: 700 !important;
 }
 
-/* Show $0.00 tax in lighter gray BUT KEEP IT BOLD */
+/* Tax amount in red (a charge) */
 body.woocommerce-cart .cart_totals tr.tax-total td .woocommerce-Price-amount,
 body.woocommerce-cart .cart_totals tr.tax-rate td .woocommerce-Price-amount,
 body.woocommerce-cart .cart_totals tr.tax-total td .woocommerce-Price-amount *,
 body.woocommerce-cart .cart_totals tr.tax-rate td .woocommerce-Price-amount *,
 body.woocommerce-cart .cart_totals tr.tax-total td bdi,
 body.woocommerce-cart .cart_totals tr.tax-total td span.woocommerce-Price-currencySymbol {
-  color: var(--color-text-lighter, #ADB5BD) !important;
+  color: #dc2626 !important;
   font-weight: 700 !important;
 }
 
@@ -315,14 +325,14 @@ body.woocommerce-cart .cart_totals .cart-discount th {
 body.woocommerce-cart .cart_totals .cart-discount td,
 body.woocommerce-cart .cart_totals .cart-discount td span,
 body.woocommerce-cart .cart_totals .cart-discount td bdi {
-  color: #000000;
+  color: #16a34a;
   font-weight: 700 !important;
 }
 
-/* When no coupon applied - still pure black, matching the rest */
+/* Discount amount in green (a saving), with or without a coupon */
 body.woocommerce-cart .cart_totals .cart-discount.no-coupon td span,
 body.woocommerce-cart .cart_totals .cart-discount.no-coupon td .woocommerce-Price-amount {
-  color: #000000;
+  color: #16a34a;
 }
 
 /* ==========================================================================
@@ -385,7 +395,7 @@ body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button {
   width: 100%;
   min-height: 40px;
   padding: 0.5rem 1.25rem;
-  background: var(--brand-color, #224229);
+  background: #000000;
   color: var(--color-white, #ffffff);
   border: none;
   border-radius: 34px;
@@ -413,7 +423,7 @@ body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button::before {
 }
 
 body.woocommerce-cart .wc-proceed-to-checkout a.checkout-button:hover {
-  background: var(--brand-color-hover, #0284c7) !important;
+  background: #333333 !important;
 }
 
 /* ==========================================================================

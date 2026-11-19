@@ -118,6 +118,31 @@ body.woocommerce-cart #main.site-main form.woocommerce-cart-form {
   width: 100%;
 }
 
+/* Items sit in a white rounded card with a soft shadow, matching the Order Summary */
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form:has(table.shop_table.cart) {
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.05);
+  border-radius: 16px !important;
+  padding: 8px 20px !important;
+  box-sizing: border-box;
+}
+
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart,
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart thead,
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart thead tr,
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart tbody tr,
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart td.actions {
+  background: transparent !important;
+}
+
+/* Divider lines match the Order Summary lines */
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart tr,
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart th,
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form table.shop_table.cart td {
+  border-color: var(--color-border-light, #EDEDED) !important;
+}
+
+
 /* ==========================================================================
    EMPTY CART - CENTERED BREAKOUT (71% WIDTH)
    ========================================================================== */
@@ -319,4 +344,20 @@ body.woocommerce-cart .coupon input[type="text"].error {
 /* Add a subtle red border on empty coupon submission (optional) */
 body.woocommerce-cart .coupon input[type="text"]:invalid {
   border-color: #e74c3c;
+}
+
+/* A touch of colour: red for removing / charges, green for savings */
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form .clear-cart-link {
+  background: transparent !important;
+  color: #dc2626 !important;
+}
+
+body.woocommerce-cart #main.site-main form.woocommerce-cart-form .clear-cart-link:hover {
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
+}
+
+body.woocommerce-cart table.shop_table.cart td.product-remove a.remove:hover {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
 }

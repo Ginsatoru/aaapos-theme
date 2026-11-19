@@ -517,7 +517,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                                     else: ?>
                                         <li class="cart-dropdown-empty">
                                             <?php // Lazy: the dropdown is hidden until opened, so most visitors never download this ?>
-                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/sad.gif'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon" loading="lazy" decoding="async"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
+                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/sick.png'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon" loading="lazy" decoding="async"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

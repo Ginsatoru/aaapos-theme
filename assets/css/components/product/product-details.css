@@ -28,7 +28,7 @@
 }
 
 .single-product .posted_in a {
-  color: var(--color-primary, var(--brand-color)) !important;
+  color: var(--brand-color) !important;
   text-decoration: none !important;
 }
 
@@ -85,7 +85,7 @@
 .single-product .price .aaapos-sale-percentage {
   display: inline-flex !important;
   align-items: center !important;
-  background: var(--color-primary, #0ea5e9) !important;
+  background: #000000 !important;
   color: #ffffff !important;
   font-size: 0.75rem !important;
   font-weight: 700 !important;
@@ -136,7 +136,7 @@
 }
 
 .single-product .woocommerce-review-link:hover {
-  color: var(--color-primary, var(--brand-color, #0ea5e9)) !important;
+  color: #000000 !important;
   text-decoration: underline !important;
 }
 
@@ -222,7 +222,7 @@
   width: 32px !important;
   height: 32px !important;
   border-radius: 50% !important;
-  border: 2px solid transparent !important;
+  border: 1px solid transparent !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   position: relative !important;
@@ -256,7 +256,7 @@ div.color-swatch.selected:hover,
 .variations .color-swatch.selected,
 div.color-swatch.selected,
 .color-swatches div.color-swatch.selected {
-  border: 2px solid rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(0, 0, 0, 0.6) !important;
   box-shadow: none !important;
   transform: scale(1.05) !important;
 }
@@ -294,12 +294,12 @@ div.color-swatch.selected,
 }
 
 .single-product .size-button:hover {
-  background: var(--color-primary, var(--brand-color)) !important;
-  color: var(--color-white, #ffffff) !important;
+  background: var(--color-bg-hover) !important;
+  color: #000000 !important;
 }
 
 .single-product .size-button.selected {
-  background: var(--color-primary, var(--brand-color)) !important;
+  background: #000000 !important;
   color: var(--color-white, #ffffff) !important;
 }
 
@@ -312,7 +312,7 @@ div.color-swatch.selected,
 /* Size Chart Link */
 .single-product .size-chart-link {
   font-size: 0.875rem !important;
-  color: var(--color-primary, var(--brand-color)) !important;
+  color: #000000 !important;
   text-decoration: underline !important;
   cursor: pointer !important;
   font-weight: 500 !important;
@@ -322,7 +322,7 @@ div.color-swatch.selected,
 .single-product .variations select {
   width: 100% !important;
   padding: 0.875rem 2.5rem 0.875rem 1rem !important;
-  border: 2px solid var(--color-border, #e5e7eb) !important;
+  border: 1px solid var(--color-border, #e5e7eb) !important;
   border-radius: 10px !important;
   font-size: 0.9375rem !important;
   font-weight: 500 !important;
@@ -338,13 +338,13 @@ div.color-swatch.selected,
 }
 
 .single-product .variations select:hover {
-  border-color: var(--color-primary, var(--brand-color)) !important;
+  border-color: #000000 !important;
 }
 
 .single-product .variations select:focus {
-  border-color: var(--color-primary, var(--brand-color)) !important;
+  border-color: #000000 !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, var(--brand-color-rgb)), 0.1) !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* === RESET VARIATIONS (CLEAR BUTTON) - FIXED WIDTH === */
@@ -373,9 +373,9 @@ div.color-swatch.selected,
 .single-product .reset_variations:hover,
 .single-product .variations .value .reset_variations:hover,
 .single-product a.reset_variations:hover {
-  color: var(--color-primary, var(--brand-color)) !important;
-  border-color: var(--color-primary, var(--brand-color)) !important;
-  background: rgba(var(--color-primary-rgb, var(--brand-color-rgb)), 0.05) !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 
 /* ============================================

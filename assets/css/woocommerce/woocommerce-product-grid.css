@@ -209,8 +209,14 @@
 
 .woocommerce ul.products li.product .wbr-card__badge--sale,
 .woocommerce-page ul.products li.product .wbr-card__badge--sale {
-  background: var(--color-primary, #0ea5e9) !important;
+  background: rgba(40, 40, 40, 0.45) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   color: #fff !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  padding: 5px 12px !important;
 }
 
 /* === DOTS === */
@@ -318,7 +324,7 @@
 
 .woocommerce ul.products li.product .wbr-card__price del,
 .woocommerce-page ul.products li.product .wbr-card__price del {
-  color: #aaa !important;
+  color: #4b5563 !important;
   font-weight: 400 !important;
   font-size: 0.65rem !important;
   line-height: 1 !important;
@@ -327,7 +333,7 @@
 
 .woocommerce ul.products li.product .wbr-card__price del .woocommerce-Price-amount,
 .woocommerce-page ul.products li.product .wbr-card__price del .woocommerce-Price-amount {
-  color: #aaa !important;
+  color: #4b5563 !important;
   text-decoration: none !important;
 }
 
@@ -350,7 +356,7 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 5px !important;
-  background: var(--color-primary, #0ea5e9) !important;
+  background: #000000 !important;
   color: #fff !important;
   font-size: 0.75rem !important;
   font-weight: 700 !important;
@@ -380,7 +386,7 @@
 .woocommerce ul.products li.product .wbr-card__btn:focus,
 .woocommerce-page ul.products li.product .wbr-card__btn:hover,
 .woocommerce-page ul.products li.product .wbr-card__btn:focus {
-  background: var(--color-primary-hover, #0284c7) !important;
+  background: #333333 !important;
   color: #fff !important;
   transform: none !important;
   box-shadow: none !important;

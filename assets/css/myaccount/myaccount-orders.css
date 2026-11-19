@@ -127,8 +127,8 @@
 }
 
 .woocommerce-orders-table__cell-order-number a:hover {
-  color: var(--color-primary-dark) !important;
-  text-decoration: underline !important;
+  color: #000000 !important;
+  text-decoration: none !important;
 }
 
 /* Order status badge */
@@ -198,7 +198,7 @@
   background: #F3F5FA !important;
   color: #000000 !important;
   border: none !important;
-  border-radius: var(--border-radius) !important;
+  border-radius: 0.625rem !important;
   font-size: var(--text-sm) !important;
   font-weight: var(--font-semibold) !important;
   text-decoration: none !important;
@@ -207,8 +207,17 @@
 }
 
 .woocommerce-orders-table__cell-order-actions a:hover {
-  background: var(--color-primary) !important;
-  color: var(--color-white) !important;
+  background: #e5e7ea !important;
+  color: #000000 !important;
+}
+
+/* Keep the button visible on the grey hovered row */
+.woocommerce-orders-table tbody tr:hover .woocommerce-orders-table__cell-order-actions a {
+  background: #ffffff !important;
+}
+
+.woocommerce-orders-table tbody tr:hover .woocommerce-orders-table__cell-order-actions a:hover {
+  background: #e5e7ea !important;
 }
 
 /* Buttons - flat pill matching dashboard-action-card__btn */
@@ -221,7 +230,7 @@
   background: #F3F5FA;
   color: #000000;
   border: none;
-  border-radius: var(--border-radius-lg);
+  border-radius: 0.625rem;
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   text-decoration: none;
@@ -233,8 +242,28 @@
 
 .woocommerce-orders-table .woocommerce-button:hover,
 .woocommerce-Button:hover {
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: #e5e7ea;
+  color: #000000;
+}
+
+/* Orders pagination (Previous / Next) */
+.woocommerce-MyAccount-content .woocommerce-pagination .woocommerce-button,
+.woocommerce-MyAccount-content .woocommerce-pagination .woocommerce-button:focus {
+  background: #F3F5FA !important;
+  color: #000000 !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+.woocommerce-MyAccount-content .woocommerce-pagination .woocommerce-button:hover {
+  background: #e5e7ea !important;
+}
+
+.woocommerce-MyAccount-content .woocommerce-pagination .woocommerce-button:focus-visible {
+  outline: 2px solid #000000 !important;
+  outline-offset: 2px;
 }
 
 /* Order Status (legacy) */
@@ -316,7 +345,7 @@
   justify-content: center;
   height: 2.5rem;
   padding: 0 1.25rem;
-  background: var(--color-primary, #0ea5e9);
+  background: #000000;
   color: var(--color-white);
   font-size: 0.875rem;
   font-weight: 600;
@@ -328,7 +357,7 @@
 }
 
 .aaapos-empty-orders__btn:hover {
-  background: var(--color-primary-hover, #0284c7);
+  background: #333333;
   color: var(--color-white);
 }
 
@@ -385,7 +414,7 @@
   justify-content: center;
   height: 2.5rem;
   padding: 0 1.25rem;
-  background: var(--color-primary, #0ea5e9);
+  background: #000000;
   color: var(--color-white);
   font-size: 0.875rem;
   font-weight: 600;
@@ -398,7 +427,7 @@
 
 .woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.button:hover,
 .woocommerce-MyAccount-content .woocommerce-info:has(.aaapos-notice-icon) a.woocommerce-Button:hover {
-  background: var(--color-primary-hover, #0284c7);
+  background: #333333;
   color: var(--color-white);
 }
 
@@ -497,7 +526,7 @@
 }
 
 .woocommerce-table--order-details .woocommerce-table__product-name a:hover {
-  color: var(--color-primary-dark) !important;
+  color: #000000 !important;
   text-decoration: underline !important;
 }
 
@@ -636,7 +665,7 @@
   justify-content: center !important;
   height: 2.5rem !important;
   padding: 0 1.25rem !important;
-  background: var(--color-primary, #0ea5e9) !important;
+  background: #000000 !important;
   color: var(--color-white) !important;
   font-size: 0.875rem !important;
   font-weight: 600 !important;
@@ -648,6 +677,6 @@
 }
 
 .woocommerce-order-details .order-again .button:hover {
-  background: var(--color-primary-hover, #0284c7) !important;
+  background: #333333 !important;
   color: var(--color-white) !important;
 }

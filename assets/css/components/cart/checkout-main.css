@@ -80,10 +80,11 @@ body.woocommerce-checkout #main.site-main article .entry-title {
 /* CHECKOUT SECTIONS */
 .checkout-section {
   background: var(--color-white);
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
-  border: 1px solid #E5E5E5;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .checkout-section:last-child {
@@ -110,17 +111,17 @@ body.woocommerce-checkout .section-title,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--color-primary, #0ea5e9);
-  color: #ffffff;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #F3F5FA;
+  color: #374151;
   flex-shrink: 0;
 }
 
 .title-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 /* LEFT COLUMN */
@@ -139,9 +140,9 @@ body.woocommerce-checkout .section-title,
 
 .woocommerce-checkout .select2-container .select2-selection--single {
   height: 46px !important;
-  border: 0.5px solid var(--color-gray-300) !important;
-  border-radius: 12px !important;
-  background: var(--color-white) !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  background: #F3F5FA !important;
   transition: border-color 0.2s ease !important;
   padding: 0 !important;
 }
@@ -172,13 +173,14 @@ body.woocommerce-checkout .section-title,
 /* Focus State */
 .woocommerce-checkout .select2-container--focus .select2-selection--single,
 .woocommerce-checkout .select2-container--open .select2-selection--single {
-  border-color: var(--brand-color) !important;
+  border-color: #374151 !important;
+  background: var(--color-white) !important;
   outline: none !important;
 }
 
 /* Hover State */
 .woocommerce-checkout .select2-container .select2-selection--single:hover {
-  border-color: var(--brand-color) !important;
+  border-color: #d1d5db !important;
 }
 
 /* Dropdown Menu */
@@ -188,7 +190,7 @@ body.woocommerce-checkout .section-title,
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: var(--brand-color) !important;
+  background-color: #374151 !important;
   color: #ffffff;
 }
 
@@ -201,7 +203,7 @@ body.woocommerce-checkout .section-title,
 }
 
 .select2-search--dropdown .select2-search__field:focus {
-  border-color: var(--brand-color) !important;
+  border-color: #374151 !important;
   outline: none !important;
 }
 
@@ -215,7 +217,7 @@ body.woocommerce-checkout .section-title,
 
 /* Remove the red underline/border that was showing */
 .woocommerce-checkout .select2-container--default.select2-container--open .select2-selection--single {
-  border-color: var(--brand-color) !important;
+  border-color: #374151 !important;
 }
 
 /* Merge the search field into the same visual spot as the closed box,
@@ -242,7 +244,7 @@ body.woocommerce-checkout .section-title,
   height: 46px !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  border: 0.5px solid #000000 !important;
+  border: 0.5px solid #374151 !important;
   border-radius: 12px !important;
   padding: 0 0.875rem !important;
   margin: 0 !important;
@@ -370,7 +372,13 @@ body.woocommerce-checkout .blockUI {
   }
   
   .title-icon {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
+  .title-icon svg {
+    width: 18px;
+    height: 18px;
   }
 }

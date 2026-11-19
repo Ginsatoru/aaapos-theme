@@ -423,6 +423,14 @@
   transition: none !important;
 }
 
+.cart-dropdown-actions .btn-primary:focus,
+.cart-dropdown-actions .btn-primary:focus-visible,
+.cart-dropdown-actions .btn-secondary:focus,
+.cart-dropdown-actions .btn-secondary:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 /* Scrollbar styling for cart items */
 .cart-dropdown-items::-webkit-scrollbar {
   width: 6px;

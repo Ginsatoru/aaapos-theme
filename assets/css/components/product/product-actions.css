@@ -121,7 +121,7 @@
 .single-product .quantity-wrapper input.qty:focus {
   outline: none !important;
   box-shadow: none !important;
-  border-color: var(--color-primary, var(--brand-color)) !important;
+  border-color: #000000 !important;
 }
 
 /* Plus Button - ROUNDED STYLE */
@@ -147,7 +147,7 @@
 /* Button Hover States - UPDATED TO PRIMARY COLOR */
 .single-product .quantity-wrapper button.minus:hover,
 .single-product .quantity-wrapper button.plus:hover {
-  background: var(--color-primary, var(--brand-color)) !important;
+  background: #000000 !important;
   box-shadow: none !important;
   color: var(--color-white, #ffffff) !important;
 }
@@ -162,7 +162,7 @@
   max-width: 240px !important;
   height: 40px !important;
   padding: 0 1.5rem !important;
-  background: var(--color-primary, var(--brand-color)) !important;
+  background: #000000 !important;
   color: var(--color-white, #ffffff) !important;
   border: none !important;
   border-radius: 50px !important;
@@ -314,8 +314,8 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
   height: 54px !important;
   padding: 0 2rem !important;
   background: transparent !important;
-  color: var(--color-primary, var(--brand-color)) !important;
-  border: 2px solid var(--color-primary, var(--brand-color)) !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
   border-radius: 10px !important;
   font-size: 1rem !important;
   font-weight: 700 !important;
@@ -329,7 +329,7 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
 }
 
 .single-product .buy-now-button:hover {
-  background: rgba(var(--brand-color-rgb, 14, 165, 233), 0.1) !important;
+  background: rgba(0, 0, 0, 0.1) !important;
 }
 
 /* ============================================
@@ -361,7 +361,7 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
 .single-product .delivery-item svg {
   width: 20px !important;
   height: 20px !important;
-  color: var(--color-primary, var(--brand-color)) !important;
+  color: #000000 !important;
   flex-shrink: 0 !important;
 }
 
@@ -433,15 +433,17 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
 }
 
 .single-product .product_meta a {
-  color: var(--color-primary, var(--brand-color)) !important;
+  color: var(--brand-color) !important;
   text-decoration: none !important;
+  border-bottom: 0 !important;
+  background-image: none !important;
   font-weight: 500 !important;
   transition: color 0.2s ease !important;
 }
 
 .single-product .product_meta a:hover {
-  color: var(--color-primary-hover, var(--brand-color-hover)) !important;
-  text-decoration: underline !important;
+  color: var(--brand-color-hover) !important;
+  text-decoration: none !important;
 }
 
 /* === STOCK STATUS IN PRODUCT META === */
@@ -471,7 +473,7 @@ body.single-product .woocommerce-variation-add-to-cart button.single_add_to_cart
 
 .single-product .product_meta .stock.in-stock {
   background: transparent !important;
-  color: var(--color-primary, var(--brand-color)) !important;
+  color: #000000 !important;
 }
 
 .single-product .product_meta .stock.out-of-stock {

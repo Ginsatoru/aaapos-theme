@@ -15,6 +15,7 @@
  * @var int    $current_max_price
  * @var int    $max_product_price
  * @var bool   $has_active_filters
+ * @var array  $filter_groups  From aaapos_get_filter_groups() (inc/shop-filters.php)
  * @var string $raw_search_query  Optional - only set on search.php.
  *             When present, hidden s/post_type fields are added to the
  *             Filters form so sort/price submits don't lose the search term.
@@ -30,7 +31,7 @@ defined('ABSPATH') || exit;
 // them as top-level variables.
 global $shop_search_url, $current_archive_url, $clear_filters_url,
     $current_orderby, $current_min_price, $current_max_price,
-    $max_product_price, $has_active_filters, $raw_search_query;
+    $max_product_price, $has_active_filters, $raw_search_query, $filter_groups;
 ?>
 <div class="shop-toolbar">
 
@@ -115,6 +116,26 @@ global $shop_search_url, $current_archive_url, $clear_filters_url,
                                 step="5" />
                         </div>
                     </div>
+
+                    <!-- Dynamic filters: attributes, brand, tags, availability, rating -->
+                    <?php foreach ((array) $filter_groups as $group) :
+                        $is_multi = $group['type'] === 'checkbox' && $group['key'] !== 'f_sale';
+                        $options  = $group['type'] === 'radio' ? ['' => __('Any', 'aaapos-prime')] + $group['options'] : $group['options'];
+                    ?>
+                    <div class="shop-filter__group">
+                        <span class="shop-filter__label"><?php echo esc_html($group['label']); ?></span>
+                        <div class="shop-filter__chips">
+                            <?php foreach ($options as $value => $label) :
+                                $is_checked = $group['selected'] ? in_array((string) $value, $group['selected'], true) : ($value === '');
+                            ?>
+                                <label class="shop-filter__chip">
+                                    <input type="<?php echo esc_attr($group['type']); ?>" name="<?php echo esc_attr($group['key'] . ($is_multi ? '[]' : '')); ?>" value="<?php echo esc_attr($value); ?>" <?php checked($is_checked); ?>>
+                                    <span><?php echo esc_html($label); ?></span>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
 
                     <!-- Sort -->
                     <div class="shop-filter__group">

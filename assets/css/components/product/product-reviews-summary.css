@@ -160,7 +160,7 @@
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    border: 2px solid #e5e7eb;
+    border: 1px solid #e5e7eb;
 }
 
 /* Comment text area */

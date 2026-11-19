@@ -135,12 +135,12 @@
 
 .flex-control-thumbs li:hover img {
     opacity: 1 !important;
-    border-color: var(--color-primary, #0ea5e9) !important;
+    border-color: #000000 !important;
 }
 
 .flex-control-thumbs li img.flex-active {
     opacity: 1 !important;
-    border-color: var(--color-primary, #0ea5e9) !important;
+    border-color: #000000 !important;
     box-shadow: 0 0 0 0.5px rgba(0, 113, 161, 0.15) !important;
 }
 

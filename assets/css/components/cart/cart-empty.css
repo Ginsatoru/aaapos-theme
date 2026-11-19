@@ -126,7 +126,7 @@ body.woocommerce-cart .cart-empty-button {
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2.5rem;
-  background: var(--color-primary, #224229);
+  background: #000000;
   color: var(--color-white, #ffffff);
   border-radius: 30px;
   text-decoration: none;
@@ -138,12 +138,12 @@ body.woocommerce-cart .cart-empty-button {
 }
 
 body.woocommerce-cart .cart-empty-button:hover {
-  background: var(--color-primary-hover, #0284c7);
+  background: #333333;
   color: var(--color-white, #ffffff);
 }
 
 body.woocommerce-cart .cart-empty-button:active {
-  background: var(--color-primary-dark, #0369a1);
+  background: #000000;
 }
 
 body.woocommerce-cart .cart-empty-button svg {
@@ -282,7 +282,7 @@ body.woocommerce-cart .cart-empty-recommended__header {
 
 body.woocommerce-cart .cart-empty-recommended__badge {
   display: inline-block;
-  color: var(--brand-color, #224229);
+  color: #000000;
   font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;

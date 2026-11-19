@@ -579,30 +579,54 @@
             }
         });
 
-        // Add loading state to place order button
+        // Place order: delivery truck animation
+        // Based on github.com/shafiei/truck-order-animation
+        var TRUCK_MS = 4200;
+        var truckStart = 0;
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function startTruck($button) {
+            if (reduceMotion || !$button.length) return;
+            if (!$button.find('.po-default').length) {
+                $button.wrapInner('<span class="po-default"></span>');
+                $button.append(
+                    '<span class="po-success">Order placed<svg viewBox="0 0 12 10"><polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span>' +
+                    '<div class="po-box"></div>' +
+                    '<div class="po-truck"><div class="po-back"></div><div class="po-front"><div class="po-window"></div></div>' +
+                    '<div class="po-light top"></div><div class="po-light bottom"></div></div>' +
+                    '<div class="po-lines"></div>'
+                );
+            }
+            $button[0].style.setProperty('--po-box-x', ($button.outerWidth() - 128) + 'px');
+            $button.removeClass('po-animate');
+            void $button[0].offsetWidth;
+            $button.addClass('po-animate');
+            truckStart = Date.now();
+        }
+
         $('form.checkout').on('submit', function(e) {
-            // Don't interfere with place order submission
-            if (!$(e.target).hasClass('coupon-form-bottom')) {
-                const $button = $('#place_order');
-                
-                if (!$button.hasClass('processing')) {
-                    $button.addClass('processing');
-                    $button.prop('disabled', true);
-                    
-                    // Add spinner
-                    if (!$button.find('.spinner').length) {
-                        $button.append('<span class="spinner" style="margin-left: 8px; display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite;"></span>');
-                    }
-                }
+            if ($(e.target).hasClass('coupon-form-bottom')) return;
+            const $button = $('#place_order');
+            if (!$button.hasClass('processing')) {
+                $button.addClass('processing').prop('disabled', true);
+                startTruck($button);
             }
         });
 
-        // Remove loading state if checkout fails
+        // Let the truck finish its trip before going to the thank you page
+        $('form.checkout').on('checkout_place_order_success', function(e, result) {
+            if (!truckStart || !result || !result.redirect) return;
+            const wait = TRUCK_MS - (Date.now() - truckStart);
+            if (wait <= 0) return;
+            const target = result.redirect;
+            result.redirect = 'javascript:void(0)';
+            setTimeout(function() { window.location = target; }, wait);
+        });
+
+        // Reset the button if checkout fails
         $(document.body).on('checkout_error', function() {
-            const $button = $('#place_order');
-            $button.removeClass('processing');
-            $button.prop('disabled', false);
-            $button.find('.spinner').remove();
+            $('#place_order').removeClass('processing po-animate').prop('disabled', false);
+            truckStart = 0;
         });
 
         // Field validation feedback
@@ -619,6 +643,14 @@
             } else if ($field.val()) {
                 $parent.addClass('woocommerce-validated');
             }
+        });
+
+        // Mark filled fields so the green tick only shows on fields with a value
+        $('form.checkout').on('input change blur', 'input.input-text, select, textarea', function() {
+            $(this).closest('.form-row').toggleClass('has-value', $.trim($(this).val() || '') !== '');
+        });
+        $('form.checkout').find('input.input-text, select, textarea').each(function() {
+            $(this).closest('.form-row').toggleClass('has-value', $.trim($(this).val() || '') !== '');
         });
 
         // Update order review on field changes (for shipping calculations)

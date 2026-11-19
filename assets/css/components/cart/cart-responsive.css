@@ -358,7 +358,7 @@ body.woocommerce-cart .blockUI.blockOverlay::before {
   body.woocommerce-cart table.shop_table.cart td.product-subtotal {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    border-top: 2px solid #EDEDED;
+    border-top: 1px solid #EDEDED;
     margin-top: 0.75rem;
     font-size: 1.25rem;
     font-weight: 700;

@@ -716,7 +716,7 @@ button.search-submit,
   .btn-login,
   .btn-register,
   .btn-header-cta {
-    border-width: 2px;
+    border-width: 1px;
   }
 }
 

@@ -39,24 +39,34 @@
   color: #000000 !important;
   text-decoration: none !important;
   border-radius: 50px !important;
-  transition: all 0.2s ease !important;
+  transition: background-color 0.3s ease, color 0.3s ease !important;
   background: transparent !important;
   border: none !important;
 }
 
 .single-product .woocommerce-tabs .tabs li a:hover {
-  color: #ffffff !important;
-  background: var(--color-primary, #0ea5e9) !important;
+  color: #000000 !important;
+  background: var(--color-bg-hover) !important;
 }
 
 .single-product .woocommerce-tabs .tabs li.active a {
   color: #ffffff !important;
-  background: var(--color-primary, #0ea5e9) !important;
+  background: #000000 !important;
   border: none !important;
+}
+
+@keyframes aaapos-tab-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .single-product .woocommerce-tabs .panel { animation: none; }
 }
 
 /* === TAB PANELS === */
 .single-product .woocommerce-tabs .panel {
+  animation: aaapos-tab-in 0.35s ease both;
   padding: 1.5rem !important;
   padding-bottom: 1rem !important; /* REDUCED: Less padding at bottom */
   background: #f5f5f5 !important;
@@ -155,7 +165,7 @@
   }
 
   .single-product .woocommerce-tabs .tabs li.active a {
-    background: var(--color-primary, #0ea5e9) !important;
+    background: #000000 !important;
     color: #ffffff !important;
   }
 

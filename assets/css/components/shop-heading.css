@@ -117,7 +117,7 @@
 }
 
 .shop-filter__input:focus {
-    box-shadow: 0 0 0 0.5px var(--brand-color, #0ea5e9);
+    box-shadow: 0 0 0 0.5px #d1d5db;
 }
 
 .shop-filter__search-btn {
@@ -135,8 +135,8 @@
     line-height: 1;
     border: none;
     border-radius: 999px;
-    background: var(--brand-color, #0ea5e9);
-    color: #fff;
+    background: #000000;
+    color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -148,13 +148,13 @@
 }
 
 .shop-filter__search-btn svg {
-    width: 14px;
-    height: 14px;
+    width: 17px;
+    height: 17px;
     flex-shrink: 0;
 }
 
 .shop-filter__search-btn:hover {
-    background: var(--brand-color-hover, #0284c7);
+    background: #333333;
 }
 
 /* ── Filter toggle button ── */
@@ -169,8 +169,8 @@
     gap: 6px;
     height: 40px;
     padding: 0 16px;
-    background: var(--brand-color, #0ea5e9);
-    color: #fff;
+    background: #000000;
+    color: #ffffff;
     font-size: 0.78rem;
     font-weight: 600;
     border: none;
@@ -189,9 +189,13 @@
 }
 
 .shop-filter__toggle:hover,
-.shop-filter__toggle[aria-expanded="true"],
+.shop-filter__toggle[aria-expanded="true"] {
+    background: #333333;
+    color: #ffffff;
+}
+
 .shop-filter__toggle.has-filters {
-    background: var(--brand-color-hover, #0284c7);
+    background: #000000;
     color: #fff;
 }
 
@@ -202,7 +206,7 @@
     right: 0;
     width: 320px;
     background: #fff;
-    border: 1.5px solid #e3e3e3;
+    border: 1px solid #e3e3e3;
     border-radius: 18px;
     padding: 22px;
     z-index: 9999;
@@ -222,6 +226,64 @@
     gap: 5px;
 }
 
+.shop-filter__panel {
+    max-height: min(70vh, 640px);
+    overflow-y: auto;
+}
+
+#aaapos-shop-filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.shop-filter__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+    max-height: 132px;
+    overflow-y: auto;
+}
+
+.shop-filter__chip {
+    position: relative;
+    cursor: pointer;
+}
+
+.shop-filter__chip input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.shop-filter__chip span {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-bg-hover);
+    color: #111;
+    font-size: 0.78rem;
+    line-height: 1.2;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.shop-filter__chip:hover span {
+    background: #e5e7ea;
+}
+
+.shop-filter__chip input:checked + span {
+    background: #000000;
+    color: #ffffff;
+}
+
+.shop-filter__chip input:focus-visible + span {
+    outline: 2px solid #000000;
+    outline-offset: 2px;
+}
+
 .shop-filter__label {
     font-size: 0.68rem;
     font-weight: 700;
@@ -238,7 +300,7 @@
     width: 100%;
     height: 38px;
     padding: 0 34px 0 14px;
-    border: 1.5px solid #d7d7d7;
+    border: 1px solid #d7d7d7;
     border-radius: 999px;
     font-size: 0.8rem;
     color: #111;
@@ -252,8 +314,57 @@
 }
 
 .shop-filter__select:focus {
-    border-color: var(--brand-color, #0ea5e9);
+    border-color: #000000;
     background: #fff;
+}
+
+/* Styled option list (Chrome/Edge 135+; other browsers keep the native list) */
+@supports (appearance: base-select) {
+    .shop-filter__select,
+    .shop-filter__select::picker(select) {
+        appearance: base-select;
+    }
+
+    .shop-filter__select {
+        display: flex;
+        align-items: center;
+    }
+
+    .shop-filter__select::picker-icon {
+        display: none;
+    }
+
+    .shop-filter__select::picker(select) {
+        margin-top: 6px;
+        padding: 6px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .shop-filter__select option {
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: #111;
+        cursor: pointer;
+    }
+
+    .shop-filter__select option::checkmark {
+        display: none;
+    }
+
+    .shop-filter__select option:hover,
+    .shop-filter__select option:focus-visible {
+        background: var(--color-bg-hover);
+        outline: none;
+    }
+
+    .shop-filter__select option:checked {
+        background: #000000;
+        color: #ffffff;
+    }
 }
 
 .shop-filter__chevron {
@@ -295,7 +406,7 @@
 .shop-filter__range-fill {
     position: absolute;
     height: 100%;
-    background: var(--brand-color, #0ea5e9);
+    background: #000000;
     border-radius: 999px;
 }
 
@@ -316,8 +427,8 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--brand-color, #0ea5e9);
-    border: 2px solid #fff;
+    background: #000000;
+    border: 1px solid #fff;
     cursor: pointer;
     pointer-events: all;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -327,8 +438,8 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--brand-color, #0ea5e9);
-    border: 2px solid #fff;
+    background: #000000;
+    border: 1px solid #fff;
     cursor: pointer;
     pointer-events: all;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -346,7 +457,7 @@
 .shop-filter__btn {
     flex: 1;
     height: 38px;
-    background: var(--brand-color, #0ea5e9);
+    background: #000000;
     color: #fff;
     font-size: 0.78rem;
     font-weight: 700;
@@ -368,7 +479,7 @@
 }
 
 .shop-filter__btn:hover {
-    background: var(--brand-color-hover, #0284c7);
+    background: #000000;
 }
 
 .shop-filter__clear {

@@ -81,7 +81,7 @@
 }
 
 .dashboard-welcome-logout:hover span {
-  color: var(--brand-color-hover, var(--color-primary));
+  color: #000000;
 }
 
 /* ===================================
@@ -159,8 +159,8 @@
 }
 
 .dashboard-action-card__btn:hover {
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: #e5e7ea;
+  color: #000000;
 }
 
 /* ===================================
@@ -189,7 +189,7 @@
 }
 
 .dashboard-stat-card:hover {
-  border-color: var(--color-primary);
+  border-color: #d1d5db;
 }
 
 .dashboard-stat-badge {

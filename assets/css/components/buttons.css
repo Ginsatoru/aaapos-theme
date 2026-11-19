@@ -455,7 +455,7 @@
 /* Checkout & Place Order buttons */
 .wc-proceed-to-checkout .checkout-button,
 #place_order {
-  background: var(--brand-color) !important; /* Solid color */
+  background: #000000 !important;
   color: var(--color-white) !important;
   font-size: var(--text-lg) !important;
   padding: var(--space-4) var(--space-8) !important;
@@ -463,7 +463,7 @@
 
 .wc-proceed-to-checkout .checkout-button:hover,
 #place_order:hover {
-  background: var(--brand-color-hover) !important; /* Solid hover color */
+  background: #333333 !important;
 }
 
 /* ==========================================================================

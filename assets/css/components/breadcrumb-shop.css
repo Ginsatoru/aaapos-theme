@@ -153,12 +153,13 @@ body.woocommerce-cart .woocommerce > * {
     height: 30px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: var(--brand-color, var(--color-primary, #0ea5e9));
+    background: #000000;
 }
 
 .woocommerce-breadcrumb__icon svg {
     width: 19px;
     height: 19px;
+    stroke: #ffffff;
 }
 
 /* ===================================
@@ -175,11 +176,11 @@ body.woocommerce-cart .woocommerce > * {
 }
 
 .woocommerce-breadcrumb a:hover {
-    color: var(--brand-color, var(--color-primary, #0ea5e9));
+    color: #000000;
 }
 
 .woocommerce-breadcrumb .breadcrumb-current {
-    color: var(--brand-color, var(--color-primary, #0ea5e9));
+    color: #000000;
     font-weight: 800;
 }
 

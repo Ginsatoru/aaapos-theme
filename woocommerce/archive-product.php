@@ -40,12 +40,15 @@ $current_max_price = isset($_GET['max_price']) ? (int) $_GET['max_price'] : $max
 if ($current_max_price <= 0 || $current_max_price > $max_product_price) {
     $current_max_price = $max_product_price;
 }
-$has_active_filters = $current_orderby || $current_min_price > 0 || $current_max_price < $max_product_price;
+$has_active_filters = $current_orderby || $current_min_price > 0 || $current_max_price < $max_product_price
+    || (function_exists('aaapos_has_custom_filters') && aaapos_has_custom_filters());
+$filter_groups = function_exists('aaapos_get_filter_groups') ? aaapos_get_filter_groups() : [];
 
 $shop_search_url = function_exists('wc_get_page_id') ? get_permalink(wc_get_page_id('shop')) : home_url('/');
 $base_archive_url = get_pagenum_link(1);
 $current_archive_url = esc_url($base_archive_url);
-$clear_filters_url = esc_url(remove_query_arg(['min_price', 'max_price', 'orderby'], $base_archive_url));
+$filter_param_keys = function_exists('aaapos_filter_param_keys') ? aaapos_filter_param_keys() : [];
+$clear_filters_url = esc_url(remove_query_arg(array_merge(['min_price', 'max_price', 'orderby'], $filter_param_keys), $base_archive_url));
 ?>
 
 <div class="shop-page-wrapper <?php echo esc_attr($container_class); ?>">

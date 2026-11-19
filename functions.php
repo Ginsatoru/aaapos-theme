@@ -193,6 +193,7 @@ function aaapos_load_theme_files()
         "inc/widgets.php",
         "inc/class-aaapos-nav-walker.php",
         "inc/woocommerce.php",
+        "inc/shop-filters.php",
         "inc/myaccount-dashboard.php",
         'inc/serial-number.php',
         "inc/ajax.php",

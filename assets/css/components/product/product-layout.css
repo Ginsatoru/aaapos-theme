@@ -35,7 +35,7 @@
 
 .single-product div.product .onsale .sale-text {
   background: #fff;
-  color: var(--color-primary, #0ea5e9);
+  color: #000000;
   padding: 10px 18px;
   font-size: 13px;
   border-radius: 18px;
@@ -44,7 +44,7 @@
 
 .single-product div.product .onsale .sale-percentage {
   background: #fff;
-  color: var(--color-primary, #0ea5e9);
+  color: #000000;
   padding: 8px 18px;
   font-size: 16px;
   border-radius: 18px;
@@ -134,7 +134,7 @@
 }
 
 .single-product .woocommerce-breadcrumb a:hover {
-  color: var(--color-primary, #0ea5e9);
+  color: #000000;
 }
 
 /* ============================================
