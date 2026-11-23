@@ -24,6 +24,7 @@ class MRAnimations {
         
         // Initialize other animations only if enabled
         if (document.body.classList.contains('animations-enabled')) {
+            this.splitHeadings();
             this.initScrollAnimations();
             this.initBackToTop();
             this.initCountdowns();
@@ -49,20 +50,118 @@ class MRAnimations {
      * Animate header elements immediately on page load
      */
     animateHeaderElements() {
-        // Select all header elements with data-animate attribute
-        const headerElements = document.querySelectorAll('.site-header [data-animate]');
-        
-        headerElements.forEach(element => {
-            const delay = parseInt(element.dataset.animateDelay) || 0;
-            
-            setTimeout(() => {
-                element.classList.add('animated');
-                
-                // Clean up after animation completes
-                element.addEventListener('animationend', () => {
-                    element.style.willChange = 'auto';
-                }, { once: true });
-            }, delay);
+        const containers = Array.from(document.querySelectorAll('.top-bar [data-animate], .site-header [data-animate]'));
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (reduce || !Element.prototype.animate) {
+            containers.forEach(el => el.classList.add('animated'));
+            return;
+        }
+
+        containers.forEach(el => this.prepareHeaderItem(el));
+
+        // One left-to-right sequence across the top bar and header: every word
+        // and icon gets the next slot, so nothing shows up out of order
+        const STEP = 55;
+        const DURATION = 700;
+        const EASE = 'cubic-bezier(0.77, 0, 0.175, 1)';
+        const HEADER_START = 100;
+        const units = Array.from(document.querySelectorAll('.top-bar .w-word, .top-bar .w-atom, .site-header .w-word, .site-header .w-atom'))
+            .filter(u => u.closest('[data-animate]') && !u.closest('.sub-menu, .account-dropdown, .cart-dropdown'));
+
+        const play = (el, frames, delay, pseudoElement) => {
+            if (!pseudoElement) el.style.transition = 'none';
+            const anim = el.animate(frames, { duration: DURATION, delay, easing: EASE, fill: 'backwards', pseudoElement });
+            if (!pseudoElement) anim.onfinish = () => { el.style.transition = ''; };
+        };
+
+        // Top bar and header run side by side, each in its own left-to-right order
+        let topIndex = 0;
+        let headerIndex = 0;
+        units.forEach(unit => {
+            const delay = unit.closest('.top-bar') ? topIndex++ * STEP : HEADER_START + headerIndex++ * STEP;
+            if (unit.classList.contains('w-word')) {
+                play(unit, [{ transform: 'translateY(110%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], delay);
+            } else {
+                play(unit, [
+                    { transform: 'translateY(110%)', clipPath: 'inset(0 0 110% 0)' },
+                    { transform: 'translateY(0)', clipPath: 'inset(0 0 0 0)' }
+                ], delay);
+            }
+            unit.dataset.wDelay = delay;
+        });
+
+        // Dropdown arrows rise with the last word of their menu item
+        document.querySelectorAll('.site-header .nav-menu > li.menu-item-has-children > a').forEach(link => {
+            const words = link.querySelectorAll('.w-word');
+            if (!words.length) return;
+            const delay = parseInt(words[words.length - 1].dataset.wDelay, 10) || 0;
+            try {
+                play(link, [{ transform: 'translateY(8px)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], delay, '::after');
+            } catch (e) {}
+        });
+
+        containers.forEach(el => el.classList.add('animated'));
+    }
+
+    /**
+     * Wrap each word of root's text in a mask so it rises out of its own line
+     * (the Work.jsx SliceText mechanic). Returns the next word index.
+     */
+    wrapWords(root, skip, index = 0, step = 0.055) {
+        Array.from(root.childNodes).forEach(child => {
+            if (child.nodeType === Node.TEXT_NODE) {
+                if (!child.textContent.trim()) return;
+                const frag = document.createDocumentFragment();
+                child.textContent.split(/(\s+)/).forEach(part => {
+                    if (!part) return;
+                    if (/^\s+$/.test(part)) {
+                        frag.appendChild(document.createTextNode(part));
+                        return;
+                    }
+                    const wrap = document.createElement('span');
+                    const word = document.createElement('span');
+                    wrap.className = 'w-word-wrap';
+                    word.className = 'w-word';
+                    word.style.transitionDelay = (index++ * step) + 's';
+                    word.textContent = part;
+                    wrap.appendChild(word);
+                    frag.appendChild(wrap);
+                });
+                child.replaceWith(frag);
+            } else if (child.nodeType === Node.ELEMENT_NODE && !child.matches(skip)) {
+                index = this.wrapWords(child, skip, index, step);
+            }
+        });
+        return index;
+    }
+
+    /**
+     * Header and top bar: words rise from their own baseline, icons, logo,
+     * search box and buttons rise from their own bottom edge
+     */
+    prepareHeaderItem(element) {
+        if (element.classList.contains('w-split')) return;
+        const atoms = '.icon-roll, img, .search-form, .btn-header-cta, .btn-auth, .mobile-menu-toggle, .announce-icon, .top-bar-item > svg';
+        const skip = atoms + ', svg, script, style, .sub-menu, .cart-count, .screen-reader-text, .sr-only, .account-dropdown, .cart-dropdown';
+
+        this.wrapWords(element, skip, 0, 0.05);
+        (element.matches(atoms) ? [element] : element.querySelectorAll(atoms)).forEach(atom => {
+            if (!atom.closest('.sub-menu, .account-dropdown, .cart-dropdown')) atom.classList.add('w-atom');
+        });
+        element.classList.add('w-split');
+    }
+
+    /**
+     * Word-slice headings (same as Work.jsx)
+     */
+    splitHeadings() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        document.querySelectorAll('h1[data-animate], h2[data-animate], h3[data-animate]').forEach(heading => {
+            if (heading.closest('.site-header, .top-bar') || heading.classList.contains('w-split')) return;
+            this.wrapWords(heading, 'br, svg, img');
+            heading.classList.add('w-split');
         });
     }
 
@@ -93,7 +192,7 @@ class MRAnimations {
         // Observe all elements with data-animate attribute (except header elements)
         document.querySelectorAll('[data-animate]').forEach(el => {
             // Skip header elements as they're animated on page load
-            if (!el.closest('.site-header')) {
+            if (!el.closest('.site-header, .top-bar')) {
                 observer.observe(el);
             }
         });

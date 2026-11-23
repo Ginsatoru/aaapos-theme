@@ -71,7 +71,8 @@
         }
 
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+        var EASE = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        var POP = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
 
         // Swap the results content, smoothly resizing the box and staggering the new rows in
         function renderResults(html) {
@@ -84,20 +85,13 @@
                 results.animate([{ height: from + 'px' }, { height: to + 'px' }], { duration: 420, easing: EASE });
             }
 
+            // Card-pop, same as Work.jsx: scale up and slide in from the right, one after another
             var rows = results.querySelectorAll('.search-result-item, .no-results, .ssm-skeleton');
             rows.forEach(function (row, i) {
                 row.animate([
-                    { opacity: 0, transform: 'translateY(14px) scale(0.97)', filter: 'blur(6px)' },
-                    { opacity: 1, transform: 'none', filter: 'blur(0)' }
-                ], { duration: 600, delay: Math.min(i, 8) * 70, easing: EASE, fill: 'backwards' });
-
-                var img = row.querySelector('img');
-                if (img) {
-                    img.animate([
-                        { transform: 'scale(0.6) rotate(-6deg)', opacity: 0 },
-                        { transform: 'none', opacity: 1 }
-                    ], { duration: 680, delay: Math.min(i, 8) * 70 + 80, easing: EASE, fill: 'backwards' });
-                }
+                    { opacity: 0, transform: 'scale(0.94) translateX(14px)' },
+                    { opacity: 1, transform: 'none' }
+                ], { duration: 550, delay: Math.min(i, 8) * 70, easing: POP, fill: 'backwards' });
             });
         }
 

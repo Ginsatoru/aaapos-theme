@@ -60,7 +60,7 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
             
             <!-- Left Side: Contact Info -->
             <?php if ($has_contact) : ?>
-                <div class="top-bar-left">
+                <div class="top-bar-left" data-animate="fade-up" data-animate-delay="0">
                     <?php if ($phone || $phone_2) : ?>
                     <div class="top-bar-phones">
                     <?php if ($phone) : ?>
@@ -92,7 +92,7 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
 
             <!-- Center: Live Update Slider (only if announcements actually exist) -->
             <?php if ($has_announcements) : ?>
-                <div class="top-bar-announce" data-items='<?php echo esc_attr(wp_json_encode($announcements)); ?>' data-interval="5000">
+                <div class="top-bar-announce" data-animate="fade-up" data-animate-delay="50" data-items='<?php echo esc_attr(wp_json_encode($announcements)); ?>' data-interval="5000">
                     <svg class="announce-icon" width="16" height="16" viewBox="0 0 207.238 207.238" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M197.032,167.624c-0.461,2.344-2.517,4.035-4.906,4.035H15.112c-2.39,0-4.445-1.691-4.906-4.035
                             c-0.461-2.345,0.802-4.688,3.013-5.593c0.114-0.047,12.24-5.128,22.93-16c9.53-9.692,14.163-31.721,14.163-67.348
@@ -112,7 +112,7 @@ if (!$has_contact && !$has_announcements && !$has_promo && !$has_social) {
 
             <!-- Right Side: Static Promo Text & Social Links -->
             <?php if ($has_promo || $has_social) : ?>
-                <div class="top-bar-right">
+                <div class="top-bar-right" data-animate="fade-up" data-animate-delay="100">
                     <?php if ($has_promo) : ?>
                         <div class="promo-text">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

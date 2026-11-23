@@ -554,6 +554,7 @@ if (is_product()) {
         MR_THEME_VERSION,
         true
     );
+
 }
 
     // Shop heading search bar + filter dropdown (price range, sort by)

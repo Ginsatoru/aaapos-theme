@@ -132,7 +132,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                 </div>
 
                 <!-- Primary Navigation -->
-                <nav id="site-navigation" class="main-navigation" role="navigation" aria-label="<?php esc_attr_e('Primary Navigation', 'aaapos'); ?>">
+                <nav id="site-navigation" class="main-navigation" data-animate="fade-up" data-animate-delay="100" role="navigation" aria-label="<?php esc_attr_e('Primary Navigation', 'aaapos'); ?>">
                     
                     <?php if (get_theme_mod('show_search_bar', true)): ?>
                     <div class="mobile-search-wrapper">

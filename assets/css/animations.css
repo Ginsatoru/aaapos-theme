@@ -513,3 +513,133 @@
     perspective: 1000px;
 }
 
+/* ============================================
+   WORK-STYLE ANIMATIONS (match Work.jsx)
+   slide-up, drop, card-pop and word-slice headings
+   ============================================ */
+@keyframes wSlideUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wDrop {
+    from { opacity: 0; transform: translateY(-18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wPop {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes wPopLeft {
+    from { opacity: 0; transform: scale(0.94) translateX(14px); }
+    to { opacity: 1; transform: scale(1) translateX(0); }
+}
+
+@keyframes wPopRight {
+    from { opacity: 0; transform: scale(0.94) translateX(-14px); }
+    to { opacity: 1; transform: scale(1) translateX(0); }
+}
+
+@keyframes wFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+[data-animate].animated {
+    animation-duration: 0.6s;
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-animate="fade"].animated { animation-name: wFade !important; }
+[data-animate="fade-up"].animated,
+[data-animate="slide-up"].animated { animation-name: wSlideUp !important; }
+
+[data-animate="fade-down"].animated,
+[data-animate="slide-down"].animated {
+    animation-name: wDrop !important;
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-animate="zoom-in"].animated,
+[data-animate="zoom-out"].animated,
+[data-animate="fade-left"].animated,
+[data-animate="fade-right"].animated {
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-animate="zoom-in"].animated,
+[data-animate="zoom-out"].animated { animation-name: wPop !important; }
+[data-animate="fade-left"].animated { animation-name: wPopLeft !important; }
+[data-animate="fade-right"].animated { animation-name: wPopRight !important; }
+
+/* Masked rise (the Work.jsx word-slice): each item rises out of the bottom of
+   its own line and stays hidden below that line until it clears it */
+@keyframes wRise {
+    from { transform: translateY(110%); clip-path: inset(0 0 110% 0); }
+    to { transform: translateY(0); clip-path: inset(0 0 0 0); }
+}
+
+.top-bar [data-animate].animated,
+.site-header [data-animate].animated {
+    opacity: 1;
+    animation-name: wRise !important;
+    animation-duration: 0.7s !important;
+    animation-timing-function: cubic-bezier(0.77, 0, 0.175, 1) !important;
+}
+
+/* Word-slice headings (animations.js splits the words) */
+.w-word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.w-word {
+    display: inline-block;
+    transform: translateY(110%);
+    opacity: 0;
+    transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.15s ease;
+}
+
+.w-split[data-animate]:not(.animated) {
+    opacity: 1;
+}
+
+.w-split[data-animate].animated {
+    animation: none !important;
+}
+
+.w-split.animated .w-word {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Header atoms (icons, logo, search box, buttons) rise from their own bottom edge */
+.w-split .w-atom {
+    transition: transform 0.7s cubic-bezier(0.77, 0, 0.175, 1), clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1),
+                background-color 0.2s ease, color 0.2s ease;
+}
+
+.w-split:not(.animated) .w-atom,
+.w-split.w-atom:not(.animated) {
+    transform: translateY(110%);
+    clip-path: inset(0 0 110% 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .top-bar [data-animate].animated,
+    .site-header [data-animate].animated,
+    [data-animate].animated {
+        animation: none !important;
+    }
+
+    .w-word,
+    .w-split .w-atom {
+        transform: none;
+        opacity: 1;
+        clip-path: none;
+        transition: none;
+    }
+}
