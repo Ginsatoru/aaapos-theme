@@ -280,9 +280,12 @@ html.ssm-open {
   text-decoration: none;
 }
 
+.site-search-modal .ssm-results .price del {
+  margin-right: 4px;
+}
+
 .site-search-modal .ssm-results .price del,
 .site-search-modal .ssm-results .price del * {
-  margin-right: 6px;
   font-weight: 400;
   color: #6b7280;
 }
