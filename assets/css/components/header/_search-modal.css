@@ -219,39 +219,71 @@ html.ssm-open {
   padding-top: 8px;
 }
 
-.ssm-results.is-loading {
-  opacity: 0.5;
+.site-search-modal .ssm-results .search-result-item,
+.site-search-modal .ssm-results .search-result-item:hover {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border-light, #EDEDED);
 }
 
-.ssm-results .search-result-link {
+.site-search-modal .ssm-results .search-result-item:last-child {
+  border-bottom: 0;
+}
+
+.site-search-modal .ssm-results .search-result-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 10px;
+  gap: 14px;
+  margin: 4px 0;
+  padding: 10px 12px;
   border-radius: 10px;
+  color: #000000;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.site-search-modal .ssm-results .search-result-link:hover,
+.site-search-modal .ssm-results .search-result-link:focus-visible {
+  background: var(--color-bg-hover);
+  outline: none;
+}
+
+.site-search-modal .ssm-results .search-result-image {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.site-search-modal .ssm-results .search-result-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.site-search-modal .ssm-results .search-result-content h4 {
+  margin: 0 0 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #000000;
+}
+
+.site-search-modal .ssm-results .price,
+.site-search-modal .ssm-results .price ins {
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: #000000;
   text-decoration: none;
 }
 
-.ssm-results .search-result-link:hover {
-  background: var(--color-bg-hover);
-}
-
-.ssm-results .search-result-image img {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-  border-radius: 8px;
-}
-
-.ssm-results .search-result-content h4 {
-  margin: 0 0 2px;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.ssm-results .price {
-  font-size: 0.8125rem;
+.site-search-modal .ssm-results .price del,
+.site-search-modal .ssm-results .price del * {
+  margin-right: 6px;
+  font-weight: 400;
   color: #6b7280;
 }
 
@@ -261,9 +293,58 @@ html.ssm-open {
   color: #6b7280;
 }
 
+/* Loading skeleton while results are fetched */
+.ssm-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0;
+  padding: 10px 12px;
+}
+
+.ssm-skeleton__img,
+.ssm-skeleton__line {
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f1f3 25%, #e5e7ea 37%, #f0f1f3 63%);
+  background-size: 400% 100%;
+  animation: ssm-shimmer 1.2s ease-in-out infinite;
+}
+
+.ssm-skeleton__img {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.ssm-skeleton__lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ssm-skeleton__line {
+  height: 12px;
+  width: 70%;
+}
+
+.ssm-skeleton__line--short {
+  width: 30%;
+}
+
+@keyframes ssm-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ssm-backdrop,
   .ssm-panel {
     transition: none;
+  }
+
+  .ssm-skeleton__img,
+  .ssm-skeleton__line {
+    animation: none;
   }
 }

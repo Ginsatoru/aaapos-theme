@@ -8,6 +8,7 @@
 
     var KEY = 'aaapos_recent_searches';
     var MAX = 6;
+    var SKELETON = new Array(4).join('<div class="ssm-skeleton" aria-hidden="true"><span class="ssm-skeleton__img"></span><span class="ssm-skeleton__lines"><span class="ssm-skeleton__line"></span><span class="ssm-skeleton__line ssm-skeleton__line--short"></span></span></div>');
     var CLOCK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
 
     function init() {
@@ -82,16 +83,15 @@
             request = new AbortController();
             results.hidden = false;
             browse.hidden = true;
-            results.classList.add('is-loading');
+            results.innerHTML = SKELETON;
 
             fetch(modal.dataset.ajax + '?action=mr_product_search&s=' + encodeURIComponent(query), { signal: request.signal })
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
-                    results.classList.remove('is-loading');
                     results.innerHTML = data && data.success ? data.data : '';
                 })
                 .catch(function (err) {
-                    if (err.name !== 'AbortError') results.classList.remove('is-loading');
+                    if (err.name !== 'AbortError') results.innerHTML = '';
                 });
         }
 
