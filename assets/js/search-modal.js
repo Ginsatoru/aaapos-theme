@@ -70,6 +70,37 @@
             if (lastFocus) lastFocus.focus();
         }
 
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+        // Swap the results content, smoothly resizing the box and staggering the new rows in
+        function renderResults(html) {
+            var from = results.offsetHeight;
+            results.innerHTML = html;
+            if (reduceMotion || !results.animate) return;
+
+            var to = results.offsetHeight;
+            if (from && from !== to) {
+                results.animate([{ height: from + 'px' }, { height: to + 'px' }], { duration: 420, easing: EASE });
+            }
+
+            var rows = results.querySelectorAll('.search-result-item, .no-results, .ssm-skeleton');
+            rows.forEach(function (row, i) {
+                row.animate([
+                    { opacity: 0, transform: 'translateY(14px) scale(0.97)', filter: 'blur(6px)' },
+                    { opacity: 1, transform: 'none', filter: 'blur(0)' }
+                ], { duration: 600, delay: Math.min(i, 8) * 70, easing: EASE, fill: 'backwards' });
+
+                var img = row.querySelector('img');
+                if (img) {
+                    img.animate([
+                        { transform: 'scale(0.6) rotate(-6deg)', opacity: 0 },
+                        { transform: 'none', opacity: 1 }
+                    ], { duration: 680, delay: Math.min(i, 8) * 70 + 80, easing: EASE, fill: 'backwards' });
+                }
+            });
+        }
+
         function showBrowse() {
             results.hidden = true;
             results.innerHTML = '';
@@ -83,12 +114,12 @@
             request = new AbortController();
             results.hidden = false;
             browse.hidden = true;
-            results.innerHTML = SKELETON;
+            if (!results.querySelector('.ssm-skeleton')) renderResults(SKELETON);
 
             fetch(modal.dataset.ajax + '?action=mr_product_search&s=' + encodeURIComponent(query), { signal: request.signal })
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
-                    results.innerHTML = data && data.success ? data.data : '';
+                    renderResults(data && data.success ? data.data : '');
                 })
                 .catch(function (err) {
                     if (err.name !== 'AbortError') results.innerHTML = '';

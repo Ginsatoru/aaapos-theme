@@ -217,6 +217,7 @@ html.ssm-open {
 /* Live results (markup from mr_product_search) */
 .ssm-results {
   padding-top: 8px;
+  overflow: hidden;
 }
 
 .site-search-modal .ssm-results .search-result-item,
