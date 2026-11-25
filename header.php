@@ -20,12 +20,7 @@
 
 <body <?php 
     $body_classes = [];
-    
-    // Add page loader class if enabled
-    if (get_theme_mod('enable_page_loader', false)) {
-        $body_classes[] = 'page-loading';
-    }
-    
+
     // Add topbar class if enabled
     if (get_theme_mod('show_top_bar', true)) {
         $body_classes[] = 'has-topbar';
@@ -51,55 +46,6 @@
     body_class($body_classes); 
 ?>>
 <?php wp_body_open(); ?>
-
-<?php
-/**
- * Page Loader Overlay - MUST BE FIRST THING AFTER <body>
- */
-if (get_theme_mod('enable_page_loader', false)) {
-    // Determine which logo to use
-    $use_site_logo = get_theme_mod('page_loader_use_site_logo', true);
-    $loader_logo_url = '';
-    
-    if ($use_site_logo) {
-        // Use site logo
-        $custom_logo_id = get_theme_mod('custom_logo');
-        if ($custom_logo_id) {
-            $loader_logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
-        }
-    } else {
-        // Use custom loader logo
-        $custom_loader_id = get_theme_mod('page_loader_custom_logo');
-        if ($custom_loader_id) {
-            $loader_logo_url = wp_get_attachment_image_url($custom_loader_id, 'full');
-        }
-    }
-    
-    // Get other settings
-    $loader_text = get_theme_mod('page_loader_text', 'Loading…');
-    $bg_color = get_theme_mod('page_loader_bg_color', '#fafafa');
-    $text_color = get_theme_mod('page_loader_text_color', '#4a5568');
-    $accent_color = get_theme_mod('page_loader_accent_color', '#0f8abe');
-    ?>
-    
-    <!-- Page Loader Overlay -->
-    <div class="page-loader-overlay" style="--loader-bg: <?php echo esc_attr($bg_color); ?>; --loader-text: <?php echo esc_attr($text_color); ?>; --loader-accent: <?php echo esc_attr($accent_color); ?>;">
-        <div class="page-loader-content">
-            <?php if ($loader_logo_url): ?>
-                <img src="<?php echo esc_url($loader_logo_url); ?>" 
-                     alt="<?php echo esc_attr(get_bloginfo('name')); ?>" 
-                     class="page-loader-logo">
-            <?php endif; ?>
-            
-            <p class="page-loader-text"><?php echo esc_html($loader_text); ?></p>
-            
-            <div class="page-loader-progress">
-                <div class="page-loader-progress-bar"></div>
-            </div>
-        </div>
-    </div>
-    
-<?php } ?>
 
 <div id="page" class="site">
     <a class="skip-link sr-only" href="#main">
@@ -218,7 +164,13 @@ if (get_theme_mod('enable_page_loader', false)) {
                                     </svg>
                                     <div class="mobile-account-info">
                                         <span class="mobile-account-name"><?php esc_html_e('Sign In', 'aaapos'); ?></span>
-                                        <span class="mobile-account-status"><?php esc_html_e('Login or Register', 'aaapos'); ?></span>
+                                        <span class="mobile-account-status"><?php
+                                            if (function_exists('aaapos_registration_enabled') && !aaapos_registration_enabled()) {
+                                                esc_html_e('Login', 'aaapos');
+                                            } else {
+                                                esc_html_e('Login or Register', 'aaapos');
+                                            }
+                                        ?></span>
                                     </div>
                                     <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -354,7 +306,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                                 
                                 <div class="account-dropdown">
                                     <div class="account-dropdown-header">
-                                        <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/profile-icon.png'); ?>" alt="" class="account-avatar" width="40" height="40">
+                                        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icons/profile-icon.png'); ?>" alt="" class="account-avatar" width="40" height="40">
                                         <div class="account-dropdown-info">
                                             <span class="account-name"><?php echo esc_html($current_user->display_name); ?></span>
                                             <span class="account-email"><?php echo esc_html($current_user->user_email); ?></span>
@@ -517,7 +469,7 @@ if (get_theme_mod('enable_page_loader', false)) {
                                     else: ?>
                                         <li class="cart-dropdown-empty">
                                             <?php // Lazy: the dropdown is hidden until opened, so most visitors never download this ?>
-                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/icons/sick.png'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon" loading="lazy" decoding="async"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
+                                            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icons/sick.png'); ?>" alt="" width="48" height="48" class="cart-dropdown-empty-icon" loading="lazy" decoding="async"><p><?php esc_html_e('Your cart is empty.', 'aaapos'); ?></p>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

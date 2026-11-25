@@ -18,7 +18,6 @@ function mr_auth_modal_customizer($wp_customize) {
     // Add Authentication Section
     $wp_customize->add_section('mr_auth_modal_section', array(
         'title'       => __('Authentication Modal', 'aaapos'),
-        'description' => __('Customize the login and registration modal appearance.', 'aaapos'),
         'priority'    => 140,
     ));
 
@@ -31,7 +30,6 @@ function mr_auth_modal_customizer($wp_customize) {
 
     $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'auth_modal_login_image', array(
         'label'       => __('Login Modal Image', 'aaapos'),
-        'description' => __('Upload an image for the right side of the login modal. Recommended size: 800x1200px. Leave empty for gradient background.', 'aaapos'),
         'section'     => 'mr_auth_modal_section',
         'mime_type'   => 'image',
         'button_labels' => array(
@@ -53,7 +51,6 @@ function mr_auth_modal_customizer($wp_customize) {
 
     $wp_customize->add_control('auth_modal_login_subtitle', array(
         'label'       => __('Login Subtitle', 'aaapos'),
-        'description' => __('Subtitle text shown in the login form.', 'aaapos'),
         'section'     => 'mr_auth_modal_section',
         'type'        => 'text',
         'priority'    => 40,
@@ -68,7 +65,6 @@ function mr_auth_modal_customizer($wp_customize) {
 
     $wp_customize->add_control('auth_modal_register_subtitle', array(
         'label'       => __('Register Subtitle', 'aaapos'),
-        'description' => __('Subtitle text shown in the registration form.', 'aaapos'),
         'section'     => 'mr_auth_modal_section',
         'type'        => 'text',
         'priority'    => 50,

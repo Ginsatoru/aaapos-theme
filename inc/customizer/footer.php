@@ -23,7 +23,6 @@ function aaapos_footer_customizer($wp_customize)
     $wp_customize->add_section("aaapos_footer_settings", [
         "title"       => __("Footer Settings", "aaapos-prime"),
         "priority"    => 120,
-        "description" => __("Customize your footer appearance and content. Social media links set here will also appear on the Contact page.", "aaapos-prime"),
     ]);
 
     // -------------------------------------------------------------------
@@ -88,7 +87,6 @@ function aaapos_footer_customizer($wp_customize)
     $wp_customize->add_control(
         new WP_Customize_Media_Control($wp_customize, "footer_logo", [
             "label"       => __("Footer Logo (Optional)", "aaapos-prime"),
-            "description" => __("Upload a different logo for the footer. Leave empty to use the main site logo.", "aaapos-prime"),
             "section"     => "aaapos_footer_settings",
             "mime_type"   => "image",
             "priority"    => 25,
@@ -102,7 +100,6 @@ function aaapos_footer_customizer($wp_customize)
     ]);
     $wp_customize->add_control("footer_description", [
         "label"       => __("Footer Description", "aaapos-prime"),
-        "description" => __("Text that appears below the logo.", "aaapos-prime"),
         "section"     => "aaapos_footer_settings",
         "type"        => "textarea",
         "priority"    => 30,
@@ -165,7 +162,6 @@ function aaapos_footer_customizer($wp_customize)
     $wp_customize->add_setting("footer_social_heading", ["sanitize_callback" => "__return_false"]);
     $wp_customize->add_control(new Aaapos_Heading_Control($wp_customize, "footer_social_heading", [
         "label"       => __("Social Media Links", "aaapos-prime"),
-        "description" => __("These links will appear in both the footer and on the Contact page.", "aaapos-prime"),
         "section"     => "aaapos_footer_settings",
         "priority"    => 55,
     ]));
@@ -246,7 +242,6 @@ function aaapos_footer_customizer($wp_customize)
     ]);
     $wp_customize->add_control("footer_copyright_text", [
         "label"       => __("Copyright Text", "aaapos-prime"),
-        "description" => __("Use {year} for current year and {sitename} for site name.", "aaapos-prime"),
         "section"     => "aaapos_footer_settings",
         "type"        => "textarea",
         "priority"    => 140,
@@ -259,7 +254,6 @@ function aaapos_footer_customizer($wp_customize)
     ]);
     $wp_customize->add_control("footer_show_menu", [
         "label"       => __("Show Footer Bottom Menu", "aaapos-prime"),
-        "description" => __("Privacy Policy, Terms, etc.", "aaapos-prime"),
         "section"     => "aaapos_footer_settings",
         "type"        => "checkbox",
         "priority"    => 145,
@@ -272,7 +266,6 @@ function aaapos_footer_customizer($wp_customize)
     $wp_customize->add_setting("footer_payment_heading", ["sanitize_callback" => "__return_false"]);
     $wp_customize->add_control(new Aaapos_Heading_Control($wp_customize, "footer_payment_heading", [
         "label"       => __("Payment Method Icons", "aaapos-prime"),
-        "description" => __("Configure payment icons displayed in the footer bottom.", "aaapos-prime"),
         "section"     => "aaapos_footer_settings",
         "priority"    => 146,
     ]));
@@ -284,7 +277,6 @@ function aaapos_footer_customizer($wp_customize)
     ]);
     $wp_customize->add_control("footer_show_payment_icons", [
         "label"       => __("Show Payment Icons", "aaapos-prime"),
-        "description" => __("Enable or disable the entire payment icons section in footer.", "aaapos-prime"),
         "section"     => "aaapos_footer_settings",
         "type"        => "checkbox",
         "priority"    => 147,
@@ -332,7 +324,6 @@ function aaapos_footer_customizer($wp_customize)
         $wp_customize->add_control(
             new WP_Customize_Media_Control($wp_customize, "payment_icon_{$card}", [
                 "label"           => $data['label'],
-                "description"     => $data['desc'],
                 "section"         => "aaapos_footer_settings",
                 "mime_type"       => "image",
                 "priority"        => $data['priority'],

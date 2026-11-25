@@ -42,10 +42,6 @@ function aaapos_about_page_customizer($wp_customize)
     $wp_customize->add_control(
         new WP_Customize_Image_Control($wp_customize, "about_hero_image", [
             "label" => __("Hero Image", "aaapos-prime"),
-            "description" => __(
-                "Upload a custom hero image (recommended: 800x600px)",
-                "aaapos-prime",
-            ),
             "section" => "aaapos_about_page",
             "priority" => 8,
         ]),
@@ -59,10 +55,6 @@ function aaapos_about_page_customizer($wp_customize)
     ]);
     $wp_customize->add_control("about_hero_title", [
         "label" => __("Hero Title", "aaapos-prime"),
-        "description" => __(
-            'Use comma to split title for styling (e.g., "Part One, Part Two")',
-            "aaapos-prime",
-        ),
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 20,
@@ -77,7 +69,6 @@ function aaapos_about_page_customizer($wp_customize)
     ]);
     $wp_customize->add_control("about_hero_intro", [
         "label" => __("Hero Introduction", "aaapos-prime"),
-        "description" => __("Leave empty to hide intro text", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "textarea",
         "priority" => 30,
@@ -160,7 +151,6 @@ function aaapos_about_page_customizer($wp_customize)
     ]);
     $wp_customize->add_control("about_story_heading", [
         "label" => __("Story Section Heading", "aaapos-prime"),
-        "description" => __("Leave empty to hide heading", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 60,
@@ -331,7 +321,6 @@ function aaapos_about_page_customizer($wp_customize)
     ]);
     $wp_customize->add_control("about_timeline_title", [
         "label" => __("Timeline Section Title", "aaapos-prime"),
-        "description" => __("Leave empty to hide title", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 201,
@@ -449,7 +438,6 @@ function aaapos_about_page_customizer($wp_customize)
     ]);
     $wp_customize->add_control("about_team_title", [
         "label" => __("Team Section Title", "aaapos-prime"),
-        "description" => __("Leave empty to hide title", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 301,
@@ -464,7 +452,6 @@ function aaapos_about_page_customizer($wp_customize)
     ]);
     $wp_customize->add_control("about_team_subtitle", [
         "label" => __("Team Section Subtitle", "aaapos-prime"),
-        "description" => __("Leave empty to hide subtitle", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 302,
@@ -520,10 +507,6 @@ function aaapos_about_page_customizer($wp_customize)
                         __("Team Member %d - Photo", "aaapos-prime"),
                         $i,
                     ),
-                    "description" => __(
-                        "Upload team member photo (recommended: 400x400px)",
-                        "aaapos-prime",
-                    ),
                     "section" => "aaapos_about_page",
                     "priority" => $priority + 1,
                 ],
@@ -567,7 +550,6 @@ function aaapos_about_page_customizer($wp_customize)
                 __("Team Member %d - Quote", "aaapos-prime"),
                 $i,
             ),
-            "description" => __("Leave empty to hide quote", "aaapos-prime"),
             "section" => "aaapos_about_page",
             "type" => "text",
             "priority" => $priority + 4,
@@ -600,10 +582,6 @@ $wp_customize->add_setting("about_cta_bg_image", [
 $wp_customize->add_control(
     new WP_Customize_Image_Control($wp_customize, "about_cta_bg_image", [
         "label" => __("CTA Background Image", "aaapos-prime"),
-        "description" => __(
-            "Upload a background image for the CTA section (recommended: 1920x600px). Falls back to ctabg.jpg if not set.",
-            "aaapos-prime",
-        ),
         "section" => "aaapos_about_page",
         "priority" => 405,
     ]),
@@ -617,7 +595,6 @@ $wp_customize->add_setting("about_cta_overlay_opacity", [
 ]);
 $wp_customize->add_control("about_cta_overlay_opacity", [
     "label" => __("CTA Overlay Opacity", "aaapos-prime"),
-    "description" => __("Black overlay opacity (0.0 to 1.0, default: 0.6)", "aaapos-prime"),
     "section" => "aaapos_about_page",
     "type" => "number",
     "input_attrs" => [
@@ -636,7 +613,6 @@ $wp_customize->add_control("about_cta_overlay_opacity", [
     ]);
     $wp_customize->add_control("about_cta_title", [
         "label" => __("CTA Title", "aaapos-prime"),
-        "description" => __("Leave empty to hide title", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "text",
         "priority" => 410,
@@ -651,7 +627,6 @@ $wp_customize->add_control("about_cta_overlay_opacity", [
     ]);
     $wp_customize->add_control("about_cta_text", [
         "label" => __("CTA Text", "aaapos-prime"),
-        "description" => __("Leave empty to hide text", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "textarea",
         "priority" => 420,
@@ -717,7 +692,6 @@ $wp_customize->add_control("about_cta_overlay_opacity", [
     ]);
     $wp_customize->add_control("about_cta_contact_url", [
         "label" => __("Contact Button URL", "aaapos-prime"),
-        "description" => __("Link for the contact button", "aaapos-prime"),
         "section" => "aaapos_about_page",
         "type" => "url",
         "priority" => 445,

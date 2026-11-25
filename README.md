@@ -11,10 +11,10 @@ This document provides step-by-step instructions for implementing the comprehens
 ### New/Replaced Files:
 1. `inc/customizer/colors.php` - Complete color customizer controls
 2. `inc/customizer/customizer.php` - CSS output and helper functions
-3. `assets/css/variables.css` - CSS custom properties
-4. `assets/js/customizer-preview.js` - Live preview JavaScript
+3. `assets/css/core/variables.css` - CSS custom properties
+4. `assets/js/customizer/customizer-preview.js` - Live preview JavaScript
 5. `assets/css/components/buttons.css` - Updated button styles
-6. `assets/css/components/header.css` - Updated header styles
+6. `assets/css/components/header/header-main.css` - Updated header styles
 
 ### Reference Files:
 - `inc/enqueue-customizer-snippet.php` - Code to add to your enqueue.php
@@ -27,10 +27,10 @@ This document provides step-by-step instructions for implementing the comprehens
 Before making any changes, backup these files:
 - `inc/customizer/colors.php`
 - `inc/customizer/customizer.php`
-- `assets/css/variables.css`
-- `assets/js/customizer-preview.js`
+- `assets/css/core/variables.css`
+- `assets/js/customizer/customizer-preview.js`
 - `assets/css/components/buttons.css`
-- `assets/css/components/header.css`
+- `assets/css/components/header/header-main.css`
 
 ### Step 2: Replace Files
 Copy the new files to their respective locations in your theme directory.

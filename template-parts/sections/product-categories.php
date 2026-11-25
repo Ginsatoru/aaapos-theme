@@ -7,7 +7,7 @@
  * UPDATED: Displays as a slider - 6 visible at a time on desktop, with
  * prev/next controls in the section header and mouse drag support.
  * UPDATED: Category image now resolved via aaapos_get_category_image_url()
- * (inc/woocommerce.php) so a broken/deleted thumbnail attachment always
+ * (inc/woocommerce/woocommerce.php) so a broken/deleted thumbnail attachment always
  * falls back to the WooCommerce placeholder instead of a broken image.
  * 
  * @package Macedon_Ranges

@@ -7,7 +7,7 @@
  * Relies on aaapos_resolve_media_url() and aaapos_ascend_words(),
  * defined in the dispatcher file that includes this one.
  *
- * Performance: the background image is preloaded by inc/enqueue.php, and the
+ * Performance: the background image is preloaded by inc/core/enqueue.php, and the
  * first product image loads eagerly with high priority (later ones stay lazy).
  */
 
@@ -18,7 +18,7 @@
 
     $hero_bg_image = aaapos_resolve_media_url(
         get_theme_mod('hero_bg_image', ''),
-        get_template_directory_uri() . '/images/herobg.png'
+        get_template_directory_uri() . '/assets/images/herobg.png'
     );
 
     $hero_eyebrow      = get_theme_mod('hero_eyebrow', 'TRUSTED FOR 25+ YEARS');
@@ -30,14 +30,14 @@
         array(
             'icon_url' => aaapos_resolve_media_url(
                 get_theme_mod('hero_feature_1_icon', ''),
-                get_template_directory_uri() . '/images/sync.gif'
+                get_template_directory_uri() . '/assets/images/sync.gif'
             ),
             'label' => get_theme_mod('hero_feature_1_label', 'Multi-Store Sync'),
         ),
         array(
             'icon_url' => aaapos_resolve_media_url(
                 get_theme_mod('hero_feature_2_icon', ''),
-                get_template_directory_uri() . '/images/support.gif'
+                get_template_directory_uri() . '/assets/images/support.gif'
             ),
             'label' => get_theme_mod('hero_feature_2_label', '7 Days Support'),
         ),
@@ -51,10 +51,10 @@
     $show_product_carousel = get_theme_mod('hero_show_product_carousel', true);
 
     $default_carousel_images = array(
-        get_template_directory_uri() . '/images/1.png',
-        get_template_directory_uri() . '/images/2.png',
-        get_template_directory_uri() . '/images/3.png',
-        get_template_directory_uri() . '/images/4.png',
+        get_template_directory_uri() . '/assets/images/1.png',
+        get_template_directory_uri() . '/assets/images/2.png',
+        get_template_directory_uri() . '/assets/images/3.png',
+        get_template_directory_uri() . '/assets/images/4.png',
     );
 
     $hardcoded_product_images = array();
@@ -76,19 +76,19 @@
         1 => array(
             'title'  => 'RM-MultiStore',
             'desc'   => 'Head office data aggregation tool to manage multiple stores from one dashboard, with real-time sync.',
-            'image'  => get_template_directory_uri() . '/images/2.png',
+            'image'  => get_template_directory_uri() . '/assets/images/2.png',
             'ribbon' => '',
         ),
         2 => array(
             'title'  => 'Webstore Manager',
             'desc'   => 'Sync stock and orders automatically with Shopify, WooCommerce, eBay and BigCommerce.',
-            'image'  => get_template_directory_uri() . '/images/3.png',
+            'image'  => get_template_directory_uri() . '/assets/images/3.png',
             'ribbon' => '',
         ),
         3 => array(
             'title'  => 'RM Mobile App',
             'desc'   => 'Access AAAPOS RetailManager on the go with the free companion app for Android and iOS.',
-            'image'  => get_template_directory_uri() . '/images/4.png',
+            'image'  => get_template_directory_uri() . '/assets/images/4.png',
             'ribbon' => 'Coming soon',
         ),
     );

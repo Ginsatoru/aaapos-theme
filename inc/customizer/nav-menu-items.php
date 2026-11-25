@@ -32,7 +32,7 @@
  * by aaapos_nav_style_groups() while this file's controls register.
  *
  * Rendering is handled by AAAPOS_Nav_Walker
- * (inc/class-aaapos-nav-walker.php).
+ * (inc/classes/class-aaapos-nav-walker.php).
  *
  * @package AAAPOS_Prime
  */
@@ -498,7 +498,6 @@ function aaapos_nav_menu_items_customizer($wp_customize) {
 
             $wp_customize->add_control($style_setting_id, array(
                 'label'       => __('Style', 'aaapos-prime'),
-                'description' => __('Icon Style shows a small icon per item. Image Style shows a single larger uploaded image per item instead.', 'aaapos-prime'),
                 'section'     => $section_id,
                 'type'        => 'select',
                 'choices'     => aaapos_nav_style_choices(),
@@ -516,7 +515,6 @@ function aaapos_nav_menu_items_customizer($wp_customize) {
 
             $wp_customize->add_control($columns_setting_id, array(
                 'label'       => __('Columns', 'aaapos-prime'),
-                'description' => __('Number of grid columns for this dropdown.', 'aaapos-prime'),
                 'section'     => $section_id,
                 'type'        => 'select',
                 'choices'     => aaapos_nav_column_choices(),
@@ -582,7 +580,6 @@ function aaapos_nav_menu_items_customizer($wp_customize) {
                 if (class_exists('WP_Customize_Media_Control')) {
                     $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, $image_setting_id, array(
                         'label'     => __('Menu Item Image', 'aaapos-prime'),
-                        'description' => __('Displayed larger than an icon.', 'aaapos-prime'),
                         'section'   => $section_id,
                         'mime_type' => 'image',
                         'priority'  => $priority + 1,

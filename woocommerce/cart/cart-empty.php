@@ -30,7 +30,7 @@ add_filter('body_class', function($classes) {
 			<div class="cart-empty-content">
 				<!-- Shopping Cart Icon -->
 				<div class="cart-empty-icon">
-					<img src="<?php echo esc_url( get_template_directory_uri() . '/images/cart.png' ); ?>" alt="" width="64" height="64" />
+					<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/cart.png' ); ?>" alt="" width="64" height="64" />
 				</div>
 				
 				<!-- Main Heading -->

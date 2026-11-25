@@ -160,7 +160,7 @@ function aaapos_recaptcha_threshold() {
  * returns a Promise for a token. Registered only; each form enqueues it when it needs it.
  */
 add_action('wp_enqueue_scripts', function () {
-    wp_register_script('aaapos-recaptcha-v3', get_template_directory_uri() . '/assets/js/recaptcha-v3.js', array(), AAAPOS_VERSION, true);
+    wp_register_script('aaapos-recaptcha-v3', get_template_directory_uri() . '/assets/js/components/recaptcha-v3.js', array(), AAAPOS_VERSION, true);
 }, 5);
 
 /**

@@ -27,7 +27,6 @@ function aaapos_typography_customizer($wp_customize) {
     $wp_customize->add_section('aaapos_typography', array(
         'title' => __('Typography & Fonts', 'aaapos'),
         'priority' => 25,
-        'description' => __('Choose from popular fonts or upload your own custom fonts', 'aaapos'),
     ));
 
     // =========================================================================
@@ -41,7 +40,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control('heading_font_family', array(
         'label' => __('Heading Font Family', 'aaapos'),
-        'description' => __('Font used for all headings (H1-H6)', 'aaapos'),
         'section' => 'aaapos_typography',
         'type' => 'select',
         'choices' => aaapos_get_font_choices(),
@@ -56,7 +54,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'heading_font_custom_woff', array(
         'label' => __('Custom Heading Font (WOFF/WOFF2)', 'aaapos'),
-        'description' => __('Upload .woff or .woff2 file. This will override the font family above.', 'aaapos'),
         'section' => 'aaapos_typography',
         'mime_type' => 'application/font-woff',
         'priority' => 15,
@@ -70,7 +67,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control('heading_font_custom_name', array(
         'label' => __('Custom Heading Font Name', 'aaapos'),
-        'description' => __('Enter the font family name (e.g., "My Custom Font")', 'aaapos'),
         'section' => 'aaapos_typography',
         'type' => 'text',
         'priority' => 16,
@@ -87,7 +83,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control('body_font_family', array(
         'label' => __('Body Font Family', 'aaapos'),
-        'description' => __('Font used for body text and paragraphs', 'aaapos'),
         'section' => 'aaapos_typography',
         'type' => 'select',
         'choices' => aaapos_get_font_choices(),
@@ -102,7 +97,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'body_font_custom_woff', array(
         'label' => __('Custom Body Font (WOFF/WOFF2)', 'aaapos'),
-        'description' => __('Upload .woff or .woff2 file. This will override the font family above.', 'aaapos'),
         'section' => 'aaapos_typography',
         'mime_type' => 'application/font-woff',
         'priority' => 25,
@@ -115,7 +109,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control('body_font_custom_name', array(
         'label' => __('Custom Body Font Name', 'aaapos'),
-        'description' => __('Enter the font family name (e.g., "My Custom Font")', 'aaapos'),
         'section' => 'aaapos_typography',
         'type' => 'text',
         'priority' => 26,
@@ -132,7 +125,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control('accent_font_family', array(
         'label' => __('Accent Font Family', 'aaapos'),
-        'description' => __('Optional decorative font for special elements', 'aaapos'),
         'section' => 'aaapos_typography',
         'type' => 'select',
         'choices' => aaapos_get_font_choices(),
@@ -150,7 +142,6 @@ function aaapos_typography_customizer($wp_customize) {
 
     $wp_customize->add_control('font_weight_scale', array(
         'label' => __('Font Weight Scale', 'aaapos'),
-        'description' => __('Overall font weight preference', 'aaapos'),
         'section' => 'aaapos_typography',
         'type' => 'select',
         'choices' => array(

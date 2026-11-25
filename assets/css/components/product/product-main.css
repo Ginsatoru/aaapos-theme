@@ -64,7 +64,7 @@
 
 /**
  * Usage:
- * Enqueue this file in inc/enqueue.php:
+ * Enqueue this file in inc/core/enqueue.php:
  * 
  * if (is_product()) {
  *     wp_enqueue_style(

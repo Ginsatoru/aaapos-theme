@@ -35,7 +35,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('show_cart_dropdown', array(
         'label'       => __('Show Cart Dropdown on Hover', 'macedon-ranges'),
-        'description' => __('Display cart items when hovering over the cart icon', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'checkbox',
     ));
@@ -49,7 +48,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('cart_dropdown_max_items', array(
         'label'       => __('Maximum Cart Items in Dropdown', 'macedon-ranges'),
-        'description' => __('Maximum number of items to show before scrolling', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'number',
         'input_attrs' => array(
@@ -119,7 +117,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('cart_dropdown_show_remove', array(
         'label'       => __('Show Remove Item Button', 'macedon-ranges'),
-        'description' => __('Allow removing items directly from dropdown', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'checkbox',
         'active_callback' => function() {
@@ -136,7 +133,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('cart_dropdown_show_buttons', array(
         'label'       => __('Show View Cart & Checkout Buttons', 'macedon-ranges'),
-        'description' => __('Display action buttons at the bottom of dropdown', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'checkbox',
         'active_callback' => function() {
@@ -157,7 +153,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('show_account_dropdown', array(
         'label'       => __('Show Account Dropdown on Hover', 'macedon-ranges'),
-        'description' => __('Display account menu when hovering over account icon (logged in users only)', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'checkbox',
     ));
@@ -171,7 +166,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('show_username_in_header', array(
         'label'       => __('Show Username Next to Icon', 'macedon-ranges'),
-        'description' => __('Display username next to account icon for logged in users (desktop only)', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'checkbox',
     ));
@@ -226,7 +220,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('dropdown_animation_speed', array(
         'label'       => __('Dropdown Animation Speed (ms)', 'macedon-ranges'),
-        'description' => __('Speed of dropdown show/hide animation in milliseconds', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'number',
         'input_attrs' => array(
@@ -245,7 +238,6 @@ function mr_header_dropdown_customizer($wp_customize) {
     
     $wp_customize->add_control('dropdown_hover_delay', array(
         'label'       => __('Dropdown Hover Delay (ms)', 'macedon-ranges'),
-        'description' => __('Delay before dropdown appears on hover', 'macedon-ranges'),
         'section'     => 'mr_header_dropdowns',
         'type'        => 'number',
         'input_attrs' => array(

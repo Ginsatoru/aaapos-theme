@@ -28,6 +28,7 @@ function aaapos_customizer_css_output() {
     // Get the single brand color
     $brand_color = get_theme_mod('brand_color', '#0ea5e9');
     $nav_accent  = get_theme_mod('nav_accent_color', '#D4AF37');
+    $topbar_bg   = sanitize_hex_color(get_theme_mod('topbar_bg_color', ''));
     
     // Auto-calculate variants
     $brand_hover = aaapos_adjust_brightness($brand_color, -15);
@@ -83,7 +84,7 @@ function aaapos_customizer_css_output() {
             --color-focus-ring: var(--brand-color);
 
             /* Header elements using brand color */
-            --color-topbar-bg: var(--brand-color);
+            --color-topbar-bg: <?php echo $topbar_bg ? esc_attr($topbar_bg) : 'var(--brand-color)'; ?>;
             --color-topbar-bg-end: var(--brand-color-hover);
             --color-topbar-text: #ffffff;
             --color-cart-badge: var(--brand-color);

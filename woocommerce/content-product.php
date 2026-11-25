@@ -26,7 +26,7 @@ $sale_badge_text = get_theme_mod("sale_badge_text", __("Sale", "aaapos-prime"));
 
 /**
  * Image URLs for the card slideshow (main image + gallery, capped at 4)
- * come from aaapos_get_wbr_card_slide_urls() in inc/woocommerce.php,
+ * come from aaapos_get_wbr_card_slide_urls() in inc/woocommerce/woocommerce.php,
  * shared with the homepage featured-products section.
  */
 $wbr_slide_urls = aaapos_get_wbr_card_slide_urls($product);

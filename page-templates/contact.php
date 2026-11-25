@@ -116,7 +116,7 @@ if ($aaapos_rc_v3) {
                     }
                     ?>
                     
-                    <form class="contact-form-modern" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                    <form class="contact-form-modern" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-field-tick>
                         <input type="hidden" name="action" value="submit_contact_form">
                         <?php wp_nonce_field('contact_form_submit', 'contact_nonce'); ?>
                         

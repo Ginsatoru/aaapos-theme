@@ -42,7 +42,7 @@ $has_pending_email_confirmation = '' !== trim( $before_account_orders_output );
 // Inject a real <img> icon directly into the notice markup (instead of
 // a CSS ::before pseudo-element, which wasn't rendering reliably).
 if ( $has_pending_email_confirmation && false !== strpos( $before_account_orders_output, 'woocommerce-info' ) ) {
-	$icon_html = '<span class="aaapos-notice-icon"><img src="' . esc_url( get_template_directory_uri() . '/images/email.gif' ) . '" width="72" height="72" alt=""></span>';
+	$icon_html = '<span class="aaapos-notice-icon"><img src="' . esc_url( get_template_directory_uri() . '/assets/images/email.gif' ) . '" width="72" height="72" alt=""></span>';
 
 	$before_account_orders_output = preg_replace(
 		'/(<div class="woocommerce-info"[^>]*>)/',

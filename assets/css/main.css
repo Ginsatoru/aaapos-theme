@@ -2,9 +2,9 @@
 
 /* Import all CSS components */
 @import 'components/product/product-main.css';
-@import 'variables.css';
-@import 'base.css';
-@import 'layout.css';
+@import 'core/variables.css';
+@import 'core/base.css';
+@import 'core/layout.css';
 @import 'components/header/header-main.css';
 @import 'components/hero-modern.css';
 @import 'components/hero-classic.css';
@@ -14,8 +14,8 @@
 @import 'components/testimonials.css';
 @import 'components/footer.css';
 @import 'components/modal.css';
-@import 'animations.css';
-@import 'responsive.css';
+@import 'core/animations.css';
+@import 'core/responsive.css';
 @import 'components/blog.css';
 @import 'components/categories.css';
 @import 'components/categories-grid.css';

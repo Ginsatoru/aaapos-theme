@@ -81,7 +81,6 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("featured_products_exclude", [
         "label" => __("Exclude Products", "macedon-ranges"),
-        "description" => __("Enter product IDs separated by commas (e.g., 123,456,789). These products will be excluded from the best-selling list.", "macedon-ranges"),
         "section" => "mr_homepage_sections",
         "type" => "text",
         "priority" => 35,
@@ -113,7 +112,6 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("categories_style", [
         "label" => __("Category Section Style", "macedon-ranges"),
-        "description" => __("Slider: scrollable row with prev/next arrows. Grid: static photo-tile grid with an overlaid name.", "macedon-ranges"),
         "section" => "mr_homepage_sections",
         "type" => "radio",
         "choices" => [
@@ -165,10 +163,6 @@ function mr_homepage_sections_customizer($wp_customize)
                 "selected_categories",
                 [
                     "label" => __("Select & Order Categories", "macedon-ranges"),
-                    "description" => __(
-                        "Check categories to display and drag to reorder. Leave all unchecked to show top categories by product count.",
-                        "macedon-ranges"
-                    ),
                     "section" => "mr_homepage_sections",
                     "priority" => 56,
                 ]
@@ -187,10 +181,6 @@ function mr_homepage_sections_customizer($wp_customize)
         "label" => __(
             "Number of Categories (if none selected)",
             "macedon-ranges",
-        ),
-        "description" => __(
-            "This will show the top categories by product count when no specific categories are selected above.",
-            "macedon-ranges"
         ),
         "section" => "mr_homepage_sections",
         "type" => "number",
@@ -244,7 +234,6 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("show_deals", [
         "label" => __("Show Special Deals Section", "macedon-ranges"),
-        "description" => __("Automatically displays products with active scheduled sales", "macedon-ranges"),
         "section" => "mr_homepage_sections",
         "type" => "checkbox",
         "priority" => 60,
@@ -271,10 +260,6 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("deals_description", [
         "label" => __("Deals Section Description", "macedon-ranges"),
-        "description" => __(
-            "Subtitle or tagline for the deals section",
-            "macedon-ranges",
-        ),
         "section" => "mr_homepage_sections",
         "type" => "textarea",
         "priority" => 70,
@@ -293,10 +278,6 @@ function mr_homepage_sections_customizer($wp_customize)
             "deals_background_image",
             [
                 "label" => __("Background Image", "macedon-ranges"),
-                "description" => __(
-                    "Upload a background image for the deals section. Recommended size: 1920x800px. Leave empty to use default (deal.png).",
-                    "macedon-ranges",
-                ),
                 "section" => "mr_homepage_sections",
                 "settings" => "deals_background_image",
                 "priority" => 72,
@@ -313,10 +294,6 @@ function mr_homepage_sections_customizer($wp_customize)
 
     $wp_customize->add_control("deals_overlay_opacity", [
         "label" => __("Background Overlay Opacity", "macedon-ranges"),
-        "description" => __(
-            "Adjust the darkness of the overlay (0 = transparent, 1 = fully dark)",
-            "macedon-ranges",
-        ),
         "section" => "mr_homepage_sections",
         "type" => "range",
         "input_attrs" => [

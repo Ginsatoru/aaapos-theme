@@ -15,7 +15,7 @@
  * @var int    $current_max_price
  * @var int    $max_product_price
  * @var bool   $has_active_filters
- * @var array  $filter_groups  From aaapos_get_filter_groups() (inc/shop-filters.php)
+ * @var array  $filter_groups  From aaapos_get_filter_groups() (inc/woocommerce/shop-filters.php)
  * @var string $raw_search_query  Optional - only set on search.php.
  *             When present, hidden s/post_type fields are added to the
  *             Filters form so sort/price submits don't lose the search term.

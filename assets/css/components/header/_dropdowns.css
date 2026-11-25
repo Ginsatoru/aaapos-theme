@@ -2,7 +2,7 @@
    Header Dropdowns - Clean & Modern Design
    Account, Cart, and Navigation Dropdowns
    JS-DRIVEN: visibility is controlled by the .is-open class, toggled by
-   assets/js/header-dropdowns.js (hover-intent on desktop, tap on touch).
+   assets/js/header/header-dropdowns.js (hover-intent on desktop, tap on touch).
    :focus-within is kept on nav sub-menus as a pure-keyboard-tabbing safety
    net so menus still work with JS disabled.
    ========================================================================== */

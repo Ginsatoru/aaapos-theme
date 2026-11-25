@@ -45,7 +45,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
     
     $wp_customize->add_control('trust_badge_1_text', array(
         'label'       => __('Badge 1 - Shipping Text', 'aaapos'),
-        'description' => __('Enter text for the first trust badge', 'aaapos'),
         'section'     => 'aaapos_trust_badges',
         'type'        => 'text',
         'priority'    => 20,
@@ -74,7 +73,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
     
     $wp_customize->add_control('trust_badge_2_text', array(
         'label'       => __('Badge 2 - Returns Text', 'aaapos'),
-        'description' => __('Enter text for the second trust badge', 'aaapos'),
         'section'     => 'aaapos_trust_badges',
         'type'        => 'text',
         'priority'    => 30,
@@ -103,7 +101,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
     
     $wp_customize->add_control('trust_badge_3_text', array(
         'label'       => __('Badge 3 - Taxes Text', 'aaapos'),
-        'description' => __('Enter text for the third trust badge', 'aaapos'),
         'section'     => 'aaapos_trust_badges',
         'type'        => 'text',
         'priority'    => 40,
@@ -129,7 +126,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
     
     $wp_customize->add_section('aaapos_secure_payments', array(
         'title'       => __('Secure Payment Badges', 'aaapos'),
-        'description' => __('Payment icons are synced with Footer payment methods. Upload payment icons in Appearance → Customize → Footer Settings.', 'aaapos'),
         'priority'    => 161,
         'panel'       => 'woocommerce',
     ));
@@ -143,7 +139,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
     
     $wp_customize->add_control('show_secure_payments', array(
         'label'       => __('Show Secure Payment Badges', 'aaapos'),
-        'description' => __('Display payment method icons on single product pages', 'aaapos'),
         'section'     => 'aaapos_secure_payments',
         'type'        => 'checkbox',
         'priority'    => 10,
@@ -158,7 +153,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
     
     $wp_customize->add_control('secure_payments_title', array(
         'label'       => __('Title Text', 'aaapos'),
-        'description' => __('Text shown before payment icons', 'aaapos'),
         'section'     => 'aaapos_secure_payments',
         'type'        => 'text',
         'priority'    => 20,
@@ -170,7 +164,6 @@ function aaapos_trust_badges_customizer($wp_customize) {
 
 $wp_customize->add_section('aaapos_product_share', array(
     'title'       => __('Product Share Buttons', 'aaapos'),
-    'description' => __('Configure social sharing buttons on single product pages', 'aaapos'),
     'priority'    => 162,
     'panel'       => 'woocommerce',
 ));
@@ -184,7 +177,6 @@ $wp_customize->add_setting('show_product_share', array(
 
 $wp_customize->add_control('show_product_share', array(
     'label'       => __('Show Product Share Buttons', 'aaapos'),
-    'description' => __('Display social sharing buttons on single product pages', 'aaapos'),
     'section'     => 'aaapos_product_share',
     'type'        => 'checkbox',
     'priority'    => 10,
@@ -199,7 +191,6 @@ $wp_customize->add_setting('product_share_title', array(
 
 $wp_customize->add_control('product_share_title', array(
     'label'       => __('Share Title Text', 'aaapos'),
-    'description' => __('Text shown before share buttons', 'aaapos'),
     'section'     => 'aaapos_product_share',
     'type'        => 'text',
     'priority'    => 20,

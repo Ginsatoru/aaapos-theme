@@ -66,7 +66,7 @@ add_action('customize_register', function ($wp_customize) {
 add_action('customize_preview_init', function () {
     wp_enqueue_script(
         'aaapos-logo-scale-preview',
-        AAAPOS_THEME_URI . '/assets/js/logo-scale-preview.js',
+        AAAPOS_THEME_URI . '/assets/js/customizer/logo-scale-preview.js',
         array('customize-preview'),
         AAAPOS_VERSION,
         true
@@ -184,21 +184,20 @@ if (!isset($content_width)) {
 function aaapos_load_theme_files()
 {
     $includes = [
-        "inc/setup.php",
-        "inc/auth-ajax.php",
-        "inc/testimonials.php",
-        "inc/enqueue.php",
-        "inc/security.php",
-        "inc/template-tags.php",
-        "inc/widgets.php",
-        "inc/class-aaapos-nav-walker.php",
-        "inc/woocommerce.php",
-        "inc/shop-filters.php",
-        "inc/myaccount-dashboard.php",
-        'inc/serial-number.php',
-        "inc/ajax.php",
+        "inc/core/setup.php",
+        "inc/features/auth-ajax.php",
+        "inc/features/testimonials.php",
+        "inc/features/top-progress-bar.php",
+        "inc/core/enqueue.php",
+        "inc/core/security.php",
+        "inc/core/template-tags.php",
+        "inc/core/widgets.php",
+        "inc/classes/class-aaapos-nav-walker.php",
+        "inc/woocommerce/woocommerce.php",
+        "inc/woocommerce/shop-filters.php",
+        'inc/woocommerce/serial-number.php',
+        "inc/core/ajax.php",
         "inc/customizer/customizer.php",
-        "inc/customizer/page-loader-customizer.php",
         "inc/customizer/auth-customizer.php",
         "inc/customizer/about-customizer.php",
         "inc/customizer/contact-customizer.php",
@@ -1102,7 +1101,7 @@ function aaapos_display_contact_form_messages()
  */
 
 // Include setup wizard
-require_once get_template_directory() . '/inc/setup-wizard.php';
+require_once get_template_directory() . '/inc/features/setup-wizard.php';
 
 /**
  * Set activation redirect transient on theme switch
@@ -1428,7 +1427,7 @@ function aaapos_enqueue_hero_assets() {
     if ($media_type === 'image' && $enable_slideshow && !$is_production) {
         wp_enqueue_script(
             'mr-slider',
-            get_template_directory_uri() . '/assets/js/slider.js',
+            get_template_directory_uri() . '/assets/js/hero/slider.js',
             array('mr-theme'),
             AAAPOS_VERSION,
             true
@@ -1439,7 +1438,7 @@ function aaapos_enqueue_hero_assets() {
     if (get_theme_mod('hero_show_product_carousel', true)) {
         wp_enqueue_script(
             'aaapos-hero-carousel',
-            get_template_directory_uri() . '/assets/js/hero-enhanced.js',
+            get_template_directory_uri() . '/assets/js/hero/hero-enhanced.js',
             array(),
             AAAPOS_VERSION,
             true
@@ -1452,7 +1451,7 @@ function aaapos_enqueue_hero_assets() {
         if ($video_id) {
             wp_enqueue_script(
                 'mr-hero-video',
-                get_template_directory_uri() . '/assets/js/hero-video.js',
+                get_template_directory_uri() . '/assets/js/hero/hero-video.js',
                 array('jquery'),
                 AAAPOS_VERSION,
                 true
@@ -1498,7 +1497,7 @@ function aaapos_enqueue_tyro_assets()
         return;
     }
 
-    $tp_css_uri = AAAPOS_ASSETS_URI . '/css/tyro-partnership';
+    $tp_css_uri = AAAPOS_ASSETS_URI . '/css/pages/tyro-partnership';
 
     wp_enqueue_style(
         'aaapos-tyro-tokens',
@@ -1575,7 +1574,7 @@ add_action('wp_enqueue_scripts', function () {
     ) {
         wp_enqueue_script(
             'aaapos-checkout-recaptcha',
-            get_template_directory_uri() . '/assets/js/checkout-recaptcha.js',
+            get_template_directory_uri() . '/assets/js/woocommerce/checkout-recaptcha.js',
             array('jquery'),
             AAAPOS_VERSION,
             true

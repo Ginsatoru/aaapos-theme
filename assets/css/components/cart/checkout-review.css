@@ -455,7 +455,7 @@
   animation: spin-icon 0.8s linear infinite;
 }
 
-/* Place order: delivery truck animation (assets/js/checkout.js adds .po-animate)
+/* Place order: delivery truck animation (assets/js/woocommerce/checkout.js adds .po-animate)
    Based on github.com/shafiei/truck-order-animation */
 #place_order {
   min-height: 56px;

@@ -23,7 +23,6 @@ function aaapos_colors_customizer($wp_customize) {
     // =========================================================================
     $wp_customize->add_section('aaapos_brand_color', array(
         'title'       => __('Brand Color', 'aaapos-prime'),
-        'description' => __('Choose your brand color. This single color controls buttons, links, badges, and all accent elements throughout your site.', 'aaapos-prime'),
         'priority'    => 30,
     ));
 
@@ -36,7 +35,6 @@ function aaapos_colors_customizer($wp_customize) {
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'brand_color', array(
         'label'       => __('Brand Color', 'aaapos-prime'),
-        'description' => __('Your main brand/accent color. Used for buttons, links, badges, icons, and highlights.', 'aaapos-prime'),
         'section'     => 'aaapos_brand_color',
         'priority'    => 10,
     )));
@@ -52,7 +50,6 @@ function aaapos_colors_customizer($wp_customize) {
 
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'nav_accent_color', array(
         'label'       => __('Navigation Accent', 'aaapos-prime'),
-        'description' => __('Color for navigation hover and active states. Leave as gold for elegant contrast, or match your brand color.', 'aaapos-prime'),
         'section'     => 'aaapos_brand_color',
         'priority'    => 20,
     )));

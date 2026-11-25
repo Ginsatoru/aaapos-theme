@@ -9,7 +9,7 @@
  *
  * Performance: the first visible hero image (video fallback, first slide, or
  * static image) loads eagerly with high priority, since it is the page's main
- * content (LCP). Later slides stay lazy. inc/enqueue.php preloads the same image.
+ * content (LCP). Later slides stay lazy. inc/core/enqueue.php preloads the same image.
  */
 
     // =========================================================================
@@ -52,7 +52,7 @@
 
     // Default fallback image (used for the slideshow/static background
     // when no slide image has been uploaded for a given slot).
-    $default_image = get_template_directory_uri() . '/images/herobg.png';
+    $default_image = get_template_directory_uri() . '/assets/images/herobg.png';
     $default_images = array($default_image, $default_image, $default_image, $default_image);
 
     // hero-classic-mode scopes assets/css/components/hero-classic.css so it

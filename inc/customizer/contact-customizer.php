@@ -109,7 +109,6 @@ function aaapos_contact_page_customizer($wp_customize) {
 
     $wp_customize->add_control("contact_form_email", array(
         "label" => __("Contact Form Email", "aaapos-prime"),
-        "description" => __("Email address to receive contact form submissions", "aaapos-prime"),
         "section" => "aaapos_contact_page",
         "type" => "email",
         "priority" => 10,

@@ -1,0 +1,43 @@
+/* ==========================================================================
+   Top Progress Bar
+   Thin brand-coloured bar pinned to the very top of the viewport, shown on
+   every page load / refresh and while navigating to the next page.
+   Inlined in <head> by inc/features/top-progress-bar.php (no extra request).
+   ========================================================================== */
+
+/* Bar colour: the light shade of the brand colour (follows the brand colour
+   set in the Customizer). Plain brand blue would disappear on the desktop
+   top bar, which is brand blue too. Change here. */
+:root {
+  --top-progress-color: var(--brand-color-light, #15c1ff);
+}
+
+#aaapos-top-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 2147483647; /* above the header, modals and admin bar */
+  pointer-events: none;
+  background: var(--top-progress-color);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform 0.25s ease-out, opacity 0.2s ease;
+}
+
+#aaapos-top-progress.is-active {
+  opacity: 1;
+}
+
+/* Finish: hold at 100% for a moment, then fade out */
+#aaapos-top-progress.is-done {
+  opacity: 0;
+  transition: transform 0.2s ease-out, opacity 0.4s ease 0.25s;
+}
+
+/* Reset to 0 instantly once hidden (no visible shrink) */
+#aaapos-top-progress.is-reset {
+  transition: none;
+}

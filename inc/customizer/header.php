@@ -252,6 +252,22 @@ function mr_header_customizer($wp_customize)
         "priority" => 10,
     ]);
 
+    // Top bar background (empty = brand colour)
+    $wp_customize->add_setting("topbar_bg_color", [
+        "default" => "",
+        "sanitize_callback" => "sanitize_hex_color",
+        "transport" => "refresh",
+    ]);
+
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, "topbar_bg_color", [
+        "label" => __("Top Bar Colour", "macedon-ranges"),
+        "section" => "mr_header",
+        "priority" => 11,
+        "active_callback" => function () {
+            return (bool) get_theme_mod("show_top_bar", true);
+        },
+    ]));
+
     $wp_customize->add_setting("topbar_phone", [
         "default" => "+61 3 5420 0000",
         "sanitize_callback" => "sanitize_text_field",
@@ -385,7 +401,6 @@ $wp_customize->add_control("topbar_promo_text", [
 
     $wp_customize->add_control("search_popular_terms", [
         "label" => __("Popular Searches", "macedon-ranges"),
-        "description" => __("Comma separated, e.g. RetailManager, barcode scanner, receipt printer", "macedon-ranges"),
         "section" => "mr_header",
         "type" => "text",
         "priority" => 55,
@@ -589,5 +604,5 @@ add_action("customize_register", "mr_header_customizer");
 
 // Request a Demo popup form (front-end markup, assets and email handler)
 if (!function_exists("aaapos_demo_form_enabled")) {
-    require_once get_template_directory() . "/inc/demo-request.php";
+    require_once get_template_directory() . "/inc/features/demo-request.php";
 }

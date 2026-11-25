@@ -177,7 +177,7 @@ $clear_filters_url = esc_url(remove_query_arg(array_merge(['min_price', 'max_pri
                     <div class="search-no-results woocommerce-info">
                         <div class="no-results-content">
                             <div class="no-results-icon">
-                                <img src="<?php echo esc_url( AAAPOS_ASSETS_URI ); ?>/../images/icons/sick.png" alt="<?php esc_attr_e('No results', 'aaapos-prime'); ?>" width="64" height="64" />
+                                <img src="<?php echo esc_url( AAAPOS_ASSETS_URI ); ?>/images/icons/sick.png" alt="<?php esc_attr_e('No results', 'aaapos-prime'); ?>" width="64" height="64" />
                             </div>
                             <h2 class="no-results-title"><?php esc_html_e('No results found', 'aaapos-prime'); ?></h2>
                             <p class="no-results-text"><?php esc_html_e('We couldn\'t find anything matching your search. Try adjusting your keywords.', 'aaapos-prime'); ?></p>

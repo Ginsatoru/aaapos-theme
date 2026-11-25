@@ -3,7 +3,8 @@
    ========================================================================== */
 
 .top-bar {
-  background: var(--brand-color);
+  /* Customizer > Header & Topbar > Top Bar Colour (falls back to brand colour) */
+  background: var(--color-topbar-bg, var(--brand-color));
   color: var(--color-white);
   font-size: var(--text-sm);
   height: 38px;

@@ -29,7 +29,7 @@ $display_name = ! empty( $current_user->first_name )
 // Profile icon (custom image instead of Gravatar)
 $avatar = sprintf(
 	'<img src="%s" alt="%s" class="dashboard-welcome-avatar-img">',
-	esc_url( get_template_directory_uri() . '/images/icons/profile-icon.png' ),
+	esc_url( get_template_directory_uri() . '/assets/images/icons/profile-icon.png' ),
 	esc_attr( $current_user->display_name )
 );
 
