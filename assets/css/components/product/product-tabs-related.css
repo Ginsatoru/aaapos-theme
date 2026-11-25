@@ -108,7 +108,7 @@
 .single-product .related.products ul.products,
 .single-product .upsells.products ul.products {
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 1.25rem !important;
   margin-bottom: 2rem !important; /* ADDED: space after product cards */
 }
@@ -121,7 +121,7 @@
 @media (max-width: 1199px) {
   .single-product .related.products ul.products,
   .single-product .upsells.products ul.products {
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
@@ -129,7 +129,7 @@
 @media (max-width: 767px) {
   .single-product .related.products ul.products,
   .single-product .upsells.products ul.products {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
   /* MOBILE: Reduce spacing further */

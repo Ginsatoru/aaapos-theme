@@ -2065,6 +2065,12 @@ function aaapos_add_sale_percentage_to_price_html($price_html, $product)
         return $price_html;
     }
 
+    // Main product only - related/upsell cards on the same page would get
+    // the badge too, which makes their grid columns wider than the others
+    if ((int) $product->get_id() !== (int) get_queried_object_id()) {
+        return $price_html;
+    }
+
     $regular_price = (float) $product->get_regular_price();
     $sale_price = (float) $product->get_sale_price();
 
